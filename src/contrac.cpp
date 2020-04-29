@@ -54,7 +54,7 @@ bool Contrac::generateTracingKey()
     return (result == 1);
 }
 
-bool Contrac::generateDailyTracingKey(quint8 day_number)
+bool Contrac::generateDailyTracingKey(quint32 day_number)
 {
     int result = 1;
     unsigned char encode[sizeof(DTK_INFO_PREFIX) + sizeof(day_number)];
