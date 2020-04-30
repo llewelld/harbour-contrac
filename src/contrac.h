@@ -52,7 +52,7 @@ public slots:
 
 private:
     bool generateTracingKey();
-    bool generateDailyTracingKey(quint8 day_number);
+    bool generateDailyTracingKey(quint32 day_number);
     bool generateRandomProximityIdentifier(quint8 time_interval_number);
 
     static quint32 epochToDayNumber(quint64 epoch);
