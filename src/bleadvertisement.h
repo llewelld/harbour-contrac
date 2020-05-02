@@ -33,7 +33,7 @@ class BleAdvertisement : public QDBusAbstractAdaptor
     Q_PROPERTY(ushort Timeout READ timeout WRITE setTimeout NOTIFY timeoutChanged)
 
 public:
-    BleAdvertisement(QObject * parent = nullptr);
+    explicit BleAdvertisement(QObject * parent = nullptr);
     ~BleAdvertisement();
     void registerDBus(const QString &path);
     void unRegisterDBus();

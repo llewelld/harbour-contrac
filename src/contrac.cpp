@@ -35,6 +35,11 @@ Contrac::Contrac(QObject *parent) : QObject(parent)
     generateTracingKey();
 }
 
+Contrac::~Contrac()
+{
+    qDebug() << "~Contrac";
+}
+
 bool Contrac::generateTracingKey()
 {
     int result;

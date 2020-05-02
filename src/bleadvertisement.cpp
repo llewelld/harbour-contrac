@@ -33,6 +33,7 @@ BleAdvertisement::BleAdvertisement(QObject * parent)
 
 BleAdvertisement::~BleAdvertisement()
 {
+    qDebug() << "~BleAdvertisement()";
 }
 
 void BleAdvertisement::registerDBus(const QString &path)

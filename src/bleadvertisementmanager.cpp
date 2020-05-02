@@ -38,12 +38,14 @@ void BleAdvertisementManager::connectDBus()
 
 BleAdvertisementManager::~BleAdvertisementManager()
 {
+    qDebug() << "~BleAdvertisementManager() start";
     QString path = QStringLiteral("/org/bluez/hci0");
     QStringList argumentMatch;
     argumentMatch.append("org.bluez.LEAdvertisingManager1");
     QString signature;
 
     QDBusConnection::systemBus().disconnect("org.bluez", path, "org.freedesktop.DBus.Properties", "PropertiesChanged", argumentMatch, signature, this, SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
+    qDebug() << "~BleAdvertisementManager() finish";
 }
 
 void BleAdvertisementManager::onPropertiesChanged(const QString &interface, const QVariantMap &changed, const QStringList &invalidated)

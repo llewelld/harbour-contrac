@@ -30,6 +30,7 @@ class Contrac : public QObject
 
 public:
     explicit Contrac(QObject *parent = nullptr);
+    ~Contrac();
 
     QByteArray tk() const;
     QByteArray dtk() const;

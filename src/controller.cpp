@@ -30,8 +30,10 @@ Controller::Controller(QObject *parent) : QObject(parent)
 
 Controller::~Controller()
 {
+    qDebug() << "~Controller() start";
     m_bleadvert->unRegisterDBus();
     delete m_bleadvert;
+    qDebug() << "~Controller() finish";
 }
 
 void Controller::registerAdvert()

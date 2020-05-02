@@ -24,6 +24,7 @@ CONFIG += sailfishapp
 SOURCES += src/harbour-contrac.cpp \
     src/bleadvertisement.cpp \
     src/bleadvertisementmanager.cpp \
+    src/blescanner.cpp \
     src/contrac.cpp \
     src/controller.cpp \
     src/hkdfsha256.cpp
@@ -40,7 +41,7 @@ DISTFILES += qml/harbour-contrac.qml \
     translations/*.ts \
     harbour-contrac.desktop
 
-SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172
+SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
 
 # to disable building translations every time, comment out the
 # following CONFIG line
@@ -52,8 +53,8 @@ CONFIG += sailfishapp_i18n_unfinished
 # planning to localize your app, remember to comment out the
 # following TRANSLATIONS line. And also do not forget to
 # modify the localized app name in the the .desktop file.
-TRANSLATIONS += translations/harbour-scintillon.ts
-TRANSLATIONS += translations/harbour-scintillon-en.ts
+TRANSLATIONS += translations/harbour-contrac.ts
+TRANSLATIONS += translations/harbour-contrac-en.ts
 
 PKGCONFIG += openssl
 
@@ -62,6 +63,7 @@ QT += dbus
 HEADERS += \
     src/bleadvertisement.h \
     src/bleadvertisementmanager.h \
+    src/bleascanner.h \
     src/contrac.h \
     src/controller.h \
     src/hkdfsha256.h

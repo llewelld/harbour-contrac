@@ -18,7 +18,7 @@ class BleAdvertisementManager : public QObject
 {
     Q_OBJECT
 public:
-    BleAdvertisementManager(QObject *parent = nullptr);
+    explicit BleAdvertisementManager(QObject *parent = nullptr);
     ~BleAdvertisementManager();
 
     void connectDBus();

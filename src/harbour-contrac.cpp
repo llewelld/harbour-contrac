@@ -12,6 +12,7 @@
 
 #include "controller.h"
 #include "contrac.h"
+#include "bleascanner.h"
 
 #include <sailfishapp.h>
 
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<Controller>("uk.co.flypig", 1, 0, "Controller");
     qmlRegisterType<Contrac>("uk.co.flypig", 1, 0, "Contrac");
+    qmlRegisterType<BleScanner>("uk.co.flypig", 1, 0, "BleScanner");
 
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));
@@ -40,6 +42,12 @@ int main(int argc, char *argv[])
     view->show();
 
     int result = app->exec();
+
+    qDebug() << "Execution finished: " << result;
+    delete view;
+    qDebug() << "Deleted view";
+    delete app;
+    qDebug() << "Deleted app";
 
     return result;
 }
