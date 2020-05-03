@@ -59,44 +59,59 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_about">
-        <location filename="../qml/pages/Main.qml" line="45"/>
+        <location filename="../qml/pages/Main.qml" line="57"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_title">
-        <location filename="../qml/pages/Main.qml" line="59"/>
+        <location filename="../qml/pages/Main.qml" line="69"/>
         <source>BLE Contact Tracing</source>
         <translation type="unfinished"></translation>
     </message>
+    <message id="contrac-main_scan">
+        <location filename="../qml/pages/Main.qml" line="79"/>
+        <source>Scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_transmit">
+        <location filename="../qml/pages/Main.qml" line="91"/>
+        <source>Transmit</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message id="contrac-main_date">
-        <location filename="../qml/pages/Main.qml" line="99"/>
+        <location filename="../qml/pages/Main.qml" line="111"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_dn">
-        <location filename="../qml/pages/Main.qml" line="112"/>
+        <location filename="../qml/pages/Main.qml" line="125"/>
         <source>Day number</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_tin">
-        <location filename="../qml/pages/Main.qml" line="119"/>
+        <location filename="../qml/pages/Main.qml" line="132"/>
         <source>Time number</source>
         <oldsource>Time interval number</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_tk">
-        <location filename="../qml/pages/Main.qml" line="128"/>
+        <location filename="../qml/pages/Main.qml" line="141"/>
         <source>Tracing Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_dtk">
-        <location filename="../qml/pages/Main.qml" line="145"/>
+        <location filename="../qml/pages/Main.qml" line="158"/>
         <source>Daily Tracing Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_rpi">
-        <location filename="../qml/pages/Main.qml" line="162"/>
+        <location filename="../qml/pages/Main.qml" line="175"/>
         <source>Random Proximity Identifer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_received">
+        <location filename="../qml/pages/Main.qml" line="204"/>
+        <source>Beacons received</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

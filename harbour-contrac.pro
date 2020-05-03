@@ -25,6 +25,7 @@ SOURCES += src/harbour-contrac.cpp \
     src/bleadvertisement.cpp \
     src/bleadvertisementmanager.cpp \
     src/blescanner.cpp \
+    src/contactmodel.cpp \
     src/contrac.cpp \
     src/controller.cpp \
     src/hkdfsha256.cpp
@@ -64,6 +65,7 @@ HEADERS += \
     src/bleadvertisement.h \
     src/bleadvertisementmanager.h \
     src/bleascanner.h \
+    src/contactmodel.h \
     src/contrac.h \
     src/controller.h \
     src/hkdfsha256.h

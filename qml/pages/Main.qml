@@ -16,14 +16,14 @@ Page {
 
         onRpiChanged: {
             controller.setRpi(contrac.rpi)
-            if (controller.active) {
-                rpiColourAnimation.start()
-            }
         }
     }
 
     BleScanner {
         id: blescanner
+        onBeaconDiscovered: {
+            contactModel.addContact(address, rpi, rssi)
+        }
     }
 
     Timer {
@@ -36,8 +36,20 @@ Page {
         }
     }
 
-    SilicaFlickable {
+    Timer {
+        interval: 5 * 1000
+        repeat: true
+        running: true
+        onTriggered: contactModel.harvestOldContacts()
+    }
+
+    SilicaListView {
         anchors.fill: parent
+        model: ContactModel {
+            id: contactModel
+        }
+
+        VerticalScrollDecorator {}
 
         PullDownMenu {
             MenuItem {
@@ -47,9 +59,7 @@ Page {
             }
         }
 
-        contentHeight: column.height
-
-        Column {
+        header: Column {
             id: column
 
             width: page.width
@@ -65,7 +75,8 @@ Page {
                 height: Theme.itemSizeSmall
 
                 TextSwitch {
-                    text: "Scan"
+                    //% "Scan"
+                    text: qsTrId("contrac-main_scan")
                     width: (parent.width / 2.0) - parent.spacing
                     automaticCheck: false;
                     checked: blescanner.scan
@@ -76,7 +87,8 @@ Page {
                 }
 
                 TextSwitch {
-                    text: "Transmit"
+                    //% "Transmit"
+                    text: qsTrId("contrac-main_transmit")
                     width: (parent.width / 2.0) - parent.spacing
                     automaticCheck: false;
                     checked: controller.active
@@ -103,10 +115,11 @@ Page {
             Row {
                 spacing: Theme.paddingLarge
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                height: Theme.itemSizeSmall
+                height: dayNumber.height
                 x: Theme.horizontalPageMargin
 
                 Label {
+                    id: dayNumber
                     width: (parent.width / 2) - parent.spacing
                     //% "Day number"
                     text: qsTrId("contrac-main_dn") + ": " + contrac.dayNumber
@@ -149,7 +162,7 @@ Page {
             Label {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
-                text: controller.binaryToHex(contrac.dtk, 24)
+                text: controller.binaryToHex(contrac.dtk, 16)
                 font.family: "Monospace"
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
@@ -167,10 +180,15 @@ Page {
                 id: rpiBytes
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
-                text: controller.binaryToHex(contrac.rpi, 24)
+                text: controller.binaryToHex(contrac.rpi, 16)
                 font.family: "Monospace"
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
+                onTextChanged: {
+                    if (controller.active) {
+                        rpiColourAnimation.start();
+                    }
+                }
 
                 ColorAnimation on color {
                     id: rpiColourAnimation
@@ -178,6 +196,72 @@ Page {
                     to: Theme.highlightColor
                     duration: 500
                     running: true
+                }
+            }
+
+            SectionHeader {
+                //% "Beacons received"
+                text: qsTrId("contrac-main_received");
+            }
+        }
+
+        add: Transition {
+            SequentialAnimation {
+                NumberAnimation {
+                    properties: "opacity"
+                    from: 0.0
+                    to: 1.0
+                    duration: 200
+                    easing.type: Easing.OutCubic
+                }
+                ColorAnimation {
+                    properties: "color"
+                    from: Theme.errorColor
+                    to: Theme.highlightColor
+                    duration: 500
+                }
+            }
+        }
+
+        displaced: Transition {
+            NumberAnimation {
+                properties: "y"
+                duration: 100
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        remove: Transition {
+            NumberAnimation {
+                properties: "opacity"
+                to: 0
+                duration: 2000
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        delegate: ListItem {
+            property alias color: receivedRpi.color
+            contentHeight: Theme.itemSizeSmall
+            Row {
+                spacing: Theme.paddingLarge
+                height: Theme.itemSizeSmall
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                Label {
+                    id: receivedRpi
+                    text: controller.binaryToHex(model.rpi, 16)
+                    //width: parent.width - 2 * Theme.horizontalPageMargin
+                    font.family: "Monospace"
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: Theme.errorColor
+                }
+
+                Label {
+                    width: parent.width - receivedRpi.width - Theme.paddingLarge
+                    text: model.rssi
+                    horizontalAlignment: Label.AlignRight
+                    color: Theme.highlightColor
                 }
             }
         }

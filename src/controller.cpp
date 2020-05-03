@@ -80,12 +80,14 @@ QString Controller::binaryToHex(QByteArray binary, int lineLength)
     QString hex = binary.toHex();
     for (int i = 0; i < hex.length(); ++i) {
         result += hex[i];
-        if ((i + 1) % lineLength == 0) {
-            result += "\n";
-        }
-        else {
-            if ((i + 1) % 2 == 0) {
-                result += " ";
+        if (i != hex.length() - 1) {
+            if ((i + 1) % lineLength == 0) {
+                result += "\n";
+            }
+            else {
+                if ((i + 1) % 2 == 0) {
+                    result += " ";
+                }
             }
         }
     }
