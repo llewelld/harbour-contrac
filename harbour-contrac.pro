@@ -70,4 +70,6 @@ HEADERS += \
     src/controller.h \
     src/hkdfsha256.h
 
-OTHER_FILES += README.md
+OTHER_FILES += \
+    README.md \
+    icons/*.svg
