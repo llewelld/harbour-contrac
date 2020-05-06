@@ -26,6 +26,7 @@ SOURCES += src/harbour-contrac.cpp \
     src/bleadvertisementmanager.cpp \
     src/blescanner.cpp \
     src/contactmodel.cpp \
+    src/contactstorage.cpp \
     src/contrac.cpp \
     src/controller.cpp \
     src/hkdfsha256.cpp
@@ -57,7 +58,8 @@ CONFIG += sailfishapp_i18n_unfinished
 TRANSLATIONS += translations/harbour-contrac.ts
 TRANSLATIONS += translations/harbour-contrac-en.ts
 
-PKGCONFIG += openssl
+PKGCONFIG += \
+    openssl
 
 QT += dbus
 
@@ -66,6 +68,7 @@ HEADERS += \
     src/bleadvertisementmanager.h \
     src/bleascanner.h \
     src/contactmodel.h \
+    src/contactstorage.h \
     src/contrac.h \
     src/controller.h \
     src/hkdfsha256.h

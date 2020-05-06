@@ -12,9 +12,9 @@
 #include <QObject>
 #include <QDateTime>
 
-#define TK_SIZE (32)
-#define DTK_SIZE (16)
-#define RPI_SIZE (16)
+#define TK_SIZE (32u)
+#define DTK_SIZE (16u)
+#define RPI_SIZE (16u)
 
 class Contrac : public QObject
 {

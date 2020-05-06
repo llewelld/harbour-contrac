@@ -14,6 +14,7 @@
 #include "contrac.h"
 #include "bleascanner.h"
 #include "contactmodel.h"
+#include "contactstorage.h"
 
 #include <sailfishapp.h>
 
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
     // To display the view, call "show()" (will show fullscreen on device).
 
     QGuiApplication *app = SailfishApp::application(argc, argv);
-    QCoreApplication::setOrganizationName("flypig.co.uk");
+    QCoreApplication::setOrganizationDomain("www.flypig.co.uk");
     QCoreApplication::setApplicationName("harbour-contrac");
 
     qmlRegisterType<Controller>("uk.co.flypig", 1, 0, "Controller");

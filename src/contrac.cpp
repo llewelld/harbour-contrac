@@ -108,7 +108,7 @@ bool Contrac::generateRandomProximityIdentifier(quint8 time_interval_number)
     unsigned int pos;
     unsigned int min;
     unsigned char const * daily_key;
-    unsigned char data[DTK_SIZE];
+    unsigned char data[RPI_SIZE];
 
     // RPI_{i, j} <- Truncate(HMAC(dkt_i, (UTF8("CT-RPI") || TIN_j)), 16)
 
@@ -121,17 +121,17 @@ bool Contrac::generateRandomProximityIdentifier(quint8 time_interval_number)
         out_length = sizeof(output);
 
         daily_key = (unsigned char *)m_dtk.data();
-        HMAC(EVP_sha256(), daily_key, DTK_SIZE, encode, sizeof(encode), output, &out_length);
+        HMAC(EVP_sha256(), daily_key, RPI_SIZE, encode, sizeof(encode), output, &out_length);
 
         //_Static_assert ((EVP_MAX_MD_SIZE >= 16), "HMAC buffer size too small");
 
         // Truncate and copy the result
-        min = qMin(out_length, 16u);
+        min = qMin(out_length, RPI_SIZE);
         for (pos = 0; pos < min; ++pos) {
             data[pos] = output[pos];
         }
         // Zero out padding if there is any
-        for (pos = min; pos < 16; ++pos) {
+        for (pos = min; pos < RPI_SIZE; ++pos) {
             data[pos] = 0;
         }
     }
