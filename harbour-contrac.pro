@@ -25,10 +25,12 @@ SOURCES += src/harbour-contrac.cpp \
     src/bleadvertisement.cpp \
     src/bleadvertisementmanager.cpp \
     src/blescanner.cpp \
+    src/bloomfilter.cpp \
     src/contactmodel.cpp \
     src/contactstorage.cpp \
     src/contrac.cpp \
     src/controller.cpp \
+    src/fnv.cpp \
     src/hkdfsha256.cpp
 
 DISTFILES += qml/harbour-contrac.qml \
@@ -67,10 +69,12 @@ HEADERS += \
     src/bleadvertisement.h \
     src/bleadvertisementmanager.h \
     src/bleascanner.h \
+    src/bloomfilter.h \
     src/contactmodel.h \
     src/contactstorage.h \
     src/contrac.h \
     src/controller.h \
+    src/fnv.h \
     src/hkdfsha256.h
 
 OTHER_FILES += \

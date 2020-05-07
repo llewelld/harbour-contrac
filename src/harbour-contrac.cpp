@@ -16,6 +16,9 @@
 #include "contactmodel.h"
 #include "contactstorage.h"
 
+#include "bloomfilter.h"
+#include <openssl/rand.h>
+
 #include <sailfishapp.h>
 
 int main(int argc, char *argv[])
@@ -38,6 +41,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Contrac>("uk.co.flypig", 1, 0, "Contrac");
     qmlRegisterType<BleScanner>("uk.co.flypig", 1, 0, "BleScanner");
     qmlRegisterType<ContactModel>("uk.co.flypig", 1, 0, "ContactModel");
+    qmlRegisterType<ContactStorage>("uk.co.flypig", 1, 0, "ContactStorage");
 
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));

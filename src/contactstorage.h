@@ -5,6 +5,7 @@
 #include <QFile>
 
 class Contrac;
+class BloomFilter;
 
 class ContactStorage : public QObject
 {
@@ -18,10 +19,12 @@ signals:
 public slots:
     Q_INVOKABLE void addContact(const QByteArray &rpi, qint16 rssi);
     void dumpData();
+    Q_INVOKABLE bool probableMatch(const QByteArray &rpi);
 
 private:
     QFile m_today;
     Contrac *m_contrac;
+    BloomFilter *m_filter;
 };
 
 #endif // CONTACTSTORAGE_H
