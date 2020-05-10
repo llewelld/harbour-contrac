@@ -5,7 +5,7 @@ CoverBackground {
     Label {
         id: label
         anchors.centerIn: parent
-        //% "Contrac
+        //% "Contrac"
         text: qsTrId("contrac-cover_title")
     }
 

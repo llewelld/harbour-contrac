@@ -55,6 +55,7 @@ private:
     ScanState m_scanState;
     ScanState m_target;
     bool m_error;
+    bool m_filteringSupported;
 };
 
 #endif // BLESCANNER_H

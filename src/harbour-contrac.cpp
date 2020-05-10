@@ -6,9 +6,7 @@
  *
  */
 
-#ifdef QT_QML_DEBUG
 #include <QtQuick>
-#endif
 
 #include "controller.h"
 #include "contrac.h"

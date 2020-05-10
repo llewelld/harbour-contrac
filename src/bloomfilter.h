@@ -30,7 +30,7 @@ def fpr(n, m):
 class BloomFilter
 {
 public:
-    BloomFilter(quint32 size = BLOOM_DEFAULT_SIZE, quint32 hashes = BLOOM_DEFAULT_HASHES);
+    BloomFilter(quint32 day = 0, quint32 size = BLOOM_DEFAULT_SIZE, quint32 hashes = BLOOM_DEFAULT_HASHES);
 
     void add(QByteArray const &data);
     bool test(QByteArray const &data) const;
@@ -39,10 +39,15 @@ public:
     void setFilter(QByteArray const &filter, quint32 hashes);
     quint32 getSize() const;
     quint32 getHahes() const;
+    bool load(quint32 day);
+    bool save() const;
+    void setDay(quint32 day);
+    quint32 day() const;
 
 private:
     quint32 m_size;
     quint32 m_hashes;
+    quint32 m_day;
     QBitArray m_filter;
 };
 

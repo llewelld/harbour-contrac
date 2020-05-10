@@ -24,6 +24,7 @@ PkgConfigBR:
   - Qt5Qml
   - Qt5Quick
   - openssl
+  - Qt5Test
 
 # Build dependencies without a pkgconfig setup can be listed here
 # PkgBR:
@@ -44,3 +45,15 @@ Files:
 
 # For more information about yaml and what's supported in Sailfish OS
 # build system, please see https://wiki.merproject.org/wiki/Spectacle
+
+SubPackages:
+    - Name: tests
+      Summary: Tests for harbour-contrac
+      Group: Qt/Qt
+      Description: |-
+        Unit tests
+      AutoDepend: true
+      PkgConfigBR: Qt5QuickTest
+      Requires: qt5-qtdeclarative-import-qttest
+      Files:
+      - '%{_libdir}/%{name}-tests/%{name}-tests'

@@ -10,6 +10,7 @@ BleScanner::BleScanner(QObject *parent) : QObject(parent)
   , m_scanState(Inactive)
   , m_target(Inactive)
   , m_error(false)
+  , m_filteringSupported(true)
 {
     QString path = QStringLiteral("/org/bluez/hci0");
 
@@ -92,29 +93,43 @@ void BleScanner::applyDiscoveryFilter()
 {
     QVariantMap filter;
 
-    qDebug() << "Setting up discovery filter";
+    if (m_filteringSupported) {
+        qDebug() << "Setting up discovery filter";
 
-    filter.insert("UUIDs", QStringList("0000fd6f-0000-1000-8000-00805f9b34fb"));
-    filter.insert("Transport", "le");
+        filter.insert("UUIDs", QStringList("0000fd6f-0000-1000-8000-00805f9b34fb"));
+        filter.insert("Transport", "le");
 
-    QDBusPendingCall async = m_adapterInterface->asyncCall("SetDiscoveryFilter", filter);
+        QDBusPendingCall async = m_adapterInterface->asyncCall("SetDiscoveryFilter", filter);
 
-    m_scanState = ApplyingFilter;
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
+        m_scanState = ApplyingFilter;
+        QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
 
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher* call) {
-        qDebug() << "DBus SetDiscoveryFilter returned";
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher* call) {
+            qDebug() << "DBus SetDiscoveryFilter returned";
 
-        QDBusPendingReply<> reply = *call;
-        if (reply.isError()) {
-            dbusError(reply.error());
-        }
-        else {
-            qDebug() << "No error";
-            nextState();
-        }
-        call->deleteLater();
-    });
+            QDBusPendingReply<> reply = *call;
+            if (reply.isError()) {
+                if ((reply.error().type() == QDBusError::ErrorType::NotSupported)
+                        || (reply.error().type() == QDBusError::ErrorType::Other)) {
+                    m_filteringSupported = false;
+                    qDebug() << "Filtering not supported";
+                    nextState();
+                }
+                else {
+                    dbusError(reply.error());
+                }
+            }
+            else {
+                qDebug() << "No error";
+                nextState();
+            }
+            call->deleteLater();
+        });
+    }
+    else {
+        qDebug() << "Filtering not supported, moving straight to start scan";
+        nextState();
+    }
 }
 
 bool BleScanner::scan() const
@@ -153,28 +168,38 @@ void BleScanner::startDiscovery()
 
 void BleScanner::removeDiscoveryFilter()
 {
-    QDBusPendingCall async = m_adapterInterface->asyncCall("SetDiscoveryFilter", QVariantMap());
+    if (m_filteringSupported) {
+        qDebug() << "Removing discovery filter";
 
-    m_scanState = RemovingFilter;
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
+        QDBusPendingCall async = m_adapterInterface->asyncCall("SetDiscoveryFilter", QVariantMap());
 
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher* call) {
-        qDebug() << "DBus SetDiscoveryFilter returned";
+        m_scanState = RemovingFilter;
+        QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
 
-        QDBusPendingReply<> reply = *call;
-        if (reply.isError()) {
-            dbusError(reply.error());
-        }
-        else {
-            qDebug() << "No error";
-            nextState();
-        }
-        call->deleteLater();
-    });
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher* call) {
+            qDebug() << "DBus SetDiscoveryFilter returned";
+
+            QDBusPendingReply<> reply = *call;
+            if (reply.isError()) {
+                dbusError(reply.error());
+            }
+            else {
+                qDebug() << "No error";
+                nextState();
+            }
+            call->deleteLater();
+        });
+    }
+    else {
+        qDebug() << "No discovery filter to remove, moving straight to stop discovery";
+        nextState();
+    }
 }
 
 void BleScanner::stopDiscovery()
 {
+    qDebug() << "Stopping discovery";
+
     QDBusPendingCall async = m_adapterInterface->asyncCall("StopDiscovery");
 
     m_scanState = StoppingDiscovery;
@@ -276,7 +301,7 @@ void BleScanner::nextState()
 
 void BleScanner::dbusError(QDBusError error)
 {
-    qDebug() << "DBus returned error: " << error.message();
+    qDebug() << "DBus returned error: " << error.message() << " (" << error.type() << ")";
     if (!m_error) {
         // Attempt to climb down gracefully
         m_target = Inactive;

@@ -23,11 +23,22 @@ BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(openssl)
+BuildRequires:  pkgconfig(Qt5Test)
 BuildRequires:  desktop-file-utils
 
 %description
 Short description of my Sailfish OS Application
 
+
+%package tests
+Summary:    Tests for harbour-contrac
+Group:      Qt/Qt
+Requires:   %{name} = %{version}-%{release}
+Requires:   qt5-qtdeclarative-import-qttest
+BuildRequires:  pkgconfig(Qt5QuickTest)
+
+%description tests
+Unit tests
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -68,3 +79,9 @@ desktop-file-install --delete-original       \
 %{_datadir}/%{name}/translations
 # >> files
 # << files
+
+%files tests
+%defattr(-,root,root,-)
+%{_libdir}/%{name}-tests/%{name}-tests
+# >> files tests
+# << files tests

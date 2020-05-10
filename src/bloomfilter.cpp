@@ -1,3 +1,6 @@
+#include <QDir>
+#include <QStandardPaths>
+
 #include "fnv.h"
 
 #include "bloomfilter.h"
@@ -16,7 +19,8 @@ quint32 hash(quint32 seed, QByteArray const &data)
 
 } // Empty namespace
 
-BloomFilter::BloomFilter(quint32 size, quint32 hashes)
+BloomFilter::BloomFilter(quint32 day, quint32 size, quint32 hashes)
+    : m_day(day)
 {
     clear(size, hashes);
 }
@@ -97,4 +101,74 @@ quint32 BloomFilter::getSize() const
 quint32 BloomFilter::getHahes() const
 {
     return m_hashes;
+}
+
+bool BloomFilter::load(quint32 day)
+{
+    bool result;
+    QFile filter;
+    QString leafname;
+
+    QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
+    leafname = QStringLiteral("%1.bloom");
+    leafname = leafname.arg(day, 8, 16, QLatin1Char('0'));
+
+    filter.setFileName(folder + "/" + leafname);
+    result = filter.open(QIODevice::ReadOnly);
+    if (result) {
+        result = false;
+        QByteArray data = filter.readAll();
+
+        if (data.size() > 12) {
+            m_day = *((quint32*)data.data());
+            if (m_day == day) {
+                m_hashes = *((quint32*)data.data() + sizeof(quint32));
+                data.remove(0, sizeof(quint32) + sizeof(quint32));
+
+                // Preinitalised Bloomfilter
+                setFilter(data, 6);
+                result = true;
+            }
+        }
+        filter.close();
+    }
+
+    if (!result) {
+        m_day = 0;
+    }
+
+    return result;
+}
+
+bool BloomFilter::save() const
+{
+    bool result;
+    QFile filter;
+    QString leafname;
+
+    QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
+    leafname = QStringLiteral("%1.bloom");
+    leafname = leafname.arg(m_day, 8, 16, QLatin1Char('0'));
+
+    filter.setFileName(folder + "/" + leafname);
+    result = filter.open(QIODevice::WriteOnly);
+    if (result) {
+        filter.write((const char *)&m_day, sizeof(m_day));
+        filter.write((const char *)&m_hashes, sizeof(m_hashes));
+        QByteArray const &data = getFilter();
+        filter.write(data);
+        filter.close();
+    }
+
+    return result;
+}
+
+void BloomFilter::setDay(quint32 day)
+{
+    m_day = day;
+}
+
+quint32 BloomFilter::day() const
+{
+    return m_day;
 }
