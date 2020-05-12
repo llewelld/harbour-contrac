@@ -12,7 +12,11 @@ public:
 private slots:
     void cleanup();
 
+    void testDtk();
+    void testRpi();
+    void testBloomFilter();
     void testStorage();
+    void testMatch();
 };
 
 #endif // TEST_STORAGE_H

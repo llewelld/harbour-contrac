@@ -184,7 +184,9 @@ void Contrac::setTime(const QDateTime &time)
 {
     bool result;
     quint64 epoch_seconds;
+    bool day_changed;
 
+    day_changed = false;
     if (m_time != time) {
         m_time = time;
 
@@ -192,6 +194,7 @@ void Contrac::setTime(const QDateTime &time)
         quint32 day_number = epochToDayNumber(epoch_seconds);
         if (m_day_number != day_number) {
             m_day_number = day_number;
+            day_changed = true;
 
             result = generateDailyTracingKey(m_day_number);
             if (!result) {
@@ -200,7 +203,7 @@ void Contrac::setTime(const QDateTime &time)
         }
 
         quint8 time_interval_number = epochToTimeIntervalNumber(epoch_seconds);
-        if (m_time_interval_number != time_interval_number) {
+        if ((m_time_interval_number != time_interval_number) || day_changed) {
             m_time_interval_number = time_interval_number;
 
             result = generateRandomProximityIdentifier(m_time_interval_number);
