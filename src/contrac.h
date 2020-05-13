@@ -42,6 +42,9 @@ public:
     void setTk(const QByteArray &tk);
     void setTime(const QDateTime &time);
 
+    static QByteArray dailyTracingKey(QByteArray tracingKey, quint32 day_number);
+    static QByteArray randomProximityIdentifier(QByteArray dailyTracingKey, quint8 time_interval_number);
+
 signals:
     void tkChanged();
     void dtkChanged();

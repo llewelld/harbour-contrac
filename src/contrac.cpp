@@ -59,17 +59,18 @@ bool Contrac::generateTracingKey()
     return (result == 1);
 }
 
-bool Contrac::generateDailyTracingKey(quint32 day_number)
+QByteArray Contrac::dailyTracingKey(QByteArray tracingKey, quint32 day_number)
 {
-    int result = 1;
+    int result;
+    QByteArray dtk;
     unsigned char encode[sizeof(DTK_INFO_PREFIX) + sizeof(day_number)];
     size_t out_length = 0;
-    //EVP_PKEY_CTX *pctx = NULL;
     unsigned char const * tk;
     unsigned char data[DTK_SIZE];
     unsigned char salt[4];
 
     // dtk_i <- HKDF(tk, NULL, (UTF8("CT-DTK") || D_i), 16)
+    result = (tracingKey.length() == TK_SIZE) ? 1 : 0;
 
     if (result > 0) {
         // Produce Info sequence UTF8("CT-DTK") || D_i)
@@ -78,30 +79,27 @@ bool Contrac::generateDailyTracingKey(quint32 day_number)
         memcpy(encode, DTK_INFO_PREFIX, sizeof(DTK_INFO_PREFIX));
         ((uint32_t *)(encode + sizeof(DTK_INFO_PREFIX)))[0] = day_number;
 
-        tk = (unsigned char *)m_tk.data();
+        tk = (unsigned char *)tracingKey.data();
 
         out_length = DTK_SIZE;
-        result = HKDF(data, out_length, EVP_sha256(), tk, m_tk.size(), salt, 0, encode, sizeof(encode));
+        result = HKDF(data, out_length, EVP_sha256(), tk, tracingKey.size(), salt, 0, encode, sizeof(encode));
     }
 
     if ((result > 0) && (out_length == DTK_SIZE)) {
-        m_dtk.clear();
-        m_dtk.append((char *)data, DTK_SIZE);
-        m_day_number = day_number;
-        result = 1;
-        emit dtkChanged();
+        dtk.clear();
+        dtk.append((char *)data, DTK_SIZE);
     }
-
-    if (result <= 0) {
+    else {
         qDebug() << "Error generating daily key: " << ERR_get_error();
     }
 
-    return (result > 0);
+    return dtk;
 }
 
-bool Contrac::generateRandomProximityIdentifier(quint8 time_interval_number)
+QByteArray Contrac::randomProximityIdentifier(QByteArray dailyTracingKey, quint8 time_interval_number)
 {
     int result = 1;
+    QByteArray rpi;
     unsigned char encode[sizeof(RPI_INFO_PREFIX) + sizeof(time_interval_number)];
     unsigned char output[EVP_MAX_MD_SIZE];
     unsigned int out_length = 0;
@@ -111,6 +109,7 @@ bool Contrac::generateRandomProximityIdentifier(quint8 time_interval_number)
     unsigned char data[RPI_SIZE];
 
     // RPI_{i, j} <- Truncate(HMAC(dkt_i, (UTF8("CT-RPI") || TIN_j)), 16)
+    result = (dailyTracingKey.length() == DTK_SIZE) ? 1 : 0;
 
     if (result > 0) {
         // Produce Info sequence UTF8("CT-DTK") || D_i)
@@ -120,7 +119,7 @@ bool Contrac::generateRandomProximityIdentifier(quint8 time_interval_number)
         ((uint8_t *)(encode + sizeof(RPI_INFO_PREFIX)))[0] = time_interval_number;
         out_length = sizeof(output);
 
-        daily_key = (unsigned char *)m_dtk.data();
+        daily_key = (unsigned char *)dailyTracingKey.data();
         HMAC(EVP_sha256(), daily_key, RPI_SIZE, encode, sizeof(encode), output, &out_length);
 
         //_Static_assert ((EVP_MAX_MD_SIZE >= 16), "HMAC buffer size too small");
@@ -138,17 +137,48 @@ bool Contrac::generateRandomProximityIdentifier(quint8 time_interval_number)
 
     if (result > 0) {
         //data->time_interval_number = time_interval_number;
-        m_rpi.clear();
-        m_rpi.append((char *)data, RPI_SIZE);
-        m_time_interval_number = time_interval_number;
-        emit rpiChanged();
+        rpi.clear();
+        rpi.append((char *)data, RPI_SIZE);
     }
-
-    if (result <= 0) {
+    else {
         qDebug() << "Error generating rolling proximity id: " << ERR_get_error();
     }
 
-    return (result > 0);
+    return rpi;
+}
+
+bool Contrac::generateDailyTracingKey(quint32 day_number)
+{
+    QByteArray dtk;
+    bool result = false;
+
+    dtk = dailyTracingKey(m_tk, day_number);
+
+    if (dtk.size() == DTK_SIZE) {
+        m_dtk = dtk;
+        m_day_number = day_number;
+        result = true;
+        emit dtkChanged();
+    }
+
+    return result;
+}
+
+bool Contrac::generateRandomProximityIdentifier(quint8 time_interval_number)
+{
+    QByteArray rpi;
+    bool result = false;
+
+    rpi = randomProximityIdentifier(m_dtk, time_interval_number);
+
+    if (rpi.size() == RPI_SIZE) {
+        m_rpi = rpi;
+        m_time_interval_number = time_interval_number;
+        result = true;
+        emit rpiChanged();
+    }
+
+    return result;
 }
 
 

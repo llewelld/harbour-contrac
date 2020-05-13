@@ -4,171 +4,87 @@
 #include <QDebug>
 
 #include "contrac.h"
-#include "bloomfilter.h"
+#include "daystorage.h"
+#include "rpidataitem.h"
 
 #include "contactstorage.h"
+
+// Amount of data to store
+#define DAYS_TO_STORE (14)
 
 // Optimised for 2048 entries
 #define BLOOM_FILTER_SIZE (32768)
 #define BLOOM_FILTER_HASHES (11)
 
-// Amount of data to store
-#define DAYS_TO_STORE (14)
-
 ContactStorage::ContactStorage(Contrac *parent)
     : m_contrac(parent)
-    , m_filterToday(nullptr)
-    , m_filterOther(nullptr)
+    , m_today(nullptr)
+    , m_other(nullptr)
 {
-    bool result;
-    QString leafname;
-    QDir dir;
+    quint32 day;
 
-    QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
-    dir.mkpath(folder);
-    qDebug() << "Storage: " << folder;
-
-    quint32 dayNumber = m_contrac->dayNumber();
-    leafname = QStringLiteral("%1.dat");
-    leafname = leafname.arg(dayNumber, 8, 16, QLatin1Char('0'));
-    m_today.setFileName(folder + "/" + leafname);
-    qDebug() << "File: " << m_today.fileName();
-    result = m_today.open(QIODevice::ReadWrite);
-    if (result) {
-        m_today.seek(m_today.size());
-    }
-    else {
-        qDebug() << "Error opening file to write: " << m_today.fileName();
-    }
-
-    // Read in the bloom filter
-    m_filterToday = new BloomFilter(dayNumber);
-    m_filterToday->load(dayNumber);
-    if (!result) {
-        // Empty Bloomfilter
-        m_filterToday->clear(BLOOM_FILTER_SIZE, BLOOM_FILTER_HASHES);
-        qDebug() << "Could not open Bloom Filter file for : " << dayNumber;
-    }
-
-    m_filterOther = new BloomFilter();
+    day = m_contrac->dayNumber();
+    m_today = new DayStorage(day, this);
+    connect(m_contrac, &Contrac::timeChanged, this, &ContactStorage::onTimeChanged);
 }
 
 ContactStorage::~ContactStorage()
 {
-    m_today.close();
-
-    // Write out the bloom filter
-    m_filterToday->save();
-
-    delete m_filterOther;
-    delete (m_filterOther);
 }
 
-void ContactStorage::addContact(const QByteArray &rpi, qint16 rssi)
+void ContactStorage::onTimeChanged()
 {
-    quint8 interval;
-    QByteArray data(rpi);
+    quint32 day;
 
-    interval = m_contrac->timeIntervalNumber();
-
-    data += QByteArray((char const *)&interval, sizeof(interval));
-    data += QByteArray((char const *)&rssi, sizeof(rssi));
-
-    m_today.write(data);
-    m_filterToday->add(rpi);
-}
-
-void ContactStorage::dumpData()
-{
-    bool result;
-    m_today.seek(0);
-    QByteArray read = m_today.read(16 + 1 + 2);
-    while (!read.isEmpty()) {
-        RpiDateItem rpi;
-        result = rpi.deserialise(read);
-        if (result) {
-            qDebug() << rpi.m_rpi.toHex() << ", " << rpi.m_interval << ", " << rpi.m_rssi;
-        }
-        read = m_today.read(16 + 1 + 2);
+    day = m_contrac->dayNumber();
+    if (day != m_today->dayNumber()) {
+        delete m_today;
+        m_today = new DayStorage(day, this);
     }
+}
+
+void ContactStorage::addContact(quint8 interval, const QByteArray &rpi, qint16 rssi)
+{
+    m_today->addContact(interval, rpi, rssi);
+}
+
+void ContactStorage::dumpData(quint32 day)
+{
+    DayStorage * storage = getStorage(day);
+    storage->dumpData();
 }
 
 void ContactStorage::rotateData()
 {
 }
 
-QByteArrayList ContactStorage::findMatches(quint32 day, QByteArrayList rpis)
+QByteArrayList ContactStorage::findDtkMatches(quint32 day, QByteArrayList dtks)
 {
-    BloomFilter * filter;
-    QFile captures;
-    QString leafname;
-    bool result;
-
-    if (day == m_contrac->dayNumber()) {
-        filter = m_filterToday;
-    }
-    else {
-        if (m_filterOther->day() != day) {
-            m_filterOther->load(day);
-        }
-        filter = m_filterOther;
-    }
-
-
-    QByteArrayList probables;
-    for (QByteArray rpi : rpis) {
-        if (filter->test(rpi)) {
-            probables.append(rpis);
-        }
-    }
-
-    QByteArrayList actuals;
-
-    QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
-
-    leafname = QStringLiteral("%1.dat");
-    leafname = leafname.arg(day, 8, 16, QLatin1Char('0'));
-    captures.setFileName(folder + "/" + leafname);
-    result = captures.open(QIODevice::ReadOnly);
-    if (result) {
-        QByteArray capture = captures.read(16 + 1 + 2);
-        while (!capture.isEmpty() && !probables.isEmpty()) {
-            RpiDateItem rpi;
-            result = rpi.deserialise(capture);
-            if (result) {
-                int pos = 0;
-                while (pos < probables.size()) {
-                    if (rpi.m_rpi == probables.at(pos)) {
-                        actuals.append(probables.at(pos));
-                        probables.removeAt(pos);
-                    }
-                    else {
-                        ++pos;
-                    }
-                }
-            }
-            capture = captures.read(16 + 1 + 2);
-        }
-
-    }
-    else {
-        qDebug() << "Error opening data file: " << captures.fileName();
-    }
-
-    return actuals;
+    DayStorage * storage = getStorage(day);
+    return storage->findDtkMatches(dtks);
 }
 
-bool ContactStorage::probableMatch(const QByteArray &rpi, quint32 day)
+QByteArrayList ContactStorage::findRpiMatches(quint32 day, QByteArrayList rpis)
 {
-    if (day == 0) {
-        day = m_contrac->dayNumber();
-    }
+    DayStorage * storage = getStorage(day);
+    return storage->findRpiMatches(rpis);
+}
 
-    if (m_filterOther->day() != day) {
-        m_filterOther->load(day);
+DayStorage * ContactStorage::getStorage(quint32 day) {
+    DayStorage * storage;
+    if (day == m_today->dayNumber()) {
+        storage = m_today;
     }
-
-    return m_filterOther->test(rpi);
+    else {
+        if (!m_other || (day != m_other->dayNumber())) {
+                if (m_other) {
+                delete m_other;
+            }
+            m_other = new DayStorage(day, this);
+        }
+        storage = m_other;
+    }
+    return storage;
 }
 
 void ContactStorage::harvestOldData()
@@ -195,28 +111,20 @@ void ContactStorage::harvestOldData()
     }
 }
 
-QByteArray ContactStorage::RpiDateItem::serialise() const
+void ContactStorage::clearAllDataFiles()
 {
-    QByteArray data(m_rpi);
+    QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
+    QDir dataDir;
+    QFileInfoList files;
 
-    data += QByteArray((char const *)&m_interval, sizeof(m_interval));
-    data += QByteArray((char const *)&m_rssi, sizeof(m_rssi));
-
-    return data;
-}
-
-bool ContactStorage::RpiDateItem::deserialise(QByteArray const &data)
-{
-    bool result = false;
-
-    if (data.size() == 19) {
-        m_interval = *(quint8*)(data.mid(16, 1).data());
-        m_rssi = *(qint16*)(data.mid(16 + 1, 2).data());
-        m_rpi = data.mid(0, 16);
-        result = true;
+    dataDir.setPath(folder);
+    dataDir.setFilter(QDir::Files);
+    files = dataDir.entryInfoList();
+    for (QFileInfo file : files) {
+        QString extension = file.completeSuffix();
+        if (extension == "dat" || extension == "bloom") {
+            dataDir.remove(file.fileName());
+        }
     }
-
-    return result;
 }
-
 

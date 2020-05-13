@@ -3,11 +3,11 @@
 
 #include <QObject>
 
-class Test_Storage : public QObject
+class Test_Tracing : public QObject
 {
     Q_OBJECT
 public:
-    explicit Test_Storage(QObject *parent = nullptr);
+    explicit Test_Tracing(QObject *parent = nullptr);
 
 private slots:
     void cleanup();

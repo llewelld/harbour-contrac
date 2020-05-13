@@ -30,8 +30,10 @@ SOURCES += src/harbour-contrac.cpp \
     src/contactstorage.cpp \
     src/contrac.cpp \
     src/controller.cpp \
+    src/daystorage.cpp \
     src/fnv.cpp \
-    src/hkdfsha256.cpp
+    src/hkdfsha256.cpp \
+    src/rpidataitem.cpp
 
 DISTFILES += qml/harbour-contrac.qml \
     qml/cover/CoverPage.qml \
@@ -74,8 +76,10 @@ HEADERS += \
     src/contactstorage.h \
     src/contrac.h \
     src/controller.h \
+    src/daystorage.h \
     src/fnv.h \
-    src/hkdfsha256.h
+    src/hkdfsha256.h \
+    src/rpidataitem.h
 
 OTHER_FILES += \
     README.md \

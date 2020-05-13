@@ -5,45 +5,36 @@
 #include <QFile>
 
 class Contrac;
-class BloomFilter;
+class DayStorage;
 
 class ContactStorage : public QObject
 {
     Q_OBJECT
-
-    class RpiDateItem
-    {
-    public:
-        quint8 m_interval = 0;
-        qint16 m_rssi = 0;
-        QByteArray m_rpi;
-
-        QByteArray serialise() const;
-        bool deserialise(QByteArray const &data);
-    };
 
 public:
     explicit ContactStorage(Contrac *parent = nullptr);
     ~ContactStorage();
 
     void rotateData();
-    QByteArrayList findMatches(quint32 day, QByteArrayList rpis);
+    static void clearAllDataFiles();
+    void harvestOldData();
+    QByteArrayList findRpiMatches(quint32 day, QByteArrayList rpis);
+    QByteArrayList findDtkMatches(quint32 day, QByteArrayList dtks);
 
 signals:
 
 public slots:
-    Q_INVOKABLE void addContact(const QByteArray &rpi, qint16 rssi);
-    void dumpData();
+    Q_INVOKABLE void addContact(quint8 interval, const QByteArray &rpi, qint16 rssi);
+    void dumpData(quint32 day = 0);
+    void onTimeChanged();
 
 private:
-    bool probableMatch(const QByteArray &rpi, quint32 day = 0);
-    void harvestOldData();
+    DayStorage * getStorage(quint32 day);
 
 private:
-    QFile m_today;
     Contrac *m_contrac;
-    BloomFilter *m_filterToday;
-    BloomFilter *m_filterOther;
+    DayStorage *m_today;
+    DayStorage *m_other;
 };
 
 #endif // CONTACTSTORAGE_H
