@@ -6,12 +6,14 @@
  *
  */
 
+#include <QDebug>
+#include <QStandardPaths>
+#include <QFile>
+
 // Needed for TK
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 #include <openssl/err.h>
-
-#include "hkdfsha256.h"
 
 // Needed for DTK
 //#include <openssl/kdf.h>
@@ -20,12 +22,12 @@
 // Needed for RPI
 #include <openssl/hmac.h>
 
-#include <QDebug>
+#include "hkdfsha256.h"
+
+#include "contrac.h"
 
 #define DTK_INFO_PREFIX "CT-DTK"
 #define RPI_INFO_PREFIX "CT-RPI"
-
-#include "contrac.h"
 
 Contrac::Contrac(QObject *parent) : QObject(parent)
   , m_day_number(0)
@@ -292,4 +294,48 @@ quint32 Contrac::dayNumber() const
 quint8 Contrac::timeIntervalNumber () const
 {
     return m_time_interval_number;
+}
+
+bool Contrac::loadTracingKey()
+{
+    bool result;
+    QFile tk;
+    QString leafname;
+
+    QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+    leafname = QStringLiteral("tk.dat");
+
+    tk.setFileName(folder + "/" + leafname);
+    result = tk.open(QIODevice::ReadOnly);
+    if (result) {
+        result = false;
+        QByteArray data = tk.readAll();
+
+        if (data.size() == TK_SIZE) {
+            m_tk = data;
+            result = true;
+        }
+        tk.close();
+    }
+
+    return result;
+}
+
+bool Contrac::saveTracingKey() const
+{
+    bool result;
+    QFile tk;
+    QString leafname;
+
+    QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+    leafname = QStringLiteral("tk.dat");
+
+    tk.setFileName(folder + "/" + leafname);
+    result = tk.open(QIODevice::WriteOnly);
+    if (result) {
+        tk.write((const char *)m_tk.data(), m_tk.size());
+        tk.close();
+    }
+
+    return result;
 }

@@ -114,12 +114,10 @@ void DayStorage::load()
 
     QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
     dir.mkpath(folder);
-    qDebug() << "Storage: " << folder;
 
     leafname = QStringLiteral("%1.dat");
     leafname = leafname.arg(m_day, 8, 16, QLatin1Char('0'));
     m_contacts.setFileName(folder + "/" + leafname);
-    qDebug() << "File: " << m_contacts.fileName();
     result = m_contacts.open(QIODevice::ReadWrite);
     if (result) {
         m_contacts.seek(m_contacts.size());
@@ -128,11 +126,12 @@ void DayStorage::load()
         qDebug() << "Error opening file to write: " << m_contacts.fileName();
     }
 
-    // Read in the bloom filter
+    // Save out the old bloom filter
     if (m_filter) {
         m_filter->save();
         delete m_filter;
     }
+    // Read in the new bloom filter
     m_filter_changed = false;
     m_filter = new BloomFilter(m_day);
     result = m_filter->load(m_day);
@@ -140,7 +139,6 @@ void DayStorage::load()
         // Empty Bloomfilter
         m_filter->clear(BLOOM_FILTER_SIZE, BLOOM_FILTER_HASHES);
         m_filter->setDay(m_day);
-        qDebug() << "Could not open Bloom Filter file for : " << m_day;
     }
 }
 

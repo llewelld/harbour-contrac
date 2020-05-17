@@ -29,11 +29,17 @@ SOURCES += src/harbour-contrac.cpp \
     src/contactmodel.cpp \
     src/contactstorage.cpp \
     src/contrac.cpp \
+    src/contrac.pb.cc \
     src/controller.cpp \
     src/daystorage.cpp \
+    src/exposureconfiguration.cpp \
+    src/exposureinformation.cpp \
+    src/exposurenotification.cpp \
+    src/exposuresummary.cpp \
     src/fnv.cpp \
     src/hkdfsha256.cpp \
-    src/rpidataitem.cpp
+    src/rpidataitem.cpp \
+    src/temporaryexposurekey.cpp
 
 DISTFILES += qml/harbour-contrac.qml \
     qml/cover/CoverPage.qml \
@@ -44,6 +50,7 @@ DISTFILES += qml/harbour-contrac.qml \
     rpm/harbour-contrac.changes.run.in \
     rpm/harbour-contrac.spec \
     rpm/harbour-contrac.yaml \
+    src/contrac.proto \
     translations/*.ts \
     harbour-contrac.desktop
 
@@ -63,7 +70,8 @@ TRANSLATIONS += translations/harbour-contrac.ts
 TRANSLATIONS += translations/harbour-contrac-en.ts
 
 PKGCONFIG += \
-    openssl
+    openssl \
+    protobuf-lite
 
 QT += dbus
 
@@ -75,11 +83,17 @@ HEADERS += \
     src/contactmodel.h \
     src/contactstorage.h \
     src/contrac.h \
+    src/contrac.pb.h \
     src/controller.h \
     src/daystorage.h \
+    src/exposureconfiguration.h \
+    src/exposureinformation.h \
+    src/exposurenotification.h \
+    src/exposuresummary.h \
     src/fnv.h \
     src/hkdfsha256.h \
-    src/rpidataitem.h
+    src/rpidataitem.h \
+    src/temporaryexposurekey.h
 
 OTHER_FILES += \
     README.md \

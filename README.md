@@ -13,8 +13,8 @@ More info: https://www.flypig.co.uk/contrac
 3.  BLE scanning - DONE
 4.  Contact storage - DONE
 5.  Contact matching - DONE
-6.  Unit tests - WORKING
-7.  Risk calculation
+6.  Unit tests - DONE
+7.  Risk calculation - WORKING
 8.  Run as a service
 9.  Notification download
 10. DTK upload

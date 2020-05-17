@@ -25,6 +25,8 @@ PkgConfigBR:
   - Qt5Quick
   - openssl
   - Qt5Test
+  - protobuf-lite
+  - zlib
 
 # Build dependencies without a pkgconfig setup can be listed here
 # PkgBR:
@@ -34,6 +36,8 @@ PkgConfigBR:
 Requires:
   - sailfishsilica-qt5 >= 0.10.9 
   - openssl
+  - protobuf-lite
+  - zlib
 
 # All installed files
 Files:

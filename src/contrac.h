@@ -45,6 +45,10 @@ public:
     static QByteArray dailyTracingKey(QByteArray tracingKey, quint32 day_number);
     static QByteArray randomProximityIdentifier(QByteArray dailyTracingKey, quint8 time_interval_number);
 
+    bool generateTracingKey();
+    bool loadTracingKey();
+    bool saveTracingKey() const;
+
 signals:
     void tkChanged();
     void dtkChanged();
@@ -55,7 +59,6 @@ public slots:
     void updateKeys();
 
 private:
-    bool generateTracingKey();
     bool generateDailyTracingKey(quint32 day_number);
     bool generateRandomProximityIdentifier(quint8 time_interval_number);
 
