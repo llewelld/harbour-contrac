@@ -14,7 +14,9 @@ More info: https://www.flypig.co.uk/contrac
 4.  Contact storage - DONE
 5.  Contact matching - DONE
 6.  Unit tests - DONE
-7.  Risk calculation - WORKING
-8.  Run as a service
-9.  Notification download
-10. DTK upload
+7.  Risk calculation - DONE
+8.  Align with GApple API - DONE
+9.  Run as a service - WORKING
+10. Notification download
+11. DTK upload
+
