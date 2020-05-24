@@ -25,19 +25,17 @@ PkgConfigBR:
   - Qt5Quick
   - openssl
   - Qt5Test
-  - protobuf-lite
-  - zlib
+  - protobuf
 
 # Build dependencies without a pkgconfig setup can be listed here
-# PkgBR:
-#   - package-needed-to-build
+PkgBR:
+  - quazip-devel
 
 # Runtime dependencies which are not automatically detected
 Requires:
   - sailfishsilica-qt5 >= 0.10.9 
   - openssl
-  - protobuf-lite
-  - zlib
+  - protobuf
 
 # All installed files
 Files:
@@ -61,3 +59,4 @@ SubPackages:
       Requires: qt5-qtdeclarative-import-qttest
       Files:
       - '%{_libdir}/%{name}-tests/%{name}-tests'
+      - '%{_datadir}/%{name}-tests/sample_diagnosis_key_file.zip'

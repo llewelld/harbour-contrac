@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QFile>
 
+#include "contactmatch.h"
+#include "diagnosiskey.h"
+
 class BloomFilter;
 
 class DayStorage : public QObject
@@ -13,10 +16,10 @@ public:
     explicit DayStorage(quint32 day, QObject * parent);
     ~DayStorage();
 
-    QByteArrayList findRpiMatches(QByteArrayList rpis);
-    QByteArrayList findDtkMatches(QByteArrayList dtks);
+    QList<RpiDataItem> findRpiMatches(QList<QByteArray> const &rpis);
+    QList<ContactMatch> findDtkMatches(QList<DiagnosisKey> const &dtks);
 
-    void addContact(quint8 interval, const QByteArray &rpi, qint16 rssi);
+    void addContact(ctinterval interval, const QByteArray &rpi, qint16 rssi);
     void load();
     void save();
     quint32 dayNumber() const;

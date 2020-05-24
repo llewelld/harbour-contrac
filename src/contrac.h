@@ -12,6 +12,8 @@
 #include <QObject>
 #include <QDateTime>
 
+#include "contactinterval.h"
+
 #define TK_SIZE (32u)
 #define DTK_SIZE (16u)
 #define RPI_SIZE (16u)

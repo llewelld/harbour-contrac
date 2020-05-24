@@ -8,13 +8,16 @@
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+#include <google/protobuf/descriptor.h>
+#include <google/protobuf/generated_message_reflection.h>
+#include <google/protobuf/reflection_ops.h>
+#include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 extern PROTOBUF_INTERNAL_EXPORT_contrac_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SignatureInfo_contrac_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_contrac_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_TEKSignature_contrac_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_contrac_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TemporaryExposureKey_contrac_2eproto;
-namespace Diagnosis {
+namespace diagnosis {
 class TemporaryExposureKeyExportDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TemporaryExposureKeyExport> _instance;
@@ -35,16 +38,16 @@ class TEKSignatureDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TEKSignature> _instance;
 } _TEKSignature_default_instance_;
-}  // namespace Diagnosis
+}  // namespace diagnosis
 static void InitDefaultsscc_info_SignatureInfo_contrac_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::Diagnosis::_SignatureInfo_default_instance_;
-    new (ptr) ::Diagnosis::SignatureInfo();
+    void* ptr = &::diagnosis::_SignatureInfo_default_instance_;
+    new (ptr) ::diagnosis::SignatureInfo();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::Diagnosis::SignatureInfo::InitAsDefaultInstance();
+  ::diagnosis::SignatureInfo::InitAsDefaultInstance();
 }
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SignatureInfo_contrac_2eproto =
@@ -54,11 +57,11 @@ static void InitDefaultsscc_info_TEKSignature_contrac_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::Diagnosis::_TEKSignature_default_instance_;
-    new (ptr) ::Diagnosis::TEKSignature();
+    void* ptr = &::diagnosis::_TEKSignature_default_instance_;
+    new (ptr) ::diagnosis::TEKSignature();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::Diagnosis::TEKSignature::InitAsDefaultInstance();
+  ::diagnosis::TEKSignature::InitAsDefaultInstance();
 }
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_TEKSignature_contrac_2eproto =
@@ -69,11 +72,11 @@ static void InitDefaultsscc_info_TEKSignatureList_contrac_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::Diagnosis::_TEKSignatureList_default_instance_;
-    new (ptr) ::Diagnosis::TEKSignatureList();
+    void* ptr = &::diagnosis::_TEKSignatureList_default_instance_;
+    new (ptr) ::diagnosis::TEKSignatureList();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::Diagnosis::TEKSignatureList::InitAsDefaultInstance();
+  ::diagnosis::TEKSignatureList::InitAsDefaultInstance();
 }
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_TEKSignatureList_contrac_2eproto =
@@ -84,11 +87,11 @@ static void InitDefaultsscc_info_TemporaryExposureKey_contrac_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::Diagnosis::_TemporaryExposureKey_default_instance_;
-    new (ptr) ::Diagnosis::TemporaryExposureKey();
+    void* ptr = &::diagnosis::_TemporaryExposureKey_default_instance_;
+    new (ptr) ::diagnosis::TemporaryExposureKey();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::Diagnosis::TemporaryExposureKey::InitAsDefaultInstance();
+  ::diagnosis::TemporaryExposureKey::InitAsDefaultInstance();
 }
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TemporaryExposureKey_contrac_2eproto =
@@ -98,11 +101,11 @@ static void InitDefaultsscc_info_TemporaryExposureKeyExport_contrac_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::Diagnosis::_TemporaryExposureKeyExport_default_instance_;
-    new (ptr) ::Diagnosis::TemporaryExposureKeyExport();
+    void* ptr = &::diagnosis::_TemporaryExposureKeyExport_default_instance_;
+    new (ptr) ::diagnosis::TemporaryExposureKeyExport();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::Diagnosis::TemporaryExposureKeyExport::InitAsDefaultInstance();
+  ::diagnosis::TemporaryExposureKeyExport::InitAsDefaultInstance();
 }
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_TemporaryExposureKeyExport_contrac_2eproto =
@@ -110,7 +113,137 @@ static void InitDefaultsscc_info_TemporaryExposureKeyExport_contrac_2eproto() {
       &scc_info_SignatureInfo_contrac_2eproto.base,
       &scc_info_TemporaryExposureKey_contrac_2eproto.base,}};
 
-namespace Diagnosis {
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_contrac_2eproto[5];
+static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_contrac_2eproto = nullptr;
+static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_contrac_2eproto = nullptr;
+
+const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_contrac_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKeyExport, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKeyExport, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKeyExport, start_timestamp_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKeyExport, end_timestamp_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKeyExport, region_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKeyExport, batch_num_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKeyExport, batch_size_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKeyExport, signature_infos_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKeyExport, keys_),
+  1,
+  2,
+  0,
+  3,
+  4,
+  ~0u,
+  ~0u,
+  PROTOBUF_FIELD_OFFSET(::diagnosis::SignatureInfo, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::SignatureInfo, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::diagnosis::SignatureInfo, app_bundle_id_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::SignatureInfo, android_package_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::SignatureInfo, verification_key_version_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::SignatureInfo, verification_key_id_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::SignatureInfo, signature_algorithm_),
+  0,
+  1,
+  2,
+  3,
+  4,
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKey, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKey, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKey, key_data_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKey, transmission_risk_level_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKey, rolling_start_interval_number_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TemporaryExposureKey, rolling_period_),
+  0,
+  1,
+  2,
+  3,
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TEKSignatureList, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TEKSignatureList, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TEKSignatureList, signatures_),
+  ~0u,
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TEKSignature, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TEKSignature, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TEKSignature, signature_info_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TEKSignature, batch_num_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TEKSignature, batch_size_),
+  PROTOBUF_FIELD_OFFSET(::diagnosis::TEKSignature, signature_),
+  1,
+  2,
+  3,
+  0,
+};
+static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  { 0, 12, sizeof(::diagnosis::TemporaryExposureKeyExport)},
+  { 19, 29, sizeof(::diagnosis::SignatureInfo)},
+  { 34, 43, sizeof(::diagnosis::TemporaryExposureKey)},
+  { 47, 53, sizeof(::diagnosis::TEKSignatureList)},
+  { 54, 63, sizeof(::diagnosis::TEKSignature)},
+};
+
+static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::diagnosis::_TemporaryExposureKeyExport_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::diagnosis::_SignatureInfo_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::diagnosis::_TemporaryExposureKey_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::diagnosis::_TEKSignatureList_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::diagnosis::_TEKSignature_default_instance_),
+};
+
+const char descriptor_table_protodef_contrac_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
+  "\n\rcontrac.proto\022\tdiagnosis\"\345\001\n\032Temporary"
+  "ExposureKeyExport\022\027\n\017start_timestamp\030\001 \002"
+  "(\006\022\025\n\rend_timestamp\030\002 \002(\006\022\016\n\006region\030\003 \002("
+  "\t\022\021\n\tbatch_num\030\004 \002(\005\022\022\n\nbatch_size\030\005 \002(\005"
+  "\0221\n\017signature_infos\030\006 \003(\0132\030.diagnosis.Si"
+  "gnatureInfo\022-\n\004keys\030\007 \003(\0132\037.diagnosis.Te"
+  "mporaryExposureKey\"\233\001\n\rSignatureInfo\022\025\n\r"
+  "app_bundle_id\030\001 \001(\t\022\027\n\017android_package\030\002"
+  " \001(\t\022 \n\030verification_key_version\030\003 \001(\t\022\033"
+  "\n\023verification_key_id\030\004 \001(\t\022\033\n\023signature"
+  "_algorithm\030\005 \001(\t\"\215\001\n\024TemporaryExposureKe"
+  "y\022\020\n\010key_data\030\001 \001(\014\022\037\n\027transmission_risk"
+  "_level\030\002 \001(\005\022%\n\035rolling_start_interval_n"
+  "umber\030\003 \001(\005\022\033\n\016rolling_period\030\004 \001(\005:\003144"
+  "\"\?\n\020TEKSignatureList\022+\n\nsignatures\030\001 \003(\013"
+  "2\027.diagnosis.TEKSignature\"z\n\014TEKSignatur"
+  "e\0220\n\016signature_info\030\001 \001(\0132\030.diagnosis.Si"
+  "gnatureInfo\022\021\n\tbatch_num\030\002 \001(\005\022\022\n\nbatch_"
+  "size\030\003 \001(\005\022\021\n\tsignature\030\004 \001(\014"
+  ;
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_contrac_2eproto_deps[1] = {
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_contrac_2eproto_sccs[5] = {
+  &scc_info_SignatureInfo_contrac_2eproto.base,
+  &scc_info_TEKSignature_contrac_2eproto.base,
+  &scc_info_TEKSignatureList_contrac_2eproto.base,
+  &scc_info_TemporaryExposureKey_contrac_2eproto.base,
+  &scc_info_TemporaryExposureKeyExport_contrac_2eproto.base,
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_contrac_2eproto_once;
+static bool descriptor_table_contrac_2eproto_initialized = false;
+const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_contrac_2eproto = {
+  &descriptor_table_contrac_2eproto_initialized, descriptor_table_protodef_contrac_2eproto, "contrac.proto", 749,
+  &descriptor_table_contrac_2eproto_once, descriptor_table_contrac_2eproto_sccs, descriptor_table_contrac_2eproto_deps, 5, 0,
+  schemas, file_default_instances, TableStruct_contrac_2eproto::offsets,
+  file_level_metadata_contrac_2eproto, 5, file_level_enum_descriptors_contrac_2eproto, file_level_service_descriptors_contrac_2eproto,
+};
+
+// Force running AddDescriptors() at dynamic initialization time.
+static bool dynamic_init_dummy_contrac_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_contrac_2eproto), true);
+namespace diagnosis {
 
 // ===================================================================
 
@@ -137,12 +270,12 @@ class TemporaryExposureKeyExport::_Internal {
 };
 
 TemporaryExposureKeyExport::TemporaryExposureKeyExport()
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Diagnosis.TemporaryExposureKeyExport)
+  // @@protoc_insertion_point(constructor:diagnosis.TemporaryExposureKeyExport)
 }
 TemporaryExposureKeyExport::TemporaryExposureKeyExport(const TemporaryExposureKeyExport& from)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_),
       signature_infos_(from.signature_infos_),
@@ -155,7 +288,7 @@ TemporaryExposureKeyExport::TemporaryExposureKeyExport(const TemporaryExposureKe
   ::memcpy(&start_timestamp_, &from.start_timestamp_,
     static_cast<size_t>(reinterpret_cast<char*>(&batch_size_) -
     reinterpret_cast<char*>(&start_timestamp_)) + sizeof(batch_size_));
-  // @@protoc_insertion_point(copy_constructor:Diagnosis.TemporaryExposureKeyExport)
+  // @@protoc_insertion_point(copy_constructor:diagnosis.TemporaryExposureKeyExport)
 }
 
 void TemporaryExposureKeyExport::SharedCtor() {
@@ -167,7 +300,7 @@ void TemporaryExposureKeyExport::SharedCtor() {
 }
 
 TemporaryExposureKeyExport::~TemporaryExposureKeyExport() {
-  // @@protoc_insertion_point(destructor:Diagnosis.TemporaryExposureKeyExport)
+  // @@protoc_insertion_point(destructor:diagnosis.TemporaryExposureKeyExport)
   SharedDtor();
 }
 
@@ -185,7 +318,7 @@ const TemporaryExposureKeyExport& TemporaryExposureKeyExport::default_instance()
 
 
 void TemporaryExposureKeyExport::Clear() {
-// @@protoc_insertion_point(message_clear_start:Diagnosis.TemporaryExposureKeyExport)
+// @@protoc_insertion_point(message_clear_start:diagnosis.TemporaryExposureKeyExport)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -213,7 +346,7 @@ const char* TemporaryExposureKeyExport::_InternalParse(const char* ptr, ::PROTOB
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // optional fixed64 start_timestamp = 1;
+      // required fixed64 start_timestamp = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
           _Internal::set_has_start_timestamp(&has_bits);
@@ -221,7 +354,7 @@ const char* TemporaryExposureKeyExport::_InternalParse(const char* ptr, ::PROTOB
           ptr += sizeof(::PROTOBUF_NAMESPACE_ID::uint64);
         } else goto handle_unusual;
         continue;
-      // optional fixed64 end_timestamp = 2;
+      // required fixed64 end_timestamp = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
           _Internal::set_has_end_timestamp(&has_bits);
@@ -229,14 +362,14 @@ const char* TemporaryExposureKeyExport::_InternalParse(const char* ptr, ::PROTOB
           ptr += sizeof(::PROTOBUF_NAMESPACE_ID::uint64);
         } else goto handle_unusual;
         continue;
-      // optional string region = 3;
+      // required string region = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(_internal_mutable_region(), ptr, ctx);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8Verify(_internal_mutable_region(), ptr, ctx, "diagnosis.TemporaryExposureKeyExport.region");
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // optional int32 batch_num = 4;
+      // required int32 batch_num = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
           _Internal::set_has_batch_num(&has_bits);
@@ -244,7 +377,7 @@ const char* TemporaryExposureKeyExport::_InternalParse(const char* ptr, ::PROTOB
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // optional int32 batch_size = 5;
+      // required int32 batch_size = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
           _Internal::set_has_batch_size(&has_bits);
@@ -252,7 +385,7 @@ const char* TemporaryExposureKeyExport::_InternalParse(const char* ptr, ::PROTOB
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated .Diagnosis.SignatureInfo signature_infos = 6;
+      // repeated .diagnosis.SignatureInfo signature_infos = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
           ptr -= 1;
@@ -264,7 +397,7 @@ const char* TemporaryExposureKeyExport::_InternalParse(const char* ptr, ::PROTOB
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<50>(ptr));
         } else goto handle_unusual;
         continue;
-      // repeated .Diagnosis.TemporaryExposureKey keys = 7;
+      // repeated .diagnosis.TemporaryExposureKey keys = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
           ptr -= 1;
@@ -299,42 +432,46 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* TemporaryExposureKeyExport::InternalSerializeWithCachedSizesToArray(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Diagnosis.TemporaryExposureKeyExport)
+  // @@protoc_insertion_point(serialize_to_array_start:diagnosis.TemporaryExposureKeyExport)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  // optional fixed64 start_timestamp = 1;
+  // required fixed64 start_timestamp = 1;
   if (cached_has_bits & 0x00000002u) {
     stream->EnsureSpace(&target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFixed64ToArray(1, this->_internal_start_timestamp(), target);
   }
 
-  // optional fixed64 end_timestamp = 2;
+  // required fixed64 end_timestamp = 2;
   if (cached_has_bits & 0x00000004u) {
     stream->EnsureSpace(&target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFixed64ToArray(2, this->_internal_end_timestamp(), target);
   }
 
-  // optional string region = 3;
+  // required string region = 3;
   if (cached_has_bits & 0x00000001u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_region().data(), static_cast<int>(this->_internal_region().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "diagnosis.TemporaryExposureKeyExport.region");
     target = stream->WriteStringMaybeAliased(
         3, this->_internal_region(), target);
   }
 
-  // optional int32 batch_num = 4;
+  // required int32 batch_num = 4;
   if (cached_has_bits & 0x00000008u) {
     stream->EnsureSpace(&target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_batch_num(), target);
   }
 
-  // optional int32 batch_size = 5;
+  // required int32 batch_size = 5;
   if (cached_has_bits & 0x00000010u) {
     stream->EnsureSpace(&target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_batch_size(), target);
   }
 
-  // repeated .Diagnosis.SignatureInfo signature_infos = 6;
+  // repeated .diagnosis.SignatureInfo signature_infos = 6;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_signature_infos_size()); i < n; i++) {
     stream->EnsureSpace(&target);
@@ -342,7 +479,7 @@ failure:
       InternalWriteMessageToArray(6, this->_internal_signature_infos(i), target, stream);
   }
 
-  // repeated .Diagnosis.TemporaryExposureKey keys = 7;
+  // repeated .diagnosis.TemporaryExposureKey keys = 7;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_keys_size()); i < n; i++) {
     stream->EnsureSpace(&target);
@@ -351,85 +488,123 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
-        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Diagnosis.TemporaryExposureKeyExport)
+  // @@protoc_insertion_point(serialize_to_array_end:diagnosis.TemporaryExposureKeyExport)
   return target;
 }
 
-size_t TemporaryExposureKeyExport::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Diagnosis.TemporaryExposureKeyExport)
+size_t TemporaryExposureKeyExport::RequiredFieldsByteSizeFallback() const {
+// @@protoc_insertion_point(required_fields_byte_size_fallback_start:diagnosis.TemporaryExposureKeyExport)
   size_t total_size = 0;
 
+  if (has_region()) {
+    // required string region = 3;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_region());
+  }
+
+  if (has_start_timestamp()) {
+    // required fixed64 start_timestamp = 1;
+    total_size += 1 + 8;
+  }
+
+  if (has_end_timestamp()) {
+    // required fixed64 end_timestamp = 2;
+    total_size += 1 + 8;
+  }
+
+  if (has_batch_num()) {
+    // required int32 batch_num = 4;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_batch_num());
+  }
+
+  if (has_batch_size()) {
+    // required int32 batch_size = 5;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_batch_size());
+  }
+
+  return total_size;
+}
+size_t TemporaryExposureKeyExport::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:diagnosis.TemporaryExposureKeyExport)
+  size_t total_size = 0;
+
+  if (((_has_bits_[0] & 0x0000001f) ^ 0x0000001f) == 0) {  // All required fields are present.
+    // required string region = 3;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_region());
+
+    // required fixed64 start_timestamp = 1;
+    total_size += 1 + 8;
+
+    // required fixed64 end_timestamp = 2;
+    total_size += 1 + 8;
+
+    // required int32 batch_num = 4;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_batch_num());
+
+    // required int32 batch_size = 5;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_batch_size());
+
+  } else {
+    total_size += RequiredFieldsByteSizeFallback();
+  }
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .Diagnosis.SignatureInfo signature_infos = 6;
+  // repeated .diagnosis.SignatureInfo signature_infos = 6;
   total_size += 1UL * this->_internal_signature_infos_size();
   for (const auto& msg : this->signature_infos_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .Diagnosis.TemporaryExposureKey keys = 7;
+  // repeated .diagnosis.TemporaryExposureKey keys = 7;
   total_size += 1UL * this->_internal_keys_size();
   for (const auto& msg : this->keys_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x0000001fu) {
-    // optional string region = 3;
-    if (cached_has_bits & 0x00000001u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-          this->_internal_region());
-    }
-
-    // optional fixed64 start_timestamp = 1;
-    if (cached_has_bits & 0x00000002u) {
-      total_size += 1 + 8;
-    }
-
-    // optional fixed64 end_timestamp = 2;
-    if (cached_has_bits & 0x00000004u) {
-      total_size += 1 + 8;
-    }
-
-    // optional int32 batch_num = 4;
-    if (cached_has_bits & 0x00000008u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_batch_num());
-    }
-
-    // optional int32 batch_size = 5;
-    if (cached_has_bits & 0x00000010u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_batch_size());
-    }
-
-  }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields().size();
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void TemporaryExposureKeyExport::CheckTypeAndMergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::MessageLite& from) {
-  MergeFrom(*::PROTOBUF_NAMESPACE_ID::internal::DownCast<const TemporaryExposureKeyExport*>(
-      &from));
+void TemporaryExposureKeyExport::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:diagnosis.TemporaryExposureKeyExport)
+  GOOGLE_DCHECK_NE(&from, this);
+  const TemporaryExposureKeyExport* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TemporaryExposureKeyExport>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:diagnosis.TemporaryExposureKeyExport)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:diagnosis.TemporaryExposureKeyExport)
+    MergeFrom(*source);
+  }
 }
 
 void TemporaryExposureKeyExport::MergeFrom(const TemporaryExposureKeyExport& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Diagnosis.TemporaryExposureKeyExport)
+// @@protoc_insertion_point(class_specific_merge_from_start:diagnosis.TemporaryExposureKeyExport)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -459,14 +634,22 @@ void TemporaryExposureKeyExport::MergeFrom(const TemporaryExposureKeyExport& fro
   }
 }
 
+void TemporaryExposureKeyExport::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:diagnosis.TemporaryExposureKeyExport)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
 void TemporaryExposureKeyExport::CopyFrom(const TemporaryExposureKeyExport& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Diagnosis.TemporaryExposureKeyExport)
+// @@protoc_insertion_point(class_specific_copy_from_start:diagnosis.TemporaryExposureKeyExport)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 bool TemporaryExposureKeyExport::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
   return true;
 }
 
@@ -484,8 +667,8 @@ void TemporaryExposureKeyExport::InternalSwap(TemporaryExposureKeyExport* other)
   swap(batch_size_, other->batch_size_);
 }
 
-std::string TemporaryExposureKeyExport::GetTypeName() const {
-  return "Diagnosis.TemporaryExposureKeyExport";
+::PROTOBUF_NAMESPACE_ID::Metadata TemporaryExposureKeyExport::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -514,12 +697,12 @@ class SignatureInfo::_Internal {
 };
 
 SignatureInfo::SignatureInfo()
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Diagnosis.SignatureInfo)
+  // @@protoc_insertion_point(constructor:diagnosis.SignatureInfo)
 }
 SignatureInfo::SignatureInfo(const SignatureInfo& from)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -543,7 +726,7 @@ SignatureInfo::SignatureInfo(const SignatureInfo& from)
   if (from._internal_has_signature_algorithm()) {
     signature_algorithm_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.signature_algorithm_);
   }
-  // @@protoc_insertion_point(copy_constructor:Diagnosis.SignatureInfo)
+  // @@protoc_insertion_point(copy_constructor:diagnosis.SignatureInfo)
 }
 
 void SignatureInfo::SharedCtor() {
@@ -556,7 +739,7 @@ void SignatureInfo::SharedCtor() {
 }
 
 SignatureInfo::~SignatureInfo() {
-  // @@protoc_insertion_point(destructor:Diagnosis.SignatureInfo)
+  // @@protoc_insertion_point(destructor:diagnosis.SignatureInfo)
   SharedDtor();
 }
 
@@ -578,7 +761,7 @@ const SignatureInfo& SignatureInfo::default_instance() {
 
 
 void SignatureInfo::Clear() {
-// @@protoc_insertion_point(message_clear_start:Diagnosis.SignatureInfo)
+// @@protoc_insertion_point(message_clear_start:diagnosis.SignatureInfo)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -616,35 +799,35 @@ const char* SignatureInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
       // optional string app_bundle_id = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(_internal_mutable_app_bundle_id(), ptr, ctx);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8Verify(_internal_mutable_app_bundle_id(), ptr, ctx, "diagnosis.SignatureInfo.app_bundle_id");
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // optional string android_package = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(_internal_mutable_android_package(), ptr, ctx);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8Verify(_internal_mutable_android_package(), ptr, ctx, "diagnosis.SignatureInfo.android_package");
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // optional string verification_key_version = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(_internal_mutable_verification_key_version(), ptr, ctx);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8Verify(_internal_mutable_verification_key_version(), ptr, ctx, "diagnosis.SignatureInfo.verification_key_version");
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // optional string verification_key_id = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(_internal_mutable_verification_key_id(), ptr, ctx);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8Verify(_internal_mutable_verification_key_id(), ptr, ctx, "diagnosis.SignatureInfo.verification_key_id");
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // optional string signature_algorithm = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(_internal_mutable_signature_algorithm(), ptr, ctx);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8Verify(_internal_mutable_signature_algorithm(), ptr, ctx, "diagnosis.SignatureInfo.signature_algorithm");
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -671,51 +854,71 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* SignatureInfo::InternalSerializeWithCachedSizesToArray(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Diagnosis.SignatureInfo)
+  // @@protoc_insertion_point(serialize_to_array_start:diagnosis.SignatureInfo)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
   // optional string app_bundle_id = 1;
   if (cached_has_bits & 0x00000001u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_app_bundle_id().data(), static_cast<int>(this->_internal_app_bundle_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "diagnosis.SignatureInfo.app_bundle_id");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_app_bundle_id(), target);
   }
 
   // optional string android_package = 2;
   if (cached_has_bits & 0x00000002u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_android_package().data(), static_cast<int>(this->_internal_android_package().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "diagnosis.SignatureInfo.android_package");
     target = stream->WriteStringMaybeAliased(
         2, this->_internal_android_package(), target);
   }
 
   // optional string verification_key_version = 3;
   if (cached_has_bits & 0x00000004u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_verification_key_version().data(), static_cast<int>(this->_internal_verification_key_version().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "diagnosis.SignatureInfo.verification_key_version");
     target = stream->WriteStringMaybeAliased(
         3, this->_internal_verification_key_version(), target);
   }
 
   // optional string verification_key_id = 4;
   if (cached_has_bits & 0x00000008u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_verification_key_id().data(), static_cast<int>(this->_internal_verification_key_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "diagnosis.SignatureInfo.verification_key_id");
     target = stream->WriteStringMaybeAliased(
         4, this->_internal_verification_key_id(), target);
   }
 
   // optional string signature_algorithm = 5;
   if (cached_has_bits & 0x00000010u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_signature_algorithm().data(), static_cast<int>(this->_internal_signature_algorithm().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "diagnosis.SignatureInfo.signature_algorithm");
     target = stream->WriteStringMaybeAliased(
         5, this->_internal_signature_algorithm(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
-        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Diagnosis.SignatureInfo)
+  // @@protoc_insertion_point(serialize_to_array_end:diagnosis.SignatureInfo)
   return target;
 }
 
 size_t SignatureInfo::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Diagnosis.SignatureInfo)
+// @@protoc_insertion_point(message_byte_size_start:diagnosis.SignatureInfo)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -761,21 +964,31 @@ size_t SignatureInfo::ByteSizeLong() const {
 
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields().size();
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SignatureInfo::CheckTypeAndMergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::MessageLite& from) {
-  MergeFrom(*::PROTOBUF_NAMESPACE_ID::internal::DownCast<const SignatureInfo*>(
-      &from));
+void SignatureInfo::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:diagnosis.SignatureInfo)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SignatureInfo* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SignatureInfo>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:diagnosis.SignatureInfo)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:diagnosis.SignatureInfo)
+    MergeFrom(*source);
+  }
 }
 
 void SignatureInfo::MergeFrom(const SignatureInfo& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Diagnosis.SignatureInfo)
+// @@protoc_insertion_point(class_specific_merge_from_start:diagnosis.SignatureInfo)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -806,8 +1019,15 @@ void SignatureInfo::MergeFrom(const SignatureInfo& from) {
   }
 }
 
+void SignatureInfo::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:diagnosis.SignatureInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
 void SignatureInfo::CopyFrom(const SignatureInfo& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Diagnosis.SignatureInfo)
+// @@protoc_insertion_point(class_specific_copy_from_start:diagnosis.SignatureInfo)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -833,8 +1053,8 @@ void SignatureInfo::InternalSwap(SignatureInfo* other) {
     GetArenaNoVirtual());
 }
 
-std::string SignatureInfo::GetTypeName() const {
-  return "Diagnosis.SignatureInfo";
+::PROTOBUF_NAMESPACE_ID::Metadata SignatureInfo::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -860,12 +1080,12 @@ class TemporaryExposureKey::_Internal {
 };
 
 TemporaryExposureKey::TemporaryExposureKey()
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Diagnosis.TemporaryExposureKey)
+  // @@protoc_insertion_point(constructor:diagnosis.TemporaryExposureKey)
 }
 TemporaryExposureKey::TemporaryExposureKey(const TemporaryExposureKey& from)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -876,7 +1096,7 @@ TemporaryExposureKey::TemporaryExposureKey(const TemporaryExposureKey& from)
   ::memcpy(&transmission_risk_level_, &from.transmission_risk_level_,
     static_cast<size_t>(reinterpret_cast<char*>(&rolling_period_) -
     reinterpret_cast<char*>(&transmission_risk_level_)) + sizeof(rolling_period_));
-  // @@protoc_insertion_point(copy_constructor:Diagnosis.TemporaryExposureKey)
+  // @@protoc_insertion_point(copy_constructor:diagnosis.TemporaryExposureKey)
 }
 
 void TemporaryExposureKey::SharedCtor() {
@@ -889,7 +1109,7 @@ void TemporaryExposureKey::SharedCtor() {
 }
 
 TemporaryExposureKey::~TemporaryExposureKey() {
-  // @@protoc_insertion_point(destructor:Diagnosis.TemporaryExposureKey)
+  // @@protoc_insertion_point(destructor:diagnosis.TemporaryExposureKey)
   SharedDtor();
 }
 
@@ -907,7 +1127,7 @@ const TemporaryExposureKey& TemporaryExposureKey::default_instance() {
 
 
 void TemporaryExposureKey::Clear() {
-// @@protoc_insertion_point(message_clear_start:Diagnosis.TemporaryExposureKey)
+// @@protoc_insertion_point(message_clear_start:diagnosis.TemporaryExposureKey)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -988,7 +1208,7 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* TemporaryExposureKey::InternalSerializeWithCachedSizesToArray(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Diagnosis.TemporaryExposureKey)
+  // @@protoc_insertion_point(serialize_to_array_start:diagnosis.TemporaryExposureKey)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1018,15 +1238,15 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
-        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Diagnosis.TemporaryExposureKey)
+  // @@protoc_insertion_point(serialize_to_array_end:diagnosis.TemporaryExposureKey)
   return target;
 }
 
 size_t TemporaryExposureKey::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Diagnosis.TemporaryExposureKey)
+// @@protoc_insertion_point(message_byte_size_start:diagnosis.TemporaryExposureKey)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1065,21 +1285,31 @@ size_t TemporaryExposureKey::ByteSizeLong() const {
 
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields().size();
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void TemporaryExposureKey::CheckTypeAndMergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::MessageLite& from) {
-  MergeFrom(*::PROTOBUF_NAMESPACE_ID::internal::DownCast<const TemporaryExposureKey*>(
-      &from));
+void TemporaryExposureKey::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:diagnosis.TemporaryExposureKey)
+  GOOGLE_DCHECK_NE(&from, this);
+  const TemporaryExposureKey* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TemporaryExposureKey>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:diagnosis.TemporaryExposureKey)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:diagnosis.TemporaryExposureKey)
+    MergeFrom(*source);
+  }
 }
 
 void TemporaryExposureKey::MergeFrom(const TemporaryExposureKey& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Diagnosis.TemporaryExposureKey)
+// @@protoc_insertion_point(class_specific_merge_from_start:diagnosis.TemporaryExposureKey)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1104,8 +1334,15 @@ void TemporaryExposureKey::MergeFrom(const TemporaryExposureKey& from) {
   }
 }
 
+void TemporaryExposureKey::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:diagnosis.TemporaryExposureKey)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
 void TemporaryExposureKey::CopyFrom(const TemporaryExposureKey& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Diagnosis.TemporaryExposureKey)
+// @@protoc_insertion_point(class_specific_copy_from_start:diagnosis.TemporaryExposureKey)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1126,8 +1363,8 @@ void TemporaryExposureKey::InternalSwap(TemporaryExposureKey* other) {
   swap(rolling_period_, other->rolling_period_);
 }
 
-std::string TemporaryExposureKey::GetTypeName() const {
-  return "Diagnosis.TemporaryExposureKey";
+::PROTOBUF_NAMESPACE_ID::Metadata TemporaryExposureKey::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -1141,17 +1378,17 @@ class TEKSignatureList::_Internal {
 };
 
 TEKSignatureList::TEKSignatureList()
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Diagnosis.TEKSignatureList)
+  // @@protoc_insertion_point(constructor:diagnosis.TEKSignatureList)
 }
 TEKSignatureList::TEKSignatureList(const TEKSignatureList& from)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_),
       signatures_(from.signatures_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:Diagnosis.TEKSignatureList)
+  // @@protoc_insertion_point(copy_constructor:diagnosis.TEKSignatureList)
 }
 
 void TEKSignatureList::SharedCtor() {
@@ -1159,7 +1396,7 @@ void TEKSignatureList::SharedCtor() {
 }
 
 TEKSignatureList::~TEKSignatureList() {
-  // @@protoc_insertion_point(destructor:Diagnosis.TEKSignatureList)
+  // @@protoc_insertion_point(destructor:diagnosis.TEKSignatureList)
   SharedDtor();
 }
 
@@ -1176,7 +1413,7 @@ const TEKSignatureList& TEKSignatureList::default_instance() {
 
 
 void TEKSignatureList::Clear() {
-// @@protoc_insertion_point(message_clear_start:Diagnosis.TEKSignatureList)
+// @@protoc_insertion_point(message_clear_start:diagnosis.TEKSignatureList)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1193,7 +1430,7 @@ const char* TEKSignatureList::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // repeated .Diagnosis.TEKSignature signatures = 1;
+      // repeated .diagnosis.TEKSignature signatures = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           ptr -= 1;
@@ -1227,11 +1464,11 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* TEKSignatureList::InternalSerializeWithCachedSizesToArray(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Diagnosis.TEKSignatureList)
+  // @@protoc_insertion_point(serialize_to_array_start:diagnosis.TEKSignatureList)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .Diagnosis.TEKSignature signatures = 1;
+  // repeated .diagnosis.TEKSignature signatures = 1;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_signatures_size()); i < n; i++) {
     stream->EnsureSpace(&target);
@@ -1240,22 +1477,22 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
-        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Diagnosis.TEKSignatureList)
+  // @@protoc_insertion_point(serialize_to_array_end:diagnosis.TEKSignatureList)
   return target;
 }
 
 size_t TEKSignatureList::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Diagnosis.TEKSignatureList)
+// @@protoc_insertion_point(message_byte_size_start:diagnosis.TEKSignatureList)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .Diagnosis.TEKSignature signatures = 1;
+  // repeated .diagnosis.TEKSignature signatures = 1;
   total_size += 1UL * this->_internal_signatures_size();
   for (const auto& msg : this->signatures_) {
     total_size +=
@@ -1263,21 +1500,31 @@ size_t TEKSignatureList::ByteSizeLong() const {
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields().size();
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void TEKSignatureList::CheckTypeAndMergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::MessageLite& from) {
-  MergeFrom(*::PROTOBUF_NAMESPACE_ID::internal::DownCast<const TEKSignatureList*>(
-      &from));
+void TEKSignatureList::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:diagnosis.TEKSignatureList)
+  GOOGLE_DCHECK_NE(&from, this);
+  const TEKSignatureList* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TEKSignatureList>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:diagnosis.TEKSignatureList)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:diagnosis.TEKSignatureList)
+    MergeFrom(*source);
+  }
 }
 
 void TEKSignatureList::MergeFrom(const TEKSignatureList& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Diagnosis.TEKSignatureList)
+// @@protoc_insertion_point(class_specific_merge_from_start:diagnosis.TEKSignatureList)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1286,8 +1533,15 @@ void TEKSignatureList::MergeFrom(const TEKSignatureList& from) {
   signatures_.MergeFrom(from.signatures_);
 }
 
+void TEKSignatureList::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:diagnosis.TEKSignatureList)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
 void TEKSignatureList::CopyFrom(const TEKSignatureList& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Diagnosis.TEKSignatureList)
+// @@protoc_insertion_point(class_specific_copy_from_start:diagnosis.TEKSignatureList)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1304,21 +1558,21 @@ void TEKSignatureList::InternalSwap(TEKSignatureList* other) {
   signatures_.InternalSwap(&other->signatures_);
 }
 
-std::string TEKSignatureList::GetTypeName() const {
-  return "Diagnosis.TEKSignatureList";
+::PROTOBUF_NAMESPACE_ID::Metadata TEKSignatureList::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
 // ===================================================================
 
 void TEKSignature::InitAsDefaultInstance() {
-  ::Diagnosis::_TEKSignature_default_instance_._instance.get_mutable()->signature_info_ = const_cast< ::Diagnosis::SignatureInfo*>(
-      ::Diagnosis::SignatureInfo::internal_default_instance());
+  ::diagnosis::_TEKSignature_default_instance_._instance.get_mutable()->signature_info_ = const_cast< ::diagnosis::SignatureInfo*>(
+      ::diagnosis::SignatureInfo::internal_default_instance());
 }
 class TEKSignature::_Internal {
  public:
   using HasBits = decltype(std::declval<TEKSignature>()._has_bits_);
-  static const ::Diagnosis::SignatureInfo& signature_info(const TEKSignature* msg);
+  static const ::diagnosis::SignatureInfo& signature_info(const TEKSignature* msg);
   static void set_has_signature_info(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
@@ -1333,17 +1587,17 @@ class TEKSignature::_Internal {
   }
 };
 
-const ::Diagnosis::SignatureInfo&
+const ::diagnosis::SignatureInfo&
 TEKSignature::_Internal::signature_info(const TEKSignature* msg) {
   return *msg->signature_info_;
 }
 TEKSignature::TEKSignature()
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Diagnosis.TEKSignature)
+  // @@protoc_insertion_point(constructor:diagnosis.TEKSignature)
 }
 TEKSignature::TEKSignature(const TEKSignature& from)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -1352,14 +1606,14 @@ TEKSignature::TEKSignature(const TEKSignature& from)
     signature_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.signature_);
   }
   if (from._internal_has_signature_info()) {
-    signature_info_ = new ::Diagnosis::SignatureInfo(*from.signature_info_);
+    signature_info_ = new ::diagnosis::SignatureInfo(*from.signature_info_);
   } else {
     signature_info_ = nullptr;
   }
   ::memcpy(&batch_num_, &from.batch_num_,
     static_cast<size_t>(reinterpret_cast<char*>(&batch_size_) -
     reinterpret_cast<char*>(&batch_num_)) + sizeof(batch_size_));
-  // @@protoc_insertion_point(copy_constructor:Diagnosis.TEKSignature)
+  // @@protoc_insertion_point(copy_constructor:diagnosis.TEKSignature)
 }
 
 void TEKSignature::SharedCtor() {
@@ -1371,7 +1625,7 @@ void TEKSignature::SharedCtor() {
 }
 
 TEKSignature::~TEKSignature() {
-  // @@protoc_insertion_point(destructor:Diagnosis.TEKSignature)
+  // @@protoc_insertion_point(destructor:diagnosis.TEKSignature)
   SharedDtor();
 }
 
@@ -1390,7 +1644,7 @@ const TEKSignature& TEKSignature::default_instance() {
 
 
 void TEKSignature::Clear() {
-// @@protoc_insertion_point(message_clear_start:Diagnosis.TEKSignature)
+// @@protoc_insertion_point(message_clear_start:diagnosis.TEKSignature)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1422,7 +1676,7 @@ const char* TEKSignature::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // optional .Diagnosis.SignatureInfo signature_info = 1;
+      // optional .diagnosis.SignatureInfo signature_info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_signature_info(), ptr);
@@ -1475,12 +1729,12 @@ failure:
 
 ::PROTOBUF_NAMESPACE_ID::uint8* TEKSignature::InternalSerializeWithCachedSizesToArray(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Diagnosis.TEKSignature)
+  // @@protoc_insertion_point(serialize_to_array_start:diagnosis.TEKSignature)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  // optional .Diagnosis.SignatureInfo signature_info = 1;
+  // optional .diagnosis.SignatureInfo signature_info = 1;
   if (cached_has_bits & 0x00000002u) {
     stream->EnsureSpace(&target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
@@ -1507,15 +1761,15 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
-        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Diagnosis.TEKSignature)
+  // @@protoc_insertion_point(serialize_to_array_end:diagnosis.TEKSignature)
   return target;
 }
 
 size_t TEKSignature::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Diagnosis.TEKSignature)
+// @@protoc_insertion_point(message_byte_size_start:diagnosis.TEKSignature)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1531,7 +1785,7 @@ size_t TEKSignature::ByteSizeLong() const {
           this->_internal_signature());
     }
 
-    // optional .Diagnosis.SignatureInfo signature_info = 1;
+    // optional .diagnosis.SignatureInfo signature_info = 1;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -1554,21 +1808,31 @@ size_t TEKSignature::ByteSizeLong() const {
 
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields().size();
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void TEKSignature::CheckTypeAndMergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::MessageLite& from) {
-  MergeFrom(*::PROTOBUF_NAMESPACE_ID::internal::DownCast<const TEKSignature*>(
-      &from));
+void TEKSignature::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:diagnosis.TEKSignature)
+  GOOGLE_DCHECK_NE(&from, this);
+  const TEKSignature* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TEKSignature>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:diagnosis.TEKSignature)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:diagnosis.TEKSignature)
+    MergeFrom(*source);
+  }
 }
 
 void TEKSignature::MergeFrom(const TEKSignature& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Diagnosis.TEKSignature)
+// @@protoc_insertion_point(class_specific_merge_from_start:diagnosis.TEKSignature)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1581,7 +1845,7 @@ void TEKSignature::MergeFrom(const TEKSignature& from) {
       signature_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.signature_);
     }
     if (cached_has_bits & 0x00000002u) {
-      _internal_mutable_signature_info()->::Diagnosis::SignatureInfo::MergeFrom(from._internal_signature_info());
+      _internal_mutable_signature_info()->::diagnosis::SignatureInfo::MergeFrom(from._internal_signature_info());
     }
     if (cached_has_bits & 0x00000004u) {
       batch_num_ = from.batch_num_;
@@ -1593,8 +1857,15 @@ void TEKSignature::MergeFrom(const TEKSignature& from) {
   }
 }
 
+void TEKSignature::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:diagnosis.TEKSignature)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
 void TEKSignature::CopyFrom(const TEKSignature& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Diagnosis.TEKSignature)
+// @@protoc_insertion_point(class_specific_copy_from_start:diagnosis.TEKSignature)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1615,28 +1886,28 @@ void TEKSignature::InternalSwap(TEKSignature* other) {
   swap(batch_size_, other->batch_size_);
 }
 
-std::string TEKSignature::GetTypeName() const {
-  return "Diagnosis.TEKSignature";
+::PROTOBUF_NAMESPACE_ID::Metadata TEKSignature::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace Diagnosis
+}  // namespace diagnosis
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::Diagnosis::TemporaryExposureKeyExport* Arena::CreateMaybeMessage< ::Diagnosis::TemporaryExposureKeyExport >(Arena* arena) {
-  return Arena::CreateInternal< ::Diagnosis::TemporaryExposureKeyExport >(arena);
+template<> PROTOBUF_NOINLINE ::diagnosis::TemporaryExposureKeyExport* Arena::CreateMaybeMessage< ::diagnosis::TemporaryExposureKeyExport >(Arena* arena) {
+  return Arena::CreateInternal< ::diagnosis::TemporaryExposureKeyExport >(arena);
 }
-template<> PROTOBUF_NOINLINE ::Diagnosis::SignatureInfo* Arena::CreateMaybeMessage< ::Diagnosis::SignatureInfo >(Arena* arena) {
-  return Arena::CreateInternal< ::Diagnosis::SignatureInfo >(arena);
+template<> PROTOBUF_NOINLINE ::diagnosis::SignatureInfo* Arena::CreateMaybeMessage< ::diagnosis::SignatureInfo >(Arena* arena) {
+  return Arena::CreateInternal< ::diagnosis::SignatureInfo >(arena);
 }
-template<> PROTOBUF_NOINLINE ::Diagnosis::TemporaryExposureKey* Arena::CreateMaybeMessage< ::Diagnosis::TemporaryExposureKey >(Arena* arena) {
-  return Arena::CreateInternal< ::Diagnosis::TemporaryExposureKey >(arena);
+template<> PROTOBUF_NOINLINE ::diagnosis::TemporaryExposureKey* Arena::CreateMaybeMessage< ::diagnosis::TemporaryExposureKey >(Arena* arena) {
+  return Arena::CreateInternal< ::diagnosis::TemporaryExposureKey >(arena);
 }
-template<> PROTOBUF_NOINLINE ::Diagnosis::TEKSignatureList* Arena::CreateMaybeMessage< ::Diagnosis::TEKSignatureList >(Arena* arena) {
-  return Arena::CreateInternal< ::Diagnosis::TEKSignatureList >(arena);
+template<> PROTOBUF_NOINLINE ::diagnosis::TEKSignatureList* Arena::CreateMaybeMessage< ::diagnosis::TEKSignatureList >(Arena* arena) {
+  return Arena::CreateInternal< ::diagnosis::TEKSignatureList >(arena);
 }
-template<> PROTOBUF_NOINLINE ::Diagnosis::TEKSignature* Arena::CreateMaybeMessage< ::Diagnosis::TEKSignature >(Arena* arena) {
-  return Arena::CreateInternal< ::Diagnosis::TEKSignature >(arena);
+template<> PROTOBUF_NOINLINE ::diagnosis::TEKSignature* Arena::CreateMaybeMessage< ::diagnosis::TEKSignature >(Arena* arena) {
+  return Arena::CreateInternal< ::diagnosis::TEKSignature >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

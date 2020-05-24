@@ -18,16 +18,15 @@ Source0:    %{name}-%{version}.tar.bz2
 Source100:  harbour-contrac.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   openssl
-Requires:   protobuf-lite
-Requires:   zlib
+Requires:   protobuf
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(Qt5Test)
-BuildRequires:  pkgconfig(protobuf-lite)
-BuildRequires:  pkgconfig(zlib)
+BuildRequires:  pkgconfig(protobuf)
+BuildRequires:  quazip-devel
 BuildRequires:  desktop-file-utils
 
 %description
@@ -87,5 +86,6 @@ desktop-file-install --delete-original       \
 %files tests
 %defattr(-,root,root,-)
 %{_libdir}/%{name}-tests/%{name}-tests
+%{_datadir}/%{name}-tests/sample_diagnosis_key_file.zip
 # >> files tests
 # << files tests

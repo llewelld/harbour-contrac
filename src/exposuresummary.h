@@ -8,24 +8,25 @@ class ExposureSummary : public QObject
     Q_OBJECT
     Q_PROPERTY(quint32 daysSinceLastExposure READ daysSinceLastExposure WRITE setDaysSinceLastExposure NOTIFY daysSinceLastExposureChanged)
     Q_PROPERTY(quint32 matchedKeyCount READ matchedKeyCount WRITE setMatchedKeyCount NOTIFY matchedKeyCountChanged)
-    Q_PROPERTY(quint32 maximumRiskScore READ maximumRiskScore WRITE setMaximumRiskScore NOTIFY maximumRiskScoreChanged)
-    Q_PROPERTY(QList<quint32> attenuationDurations READ attenuationDurations WRITE setAttenuationDurations NOTIFY attenuationDurationsChanged)
-    Q_PROPERTY(quint32 summationRiskScore READ summationRiskScore WRITE setSummationRiskScore NOTIFY summationRiskScoreChanged)
+    Q_PROPERTY(qint32 maximumRiskScore READ maximumRiskScore WRITE setMaximumRiskScore NOTIFY maximumRiskScoreChanged)
+    Q_PROPERTY(QList<qint32> attenuationDurations READ attenuationDurations WRITE setAttenuationDurations NOTIFY attenuationDurationsChanged)
+    Q_PROPERTY(qint32 summationRiskScore READ summationRiskScore WRITE setSummationRiskScore NOTIFY summationRiskScoreChanged)
 public:
     explicit ExposureSummary(QObject *parent = nullptr);
-    explicit ExposureSummary(ExposureSummary const &exposureSummary);
+    ExposureSummary(ExposureSummary const &exposureSummary);
+    ExposureSummary& operator=( const ExposureSummary &other);
 
     quint32 daysSinceLastExposure() const;
     quint32 matchedKeyCount() const;
-    quint32 maximumRiskScore() const;
-    QList<quint32> attenuationDurations() const;
-    quint32 summationRiskScore() const;
+    qint32 maximumRiskScore() const;
+    QList<qint32> attenuationDurations() const;
+    qint32 summationRiskScore() const;
 
     void setDaysSinceLastExposure(quint32 daysSinceLastExposure);
     void setMatchedKeyCount(quint32 matchedKeyCount);
-    void setMaximumRiskScore(quint32 maximumRiskScore);
-    void setAttenuationDurations(QList<quint32> attenuationDurations);
-    void setSummationRiskScore(quint32 summationRiskScore);
+    void setMaximumRiskScore(qint32 maximumRiskScore);
+    void setAttenuationDurations(QList<qint32> attenuationDurations);
+    void setSummationRiskScore(qint32 summationRiskScore);
 
 signals:
     void daysSinceLastExposureChanged();
@@ -38,9 +39,9 @@ public slots:
 private:
     quint32 m_daysSinceLastExposure;
     quint32 m_matchedKeyCount;
-    quint32 m_maximumRiskScore;
-    QList<quint32> m_attenuationDurations;
-    quint32 m_summationRiskScore;
+    qint32 m_maximumRiskScore;
+    QList<qint32> m_attenuationDurations;
+    qint32 m_summationRiskScore;
 };
 
 #endif // EXPOSURESUMMARY_H

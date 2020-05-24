@@ -45,6 +45,11 @@ double ExposureConfiguration::transmissionRiskWeight() const
     return m_transmissionRiskWeight;
 }
 
+QList<qint32> ExposureConfiguration::durationAtAttenuationThresholds() const
+{
+    return m_durationAtAttenuationThresholds;
+}
+
 void ExposureConfiguration::setAttenuationScores(QList<quint32> attenuationScores)
 {
     if (m_attenuationScores != attenuationScores) {
@@ -109,3 +114,10 @@ void ExposureConfiguration::setTransmissionRiskWeight(double transmissionRiskWei
     }
 }
 
+void ExposureConfiguration::setDurationAtAttenuationThresholds(QList<qint32> durationAtAttenuationThresholds)
+{
+    if (m_durationAtAttenuationThresholds != durationAtAttenuationThresholds) {
+        m_durationAtAttenuationThresholds = durationAtAttenuationThresholds;
+        emit durationAtAttenuationThresholdsChanged();
+    }
+}

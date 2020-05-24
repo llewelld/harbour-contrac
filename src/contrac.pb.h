@@ -26,10 +26,12 @@
 #include <google/protobuf/generated_message_table_driven.h>
 #include <google/protobuf/generated_message_util.h>
 #include <google/protobuf/inlined_string_field.h>
-#include <google/protobuf/metadata_lite.h>
-#include <google/protobuf/message_lite.h>
+#include <google/protobuf/metadata.h>
+#include <google/protobuf/generated_message_reflection.h>
+#include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_contrac_2eproto
@@ -51,7 +53,8 @@ struct TableStruct_contrac_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
-namespace Diagnosis {
+extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_contrac_2eproto;
+namespace diagnosis {
 class SignatureInfo;
 class SignatureInfoDefaultTypeInternal;
 extern SignatureInfoDefaultTypeInternal _SignatureInfo_default_instance_;
@@ -67,20 +70,20 @@ extern TemporaryExposureKeyDefaultTypeInternal _TemporaryExposureKey_default_ins
 class TemporaryExposureKeyExport;
 class TemporaryExposureKeyExportDefaultTypeInternal;
 extern TemporaryExposureKeyExportDefaultTypeInternal _TemporaryExposureKeyExport_default_instance_;
-}  // namespace Diagnosis
+}  // namespace diagnosis
 PROTOBUF_NAMESPACE_OPEN
-template<> ::Diagnosis::SignatureInfo* Arena::CreateMaybeMessage<::Diagnosis::SignatureInfo>(Arena*);
-template<> ::Diagnosis::TEKSignature* Arena::CreateMaybeMessage<::Diagnosis::TEKSignature>(Arena*);
-template<> ::Diagnosis::TEKSignatureList* Arena::CreateMaybeMessage<::Diagnosis::TEKSignatureList>(Arena*);
-template<> ::Diagnosis::TemporaryExposureKey* Arena::CreateMaybeMessage<::Diagnosis::TemporaryExposureKey>(Arena*);
-template<> ::Diagnosis::TemporaryExposureKeyExport* Arena::CreateMaybeMessage<::Diagnosis::TemporaryExposureKeyExport>(Arena*);
+template<> ::diagnosis::SignatureInfo* Arena::CreateMaybeMessage<::diagnosis::SignatureInfo>(Arena*);
+template<> ::diagnosis::TEKSignature* Arena::CreateMaybeMessage<::diagnosis::TEKSignature>(Arena*);
+template<> ::diagnosis::TEKSignatureList* Arena::CreateMaybeMessage<::diagnosis::TEKSignatureList>(Arena*);
+template<> ::diagnosis::TemporaryExposureKey* Arena::CreateMaybeMessage<::diagnosis::TemporaryExposureKey>(Arena*);
+template<> ::diagnosis::TemporaryExposureKeyExport* Arena::CreateMaybeMessage<::diagnosis::TemporaryExposureKeyExport>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
-namespace Diagnosis {
+namespace diagnosis {
 
 // ===================================================================
 
 class TemporaryExposureKeyExport :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:Diagnosis.TemporaryExposureKeyExport) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:diagnosis.TemporaryExposureKeyExport) */ {
  public:
   TemporaryExposureKeyExport();
   virtual ~TemporaryExposureKeyExport();
@@ -104,13 +107,22 @@ class TemporaryExposureKeyExport :
     return *this;
   }
 
-  inline const std::string& unknown_fields() const {
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
     return _internal_metadata_.unknown_fields();
   }
-  inline std::string* mutable_unknown_fields() {
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
     return _internal_metadata_.mutable_unknown_fields();
   }
 
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
   static const TemporaryExposureKeyExport& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -138,8 +150,8 @@ class TemporaryExposureKeyExport :
   TemporaryExposureKeyExport* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
     return CreateMaybeMessage<TemporaryExposureKeyExport>(arena);
   }
-  void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)
-    final;
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void CopyFrom(const TemporaryExposureKeyExport& from);
   void MergeFrom(const TemporaryExposureKeyExport& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
@@ -149,17 +161,16 @@ class TemporaryExposureKeyExport :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   ::PROTOBUF_NAMESPACE_ID::uint8* InternalSerializeWithCachedSizesToArray(
       ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  void DiscardUnknownFields();
   int GetCachedSize() const final { return _cached_size_.Get(); }
 
   private:
   inline void SharedCtor();
   inline void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const final;
   void InternalSwap(TemporaryExposureKeyExport* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Diagnosis.TemporaryExposureKeyExport";
+    return "diagnosis.TemporaryExposureKeyExport";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -170,7 +181,14 @@ class TemporaryExposureKeyExport :
   }
   public:
 
-  std::string GetTypeName() const final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_contrac_2eproto);
+    return ::descriptor_table_contrac_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
 
   // nested types ----------------------------------------------------
 
@@ -185,43 +203,43 @@ class TemporaryExposureKeyExport :
     kBatchNumFieldNumber = 4,
     kBatchSizeFieldNumber = 5,
   };
-  // repeated .Diagnosis.SignatureInfo signature_infos = 6;
+  // repeated .diagnosis.SignatureInfo signature_infos = 6;
   int signature_infos_size() const;
   private:
   int _internal_signature_infos_size() const;
   public:
   void clear_signature_infos();
-  ::Diagnosis::SignatureInfo* mutable_signature_infos(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::SignatureInfo >*
+  ::diagnosis::SignatureInfo* mutable_signature_infos(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::SignatureInfo >*
       mutable_signature_infos();
   private:
-  const ::Diagnosis::SignatureInfo& _internal_signature_infos(int index) const;
-  ::Diagnosis::SignatureInfo* _internal_add_signature_infos();
+  const ::diagnosis::SignatureInfo& _internal_signature_infos(int index) const;
+  ::diagnosis::SignatureInfo* _internal_add_signature_infos();
   public:
-  const ::Diagnosis::SignatureInfo& signature_infos(int index) const;
-  ::Diagnosis::SignatureInfo* add_signature_infos();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::SignatureInfo >&
+  const ::diagnosis::SignatureInfo& signature_infos(int index) const;
+  ::diagnosis::SignatureInfo* add_signature_infos();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::SignatureInfo >&
       signature_infos() const;
 
-  // repeated .Diagnosis.TemporaryExposureKey keys = 7;
+  // repeated .diagnosis.TemporaryExposureKey keys = 7;
   int keys_size() const;
   private:
   int _internal_keys_size() const;
   public:
   void clear_keys();
-  ::Diagnosis::TemporaryExposureKey* mutable_keys(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TemporaryExposureKey >*
+  ::diagnosis::TemporaryExposureKey* mutable_keys(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TemporaryExposureKey >*
       mutable_keys();
   private:
-  const ::Diagnosis::TemporaryExposureKey& _internal_keys(int index) const;
-  ::Diagnosis::TemporaryExposureKey* _internal_add_keys();
+  const ::diagnosis::TemporaryExposureKey& _internal_keys(int index) const;
+  ::diagnosis::TemporaryExposureKey* _internal_add_keys();
   public:
-  const ::Diagnosis::TemporaryExposureKey& keys(int index) const;
-  ::Diagnosis::TemporaryExposureKey* add_keys();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TemporaryExposureKey >&
+  const ::diagnosis::TemporaryExposureKey& keys(int index) const;
+  ::diagnosis::TemporaryExposureKey* add_keys();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TemporaryExposureKey >&
       keys() const;
 
-  // optional string region = 3;
+  // required string region = 3;
   bool has_region() const;
   private:
   bool _internal_has_region() const;
@@ -241,7 +259,7 @@ class TemporaryExposureKeyExport :
   std::string* _internal_mutable_region();
   public:
 
-  // optional fixed64 start_timestamp = 1;
+  // required fixed64 start_timestamp = 1;
   bool has_start_timestamp() const;
   private:
   bool _internal_has_start_timestamp() const;
@@ -254,7 +272,7 @@ class TemporaryExposureKeyExport :
   void _internal_set_start_timestamp(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // optional fixed64 end_timestamp = 2;
+  // required fixed64 end_timestamp = 2;
   bool has_end_timestamp() const;
   private:
   bool _internal_has_end_timestamp() const;
@@ -267,7 +285,7 @@ class TemporaryExposureKeyExport :
   void _internal_set_end_timestamp(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // optional int32 batch_num = 4;
+  // required int32 batch_num = 4;
   bool has_batch_num() const;
   private:
   bool _internal_has_batch_num() const;
@@ -280,7 +298,7 @@ class TemporaryExposureKeyExport :
   void _internal_set_batch_num(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // optional int32 batch_size = 5;
+  // required int32 batch_size = 5;
   bool has_batch_size() const;
   private:
   bool _internal_has_batch_size() const;
@@ -293,15 +311,18 @@ class TemporaryExposureKeyExport :
   void _internal_set_batch_size(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:Diagnosis.TemporaryExposureKeyExport)
+  // @@protoc_insertion_point(class_scope:diagnosis.TemporaryExposureKeyExport)
  private:
   class _Internal;
 
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  // helper for ByteSizeLong()
+  size_t RequiredFieldsByteSizeFallback() const;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::SignatureInfo > signature_infos_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TemporaryExposureKey > keys_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::SignatureInfo > signature_infos_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TemporaryExposureKey > keys_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr region_;
   ::PROTOBUF_NAMESPACE_ID::uint64 start_timestamp_;
   ::PROTOBUF_NAMESPACE_ID::uint64 end_timestamp_;
@@ -312,7 +333,7 @@ class TemporaryExposureKeyExport :
 // -------------------------------------------------------------------
 
 class SignatureInfo :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:Diagnosis.SignatureInfo) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:diagnosis.SignatureInfo) */ {
  public:
   SignatureInfo();
   virtual ~SignatureInfo();
@@ -336,13 +357,22 @@ class SignatureInfo :
     return *this;
   }
 
-  inline const std::string& unknown_fields() const {
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
     return _internal_metadata_.unknown_fields();
   }
-  inline std::string* mutable_unknown_fields() {
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
     return _internal_metadata_.mutable_unknown_fields();
   }
 
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
   static const SignatureInfo& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -370,8 +400,8 @@ class SignatureInfo :
   SignatureInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
     return CreateMaybeMessage<SignatureInfo>(arena);
   }
-  void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)
-    final;
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void CopyFrom(const SignatureInfo& from);
   void MergeFrom(const SignatureInfo& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
@@ -381,17 +411,16 @@ class SignatureInfo :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   ::PROTOBUF_NAMESPACE_ID::uint8* InternalSerializeWithCachedSizesToArray(
       ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  void DiscardUnknownFields();
   int GetCachedSize() const final { return _cached_size_.Get(); }
 
   private:
   inline void SharedCtor();
   inline void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const final;
   void InternalSwap(SignatureInfo* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Diagnosis.SignatureInfo";
+    return "diagnosis.SignatureInfo";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -402,7 +431,14 @@ class SignatureInfo :
   }
   public:
 
-  std::string GetTypeName() const final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_contrac_2eproto);
+    return ::descriptor_table_contrac_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
 
   // nested types ----------------------------------------------------
 
@@ -515,11 +551,11 @@ class SignatureInfo :
   std::string* _internal_mutable_signature_algorithm();
   public:
 
-  // @@protoc_insertion_point(class_scope:Diagnosis.SignatureInfo)
+  // @@protoc_insertion_point(class_scope:diagnosis.SignatureInfo)
  private:
   class _Internal;
 
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr app_bundle_id_;
@@ -532,7 +568,7 @@ class SignatureInfo :
 // -------------------------------------------------------------------
 
 class TemporaryExposureKey :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:Diagnosis.TemporaryExposureKey) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:diagnosis.TemporaryExposureKey) */ {
  public:
   TemporaryExposureKey();
   virtual ~TemporaryExposureKey();
@@ -556,13 +592,22 @@ class TemporaryExposureKey :
     return *this;
   }
 
-  inline const std::string& unknown_fields() const {
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
     return _internal_metadata_.unknown_fields();
   }
-  inline std::string* mutable_unknown_fields() {
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
     return _internal_metadata_.mutable_unknown_fields();
   }
 
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
   static const TemporaryExposureKey& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -590,8 +635,8 @@ class TemporaryExposureKey :
   TemporaryExposureKey* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
     return CreateMaybeMessage<TemporaryExposureKey>(arena);
   }
-  void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)
-    final;
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void CopyFrom(const TemporaryExposureKey& from);
   void MergeFrom(const TemporaryExposureKey& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
@@ -601,17 +646,16 @@ class TemporaryExposureKey :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   ::PROTOBUF_NAMESPACE_ID::uint8* InternalSerializeWithCachedSizesToArray(
       ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  void DiscardUnknownFields();
   int GetCachedSize() const final { return _cached_size_.Get(); }
 
   private:
   inline void SharedCtor();
   inline void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const final;
   void InternalSwap(TemporaryExposureKey* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Diagnosis.TemporaryExposureKey";
+    return "diagnosis.TemporaryExposureKey";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -622,7 +666,14 @@ class TemporaryExposureKey :
   }
   public:
 
-  std::string GetTypeName() const final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_contrac_2eproto);
+    return ::descriptor_table_contrac_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
 
   // nested types ----------------------------------------------------
 
@@ -693,11 +744,11 @@ class TemporaryExposureKey :
   void _internal_set_rolling_period(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:Diagnosis.TemporaryExposureKey)
+  // @@protoc_insertion_point(class_scope:diagnosis.TemporaryExposureKey)
  private:
   class _Internal;
 
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr key_data_;
@@ -709,7 +760,7 @@ class TemporaryExposureKey :
 // -------------------------------------------------------------------
 
 class TEKSignatureList :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:Diagnosis.TEKSignatureList) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:diagnosis.TEKSignatureList) */ {
  public:
   TEKSignatureList();
   virtual ~TEKSignatureList();
@@ -733,13 +784,22 @@ class TEKSignatureList :
     return *this;
   }
 
-  inline const std::string& unknown_fields() const {
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
     return _internal_metadata_.unknown_fields();
   }
-  inline std::string* mutable_unknown_fields() {
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
     return _internal_metadata_.mutable_unknown_fields();
   }
 
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
   static const TEKSignatureList& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -767,8 +827,8 @@ class TEKSignatureList :
   TEKSignatureList* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
     return CreateMaybeMessage<TEKSignatureList>(arena);
   }
-  void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)
-    final;
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void CopyFrom(const TEKSignatureList& from);
   void MergeFrom(const TEKSignatureList& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
@@ -778,17 +838,16 @@ class TEKSignatureList :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   ::PROTOBUF_NAMESPACE_ID::uint8* InternalSerializeWithCachedSizesToArray(
       ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  void DiscardUnknownFields();
   int GetCachedSize() const final { return _cached_size_.Get(); }
 
   private:
   inline void SharedCtor();
   inline void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const final;
   void InternalSwap(TEKSignatureList* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Diagnosis.TEKSignatureList";
+    return "diagnosis.TEKSignatureList";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -799,7 +858,14 @@ class TEKSignatureList :
   }
   public:
 
-  std::string GetTypeName() const final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_contrac_2eproto);
+    return ::descriptor_table_contrac_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
 
   // nested types ----------------------------------------------------
 
@@ -808,38 +874,38 @@ class TEKSignatureList :
   enum : int {
     kSignaturesFieldNumber = 1,
   };
-  // repeated .Diagnosis.TEKSignature signatures = 1;
+  // repeated .diagnosis.TEKSignature signatures = 1;
   int signatures_size() const;
   private:
   int _internal_signatures_size() const;
   public:
   void clear_signatures();
-  ::Diagnosis::TEKSignature* mutable_signatures(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TEKSignature >*
+  ::diagnosis::TEKSignature* mutable_signatures(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TEKSignature >*
       mutable_signatures();
   private:
-  const ::Diagnosis::TEKSignature& _internal_signatures(int index) const;
-  ::Diagnosis::TEKSignature* _internal_add_signatures();
+  const ::diagnosis::TEKSignature& _internal_signatures(int index) const;
+  ::diagnosis::TEKSignature* _internal_add_signatures();
   public:
-  const ::Diagnosis::TEKSignature& signatures(int index) const;
-  ::Diagnosis::TEKSignature* add_signatures();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TEKSignature >&
+  const ::diagnosis::TEKSignature& signatures(int index) const;
+  ::diagnosis::TEKSignature* add_signatures();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TEKSignature >&
       signatures() const;
 
-  // @@protoc_insertion_point(class_scope:Diagnosis.TEKSignatureList)
+  // @@protoc_insertion_point(class_scope:diagnosis.TEKSignatureList)
  private:
   class _Internal;
 
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TEKSignature > signatures_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TEKSignature > signatures_;
   friend struct ::TableStruct_contrac_2eproto;
 };
 // -------------------------------------------------------------------
 
 class TEKSignature :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:Diagnosis.TEKSignature) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:diagnosis.TEKSignature) */ {
  public:
   TEKSignature();
   virtual ~TEKSignature();
@@ -863,13 +929,22 @@ class TEKSignature :
     return *this;
   }
 
-  inline const std::string& unknown_fields() const {
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
     return _internal_metadata_.unknown_fields();
   }
-  inline std::string* mutable_unknown_fields() {
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
     return _internal_metadata_.mutable_unknown_fields();
   }
 
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
   static const TEKSignature& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
@@ -897,8 +972,8 @@ class TEKSignature :
   TEKSignature* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
     return CreateMaybeMessage<TEKSignature>(arena);
   }
-  void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)
-    final;
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void CopyFrom(const TEKSignature& from);
   void MergeFrom(const TEKSignature& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
@@ -908,17 +983,16 @@ class TEKSignature :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   ::PROTOBUF_NAMESPACE_ID::uint8* InternalSerializeWithCachedSizesToArray(
       ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  void DiscardUnknownFields();
   int GetCachedSize() const final { return _cached_size_.Get(); }
 
   private:
   inline void SharedCtor();
   inline void SharedDtor();
-  void SetCachedSize(int size) const;
+  void SetCachedSize(int size) const final;
   void InternalSwap(TEKSignature* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Diagnosis.TEKSignature";
+    return "diagnosis.TEKSignature";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -929,7 +1003,14 @@ class TEKSignature :
   }
   public:
 
-  std::string GetTypeName() const final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_contrac_2eproto);
+    return ::descriptor_table_contrac_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
 
   // nested types ----------------------------------------------------
 
@@ -961,19 +1042,19 @@ class TEKSignature :
   std::string* _internal_mutable_signature();
   public:
 
-  // optional .Diagnosis.SignatureInfo signature_info = 1;
+  // optional .diagnosis.SignatureInfo signature_info = 1;
   bool has_signature_info() const;
   private:
   bool _internal_has_signature_info() const;
   public:
   void clear_signature_info();
-  const ::Diagnosis::SignatureInfo& signature_info() const;
-  ::Diagnosis::SignatureInfo* release_signature_info();
-  ::Diagnosis::SignatureInfo* mutable_signature_info();
-  void set_allocated_signature_info(::Diagnosis::SignatureInfo* signature_info);
+  const ::diagnosis::SignatureInfo& signature_info() const;
+  ::diagnosis::SignatureInfo* release_signature_info();
+  ::diagnosis::SignatureInfo* mutable_signature_info();
+  void set_allocated_signature_info(::diagnosis::SignatureInfo* signature_info);
   private:
-  const ::Diagnosis::SignatureInfo& _internal_signature_info() const;
-  ::Diagnosis::SignatureInfo* _internal_mutable_signature_info();
+  const ::diagnosis::SignatureInfo& _internal_signature_info() const;
+  ::diagnosis::SignatureInfo* _internal_mutable_signature_info();
   public:
 
   // optional int32 batch_num = 2;
@@ -1002,15 +1083,15 @@ class TEKSignature :
   void _internal_set_batch_size(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:Diagnosis.TEKSignature)
+  // @@protoc_insertion_point(class_scope:diagnosis.TEKSignature)
  private:
   class _Internal;
 
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArenaLite _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr signature_;
-  ::Diagnosis::SignatureInfo* signature_info_;
+  ::diagnosis::SignatureInfo* signature_info_;
   ::PROTOBUF_NAMESPACE_ID::int32 batch_num_;
   ::PROTOBUF_NAMESPACE_ID::int32 batch_size_;
   friend struct ::TableStruct_contrac_2eproto;
@@ -1026,7 +1107,7 @@ class TEKSignature :
 #endif  // __GNUC__
 // TemporaryExposureKeyExport
 
-// optional fixed64 start_timestamp = 1;
+// required fixed64 start_timestamp = 1;
 inline bool TemporaryExposureKeyExport::_internal_has_start_timestamp() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -1042,7 +1123,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint64 TemporaryExposureKeyExport::_internal_sta
   return start_timestamp_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint64 TemporaryExposureKeyExport::start_timestamp() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKeyExport.start_timestamp)
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKeyExport.start_timestamp)
   return _internal_start_timestamp();
 }
 inline void TemporaryExposureKeyExport::_internal_set_start_timestamp(::PROTOBUF_NAMESPACE_ID::uint64 value) {
@@ -1051,10 +1132,10 @@ inline void TemporaryExposureKeyExport::_internal_set_start_timestamp(::PROTOBUF
 }
 inline void TemporaryExposureKeyExport::set_start_timestamp(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_start_timestamp(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TemporaryExposureKeyExport.start_timestamp)
+  // @@protoc_insertion_point(field_set:diagnosis.TemporaryExposureKeyExport.start_timestamp)
 }
 
-// optional fixed64 end_timestamp = 2;
+// required fixed64 end_timestamp = 2;
 inline bool TemporaryExposureKeyExport::_internal_has_end_timestamp() const {
   bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -1070,7 +1151,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint64 TemporaryExposureKeyExport::_internal_end
   return end_timestamp_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint64 TemporaryExposureKeyExport::end_timestamp() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKeyExport.end_timestamp)
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKeyExport.end_timestamp)
   return _internal_end_timestamp();
 }
 inline void TemporaryExposureKeyExport::_internal_set_end_timestamp(::PROTOBUF_NAMESPACE_ID::uint64 value) {
@@ -1079,10 +1160,10 @@ inline void TemporaryExposureKeyExport::_internal_set_end_timestamp(::PROTOBUF_N
 }
 inline void TemporaryExposureKeyExport::set_end_timestamp(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_end_timestamp(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TemporaryExposureKeyExport.end_timestamp)
+  // @@protoc_insertion_point(field_set:diagnosis.TemporaryExposureKeyExport.end_timestamp)
 }
 
-// optional string region = 3;
+// required string region = 3;
 inline bool TemporaryExposureKeyExport::_internal_has_region() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -1095,15 +1176,15 @@ inline void TemporaryExposureKeyExport::clear_region() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline const std::string& TemporaryExposureKeyExport::region() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKeyExport.region)
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKeyExport.region)
   return _internal_region();
 }
 inline void TemporaryExposureKeyExport::set_region(const std::string& value) {
   _internal_set_region(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TemporaryExposureKeyExport.region)
+  // @@protoc_insertion_point(field_set:diagnosis.TemporaryExposureKeyExport.region)
 }
 inline std::string* TemporaryExposureKeyExport::mutable_region() {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.TemporaryExposureKeyExport.region)
+  // @@protoc_insertion_point(field_mutable:diagnosis.TemporaryExposureKeyExport.region)
   return _internal_mutable_region();
 }
 inline const std::string& TemporaryExposureKeyExport::_internal_region() const {
@@ -1117,26 +1198,26 @@ inline void TemporaryExposureKeyExport::set_region(std::string&& value) {
   _has_bits_[0] |= 0x00000001u;
   region_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Diagnosis.TemporaryExposureKeyExport.region)
+  // @@protoc_insertion_point(field_set_rvalue:diagnosis.TemporaryExposureKeyExport.region)
 }
 inline void TemporaryExposureKeyExport::set_region(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000001u;
   region_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Diagnosis.TemporaryExposureKeyExport.region)
+  // @@protoc_insertion_point(field_set_char:diagnosis.TemporaryExposureKeyExport.region)
 }
 inline void TemporaryExposureKeyExport::set_region(const char* value, size_t size) {
   _has_bits_[0] |= 0x00000001u;
   region_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Diagnosis.TemporaryExposureKeyExport.region)
+  // @@protoc_insertion_point(field_set_pointer:diagnosis.TemporaryExposureKeyExport.region)
 }
 inline std::string* TemporaryExposureKeyExport::_internal_mutable_region() {
   _has_bits_[0] |= 0x00000001u;
   return region_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline std::string* TemporaryExposureKeyExport::release_region() {
-  // @@protoc_insertion_point(field_release:Diagnosis.TemporaryExposureKeyExport.region)
+  // @@protoc_insertion_point(field_release:diagnosis.TemporaryExposureKeyExport.region)
   if (!has_region()) {
     return nullptr;
   }
@@ -1150,10 +1231,10 @@ inline void TemporaryExposureKeyExport::set_allocated_region(std::string* region
     _has_bits_[0] &= ~0x00000001u;
   }
   region_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), region);
-  // @@protoc_insertion_point(field_set_allocated:Diagnosis.TemporaryExposureKeyExport.region)
+  // @@protoc_insertion_point(field_set_allocated:diagnosis.TemporaryExposureKeyExport.region)
 }
 
-// optional int32 batch_num = 4;
+// required int32 batch_num = 4;
 inline bool TemporaryExposureKeyExport::_internal_has_batch_num() const {
   bool value = (_has_bits_[0] & 0x00000008u) != 0;
   return value;
@@ -1169,7 +1250,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKeyExport::_internal_batc
   return batch_num_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKeyExport::batch_num() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKeyExport.batch_num)
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKeyExport.batch_num)
   return _internal_batch_num();
 }
 inline void TemporaryExposureKeyExport::_internal_set_batch_num(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -1178,10 +1259,10 @@ inline void TemporaryExposureKeyExport::_internal_set_batch_num(::PROTOBUF_NAMES
 }
 inline void TemporaryExposureKeyExport::set_batch_num(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_batch_num(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TemporaryExposureKeyExport.batch_num)
+  // @@protoc_insertion_point(field_set:diagnosis.TemporaryExposureKeyExport.batch_num)
 }
 
-// optional int32 batch_size = 5;
+// required int32 batch_size = 5;
 inline bool TemporaryExposureKeyExport::_internal_has_batch_size() const {
   bool value = (_has_bits_[0] & 0x00000010u) != 0;
   return value;
@@ -1197,7 +1278,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKeyExport::_internal_batc
   return batch_size_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKeyExport::batch_size() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKeyExport.batch_size)
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKeyExport.batch_size)
   return _internal_batch_size();
 }
 inline void TemporaryExposureKeyExport::_internal_set_batch_size(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -1206,10 +1287,10 @@ inline void TemporaryExposureKeyExport::_internal_set_batch_size(::PROTOBUF_NAME
 }
 inline void TemporaryExposureKeyExport::set_batch_size(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_batch_size(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TemporaryExposureKeyExport.batch_size)
+  // @@protoc_insertion_point(field_set:diagnosis.TemporaryExposureKeyExport.batch_size)
 }
 
-// repeated .Diagnosis.SignatureInfo signature_infos = 6;
+// repeated .diagnosis.SignatureInfo signature_infos = 6;
 inline int TemporaryExposureKeyExport::_internal_signature_infos_size() const {
   return signature_infos_.size();
 }
@@ -1219,36 +1300,36 @@ inline int TemporaryExposureKeyExport::signature_infos_size() const {
 inline void TemporaryExposureKeyExport::clear_signature_infos() {
   signature_infos_.Clear();
 }
-inline ::Diagnosis::SignatureInfo* TemporaryExposureKeyExport::mutable_signature_infos(int index) {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.TemporaryExposureKeyExport.signature_infos)
+inline ::diagnosis::SignatureInfo* TemporaryExposureKeyExport::mutable_signature_infos(int index) {
+  // @@protoc_insertion_point(field_mutable:diagnosis.TemporaryExposureKeyExport.signature_infos)
   return signature_infos_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::SignatureInfo >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::SignatureInfo >*
 TemporaryExposureKeyExport::mutable_signature_infos() {
-  // @@protoc_insertion_point(field_mutable_list:Diagnosis.TemporaryExposureKeyExport.signature_infos)
+  // @@protoc_insertion_point(field_mutable_list:diagnosis.TemporaryExposureKeyExport.signature_infos)
   return &signature_infos_;
 }
-inline const ::Diagnosis::SignatureInfo& TemporaryExposureKeyExport::_internal_signature_infos(int index) const {
+inline const ::diagnosis::SignatureInfo& TemporaryExposureKeyExport::_internal_signature_infos(int index) const {
   return signature_infos_.Get(index);
 }
-inline const ::Diagnosis::SignatureInfo& TemporaryExposureKeyExport::signature_infos(int index) const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKeyExport.signature_infos)
+inline const ::diagnosis::SignatureInfo& TemporaryExposureKeyExport::signature_infos(int index) const {
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKeyExport.signature_infos)
   return _internal_signature_infos(index);
 }
-inline ::Diagnosis::SignatureInfo* TemporaryExposureKeyExport::_internal_add_signature_infos() {
+inline ::diagnosis::SignatureInfo* TemporaryExposureKeyExport::_internal_add_signature_infos() {
   return signature_infos_.Add();
 }
-inline ::Diagnosis::SignatureInfo* TemporaryExposureKeyExport::add_signature_infos() {
-  // @@protoc_insertion_point(field_add:Diagnosis.TemporaryExposureKeyExport.signature_infos)
+inline ::diagnosis::SignatureInfo* TemporaryExposureKeyExport::add_signature_infos() {
+  // @@protoc_insertion_point(field_add:diagnosis.TemporaryExposureKeyExport.signature_infos)
   return _internal_add_signature_infos();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::SignatureInfo >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::SignatureInfo >&
 TemporaryExposureKeyExport::signature_infos() const {
-  // @@protoc_insertion_point(field_list:Diagnosis.TemporaryExposureKeyExport.signature_infos)
+  // @@protoc_insertion_point(field_list:diagnosis.TemporaryExposureKeyExport.signature_infos)
   return signature_infos_;
 }
 
-// repeated .Diagnosis.TemporaryExposureKey keys = 7;
+// repeated .diagnosis.TemporaryExposureKey keys = 7;
 inline int TemporaryExposureKeyExport::_internal_keys_size() const {
   return keys_.size();
 }
@@ -1258,32 +1339,32 @@ inline int TemporaryExposureKeyExport::keys_size() const {
 inline void TemporaryExposureKeyExport::clear_keys() {
   keys_.Clear();
 }
-inline ::Diagnosis::TemporaryExposureKey* TemporaryExposureKeyExport::mutable_keys(int index) {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.TemporaryExposureKeyExport.keys)
+inline ::diagnosis::TemporaryExposureKey* TemporaryExposureKeyExport::mutable_keys(int index) {
+  // @@protoc_insertion_point(field_mutable:diagnosis.TemporaryExposureKeyExport.keys)
   return keys_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TemporaryExposureKey >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TemporaryExposureKey >*
 TemporaryExposureKeyExport::mutable_keys() {
-  // @@protoc_insertion_point(field_mutable_list:Diagnosis.TemporaryExposureKeyExport.keys)
+  // @@protoc_insertion_point(field_mutable_list:diagnosis.TemporaryExposureKeyExport.keys)
   return &keys_;
 }
-inline const ::Diagnosis::TemporaryExposureKey& TemporaryExposureKeyExport::_internal_keys(int index) const {
+inline const ::diagnosis::TemporaryExposureKey& TemporaryExposureKeyExport::_internal_keys(int index) const {
   return keys_.Get(index);
 }
-inline const ::Diagnosis::TemporaryExposureKey& TemporaryExposureKeyExport::keys(int index) const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKeyExport.keys)
+inline const ::diagnosis::TemporaryExposureKey& TemporaryExposureKeyExport::keys(int index) const {
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKeyExport.keys)
   return _internal_keys(index);
 }
-inline ::Diagnosis::TemporaryExposureKey* TemporaryExposureKeyExport::_internal_add_keys() {
+inline ::diagnosis::TemporaryExposureKey* TemporaryExposureKeyExport::_internal_add_keys() {
   return keys_.Add();
 }
-inline ::Diagnosis::TemporaryExposureKey* TemporaryExposureKeyExport::add_keys() {
-  // @@protoc_insertion_point(field_add:Diagnosis.TemporaryExposureKeyExport.keys)
+inline ::diagnosis::TemporaryExposureKey* TemporaryExposureKeyExport::add_keys() {
+  // @@protoc_insertion_point(field_add:diagnosis.TemporaryExposureKeyExport.keys)
   return _internal_add_keys();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TemporaryExposureKey >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TemporaryExposureKey >&
 TemporaryExposureKeyExport::keys() const {
-  // @@protoc_insertion_point(field_list:Diagnosis.TemporaryExposureKeyExport.keys)
+  // @@protoc_insertion_point(field_list:diagnosis.TemporaryExposureKeyExport.keys)
   return keys_;
 }
 
@@ -1304,15 +1385,15 @@ inline void SignatureInfo::clear_app_bundle_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline const std::string& SignatureInfo::app_bundle_id() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.SignatureInfo.app_bundle_id)
+  // @@protoc_insertion_point(field_get:diagnosis.SignatureInfo.app_bundle_id)
   return _internal_app_bundle_id();
 }
 inline void SignatureInfo::set_app_bundle_id(const std::string& value) {
   _internal_set_app_bundle_id(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.SignatureInfo.app_bundle_id)
+  // @@protoc_insertion_point(field_set:diagnosis.SignatureInfo.app_bundle_id)
 }
 inline std::string* SignatureInfo::mutable_app_bundle_id() {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.SignatureInfo.app_bundle_id)
+  // @@protoc_insertion_point(field_mutable:diagnosis.SignatureInfo.app_bundle_id)
   return _internal_mutable_app_bundle_id();
 }
 inline const std::string& SignatureInfo::_internal_app_bundle_id() const {
@@ -1326,26 +1407,26 @@ inline void SignatureInfo::set_app_bundle_id(std::string&& value) {
   _has_bits_[0] |= 0x00000001u;
   app_bundle_id_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Diagnosis.SignatureInfo.app_bundle_id)
+  // @@protoc_insertion_point(field_set_rvalue:diagnosis.SignatureInfo.app_bundle_id)
 }
 inline void SignatureInfo::set_app_bundle_id(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000001u;
   app_bundle_id_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Diagnosis.SignatureInfo.app_bundle_id)
+  // @@protoc_insertion_point(field_set_char:diagnosis.SignatureInfo.app_bundle_id)
 }
 inline void SignatureInfo::set_app_bundle_id(const char* value, size_t size) {
   _has_bits_[0] |= 0x00000001u;
   app_bundle_id_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Diagnosis.SignatureInfo.app_bundle_id)
+  // @@protoc_insertion_point(field_set_pointer:diagnosis.SignatureInfo.app_bundle_id)
 }
 inline std::string* SignatureInfo::_internal_mutable_app_bundle_id() {
   _has_bits_[0] |= 0x00000001u;
   return app_bundle_id_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline std::string* SignatureInfo::release_app_bundle_id() {
-  // @@protoc_insertion_point(field_release:Diagnosis.SignatureInfo.app_bundle_id)
+  // @@protoc_insertion_point(field_release:diagnosis.SignatureInfo.app_bundle_id)
   if (!has_app_bundle_id()) {
     return nullptr;
   }
@@ -1359,7 +1440,7 @@ inline void SignatureInfo::set_allocated_app_bundle_id(std::string* app_bundle_i
     _has_bits_[0] &= ~0x00000001u;
   }
   app_bundle_id_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), app_bundle_id);
-  // @@protoc_insertion_point(field_set_allocated:Diagnosis.SignatureInfo.app_bundle_id)
+  // @@protoc_insertion_point(field_set_allocated:diagnosis.SignatureInfo.app_bundle_id)
 }
 
 // optional string android_package = 2;
@@ -1375,15 +1456,15 @@ inline void SignatureInfo::clear_android_package() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline const std::string& SignatureInfo::android_package() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.SignatureInfo.android_package)
+  // @@protoc_insertion_point(field_get:diagnosis.SignatureInfo.android_package)
   return _internal_android_package();
 }
 inline void SignatureInfo::set_android_package(const std::string& value) {
   _internal_set_android_package(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.SignatureInfo.android_package)
+  // @@protoc_insertion_point(field_set:diagnosis.SignatureInfo.android_package)
 }
 inline std::string* SignatureInfo::mutable_android_package() {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.SignatureInfo.android_package)
+  // @@protoc_insertion_point(field_mutable:diagnosis.SignatureInfo.android_package)
   return _internal_mutable_android_package();
 }
 inline const std::string& SignatureInfo::_internal_android_package() const {
@@ -1397,26 +1478,26 @@ inline void SignatureInfo::set_android_package(std::string&& value) {
   _has_bits_[0] |= 0x00000002u;
   android_package_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Diagnosis.SignatureInfo.android_package)
+  // @@protoc_insertion_point(field_set_rvalue:diagnosis.SignatureInfo.android_package)
 }
 inline void SignatureInfo::set_android_package(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000002u;
   android_package_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Diagnosis.SignatureInfo.android_package)
+  // @@protoc_insertion_point(field_set_char:diagnosis.SignatureInfo.android_package)
 }
 inline void SignatureInfo::set_android_package(const char* value, size_t size) {
   _has_bits_[0] |= 0x00000002u;
   android_package_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Diagnosis.SignatureInfo.android_package)
+  // @@protoc_insertion_point(field_set_pointer:diagnosis.SignatureInfo.android_package)
 }
 inline std::string* SignatureInfo::_internal_mutable_android_package() {
   _has_bits_[0] |= 0x00000002u;
   return android_package_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline std::string* SignatureInfo::release_android_package() {
-  // @@protoc_insertion_point(field_release:Diagnosis.SignatureInfo.android_package)
+  // @@protoc_insertion_point(field_release:diagnosis.SignatureInfo.android_package)
   if (!has_android_package()) {
     return nullptr;
   }
@@ -1430,7 +1511,7 @@ inline void SignatureInfo::set_allocated_android_package(std::string* android_pa
     _has_bits_[0] &= ~0x00000002u;
   }
   android_package_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), android_package);
-  // @@protoc_insertion_point(field_set_allocated:Diagnosis.SignatureInfo.android_package)
+  // @@protoc_insertion_point(field_set_allocated:diagnosis.SignatureInfo.android_package)
 }
 
 // optional string verification_key_version = 3;
@@ -1446,15 +1527,15 @@ inline void SignatureInfo::clear_verification_key_version() {
   _has_bits_[0] &= ~0x00000004u;
 }
 inline const std::string& SignatureInfo::verification_key_version() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.SignatureInfo.verification_key_version)
+  // @@protoc_insertion_point(field_get:diagnosis.SignatureInfo.verification_key_version)
   return _internal_verification_key_version();
 }
 inline void SignatureInfo::set_verification_key_version(const std::string& value) {
   _internal_set_verification_key_version(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.SignatureInfo.verification_key_version)
+  // @@protoc_insertion_point(field_set:diagnosis.SignatureInfo.verification_key_version)
 }
 inline std::string* SignatureInfo::mutable_verification_key_version() {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.SignatureInfo.verification_key_version)
+  // @@protoc_insertion_point(field_mutable:diagnosis.SignatureInfo.verification_key_version)
   return _internal_mutable_verification_key_version();
 }
 inline const std::string& SignatureInfo::_internal_verification_key_version() const {
@@ -1468,26 +1549,26 @@ inline void SignatureInfo::set_verification_key_version(std::string&& value) {
   _has_bits_[0] |= 0x00000004u;
   verification_key_version_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Diagnosis.SignatureInfo.verification_key_version)
+  // @@protoc_insertion_point(field_set_rvalue:diagnosis.SignatureInfo.verification_key_version)
 }
 inline void SignatureInfo::set_verification_key_version(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000004u;
   verification_key_version_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Diagnosis.SignatureInfo.verification_key_version)
+  // @@protoc_insertion_point(field_set_char:diagnosis.SignatureInfo.verification_key_version)
 }
 inline void SignatureInfo::set_verification_key_version(const char* value, size_t size) {
   _has_bits_[0] |= 0x00000004u;
   verification_key_version_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Diagnosis.SignatureInfo.verification_key_version)
+  // @@protoc_insertion_point(field_set_pointer:diagnosis.SignatureInfo.verification_key_version)
 }
 inline std::string* SignatureInfo::_internal_mutable_verification_key_version() {
   _has_bits_[0] |= 0x00000004u;
   return verification_key_version_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline std::string* SignatureInfo::release_verification_key_version() {
-  // @@protoc_insertion_point(field_release:Diagnosis.SignatureInfo.verification_key_version)
+  // @@protoc_insertion_point(field_release:diagnosis.SignatureInfo.verification_key_version)
   if (!has_verification_key_version()) {
     return nullptr;
   }
@@ -1501,7 +1582,7 @@ inline void SignatureInfo::set_allocated_verification_key_version(std::string* v
     _has_bits_[0] &= ~0x00000004u;
   }
   verification_key_version_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), verification_key_version);
-  // @@protoc_insertion_point(field_set_allocated:Diagnosis.SignatureInfo.verification_key_version)
+  // @@protoc_insertion_point(field_set_allocated:diagnosis.SignatureInfo.verification_key_version)
 }
 
 // optional string verification_key_id = 4;
@@ -1517,15 +1598,15 @@ inline void SignatureInfo::clear_verification_key_id() {
   _has_bits_[0] &= ~0x00000008u;
 }
 inline const std::string& SignatureInfo::verification_key_id() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.SignatureInfo.verification_key_id)
+  // @@protoc_insertion_point(field_get:diagnosis.SignatureInfo.verification_key_id)
   return _internal_verification_key_id();
 }
 inline void SignatureInfo::set_verification_key_id(const std::string& value) {
   _internal_set_verification_key_id(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.SignatureInfo.verification_key_id)
+  // @@protoc_insertion_point(field_set:diagnosis.SignatureInfo.verification_key_id)
 }
 inline std::string* SignatureInfo::mutable_verification_key_id() {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.SignatureInfo.verification_key_id)
+  // @@protoc_insertion_point(field_mutable:diagnosis.SignatureInfo.verification_key_id)
   return _internal_mutable_verification_key_id();
 }
 inline const std::string& SignatureInfo::_internal_verification_key_id() const {
@@ -1539,26 +1620,26 @@ inline void SignatureInfo::set_verification_key_id(std::string&& value) {
   _has_bits_[0] |= 0x00000008u;
   verification_key_id_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Diagnosis.SignatureInfo.verification_key_id)
+  // @@protoc_insertion_point(field_set_rvalue:diagnosis.SignatureInfo.verification_key_id)
 }
 inline void SignatureInfo::set_verification_key_id(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000008u;
   verification_key_id_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Diagnosis.SignatureInfo.verification_key_id)
+  // @@protoc_insertion_point(field_set_char:diagnosis.SignatureInfo.verification_key_id)
 }
 inline void SignatureInfo::set_verification_key_id(const char* value, size_t size) {
   _has_bits_[0] |= 0x00000008u;
   verification_key_id_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Diagnosis.SignatureInfo.verification_key_id)
+  // @@protoc_insertion_point(field_set_pointer:diagnosis.SignatureInfo.verification_key_id)
 }
 inline std::string* SignatureInfo::_internal_mutable_verification_key_id() {
   _has_bits_[0] |= 0x00000008u;
   return verification_key_id_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline std::string* SignatureInfo::release_verification_key_id() {
-  // @@protoc_insertion_point(field_release:Diagnosis.SignatureInfo.verification_key_id)
+  // @@protoc_insertion_point(field_release:diagnosis.SignatureInfo.verification_key_id)
   if (!has_verification_key_id()) {
     return nullptr;
   }
@@ -1572,7 +1653,7 @@ inline void SignatureInfo::set_allocated_verification_key_id(std::string* verifi
     _has_bits_[0] &= ~0x00000008u;
   }
   verification_key_id_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), verification_key_id);
-  // @@protoc_insertion_point(field_set_allocated:Diagnosis.SignatureInfo.verification_key_id)
+  // @@protoc_insertion_point(field_set_allocated:diagnosis.SignatureInfo.verification_key_id)
 }
 
 // optional string signature_algorithm = 5;
@@ -1588,15 +1669,15 @@ inline void SignatureInfo::clear_signature_algorithm() {
   _has_bits_[0] &= ~0x00000010u;
 }
 inline const std::string& SignatureInfo::signature_algorithm() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.SignatureInfo.signature_algorithm)
+  // @@protoc_insertion_point(field_get:diagnosis.SignatureInfo.signature_algorithm)
   return _internal_signature_algorithm();
 }
 inline void SignatureInfo::set_signature_algorithm(const std::string& value) {
   _internal_set_signature_algorithm(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.SignatureInfo.signature_algorithm)
+  // @@protoc_insertion_point(field_set:diagnosis.SignatureInfo.signature_algorithm)
 }
 inline std::string* SignatureInfo::mutable_signature_algorithm() {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.SignatureInfo.signature_algorithm)
+  // @@protoc_insertion_point(field_mutable:diagnosis.SignatureInfo.signature_algorithm)
   return _internal_mutable_signature_algorithm();
 }
 inline const std::string& SignatureInfo::_internal_signature_algorithm() const {
@@ -1610,26 +1691,26 @@ inline void SignatureInfo::set_signature_algorithm(std::string&& value) {
   _has_bits_[0] |= 0x00000010u;
   signature_algorithm_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Diagnosis.SignatureInfo.signature_algorithm)
+  // @@protoc_insertion_point(field_set_rvalue:diagnosis.SignatureInfo.signature_algorithm)
 }
 inline void SignatureInfo::set_signature_algorithm(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000010u;
   signature_algorithm_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Diagnosis.SignatureInfo.signature_algorithm)
+  // @@protoc_insertion_point(field_set_char:diagnosis.SignatureInfo.signature_algorithm)
 }
 inline void SignatureInfo::set_signature_algorithm(const char* value, size_t size) {
   _has_bits_[0] |= 0x00000010u;
   signature_algorithm_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Diagnosis.SignatureInfo.signature_algorithm)
+  // @@protoc_insertion_point(field_set_pointer:diagnosis.SignatureInfo.signature_algorithm)
 }
 inline std::string* SignatureInfo::_internal_mutable_signature_algorithm() {
   _has_bits_[0] |= 0x00000010u;
   return signature_algorithm_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline std::string* SignatureInfo::release_signature_algorithm() {
-  // @@protoc_insertion_point(field_release:Diagnosis.SignatureInfo.signature_algorithm)
+  // @@protoc_insertion_point(field_release:diagnosis.SignatureInfo.signature_algorithm)
   if (!has_signature_algorithm()) {
     return nullptr;
   }
@@ -1643,7 +1724,7 @@ inline void SignatureInfo::set_allocated_signature_algorithm(std::string* signat
     _has_bits_[0] &= ~0x00000010u;
   }
   signature_algorithm_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), signature_algorithm);
-  // @@protoc_insertion_point(field_set_allocated:Diagnosis.SignatureInfo.signature_algorithm)
+  // @@protoc_insertion_point(field_set_allocated:diagnosis.SignatureInfo.signature_algorithm)
 }
 
 // -------------------------------------------------------------------
@@ -1663,15 +1744,15 @@ inline void TemporaryExposureKey::clear_key_data() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline const std::string& TemporaryExposureKey::key_data() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKey.key_data)
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKey.key_data)
   return _internal_key_data();
 }
 inline void TemporaryExposureKey::set_key_data(const std::string& value) {
   _internal_set_key_data(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TemporaryExposureKey.key_data)
+  // @@protoc_insertion_point(field_set:diagnosis.TemporaryExposureKey.key_data)
 }
 inline std::string* TemporaryExposureKey::mutable_key_data() {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.TemporaryExposureKey.key_data)
+  // @@protoc_insertion_point(field_mutable:diagnosis.TemporaryExposureKey.key_data)
   return _internal_mutable_key_data();
 }
 inline const std::string& TemporaryExposureKey::_internal_key_data() const {
@@ -1685,26 +1766,26 @@ inline void TemporaryExposureKey::set_key_data(std::string&& value) {
   _has_bits_[0] |= 0x00000001u;
   key_data_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Diagnosis.TemporaryExposureKey.key_data)
+  // @@protoc_insertion_point(field_set_rvalue:diagnosis.TemporaryExposureKey.key_data)
 }
 inline void TemporaryExposureKey::set_key_data(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000001u;
   key_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Diagnosis.TemporaryExposureKey.key_data)
+  // @@protoc_insertion_point(field_set_char:diagnosis.TemporaryExposureKey.key_data)
 }
 inline void TemporaryExposureKey::set_key_data(const void* value, size_t size) {
   _has_bits_[0] |= 0x00000001u;
   key_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Diagnosis.TemporaryExposureKey.key_data)
+  // @@protoc_insertion_point(field_set_pointer:diagnosis.TemporaryExposureKey.key_data)
 }
 inline std::string* TemporaryExposureKey::_internal_mutable_key_data() {
   _has_bits_[0] |= 0x00000001u;
   return key_data_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline std::string* TemporaryExposureKey::release_key_data() {
-  // @@protoc_insertion_point(field_release:Diagnosis.TemporaryExposureKey.key_data)
+  // @@protoc_insertion_point(field_release:diagnosis.TemporaryExposureKey.key_data)
   if (!has_key_data()) {
     return nullptr;
   }
@@ -1718,7 +1799,7 @@ inline void TemporaryExposureKey::set_allocated_key_data(std::string* key_data) 
     _has_bits_[0] &= ~0x00000001u;
   }
   key_data_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), key_data);
-  // @@protoc_insertion_point(field_set_allocated:Diagnosis.TemporaryExposureKey.key_data)
+  // @@protoc_insertion_point(field_set_allocated:diagnosis.TemporaryExposureKey.key_data)
 }
 
 // optional int32 transmission_risk_level = 2;
@@ -1737,7 +1818,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKey::_internal_transmissi
   return transmission_risk_level_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKey::transmission_risk_level() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKey.transmission_risk_level)
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKey.transmission_risk_level)
   return _internal_transmission_risk_level();
 }
 inline void TemporaryExposureKey::_internal_set_transmission_risk_level(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -1746,7 +1827,7 @@ inline void TemporaryExposureKey::_internal_set_transmission_risk_level(::PROTOB
 }
 inline void TemporaryExposureKey::set_transmission_risk_level(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_transmission_risk_level(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TemporaryExposureKey.transmission_risk_level)
+  // @@protoc_insertion_point(field_set:diagnosis.TemporaryExposureKey.transmission_risk_level)
 }
 
 // optional int32 rolling_start_interval_number = 3;
@@ -1765,7 +1846,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKey::_internal_rolling_st
   return rolling_start_interval_number_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKey::rolling_start_interval_number() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKey.rolling_start_interval_number)
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKey.rolling_start_interval_number)
   return _internal_rolling_start_interval_number();
 }
 inline void TemporaryExposureKey::_internal_set_rolling_start_interval_number(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -1774,7 +1855,7 @@ inline void TemporaryExposureKey::_internal_set_rolling_start_interval_number(::
 }
 inline void TemporaryExposureKey::set_rolling_start_interval_number(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_rolling_start_interval_number(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TemporaryExposureKey.rolling_start_interval_number)
+  // @@protoc_insertion_point(field_set:diagnosis.TemporaryExposureKey.rolling_start_interval_number)
 }
 
 // optional int32 rolling_period = 4 [default = 144];
@@ -1793,7 +1874,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKey::_internal_rolling_pe
   return rolling_period_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 TemporaryExposureKey::rolling_period() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TemporaryExposureKey.rolling_period)
+  // @@protoc_insertion_point(field_get:diagnosis.TemporaryExposureKey.rolling_period)
   return _internal_rolling_period();
 }
 inline void TemporaryExposureKey::_internal_set_rolling_period(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -1802,14 +1883,14 @@ inline void TemporaryExposureKey::_internal_set_rolling_period(::PROTOBUF_NAMESP
 }
 inline void TemporaryExposureKey::set_rolling_period(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_rolling_period(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TemporaryExposureKey.rolling_period)
+  // @@protoc_insertion_point(field_set:diagnosis.TemporaryExposureKey.rolling_period)
 }
 
 // -------------------------------------------------------------------
 
 // TEKSignatureList
 
-// repeated .Diagnosis.TEKSignature signatures = 1;
+// repeated .diagnosis.TEKSignature signatures = 1;
 inline int TEKSignatureList::_internal_signatures_size() const {
   return signatures_.size();
 }
@@ -1819,32 +1900,32 @@ inline int TEKSignatureList::signatures_size() const {
 inline void TEKSignatureList::clear_signatures() {
   signatures_.Clear();
 }
-inline ::Diagnosis::TEKSignature* TEKSignatureList::mutable_signatures(int index) {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.TEKSignatureList.signatures)
+inline ::diagnosis::TEKSignature* TEKSignatureList::mutable_signatures(int index) {
+  // @@protoc_insertion_point(field_mutable:diagnosis.TEKSignatureList.signatures)
   return signatures_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TEKSignature >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TEKSignature >*
 TEKSignatureList::mutable_signatures() {
-  // @@protoc_insertion_point(field_mutable_list:Diagnosis.TEKSignatureList.signatures)
+  // @@protoc_insertion_point(field_mutable_list:diagnosis.TEKSignatureList.signatures)
   return &signatures_;
 }
-inline const ::Diagnosis::TEKSignature& TEKSignatureList::_internal_signatures(int index) const {
+inline const ::diagnosis::TEKSignature& TEKSignatureList::_internal_signatures(int index) const {
   return signatures_.Get(index);
 }
-inline const ::Diagnosis::TEKSignature& TEKSignatureList::signatures(int index) const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TEKSignatureList.signatures)
+inline const ::diagnosis::TEKSignature& TEKSignatureList::signatures(int index) const {
+  // @@protoc_insertion_point(field_get:diagnosis.TEKSignatureList.signatures)
   return _internal_signatures(index);
 }
-inline ::Diagnosis::TEKSignature* TEKSignatureList::_internal_add_signatures() {
+inline ::diagnosis::TEKSignature* TEKSignatureList::_internal_add_signatures() {
   return signatures_.Add();
 }
-inline ::Diagnosis::TEKSignature* TEKSignatureList::add_signatures() {
-  // @@protoc_insertion_point(field_add:Diagnosis.TEKSignatureList.signatures)
+inline ::diagnosis::TEKSignature* TEKSignatureList::add_signatures() {
+  // @@protoc_insertion_point(field_add:diagnosis.TEKSignatureList.signatures)
   return _internal_add_signatures();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Diagnosis::TEKSignature >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::diagnosis::TEKSignature >&
 TEKSignatureList::signatures() const {
-  // @@protoc_insertion_point(field_list:Diagnosis.TEKSignatureList.signatures)
+  // @@protoc_insertion_point(field_list:diagnosis.TEKSignatureList.signatures)
   return signatures_;
 }
 
@@ -1852,7 +1933,7 @@ TEKSignatureList::signatures() const {
 
 // TEKSignature
 
-// optional .Diagnosis.SignatureInfo signature_info = 1;
+// optional .diagnosis.SignatureInfo signature_info = 1;
 inline bool TEKSignature::_internal_has_signature_info() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   PROTOBUF_ASSUME(!value || signature_info_ != nullptr);
@@ -1865,35 +1946,35 @@ inline void TEKSignature::clear_signature_info() {
   if (signature_info_ != nullptr) signature_info_->Clear();
   _has_bits_[0] &= ~0x00000002u;
 }
-inline const ::Diagnosis::SignatureInfo& TEKSignature::_internal_signature_info() const {
-  const ::Diagnosis::SignatureInfo* p = signature_info_;
-  return p != nullptr ? *p : *reinterpret_cast<const ::Diagnosis::SignatureInfo*>(
-      &::Diagnosis::_SignatureInfo_default_instance_);
+inline const ::diagnosis::SignatureInfo& TEKSignature::_internal_signature_info() const {
+  const ::diagnosis::SignatureInfo* p = signature_info_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::diagnosis::SignatureInfo*>(
+      &::diagnosis::_SignatureInfo_default_instance_);
 }
-inline const ::Diagnosis::SignatureInfo& TEKSignature::signature_info() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TEKSignature.signature_info)
+inline const ::diagnosis::SignatureInfo& TEKSignature::signature_info() const {
+  // @@protoc_insertion_point(field_get:diagnosis.TEKSignature.signature_info)
   return _internal_signature_info();
 }
-inline ::Diagnosis::SignatureInfo* TEKSignature::release_signature_info() {
-  // @@protoc_insertion_point(field_release:Diagnosis.TEKSignature.signature_info)
+inline ::diagnosis::SignatureInfo* TEKSignature::release_signature_info() {
+  // @@protoc_insertion_point(field_release:diagnosis.TEKSignature.signature_info)
   _has_bits_[0] &= ~0x00000002u;
-  ::Diagnosis::SignatureInfo* temp = signature_info_;
+  ::diagnosis::SignatureInfo* temp = signature_info_;
   signature_info_ = nullptr;
   return temp;
 }
-inline ::Diagnosis::SignatureInfo* TEKSignature::_internal_mutable_signature_info() {
+inline ::diagnosis::SignatureInfo* TEKSignature::_internal_mutable_signature_info() {
   _has_bits_[0] |= 0x00000002u;
   if (signature_info_ == nullptr) {
-    auto* p = CreateMaybeMessage<::Diagnosis::SignatureInfo>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::diagnosis::SignatureInfo>(GetArenaNoVirtual());
     signature_info_ = p;
   }
   return signature_info_;
 }
-inline ::Diagnosis::SignatureInfo* TEKSignature::mutable_signature_info() {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.TEKSignature.signature_info)
+inline ::diagnosis::SignatureInfo* TEKSignature::mutable_signature_info() {
+  // @@protoc_insertion_point(field_mutable:diagnosis.TEKSignature.signature_info)
   return _internal_mutable_signature_info();
 }
-inline void TEKSignature::set_allocated_signature_info(::Diagnosis::SignatureInfo* signature_info) {
+inline void TEKSignature::set_allocated_signature_info(::diagnosis::SignatureInfo* signature_info) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
     delete signature_info_;
@@ -1909,7 +1990,7 @@ inline void TEKSignature::set_allocated_signature_info(::Diagnosis::SignatureInf
     _has_bits_[0] &= ~0x00000002u;
   }
   signature_info_ = signature_info;
-  // @@protoc_insertion_point(field_set_allocated:Diagnosis.TEKSignature.signature_info)
+  // @@protoc_insertion_point(field_set_allocated:diagnosis.TEKSignature.signature_info)
 }
 
 // optional int32 batch_num = 2;
@@ -1928,7 +2009,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 TEKSignature::_internal_batch_num() const 
   return batch_num_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 TEKSignature::batch_num() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TEKSignature.batch_num)
+  // @@protoc_insertion_point(field_get:diagnosis.TEKSignature.batch_num)
   return _internal_batch_num();
 }
 inline void TEKSignature::_internal_set_batch_num(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -1937,7 +2018,7 @@ inline void TEKSignature::_internal_set_batch_num(::PROTOBUF_NAMESPACE_ID::int32
 }
 inline void TEKSignature::set_batch_num(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_batch_num(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TEKSignature.batch_num)
+  // @@protoc_insertion_point(field_set:diagnosis.TEKSignature.batch_num)
 }
 
 // optional int32 batch_size = 3;
@@ -1956,7 +2037,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 TEKSignature::_internal_batch_size() const
   return batch_size_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 TEKSignature::batch_size() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TEKSignature.batch_size)
+  // @@protoc_insertion_point(field_get:diagnosis.TEKSignature.batch_size)
   return _internal_batch_size();
 }
 inline void TEKSignature::_internal_set_batch_size(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -1965,7 +2046,7 @@ inline void TEKSignature::_internal_set_batch_size(::PROTOBUF_NAMESPACE_ID::int3
 }
 inline void TEKSignature::set_batch_size(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_batch_size(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TEKSignature.batch_size)
+  // @@protoc_insertion_point(field_set:diagnosis.TEKSignature.batch_size)
 }
 
 // optional bytes signature = 4;
@@ -1981,15 +2062,15 @@ inline void TEKSignature::clear_signature() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline const std::string& TEKSignature::signature() const {
-  // @@protoc_insertion_point(field_get:Diagnosis.TEKSignature.signature)
+  // @@protoc_insertion_point(field_get:diagnosis.TEKSignature.signature)
   return _internal_signature();
 }
 inline void TEKSignature::set_signature(const std::string& value) {
   _internal_set_signature(value);
-  // @@protoc_insertion_point(field_set:Diagnosis.TEKSignature.signature)
+  // @@protoc_insertion_point(field_set:diagnosis.TEKSignature.signature)
 }
 inline std::string* TEKSignature::mutable_signature() {
-  // @@protoc_insertion_point(field_mutable:Diagnosis.TEKSignature.signature)
+  // @@protoc_insertion_point(field_mutable:diagnosis.TEKSignature.signature)
   return _internal_mutable_signature();
 }
 inline const std::string& TEKSignature::_internal_signature() const {
@@ -2003,26 +2084,26 @@ inline void TEKSignature::set_signature(std::string&& value) {
   _has_bits_[0] |= 0x00000001u;
   signature_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Diagnosis.TEKSignature.signature)
+  // @@protoc_insertion_point(field_set_rvalue:diagnosis.TEKSignature.signature)
 }
 inline void TEKSignature::set_signature(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000001u;
   signature_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Diagnosis.TEKSignature.signature)
+  // @@protoc_insertion_point(field_set_char:diagnosis.TEKSignature.signature)
 }
 inline void TEKSignature::set_signature(const void* value, size_t size) {
   _has_bits_[0] |= 0x00000001u;
   signature_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Diagnosis.TEKSignature.signature)
+  // @@protoc_insertion_point(field_set_pointer:diagnosis.TEKSignature.signature)
 }
 inline std::string* TEKSignature::_internal_mutable_signature() {
   _has_bits_[0] |= 0x00000001u;
   return signature_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline std::string* TEKSignature::release_signature() {
-  // @@protoc_insertion_point(field_release:Diagnosis.TEKSignature.signature)
+  // @@protoc_insertion_point(field_release:diagnosis.TEKSignature.signature)
   if (!has_signature()) {
     return nullptr;
   }
@@ -2036,7 +2117,7 @@ inline void TEKSignature::set_allocated_signature(std::string* signature) {
     _has_bits_[0] &= ~0x00000001u;
   }
   signature_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), signature);
-  // @@protoc_insertion_point(field_set_allocated:Diagnosis.TEKSignature.signature)
+  // @@protoc_insertion_point(field_set_allocated:diagnosis.TEKSignature.signature)
 }
 
 #ifdef __GNUC__
@@ -2053,7 +2134,7 @@ inline void TEKSignature::set_allocated_signature(std::string* signature) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace Diagnosis
+}  // namespace diagnosis
 
 // @@protoc_insertion_point(global_scope)
 

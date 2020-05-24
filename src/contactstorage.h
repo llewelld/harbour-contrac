@@ -4,6 +4,12 @@
 #include <QObject>
 #include <QFile>
 
+#include "contactmatch.h"
+#include "diagnosiskey.h"
+
+// Amount of data to store
+#define DAYS_TO_STORE (14)
+
 class Contrac;
 class DayStorage;
 
@@ -18,13 +24,13 @@ public:
     void rotateData();
     static void clearAllDataFiles();
     void harvestOldData();
-    QByteArrayList findRpiMatches(quint32 day, QByteArrayList rpis);
-    QByteArrayList findDtkMatches(quint32 day, QByteArrayList dtks);
+    QList<RpiDataItem> findRpiMatches(quint32 day, QList<QByteArray> const &rpis);
+    QList<ContactMatch> findDtkMatches(quint32 day, QList<DiagnosisKey> const &dtks);
 
 signals:
 
 public slots:
-    Q_INVOKABLE void addContact(quint8 interval, const QByteArray &rpi, qint16 rssi);
+    Q_INVOKABLE void addContact(ctinterval interval, const QByteArray &rpi, qint16 rssi);
     void dumpData(quint32 day = 0);
     void onTimeChanged();
 

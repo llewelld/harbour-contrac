@@ -1,6 +1,6 @@
 PACKAGENAME = harbour-contrac
 
-QT += testlib
+QT += testlib dbus
 QT -= gui
 
 TEMPLATE = app
@@ -21,29 +21,67 @@ check.commands = LD_LIBRARY_PATH=../../lib ./$$TARGET
 INCLUDEPATH += ../src/
 
 PKGCONFIG += \
-    openssl
+    openssl \
+    protobuf \
+
+LIBS += -lquazip
 
 SOURCES += \
     test_tracing.cpp
 HEADERS += \
     test_tracing.h
 
-SOURCES += \
-    ../src/bloomfilter.cpp \
-    ../src/contrac.cpp \
-    ../src/fnv.cpp \
-    ../src/hkdfsha256.cpp \
-    ../src/contactstorage.cpp \
-    ../src/rpidataitem.cpp \
-    ../src/daystorage.cpp \
-
 HEADERS += \
+    ../src/bleadvertisement.h \
+    ../src/bleadvertisementmanager.h \
+    ../src/bleascanner.h \
     ../src/bloomfilter.h \
+    ../src/contactinterval.h \
+    ../src/contactmatch.h \
+    ../src/contactmodel.h \
+    ../src/contactstorage.h \
     ../src/contrac.h \
+    ../src/contrac.pb.h \
+    ../src/controller.h \
+    ../src/daystorage.h \
+    ../src/diagnosiskey.h \
+    ../src/exposureconfiguration.h \
+    ../src/exposureinformation.h \
+    ../src/exposurenotification.h \
+    ../src/exposurenotification_p.h \
+    ../src/exposuresummary.h \
     ../src/fnv.h \
     ../src/hkdfsha256.h \
-    ../src/contactstorage.h \
     ../src/rpidataitem.h \
-    ../src/daystorage.h \
+    ../src/temporaryexposurekey.h \
+    ../src/zipistreambuffer.h \
 
-INSTALLS += target
+SOURCES += \
+    ../src/bleadvertisement.cpp \
+    ../src/bleadvertisementmanager.cpp \
+    ../src/blescanner.cpp \
+    ../src/bloomfilter.cpp \
+    ../src/contactinterval.cpp \
+    ../src/contactmatch.cpp \
+    ../src/contactmodel.cpp \
+    ../src/contactstorage.cpp \
+    ../src/contrac.cpp \
+    ../src/contrac.pb.cc \
+    ../src/controller.cpp \
+    ../src/daystorage.cpp \
+    ../src/diagnosiskey.cpp \
+    ../src/exposureconfiguration.cpp \
+    ../src/exposureinformation.cpp \
+    ../src/exposurenotification.cpp \
+    ../src/exposuresummary.cpp \
+    ../src/fnv.cpp \
+    ../src/hkdfsha256.cpp \
+    ../src/rpidataitem.cpp \
+    ../src/temporaryexposurekey.cpp \
+    ../src/zipistreambuffer.cpp \
+
+data.files = sample_diagnosis_key_file.zip
+data.path = /usr/share/$${PACKAGENAME}-tests
+
+INSTALLS += target data
+

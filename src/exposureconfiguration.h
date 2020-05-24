@@ -18,6 +18,7 @@ class ExposureConfiguration : public QObject
     Q_PROPERTY(double durationWeight READ durationWeight WRITE setDurationWeight NOTIFY durationWeightChanged)
     Q_PROPERTY(double transmissionRiskWeight READ transmissionRiskWeight WRITE setTransmissionRiskWeight NOTIFY transmissionRiskWeightChanged)
 
+    Q_PROPERTY(QList<qint32> durationAtAttenuationThresholds READ durationAtAttenuationThresholds WRITE setDurationAtAttenuationThresholds NOTIFY durationAtAttenuationThresholdsChanged)
 public:
     explicit ExposureConfiguration(QObject *parent = nullptr);
 
@@ -29,6 +30,7 @@ public:
     double daysSinceLastExposureWeight() const;
     double durationWeight() const;
     double transmissionRiskWeight() const;
+    QList<qint32> durationAtAttenuationThresholds() const;
 
     void setAttenuationScores(QList<quint32> attenuationScores);
     void setDaysSinceLastExposureScores(QList<quint32> daysSinceLastExposureScores);
@@ -38,6 +40,8 @@ public:
     void setDaysSinceLastExposureWeight(double daysSinceLastExposureWeight);
     void setDurationWeight(double durationWeight);
     void setTransmissionRiskWeight(double transmissionRiskWeight);
+    void setDurationAtAttenuationThresholds(QList<qint32> durationAtAttenuationThresholds);
+
 signals:
     void minimumRiskScoreChanged();
     void attenuationScoresChanged();
@@ -48,6 +52,7 @@ signals:
     void daysSinceLastExposureWeightChanged();
     void durationWeightChanged();
     void transmissionRiskWeightChanged();
+    void durationAtAttenuationThresholdsChanged();
 
 private:
     quint8 m_minimumRiskScore;
@@ -60,6 +65,7 @@ private:
     double m_daysSinceLastExposureWeight;
     double m_durationWeight;
     double m_transmissionRiskWeight;
+    QList<qint32> m_durationAtAttenuationThresholds;
 };
 
 #endif // EXPOSURECONFIGURATION_H

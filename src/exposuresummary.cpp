@@ -15,6 +15,19 @@ ExposureSummary::ExposureSummary(ExposureSummary const &exposureSummary)
 {
 }
 
+ExposureSummary& ExposureSummary::operator=( const ExposureSummary &other)
+{
+    if (this != &other) {
+        m_daysSinceLastExposure = other.m_daysSinceLastExposure;
+        m_matchedKeyCount = other.m_matchedKeyCount;
+        m_maximumRiskScore = other.m_maximumRiskScore;
+        m_attenuationDurations = other.m_attenuationDurations;
+        m_summationRiskScore = other.m_summationRiskScore;
+    }
+
+    return *this;
+}
+
 quint32 ExposureSummary::daysSinceLastExposure() const
 {
     return m_daysSinceLastExposure;
@@ -25,17 +38,17 @@ quint32 ExposureSummary::matchedKeyCount() const
     return m_matchedKeyCount;
 }
 
-quint32 ExposureSummary::maximumRiskScore() const
+qint32 ExposureSummary::maximumRiskScore() const
 {
     return m_maximumRiskScore;
 }
 
-QList<quint32> ExposureSummary::attenuationDurations() const
+QList<qint32> ExposureSummary::attenuationDurations() const
 {
     return m_attenuationDurations;
 }
 
-quint32 ExposureSummary::summationRiskScore() const
+qint32 ExposureSummary::summationRiskScore() const
 {
     return m_summationRiskScore;
 }
@@ -57,7 +70,7 @@ void ExposureSummary::setMatchedKeyCount(quint32 matchedKeyCount)
     }
 }
 
-void ExposureSummary::setMaximumRiskScore(quint32 maximumRiskScore)
+void ExposureSummary::setMaximumRiskScore(qint32 maximumRiskScore)
 {
     if (m_maximumRiskScore != maximumRiskScore) {
         m_maximumRiskScore = maximumRiskScore;
@@ -65,7 +78,7 @@ void ExposureSummary::setMaximumRiskScore(quint32 maximumRiskScore)
     }
 }
 
-void ExposureSummary::setAttenuationDurations(QList<quint32> attenuationDurations)
+void ExposureSummary::setAttenuationDurations(QList<qint32> attenuationDurations)
 {
     if (m_attenuationDurations != attenuationDurations) {
         m_attenuationDurations = attenuationDurations;
@@ -73,7 +86,7 @@ void ExposureSummary::setAttenuationDurations(QList<quint32> attenuationDuration
     }
 }
 
-void ExposureSummary::setSummationRiskScore(quint32 summationRiskScore)
+void ExposureSummary::setSummationRiskScore(qint32 summationRiskScore)
 {
     if (m_summationRiskScore != summationRiskScore) {
         m_summationRiskScore = summationRiskScore;

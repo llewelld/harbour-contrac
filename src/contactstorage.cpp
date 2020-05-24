@@ -9,9 +9,6 @@
 
 #include "contactstorage.h"
 
-// Amount of data to store
-#define DAYS_TO_STORE (14)
-
 // Optimised for 2048 entries
 #define BLOOM_FILTER_SIZE (32768)
 #define BLOOM_FILTER_HASHES (11)
@@ -43,7 +40,7 @@ void ContactStorage::onTimeChanged()
     }
 }
 
-void ContactStorage::addContact(quint8 interval, const QByteArray &rpi, qint16 rssi)
+void ContactStorage::addContact(ctinterval interval, const QByteArray &rpi, qint16 rssi)
 {
     m_today->addContact(interval, rpi, rssi);
 }
@@ -58,13 +55,13 @@ void ContactStorage::rotateData()
 {
 }
 
-QByteArrayList ContactStorage::findDtkMatches(quint32 day, QByteArrayList dtks)
+QList<ContactMatch> ContactStorage::findDtkMatches(quint32 day, QList<DiagnosisKey> const &dtks)
 {
     DayStorage * storage = getStorage(day);
     return storage->findDtkMatches(dtks);
 }
 
-QByteArrayList ContactStorage::findRpiMatches(quint32 day, QByteArrayList rpis)
+QList<RpiDataItem> ContactStorage::findRpiMatches(quint32 day, QList<QByteArray> const &rpis)
 {
     DayStorage * storage = getStorage(day);
     return storage->findRpiMatches(rpis);

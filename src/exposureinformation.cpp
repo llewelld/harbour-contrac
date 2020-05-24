@@ -24,32 +24,46 @@ ExposureInformation::ExposureInformation(ExposureInformation const &exposureInfo
 {
 }
 
+ExposureInformation& ExposureInformation::operator=( const ExposureInformation &other)
+{
+    if (this != &other) {
+        m_dateMillisSinceEpoch = other.m_dateMillisSinceEpoch;
+        m_durationMinutes = other.m_durationMinutes;
+        m_attenuationValue = other.m_attenuationValue;
+        m_transmissionRiskLevel = other.m_transmissionRiskLevel;
+        m_totalRiskScore = other.m_totalRiskScore;
+        m_attenuationDurations = other.m_attenuationDurations;
+    }
+
+    return *this;
+}
+
 quint64 ExposureInformation::dateMillisSinceEpoch() const
 {
     return m_dateMillisSinceEpoch;
 }
 
-quint32 ExposureInformation::durationMinutes() const
+qint32 ExposureInformation::durationMinutes() const
 {
     return m_durationMinutes;
 }
 
-quint32 ExposureInformation::attenuationValue() const
+qint32 ExposureInformation::attenuationValue() const
 {
     return m_attenuationValue;
 }
 
-quint32 ExposureInformation::transmissionRiskLevel() const
+qint32 ExposureInformation::transmissionRiskLevel() const
 {
     return m_transmissionRiskLevel;
 }
 
-quint32 ExposureInformation::totalRiskScore() const
+qint32 ExposureInformation::totalRiskScore() const
 {
     return m_totalRiskScore;
 }
 
-QList<quint32> ExposureInformation::attenuationDurations() const
+QList<qint32> ExposureInformation::attenuationDurations() const
 {
     return m_attenuationDurations;
 }
@@ -62,7 +76,7 @@ void ExposureInformation::setDateMillisSinceEpoch(quint64 dateMillisSinceEpoch)
     }
 }
 
-void ExposureInformation::setDurationMinutes(quint32 durationMinutes)
+void ExposureInformation::setDurationMinutes(qint32 durationMinutes)
 {
     if (m_durationMinutes != durationMinutes) {
         m_durationMinutes = durationMinutes;
@@ -70,7 +84,7 @@ void ExposureInformation::setDurationMinutes(quint32 durationMinutes)
     }
 }
 
-void ExposureInformation::setAttenuationValue(quint32 attenuationValue)
+void ExposureInformation::setAttenuationValue(qint32 attenuationValue)
 {
     if (m_attenuationValue != attenuationValue) {
         m_attenuationValue = attenuationValue;
@@ -78,7 +92,7 @@ void ExposureInformation::setAttenuationValue(quint32 attenuationValue)
     }
 }
 
-void ExposureInformation::setTransmissionRiskLevel(quint32 transmissionRiskLevel)
+void ExposureInformation::setTransmissionRiskLevel(qint32 transmissionRiskLevel)
 {
     if (m_transmissionRiskLevel != transmissionRiskLevel) {
         m_transmissionRiskLevel = transmissionRiskLevel;
@@ -86,7 +100,7 @@ void ExposureInformation::setTransmissionRiskLevel(quint32 transmissionRiskLevel
     }
 }
 
-void ExposureInformation::setTotalRiskScore(quint32 totalRiskScore)
+void ExposureInformation::setTotalRiskScore(qint32 totalRiskScore)
 {
     if (m_totalRiskScore != totalRiskScore) {
         m_totalRiskScore = totalRiskScore;
@@ -94,7 +108,7 @@ void ExposureInformation::setTotalRiskScore(quint32 totalRiskScore)
     }
 }
 
-void ExposureInformation::setAttenuationDurations(QList<quint32> attenuationDurations)
+void ExposureInformation::setAttenuationDurations(QList<qint32> attenuationDurations)
 {
     if (m_attenuationDurations != attenuationDurations) {
         m_attenuationDurations = attenuationDurations;

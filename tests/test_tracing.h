@@ -17,6 +17,7 @@ private slots:
     void testBloomFilter();
     void testStorage();
     void testMatch();
+    void testDiagnosis();
 };
 
 #endif // TEST_STORAGE_H

@@ -2,8 +2,8 @@
 #define EXPOSURENOTIFICATION_H
 
 // Based on Expsure Notification API
-// Version 1.2
-// April 2020
+// Version 1.3.1
+// May 2020
 
 #include <QObject>
 #include <QFile>
@@ -16,6 +16,8 @@
 #include "bleascanner.h"
 #include "controller.h"
 #include "contactstorage.h"
+
+class ExposureNotificationPrivate;
 
 class ExposureNotification : public QObject
 {
@@ -39,18 +41,18 @@ public:
         FailedInternal
     };
 
+    Status status() const;
+    bool isEnabled() const;
+    quint32 maxDiagnosisKeys() const;
+
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
     Q_INVOKABLE QList<TemporaryExposureKey> getTemporaryExposureKeyHistory();
     Q_INVOKABLE void provideDiagnosisKeys(QVector<QString> const &keyFiles, ExposureConfiguration const &configuration, QString token);
-    Q_INVOKABLE ExposureSummary const &getExposureSummary(QString const &token);
-    Q_INVOKABLE QList<ExposureInformation> getExposureInformation(QString const &token);
+    Q_INVOKABLE ExposureSummary getExposureSummary(QString const &token) const;
+    Q_INVOKABLE QList<ExposureInformation> getExposureInformation(QString const &token) const;
     Q_INVOKABLE quint32 getMaxDiagnosisKeys() const;
     Q_INVOKABLE void resetAllData();
-
-    Status status() const;
-    bool isEnabled() const;
-    quint32 maxDiagnosisKeys() const;
 
 signals:
     void statusChanged();
@@ -60,14 +62,9 @@ public slots:
     void beaconDiscovered(const QString &address, const QByteArray &rpi, qint16 rssi);
 
 private:
-    void loadDiagnosisKeys(QString const &keyFile, ExposureConfiguration const &configuration, QString token);
+    ExposureNotificationPrivate *d_ptr;
 
-private:
-    Status m_status;
-    Contrac *m_contrac;
-    BleScanner *m_scanner;
-    Controller *m_controller;
-    ContactStorage *m_contacts;
+    Q_DECLARE_PRIVATE(ExposureNotification)
 };
 
 #endif // EXPOSURENOTIFICATION_H

@@ -7,28 +7,29 @@ class ExposureInformation : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(quint64 dateMillisSinceEpoch READ dateMillisSinceEpoch WRITE setDateMillisSinceEpoch NOTIFY dateMillisSinceEpochChanged)
-    Q_PROPERTY(quint32 durationMinutes READ durationMinutes WRITE setDurationMinutes NOTIFY durationMinutesChanged)
-    Q_PROPERTY(quint32 attenuationValue READ attenuationValue WRITE setAttenuationValue NOTIFY attenuationValueChanged)
-    Q_PROPERTY(quint32 transmissionRiskLevel READ transmissionRiskLevel WRITE setTransmissionRiskLevel NOTIFY transmissionRiskLevelChanged)
-    Q_PROPERTY(quint32 totalRiskScore READ totalRiskScore WRITE setTotalRiskScore NOTIFY totalRiskScoreChanged)
-    Q_PROPERTY(QList<quint32> attenuationDurations READ attenuationDurations WRITE setAttenuationDurations NOTIFY attenuationDurationsChanged)
+    Q_PROPERTY(qint32 durationMinutes READ durationMinutes WRITE setDurationMinutes NOTIFY durationMinutesChanged)
+    Q_PROPERTY(qint32 attenuationValue READ attenuationValue WRITE setAttenuationValue NOTIFY attenuationValueChanged)
+    Q_PROPERTY(qint32 transmissionRiskLevel READ transmissionRiskLevel WRITE setTransmissionRiskLevel NOTIFY transmissionRiskLevelChanged)
+    Q_PROPERTY(qint32 totalRiskScore READ totalRiskScore WRITE setTotalRiskScore NOTIFY totalRiskScoreChanged)
+    Q_PROPERTY(QList<qint32> attenuationDurations READ attenuationDurations WRITE setAttenuationDurations NOTIFY attenuationDurationsChanged)
 public:
     explicit ExposureInformation(QObject *parent = nullptr);
-    explicit ExposureInformation(ExposureInformation const &exposureInformation);
+    ExposureInformation(ExposureInformation const &exposureInformation);
+    ExposureInformation& operator=( const ExposureInformation &other);
 
     quint64 dateMillisSinceEpoch() const;
-    quint32 durationMinutes() const;
-    quint32 attenuationValue() const;
-    quint32 transmissionRiskLevel() const;
-    quint32 totalRiskScore() const;
-    QList<quint32> attenuationDurations() const;
+    qint32 durationMinutes() const;
+    qint32 attenuationValue() const;
+    qint32 transmissionRiskLevel() const;
+    qint32 totalRiskScore() const;
+    QList<qint32> attenuationDurations() const;
 
     void setDateMillisSinceEpoch(quint64 dateMillisSinceEpoch);
-    void setDurationMinutes(quint32 durationMinutes);
-    void setAttenuationValue(quint32 attenuationValue);
-    void setTransmissionRiskLevel(quint32 transmissionRiskLevel);
-    void setTotalRiskScore(quint32 totalRiskScore);
-    void setAttenuationDurations(QList<quint32> attenuationDurations);
+    void setDurationMinutes(qint32 durationMinutes);
+    void setAttenuationValue(qint32 attenuationValue);
+    void setTransmissionRiskLevel(qint32 transmissionRiskLevel);
+    void setTotalRiskScore(qint32 totalRiskScore);
+    void setAttenuationDurations(QList<qint32> attenuationDurations);
 
 signals:
     void dateMillisSinceEpochChanged();
@@ -42,11 +43,11 @@ public slots:
 
 private:
     quint64 m_dateMillisSinceEpoch;
-    quint32 m_durationMinutes;
-    quint32 m_attenuationValue;
-    quint32 m_transmissionRiskLevel;
-    quint32 m_totalRiskScore;
-    QList<quint32> m_attenuationDurations;
+    qint32 m_durationMinutes;
+    qint32 m_attenuationValue;
+    qint32 m_transmissionRiskLevel;
+    qint32 m_totalRiskScore;
+    QList<qint32> m_attenuationDurations;
 };
 
 #endif // EXPOSUREINFORMATION_H

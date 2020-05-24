@@ -3,6 +3,10 @@
 #include "contrac.h"
 #include "contactstorage.h"
 #include "bloomfilter.h"
+#include "exposurenotification.h"
+#include "exposurenotification_p.h"
+#include "exposureconfiguration.h"
+#include "contrac.pb.h"
 
 #include "test_tracing.h"
 
@@ -312,7 +316,7 @@ void Test_Tracing::testMatch()
     int pos;
     QByteArray rpi_bytes;
     QByteArray dtk_bytes;
-    QByteArrayList matches;
+    QList<ContactMatch> matches;
 
     ContactStorage::clearAllDataFiles();
 
@@ -337,7 +341,9 @@ void Test_Tracing::testMatch()
 
         rpi_bytes = contrac->rpi();
         beacon_list.append(QPair<QByteArray, quint8>(rpi_bytes, beacon_times[pos]));
-        storage->addContact(beacon_times[pos], rpi_bytes, -64);
+
+        ctinterval interval = intervalToCtInterval(beacon_times[pos]);
+        storage->addContact(interval, rpi_bytes, -64);
     }
 
     // Generate some diagnosis data (as if provided by a diagnosis server)
@@ -353,8 +359,8 @@ void Test_Tracing::testMatch()
 
     // Check that the matching algorithm identifies the beacons that match
     for (QPair<QByteArray, quint32> diagnosis : diagnosis_list) {
-        QByteArrayList dtks;
-        dtks.append(diagnosis.first);
+        QList<DiagnosisKey> dtks;
+        dtks.append(DiagnosisKey(diagnosis.first, 0, 50, 1));
         matches = storage->findDtkMatches(diagnosis.second, dtks);
         QCOMPARE((matches.length() > 0), match_days.contains(diagnosis.second));
     }
@@ -364,6 +370,17 @@ void Test_Tracing::testMatch()
     delete contrac;
 
     ContactStorage::clearAllDataFiles();
+}
+
+void Test_Tracing::testDiagnosis()
+{
+    bool result;
+
+    ExposureNotification notification(this);
+    ExposureConfiguration config;
+    diagnosis::TemporaryExposureKeyExport keyExport;
+    result = ExposureNotificationPrivate::loadDiagnosisKeys("/usr/share/harbour-contrac-tests/sample_diagnosis_key_file.zip", &keyExport);
+    QVERIFY(result);
 }
 
 QTEST_APPLESS_MAIN(Test_Tracing)
