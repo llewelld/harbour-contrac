@@ -11,9 +11,11 @@ CONFIG += sailfishapp
 
 HEADERS += \
     src/contracd.h \
+    src/dbusinterface.h
 
 SOURCES += \
     src/contracd.cpp \
+    src/dbusinterface.cpp
 
 DISTFILES += \
     contracd.service \

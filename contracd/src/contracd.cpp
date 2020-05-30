@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "dbusinterface.h"
 #include "contracd.h"
 
 static void signal_handler(int sig);
@@ -19,6 +20,7 @@ static void signal_handler(int sig);
 int main(int argc, char *argv[])
 {
     int result;
+    DBusInterface *dbus = nullptr;
 
     QCoreApplication *app = new QCoreApplication(argc, argv);
     QCoreApplication::setOrganizationDomain("www.flypig.co.uk");
@@ -34,10 +36,17 @@ int main(int argc, char *argv[])
 
         setlinebuf(stdout);
         setlinebuf(stderr);
+
+        dbus = new DBusInterface();
+        result = dbus == nullptr ? 0 : 1;
     }
 
     if (result >= 0) {
         result = app->exec();
+    }
+
+    if (dbus) {
+        delete dbus;
     }
 
     qDebug() << "Execution finished: " << result;

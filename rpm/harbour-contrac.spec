@@ -67,6 +67,19 @@ rm -rf %{buildroot}
 %qmake5_install
 
 # >> install post
+%post
+if [ "$1" -ge 1 ]; then
+systemctl-user daemon-reload || true
+systemctl-user restart contracd.service || true
+systemctl-user enable contracd.service || true
+fi
+
+%postun
+if [ "$1" -eq 0 ]; then
+systemctl-user stop contracd.service || true
+systemctl-user disable contracd.service || true
+systemctl-user daemon-reload || true
+fi
 # << install post
 
 desktop-file-install --delete-original       \

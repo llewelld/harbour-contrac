@@ -4,6 +4,8 @@ Requires=dbus.socket bluetooth.target booster-qt5.service
 After=pre-user-session.target lipstick.service dbus.socket bluetooth.target booster-qt5.service
 
 [Service]
+Type=dbus
+BusName=uk.co.flypig.contrac
 ExecStart=/usr/bin/invoker --type=generic /usr/bin/contracd
 Restart=always
 RestartSec=5

@@ -63,3 +63,4 @@ SubPackages:
       Files:
       - '%{_libdir}/%{name}-tests/%{name}-tests'
       - '%{_datadir}/%{name}-tests/sample_diagnosis_key_file.zip'
+
