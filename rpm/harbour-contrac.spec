@@ -80,6 +80,9 @@ desktop-file-install --delete-original       \
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %{_datadir}/%{name}/translations
+%{_bindir}/contracd
+%{_libdir}/systemd/user/contracd.service
+%{_datadir}/mapplauncherd/privileges.d/contracd.privileges
 # >> files
 # << files
 

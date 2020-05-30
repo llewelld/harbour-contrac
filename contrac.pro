@@ -75,13 +75,8 @@ DISTFILES += qml/harbour-contrac.qml \
     qml/pages/About.qml \
     qml/pages/Main.qml \
     qml/components/InfoRow.qml \
-    rpm/harbour-contrac.changes.in \
-    rpm/harbour-contrac.changes.run.in \
-    rpm/harbour-contrac.spec \
-    rpm/harbour-contrac.yaml \
     src/contrac.proto \
     translations/*.ts \
-    harbour-contrac.desktop
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
 
@@ -107,5 +102,4 @@ QT += dbus
 LIBS += -lquazip
 
 OTHER_FILES += \
-    README.md \
     icons/*.svg
