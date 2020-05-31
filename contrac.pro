@@ -21,9 +21,13 @@ VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}-$${VERSION_BUILD}
 
 CONFIG += sailfishapp
 
-HEADERS +=
+HEADERS += \
+    src/dbusproxy.h \
+    src/contactmodel.h
 
-SOURCES += src/harbour-contrac.cpp
+SOURCES += src/harbour-contrac.cpp \
+    src/dbusproxy.cpp \
+    src/contactmodel.cpp
 
 DISTFILES += qml/harbour-contrac.qml \
     qml/cover/CoverPage.qml \

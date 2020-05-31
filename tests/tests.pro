@@ -32,13 +32,13 @@ HEADERS += \
     test_tracing.h
 
 HEADERS += \
+    ../src/contactmodel.h \
     ../contracd/src/bleadvertisement.h \
     ../contracd/src/bleadvertisementmanager.h \
     ../contracd/src/bleascanner.h \
     ../contracd/src/bloomfilter.h \
     ../contracd/src/contactinterval.h \
     ../contracd/src/contactmatch.h \
-    ../contracd/src/contactmodel.h \
     ../contracd/src/contactstorage.h \
     ../contracd/src/contrac.h \
     ../contracd/src/contrac.pb.h \
@@ -57,13 +57,13 @@ HEADERS += \
     ../contracd/src/zipistreambuffer.h \
 
 SOURCES += \
+    ../src/contactmodel.cpp \
     ../contracd/src/bleadvertisement.cpp \
     ../contracd/src/bleadvertisementmanager.cpp \
     ../contracd/src/blescanner.cpp \
     ../contracd/src/bloomfilter.cpp \
     ../contracd/src/contactinterval.cpp \
     ../contracd/src/contactmatch.cpp \
-    ../contracd/src/contactmodel.cpp \
     ../contracd/src/contactstorage.cpp \
     ../contracd/src/contrac.cpp \
     ../contracd/src/contrac.pb.cc \

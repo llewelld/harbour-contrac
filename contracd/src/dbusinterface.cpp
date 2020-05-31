@@ -5,6 +5,8 @@
 DBusInterface::DBusInterface(QObject *parent)
     : QObject(parent)
     , m_connection(QDBusConnection::sessionBus())
+    , m_sentCount(0)
+    , m_receivedCount(0)
 {
     bool result;
 
@@ -12,12 +14,14 @@ DBusInterface::DBusInterface(QObject *parent)
 
     connect(&m_exposureNotification, &ExposureNotification::statusChanged, this, &DBusInterface::statusChanged);
     connect(&m_exposureNotification, &ExposureNotification::isEnabledChanged, this, &DBusInterface::isEnabledChanged);
+    connect(&m_exposureNotification, &ExposureNotification::beaconSent, this, &DBusInterface::incrementSentCount);
+    connect(&m_exposureNotification, &ExposureNotification::beaconReceived, this, &DBusInterface::incrementReceiveCount);
 
     result = m_connection.registerService(QStringLiteral(SERVICE_NAME));
     qDebug() << "CONTRAC: service registration: " << result;
 
     if (result) {
-        result = m_connection.registerObject(SERVICE_PATH, this, QDBusConnection::ExportAllInvokables | QDBusConnection::ExportAllSignal |QDBusConnection::ExportAllProperties);
+        result = m_connection.registerObject(SERVICE_PATH, this, QDBusConnection::ExportAllInvokables | QDBusConnection::ExportAllSignals | QDBusConnection::ExportAllProperties);
         qDebug() << "CONTRAC: object registration: " << result;
     }
 
@@ -31,6 +35,11 @@ DBusInterface::DBusInterface(QObject *parent)
 DBusInterface::~DBusInterface()
 {
     bool result;
+
+    disconnect(&m_exposureNotification, &ExposureNotification::statusChanged, this, &DBusInterface::statusChanged);
+    disconnect(&m_exposureNotification, &ExposureNotification::isEnabledChanged, this, &DBusInterface::isEnabledChanged);
+    disconnect(&m_exposureNotification, &ExposureNotification::beaconSent, this, &DBusInterface::incrementSentCount);
+    disconnect(&m_exposureNotification, &ExposureNotification::beaconReceived, this, &DBusInterface::incrementReceiveCount);
 
     m_connection.unregisterObject(SERVICE_PATH);
     result = m_connection.unregisterService(QStringLiteral(SERVICE_NAME));
@@ -105,5 +114,31 @@ void DBusInterface::resetAllData()
 {
     qDebug() << "CONTRAC: resetAllData()";
     m_exposureNotification.resetAllData();
+}
+
+quint32 DBusInterface::receivedCount() const
+{
+    return m_receivedCount;
+}
+
+quint32 DBusInterface::sentCount() const
+{
+    return m_sentCount;
+}
+
+void DBusInterface::incrementReceiveCount()
+{
+    qDebug() << "CONTRAC: incrementReceiveCount()";
+    ++m_receivedCount;
+    qDebug() << "CONTRAC: receiveCount:" << m_receivedCount;
+    emit receivedCountChanged();
+}
+
+void DBusInterface::incrementSentCount()
+{
+    qDebug() << "CONTRAC: incrementSentCount()";
+    ++m_sentCount;
+    qDebug() << "CONTRAC: receiveCount:" << m_sentCount;
+    emit sentCountChanged();
 }
 

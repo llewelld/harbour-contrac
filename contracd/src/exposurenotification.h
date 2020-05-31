@@ -58,6 +58,9 @@ signals:
     void statusChanged();
     void isEnabledChanged();
 
+    void beaconSent();
+    void beaconReceived();
+
 public slots:
     void beaconDiscovered(const QString &address, const QByteArray &rpi, qint16 rssi);
     void intervalUpdate();

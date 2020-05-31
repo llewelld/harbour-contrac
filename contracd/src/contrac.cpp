@@ -196,6 +196,7 @@ QByteArray Contrac::dtk() const
 
 QByteArray Contrac::rpi() const
 {
+    qDebug() << "CONTRAC: returning Rpi";
     return m_rpi;
 }
 
@@ -250,10 +251,10 @@ void Contrac::setTime(const QDateTime &time)
 
 void Contrac::updateKeys()
 {
-    //QDateTime now = QDateTime::currentDateTime();
-    QDateTime time = m_time.addSecs(1);
+    QDateTime now = QDateTime::currentDateTime();
+    //QDateTime time = m_time.addSecs(10 * 60);
 
-    setTime(time);
+    setTime(now);
 }
 
 quint32 Contrac::epochToDayNumber(quint64 epoch)

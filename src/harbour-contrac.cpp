@@ -8,13 +8,7 @@
 
 #include <QtQuick>
 
-#include "controller.h"
-#include "contrac.h"
-#include "bleascanner.h"
-#include "contactmodel.h"
-#include "contactstorage.h"
-
-#include "bloomfilter.h"
+#include "dbusproxy.h"
 #include <openssl/rand.h>
 
 #include <sailfishapp.h>
@@ -35,11 +29,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("www.flypig.co.uk");
     QCoreApplication::setApplicationName("harbour-contrac");
 
-    qmlRegisterType<Controller>("uk.co.flypig", 1, 0, "Controller");
-    qmlRegisterType<Contrac>("uk.co.flypig", 1, 0, "Contrac");
-    qmlRegisterType<BleScanner>("uk.co.flypig", 1, 0, "BleScanner");
-    qmlRegisterType<ContactModel>("uk.co.flypig", 1, 0, "ContactModel");
-    qmlRegisterType<ContactStorage>("uk.co.flypig", 1, 0, "ContactStorage");
+    qmlRegisterType<DBusProxy>("uk.co.flypig", 1, 0, "DBusProxy");
 
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));

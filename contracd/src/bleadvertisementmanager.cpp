@@ -52,10 +52,10 @@ void BleAdvertisementManager::onPropertiesChanged(const QString &interface, cons
 {
     qDebug() << "Property changed";
     qDebug() << "   Interface: " << interface;
-    for (const QString key : changed.keys()) {
+    for (const QString &key : changed.keys()) {
         qDebug() << "   Changed: " << key << " = " << changed[key];
     }
-    for (const QString invalid : invalidated) {
+    for (const QString &invalid : invalidated) {
         qDebug() << "   Invalidated: " << invalid;
     }
 }

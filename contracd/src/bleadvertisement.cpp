@@ -8,6 +8,7 @@
 
 #include <QDBusConnection>
 #include <QDebug>
+#include <QDBusError>
 
 #include "bleadvertisement.h"
 
@@ -45,24 +46,21 @@ void BleAdvertisement::registerDBus(const QString &path)
         m_path = path;
 
         qDebug() << "Connecting";
-        result = QDBusConnection::sessionBus().isConnected();
+        result = QDBusConnection::systemBus().isConnected();
 
         if (!result) {
             qDebug() << "Not connected";
         }
 
-        qDebug() << "Registering service";
-        result = QDBusConnection::systemBus().registerService(BLE_SERVICE_NAME);
-        if (!result) {
-            qDebug() << "Service registration failed";
+        if (result) {
+            qDebug() << "Registering object";
+            result = QDBusConnection::systemBus().registerObject(m_path, QStringLiteral(BLE_OBJECT_INTERFACE), this, EXPORT_OPTIONS);
+            if (!result) {
+                qDebug() << "Object registration failed";
+            }
         }
 
-        qDebug() << "Registering object";
-        result = QDBusConnection::systemBus().registerObject(m_path, QStringLiteral(BLE_OBJECT_INTERFACE), this, EXPORT_OPTIONS);
-        if (!result) {
-            qDebug() << "Object registration failed";
-        }
-        m_registered = true;
+        m_registered = result;
     }
 }
 
@@ -70,8 +68,6 @@ void BleAdvertisement::unRegisterDBus()
 {
     if (m_registered) {
         QDBusConnection::systemBus().unregisterObject(m_path);
-
-        QDBusConnection::systemBus().unregisterService(BLE_SERVICE_NAME);
 
         m_registered = false;
     }

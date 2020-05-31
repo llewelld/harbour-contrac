@@ -18,7 +18,6 @@ HEADERS += \
     src/bloomfilter.h \
     src/contactinterval.h \
     src/contactmatch.h \
-    src/contactmodel.h \
     src/contactstorage.h \
     src/contrac.h \
     src/contrac.pb.h \
@@ -45,7 +44,6 @@ SOURCES += \
     src/bloomfilter.cpp \
     src/contactinterval.cpp \
     src/contactmatch.cpp \
-    src/contactmodel.cpp \
     src/contactstorage.cpp \
     src/contrac.cpp \
     src/contrac.pb.cc \

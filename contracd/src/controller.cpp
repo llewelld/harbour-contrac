@@ -19,8 +19,8 @@ Controller::Controller(QObject *parent) : QObject(parent)
     data.insert("0000fd6f-0000-1000-8000-00805f9b34fb", QByteArray("Hello"));
     m_bleadvert->setServiceData(data);
     m_bleadvert->setLocalName(QStringLiteral("flypig"));
-    m_bleadvert->setDuration(5);
-    m_bleadvert->setTimeout(5);
+    m_bleadvert->setDuration(10 * 60);
+    m_bleadvert->setTimeout(10 * 60);
 
     m_bleadvert->registerDBus(QStringLiteral("/uk/co/flypig/advert1"));
 
@@ -61,6 +61,7 @@ void Controller::setRpi(QByteArray rpi)
     bool registered = m_registered;
 
     if (registered) {
+        qDebug() << "CONTRAC: unregistering";
         unRegisterAdvert();
     }
     QVariantMap data;

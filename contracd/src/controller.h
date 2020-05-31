@@ -34,6 +34,8 @@ public:
 signals:
     void activeChanged();
 
+    void beaconSent();
+
 public slots:
 
 private:

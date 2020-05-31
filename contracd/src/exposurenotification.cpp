@@ -61,29 +61,36 @@ ExposureNotificationPrivate::ExposureNotificationPrivate(ExposureNotification *q
 {
     bool result;
 
+    qDebug() << "Contrac";
     m_contrac = new Contrac(q);
-    m_scanner = new BleScanner(q);
+    qDebug() << "Controller";
     m_controller = new Controller(q);
+    qDebug() << "Scanner";
+    m_scanner = new BleScanner(q);
+    qDebug() << "Contacts";
     m_contacts = new ContactStorage(m_contrac);
+    qDebug() << "Timer";
     // Update at least every ten minutes when active
-    m_intervalUpdate.setInterval(60 * 1000);
+    m_intervalUpdate.setInterval(5 * 1000);
     m_intervalUpdate.setSingleShot(false);
 
-    q_ptr->connect(m_contrac, &Contrac::rpiChanged, q_ptr, &ExposureNotification::onRpiChanged);
-    q_ptr->connect(m_contrac, &Contrac::timeChanged, m_contacts, &ContactStorage::onTimeChanged);
-    q_ptr->connect(&m_intervalUpdate, &QTimer::timeout, q_ptr, &ExposureNotification::intervalUpdate);
-
+    qDebug() << "Load";
     result = m_contrac->loadTracingKey();
     if (!result) {
         m_contrac->generateTracingKey();
         m_contrac->saveTracingKey();
     }
 
-    m_contrac->updateKeys();
+    qDebug() << "Connections";
+    q_ptr->connect(m_contrac, &Contrac::rpiChanged, q_ptr, &ExposureNotification::onRpiChanged);
+    q_ptr->connect(m_contrac, &Contrac::timeChanged, m_contacts, &ContactStorage::onTimeChanged);
+    q_ptr->connect(&m_intervalUpdate, &QTimer::timeout, q_ptr, &ExposureNotification::intervalUpdate);
+    q_ptr->connect(m_scanner, &BleScanner::beaconDiscovered, q_ptr, &ExposureNotification::beaconDiscovered);
 }
 
 ExposureNotificationPrivate::~ExposureNotificationPrivate()
 {
+    q_ptr->disconnect(m_scanner, &BleScanner::beaconDiscovered, q_ptr, &ExposureNotification::beaconDiscovered);
     q_ptr->disconnect(&m_intervalUpdate, &QTimer::timeout, q_ptr, &ExposureNotification::intervalUpdate);
     q_ptr->disconnect(m_contrac, &Contrac::timeChanged, m_contacts, &ContactStorage::onTimeChanged);
     q_ptr->disconnect(m_contrac, &Contrac::rpiChanged, q_ptr, &ExposureNotification::onRpiChanged);
@@ -125,11 +132,11 @@ void ExposureNotification::start()
 {
     Q_D(ExposureNotification);
 
+    d->m_contrac->updateKeys();
+
     if (!d->m_scanner->scan()) {
         d->m_scanner->setScan(true);
         d->m_controller->registerAdvert();
-
-        connect(d->m_scanner, &BleScanner::beaconDiscovered, this, &ExposureNotification::beaconDiscovered);
     }
     d->m_intervalUpdate.start();
 }
@@ -140,8 +147,6 @@ void ExposureNotification::stop()
 
     d->m_intervalUpdate.stop();
     if (d->m_scanner->scan()) {
-        disconnect(d->m_scanner, &BleScanner::beaconDiscovered, this, &ExposureNotification::beaconDiscovered);
-
         d->m_scanner->setScan(false);
         d->m_controller->unRegisterAdvert();
     }
@@ -435,18 +440,22 @@ void ExposureNotification::resetAllData()
 void ExposureNotification::beaconDiscovered(const QString &, const QByteArray &rpi, qint16 rssi)
 {
     Q_D(ExposureNotification);
+    qDebug() << "Beacon discovered";
 
     qint64 millisecondsSinceEpoch = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
     ctinterval interval = millisecondsToCtInterval(millisecondsSinceEpoch);
     d->m_contrac->updateKeys();
     d->m_contacts->addContact(interval, rpi, rssi);
+
+    emit beaconReceived();
 }
 
 void ExposureNotification::intervalUpdate()
 {
     Q_D(ExposureNotification);
 
+    qDebug() << "intervalUpdate";
     d->m_contrac->updateKeys();
 }
 
@@ -455,7 +464,10 @@ void ExposureNotification::onRpiChanged()
     Q_D(ExposureNotification);
     QByteArray rpi;
 
+    qDebug() << "CONTRAC: onRpiChanged";
     rpi = d->m_contrac->rpi();
     d->m_controller->setRpi(rpi);
+
+    emit beaconSent();
 }
 
