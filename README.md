@@ -16,7 +16,16 @@ More info: https://www.flypig.co.uk/contrac
 6.  Unit tests - DONE
 7.  Risk calculation - DONE
 8.  Align with GApple API - DONE
-9.  Run as a service - WORKING
+9.  Run as a service - DONE
+10. Service dbus interface - WORKING
 10. Notification download
 11. DTK upload
+
+## Contact Tracing Apps
+
+Relevant Google/Apple or DP-3T protocol apps.
+
+1. SwissCovid (DP-3T): https://github.com/DP-3T/dp3t-app-android-ch
+2. Covid-Warn-App (GA): https://github.com/corona-warn-app
+3. Immuni (GA): https://github.com/immuni-app
 
