@@ -60,6 +60,8 @@ signals:
 
 public slots:
     void beaconDiscovered(const QString &address, const QByteArray &rpi, qint16 rssi);
+    void intervalUpdate();
+    void onRpiChanged();
 
 private:
     ExposureNotificationPrivate *d_ptr;

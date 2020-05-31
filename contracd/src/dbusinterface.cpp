@@ -10,6 +10,9 @@ DBusInterface::DBusInterface(QObject *parent)
 
     qDebug() << "CONTRAC: Initialising the dbus interface";
 
+    connect(&m_exposureNotification, &ExposureNotification::statusChanged, this, &DBusInterface::statusChanged);
+    connect(&m_exposureNotification, &ExposureNotification::isEnabledChanged, this, &DBusInterface::isEnabledChanged);
+
     result = m_connection.registerService(QStringLiteral(SERVICE_NAME));
     qDebug() << "CONTRAC: service registration: " << result;
 
@@ -41,10 +44,66 @@ DBusInterface::~DBusInterface()
 void DBusInterface::start()
 {
     qDebug() << "CONTRAC: start()";
+    m_exposureNotification.start();
 }
 
 void DBusInterface::stop()
 {
     qDebug() << "CONTRAC: stop()";
+    m_exposureNotification.stop();
+}
+
+ExposureNotification::Status DBusInterface::status() const
+{
+    qDebug() << "CONTRAC: statis()";
+    return m_exposureNotification.status();
+}
+
+bool DBusInterface::isEnabled() const
+{
+    qDebug() << "CONTRAC: isEnabled()";
+    return m_exposureNotification.isEnabled();
+}
+
+quint32 DBusInterface::maxDiagnosisKeys() const
+{
+    qDebug() << "CONTRAC: maxDiagnosisKeys()";
+    return m_exposureNotification.maxDiagnosisKeys();
+}
+
+QList<TemporaryExposureKey> DBusInterface::getTemporaryExposureKeyHistory()
+{
+    qDebug() << "CONTRAC: getTemporaryExposureKeyHistory()";
+    return m_exposureNotification.getTemporaryExposureKeyHistory();
+}
+
+void DBusInterface::provideDiagnosisKeys(QVector<QString> const &keyFiles, ExposureConfiguration const &configuration, QString token)
+{
+    qDebug() << "CONTRAC: provideDiagnosisKeys()";
+    m_exposureNotification.provideDiagnosisKeys(keyFiles, configuration, token);
+}
+
+ExposureSummary DBusInterface::getExposureSummary(QString const &token) const
+{
+    qDebug() << "CONTRAC: getExposureSummary()";
+    return m_exposureNotification.getExposureSummary(token);
+}
+
+QList<ExposureInformation> DBusInterface::getExposureInformation(QString const &token) const
+{
+    qDebug() << "CONTRAC: getExposureInformation()";
+    return m_exposureNotification.getExposureInformation(token);
+}
+
+quint32 DBusInterface::getMaxDiagnosisKeys() const
+{
+    qDebug() << "CONTRAC: getMaxDiagnosisKeys()";
+    return m_exposureNotification.getMaxDiagnosisKeys();
+}
+
+void DBusInterface::resetAllData()
+{
+    qDebug() << "CONTRAC: resetAllData()";
+    m_exposureNotification.resetAllData();
 }
 

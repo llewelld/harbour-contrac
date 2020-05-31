@@ -37,6 +37,7 @@ void ContactStorage::onTimeChanged()
     if (day != m_today->dayNumber()) {
         delete m_today;
         m_today = new DayStorage(day, this);
+        harvestOldData();
     }
 }
 

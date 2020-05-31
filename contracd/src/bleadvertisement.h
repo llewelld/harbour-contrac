@@ -13,13 +13,13 @@
 #include <QVariantMap>
 #include <QDBusAbstractAdaptor>
 
-#define SERVICE_NAME "org.bluez"
-#define OBJECT_INTERFACE "org.bluez.LEAdvertisement1"
+#define BLE_SERVICE_NAME "org.bluez"
+#define BLE_OBJECT_INTERFACE "org.bluez.LEAdvertisement1"
 
 class BleAdvertisement : public QDBusAbstractAdaptor
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", OBJECT_INTERFACE)
+    Q_CLASSINFO("D-Bus Interface", BLE_OBJECT_INTERFACE)
 
     Q_PROPERTY(QString Type READ type WRITE setType NOTIFY typeChanged)
     Q_PROPERTY(QStringList ServiceUUIDs READ serviceUUIDs WRITE setServiceUUIDs NOTIFY serviceUUIDsChanged)

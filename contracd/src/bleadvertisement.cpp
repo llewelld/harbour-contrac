@@ -52,13 +52,13 @@ void BleAdvertisement::registerDBus(const QString &path)
         }
 
         qDebug() << "Registering service";
-        result = QDBusConnection::systemBus().registerService(SERVICE_NAME);
+        result = QDBusConnection::systemBus().registerService(BLE_SERVICE_NAME);
         if (!result) {
             qDebug() << "Service registration failed";
         }
 
         qDebug() << "Registering object";
-        result = QDBusConnection::systemBus().registerObject(m_path, QStringLiteral(OBJECT_INTERFACE), this, EXPORT_OPTIONS);
+        result = QDBusConnection::systemBus().registerObject(m_path, QStringLiteral(BLE_OBJECT_INTERFACE), this, EXPORT_OPTIONS);
         if (!result) {
             qDebug() << "Object registration failed";
         }
@@ -71,7 +71,7 @@ void BleAdvertisement::unRegisterDBus()
     if (m_registered) {
         QDBusConnection::systemBus().unregisterObject(m_path);
 
-        QDBusConnection::systemBus().unregisterService(SERVICE_NAME);
+        QDBusConnection::systemBus().unregisterService(BLE_SERVICE_NAME);
 
         m_registered = false;
     }

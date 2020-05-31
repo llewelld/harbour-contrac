@@ -2,6 +2,7 @@
 #define EXPOSURENOTIFICATION_P_H
 
 #include <QObject>
+#include <QTimer>
 
 #include "exposureinformation.h"
 #include "contrac.h"
@@ -33,6 +34,7 @@ public:
     BleScanner *m_scanner;
     Controller *m_controller;
     ContactStorage *m_contacts;
+    QTimer m_intervalUpdate;
 };
 
 #endif // EXPOSURENOTIFICATION_P_H

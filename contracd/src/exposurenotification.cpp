@@ -65,17 +65,28 @@ ExposureNotificationPrivate::ExposureNotificationPrivate(ExposureNotification *q
     m_scanner = new BleScanner(q);
     m_controller = new Controller(q);
     m_contacts = new ContactStorage(m_contrac);
+    // Update at least every ten minutes when active
+    m_intervalUpdate.setInterval(60 * 1000);
+    m_intervalUpdate.setSingleShot(false);
+
+    q_ptr->connect(m_contrac, &Contrac::rpiChanged, q_ptr, &ExposureNotification::onRpiChanged);
+    q_ptr->connect(m_contrac, &Contrac::timeChanged, m_contacts, &ContactStorage::onTimeChanged);
+    q_ptr->connect(&m_intervalUpdate, &QTimer::timeout, q_ptr, &ExposureNotification::intervalUpdate);
 
     result = m_contrac->loadTracingKey();
     if (!result) {
         m_contrac->generateTracingKey();
         m_contrac->saveTracingKey();
     }
+
+    m_contrac->updateKeys();
 }
 
 ExposureNotificationPrivate::~ExposureNotificationPrivate()
 {
-    // Do nothing
+    q_ptr->disconnect(&m_intervalUpdate, &QTimer::timeout, q_ptr, &ExposureNotification::intervalUpdate);
+    q_ptr->disconnect(m_contrac, &Contrac::timeChanged, m_contacts, &ContactStorage::onTimeChanged);
+    q_ptr->disconnect(m_contrac, &Contrac::rpiChanged, q_ptr, &ExposureNotification::onRpiChanged);
 }
 
 ExposureNotification::ExposureNotification(QObject *parent)
@@ -120,12 +131,14 @@ void ExposureNotification::start()
 
         connect(d->m_scanner, &BleScanner::beaconDiscovered, this, &ExposureNotification::beaconDiscovered);
     }
+    d->m_intervalUpdate.start();
 }
 
 void ExposureNotification::stop()
 {
     Q_D(ExposureNotification);
 
+    d->m_intervalUpdate.stop();
     if (d->m_scanner->scan()) {
         disconnect(d->m_scanner, &BleScanner::beaconDiscovered, this, &ExposureNotification::beaconDiscovered);
 
@@ -169,6 +182,8 @@ void ExposureNotification::provideDiagnosisKeys(QVector<QString> const &keyFiles
     int pos;
     QList<DiagnosisKey> diagnosisKeys[DAYS_TO_STORE];
     QList<ExposureInformation> exposureInfoList;
+
+    d->m_contrac->updateKeys();
 
     // Values will accumulate
     // We assume the same keyFiles won't be provided more than once
@@ -411,6 +426,7 @@ void ExposureNotification::resetAllData()
 {
     Q_D(ExposureNotification);
 
+    d->m_contrac->updateKeys();
     d->m_contrac->generateTracingKey();
     d->m_contrac->saveTracingKey();
     d->m_contacts->clearAllDataFiles();
@@ -423,5 +439,23 @@ void ExposureNotification::beaconDiscovered(const QString &, const QByteArray &r
     qint64 millisecondsSinceEpoch = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
     ctinterval interval = millisecondsToCtInterval(millisecondsSinceEpoch);
+    d->m_contrac->updateKeys();
     d->m_contacts->addContact(interval, rpi, rssi);
 }
+
+void ExposureNotification::intervalUpdate()
+{
+    Q_D(ExposureNotification);
+
+    d->m_contrac->updateKeys();
+}
+
+void ExposureNotification::onRpiChanged()
+{
+    Q_D(ExposureNotification);
+    QByteArray rpi;
+
+    rpi = d->m_contrac->rpi();
+    d->m_controller->setRpi(rpi);
+}
+
