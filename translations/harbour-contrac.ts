@@ -75,12 +75,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_sent">
-        <location filename="../qml/pages/Main.qml" line="57"/>
+        <location filename="../qml/pages/Main.qml" line="58"/>
         <source>Sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_received">
-        <location filename="../qml/pages/Main.qml" line="65"/>
+        <location filename="../qml/pages/Main.qml" line="66"/>
         <source>Received</source>
         <oldsource>Beacons received</oldsource>
         <translation type="unfinished"></translation>

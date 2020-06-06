@@ -1,12 +1,12 @@
 #include <QtTest>
 
-#include "contrac.h"
-#include "contactstorage.h"
-#include "bloomfilter.h"
-#include "exposurenotification.h"
-#include "exposurenotification_p.h"
-#include "exposureconfiguration.h"
-#include "contrac.pb.h"
+#include "../contracd/src/contrac.h"
+#include "../contracd/src/contactstorage.h"
+#include "../contracd/src/bloomfilter.h"
+#include "../contracd/src/exposurenotification.h"
+#include "../contracd/src/exposurenotification_p.h"
+#include "../contracd/src/exposureconfiguration.h"
+#include "../contracd/src/contrac.pb.h"
 
 #include "test_tracing.h"
 

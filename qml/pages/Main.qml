@@ -37,7 +37,8 @@ Page {
                 //% "Scan and send active"
                 text: qsTrId("contrac-main_scan")
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                automaticCheck: true;
+                checked: dbusproxy.isEnabled
+                automaticCheck: false
                 onClicked: {
                     if (checked) {
                         console.log("Clicked to start")

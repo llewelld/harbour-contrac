@@ -2,6 +2,7 @@
 #include <QDBusInterface>
 #include <QDBusPendingReply>
 #include <QDBusReply>
+#include <QDBusMetaType>
 
 #include "dbusproxy.h"
 
@@ -11,6 +12,14 @@ DBusProxy::DBusProxy(QObject *parent)
     , m_sentCount(0)
 {
     bool result;
+
+    qDBusRegisterMetaType<TemporaryExposureKey>();
+    qDBusRegisterMetaType<ExposureInformation>();
+    qDBusRegisterMetaType<ExposureSummary>();
+    qDBusRegisterMetaType<ExposureConfiguration>();
+    qDBusRegisterMetaType<TemporaryExposureKeyList>();
+    qDBusRegisterMetaType<ExposureInformationList>();
+
     m_interface = new QDBusInterface(QStringLiteral(SERVICE_NAME), QStringLiteral("/"), QString(), QDBusConnection::sessionBus(), this);
 
     QStringList argumentMatch;
@@ -18,53 +27,21 @@ DBusProxy::DBusProxy(QObject *parent)
     QString signature;
 
     qDebug() << "Connecting property change";
-    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "receivedCountChanged", argumentMatch, signature, this, SLOT(onReceiveCountChanged()));
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "receivedCountChanged", argumentMatch, signature, this, SIGNAL(receivedCountChanged()));
     qDebug() << "Connection receivedCountChanged result: " << result;
 
-    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "sentCountChanged", argumentMatch, signature, this, SLOT(onSentCountChanged()));
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "sentCountChanged", argumentMatch, signature, this, SIGNAL(sentCountChanged()));
     qDebug() << "Connection sentCountChanged result: " << result;
+
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "statusChanged", argumentMatch, signature, this, SIGNAL(statusChanged()));
+    qDebug() << "Connection statusChanged result: " << result;
+
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "isEnabledChanged", argumentMatch, signature, this, SIGNAL(isEnabledChanged()));
+    qDebug() << "Connection isEnabledChanged result: " << result;
 }
 
 DBusProxy::~DBusProxy()
 {
-}
-
-void DBusProxy::onReceiveCountChanged()
-{
-    qDebug() << "onReceiveCountChanged";
-    QDBusReply<quint32> reply = m_interface->call("receivedCount");
-    m_receivedCount = reply;
-    qDebug() << "onReceiveCountChanged: " << m_receivedCount;
-    emit receivedCountChanged();
-}
-
-void DBusProxy::onSentCountChanged()
-{
-    qDebug() << "onSentCountChanged";
-    QDBusReply<quint32> reply = m_interface->call("sentCount");
-    m_sentCount = reply;
-    qDebug() << "onSentCountChanged: " << m_sentCount;
-    emit sentCountChanged();
-}
-
-void DBusProxy::onPropertiesChanged(const QString &interface, const QVariantMap &changed, const QStringList &invalidated)
-{
-    qDebug() << "Property changed";
-    qDebug() << "   Interface: " << interface;
-    for (const QString &key : changed.keys()) {
-        qDebug() << "   Changed: " << key << " = " << changed[key];
-        if (key == "receivedCount") {
-            m_receivedCount = changed[key].toUInt();
-            emit receivedCountChanged();
-        }
-        if (key == "sentCount") {
-            m_sentCount = changed[key].toUInt();
-            emit sentCountChanged();
-        }
-    }
-    for (const QString &invalid : invalidated) {
-        qDebug() << "   Invalidated: " << invalid;
-    }
 }
 
 void DBusProxy::start()
@@ -73,7 +50,7 @@ void DBusProxy::start()
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
 
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher* call) {
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher* call) {
         qDebug() << "DBus start returned";
 
         QDBusPendingReply<> reply = *call;
@@ -99,7 +76,7 @@ void DBusProxy::stop()
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
 
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher* call) {
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher* call) {
         qDebug() << "DBus stop returned";
 
         QDBusPendingReply<> reply = *call;
@@ -121,11 +98,110 @@ void DBusProxy::stop()
 
 quint32 DBusProxy::receivedCount() const
 {
-    return m_receivedCount;
+    QDBusReply<quint32> reply = m_interface->call("receivedCount");
+    return reply;
 }
 
 quint32 DBusProxy::sentCount() const
 {
-    return m_sentCount;
+    QDBusReply<quint32> reply = m_interface->call("sentCount");
+    return reply;
 }
+
+DBusProxy::Status DBusProxy::status() const
+{
+    QDBusReply<DBusProxy::Status> reply = m_interface->call("status");
+    return reply;
+}
+
+bool DBusProxy::isEnabled() const
+{
+    QDBusReply<bool> reply = m_interface->call("isEnabled");
+    return reply;
+}
+
+quint32 DBusProxy::getMaxDiagnosisKeys() const
+{
+    QDBusReply<quint32> reply = m_interface->call("maxDiagnosisKeys");
+    return reply;
+}
+
+void DBusProxy::resetAllData()
+{
+    m_interface->call("resetAllData");
+}
+
+ExposureSummary DBusProxy::getExposureSummary(QString const &token) const
+{
+    QDBusReply<ExposureSummary> reply = m_interface->call("getExposureSummary", token);
+    return reply;
+}
+
+QList<TemporaryExposureKey> DBusProxy::getTemporaryExposureKeyHistory()
+{
+    QDBusReply<QList<TemporaryExposureKey>> reply = m_interface->call("getTemporaryExposureKeyHistory");
+    return reply;
+}
+
+void DBusProxy::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token)
+{
+    QVariant configurationVariant;
+    configurationVariant.setValue(configuration);
+    m_interface->call("provideDiagnosisKeys", keyFiles, configurationVariant, token);
+}
+
+QList<ExposureInformation> DBusProxy::getExposureInformation(QString const &token) const
+{
+    QDBusReply<QList<ExposureInformation>> reply = m_interface->call("getExposureInformation", token);
+    return reply;
+}
+
+QDBusArgument &operator<<(QDBusArgument &argument, const ExposureInformationList &exposureInformationList)
+{
+    argument.beginArray();
+    for (ExposureInformation const & exposureInformation : exposureInformationList) {
+        argument << exposureInformation;
+    }
+    argument.endArray();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformationList &exposureInformationList)
+{
+    argument.beginArray();
+    while (!argument.atEnd()) {
+        ExposureInformation exposureInformation;
+        argument >> exposureInformation;
+        exposureInformationList.append(exposureInformation);
+    }
+    argument.endArray();
+
+    return argument;
+}
+
+QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKeyList &temporaryExposureKeyList)
+{
+    argument.beginArray();
+    for (TemporaryExposureKey const & temporaryExposureKey : temporaryExposureKeyList) {
+        argument << temporaryExposureKey;
+    }
+    argument.endArray();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKeyList &temporaryExposureKeyList)
+{
+    argument.beginArray();
+    while (!argument.atEnd()) {
+        TemporaryExposureKey temporaryExposureKey;
+        argument >> temporaryExposureKey;
+        temporaryExposureKeyList.append(temporaryExposureKey);
+    }
+    argument.endArray();
+
+    return argument;
+}
+
 

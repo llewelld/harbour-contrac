@@ -2,12 +2,13 @@
 #define EXPOSURECONFIGURATION_H
 
 #include <QObject>
+#include <QDBusArgument>
 
 class ExposureConfiguration : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(quint8 minimumRiskScore MEMBER m_minimumRiskScore NOTIFY minimumRiskScoreChanged)
 
+    Q_PROPERTY(quint8 minimumRiskScore READ minimumRiskScore WRITE setMinimumRiskScore NOTIFY minimumRiskScoreChanged)
     Q_PROPERTY(QList<quint32> attenuationScores READ attenuationScores WRITE setAttenuationScores NOTIFY attenuationScoresChanged)
     Q_PROPERTY(QList<quint32> daysSinceLastExposureScores READ daysSinceLastExposureScores WRITE setDaysSinceLastExposureScores NOTIFY daysSinceLastExposureScoresChanged)
     Q_PROPERTY(QList<quint32> durationScores READ durationScores WRITE setDurationScores NOTIFY durationScoresChanged)
@@ -21,7 +22,10 @@ class ExposureConfiguration : public QObject
     Q_PROPERTY(QList<qint32> durationAtAttenuationThresholds READ durationAtAttenuationThresholds WRITE setDurationAtAttenuationThresholds NOTIFY durationAtAttenuationThresholdsChanged)
 public:
     explicit ExposureConfiguration(QObject *parent = nullptr);
+    ExposureConfiguration(ExposureConfiguration const &exposureConfiguration);
+    ExposureConfiguration& operator=( const ExposureConfiguration &other);
 
+    quint8 minimumRiskScore() const;
     QList<quint32> attenuationScores() const;
     QList<quint32> daysSinceLastExposureScores() const;
     QList<quint32> durationScores() const;
@@ -32,6 +36,7 @@ public:
     double transmissionRiskWeight() const;
     QList<qint32> durationAtAttenuationThresholds() const;
 
+    void setMinimumRiskScore(quint8 minimumRiskScore);
     void setAttenuationScores(QList<quint32> attenuationScores);
     void setDaysSinceLastExposureScores(QList<quint32> daysSinceLastExposureScores);
     void setDurationScores(QList<quint32> durationScores);
@@ -67,5 +72,10 @@ private:
     double m_transmissionRiskWeight;
     QList<qint32> m_durationAtAttenuationThresholds;
 };
+
+QDBusArgument &operator<<(QDBusArgument &argument, const ExposureConfiguration &exposureConfiguration);
+QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureConfiguration &exposureConfiguration);
+
+Q_DECLARE_METATYPE(ExposureConfiguration)
 
 #endif // EXPOSURECONFIGURATION_H

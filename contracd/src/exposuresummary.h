@@ -2,6 +2,7 @@
 #define EXPOSURESUMMARY_H
 
 #include <QObject>
+#include <QDBusArgument>
 
 class ExposureSummary : public QObject
 {
@@ -43,5 +44,10 @@ private:
     QList<qint32> m_attenuationDurations;
     qint32 m_summationRiskScore;
 };
+
+QDBusArgument &operator<<(QDBusArgument &argument, const ExposureSummary &exposureSummary);
+QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureSummary &exposureSummary);
+
+Q_DECLARE_METATYPE(ExposureSummary)
 
 #endif // EXPOSURESUMMARY_H

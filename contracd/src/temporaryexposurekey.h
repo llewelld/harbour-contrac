@@ -2,6 +2,7 @@
 #define TEMPORARYEXPOSUREKEY_H
 
 #include <QObject>
+#include <QDBusArgument>
 
 class TemporaryExposureKey : public QObject
 {
@@ -52,5 +53,10 @@ private:
     quint32 m_rollingPeriod;
     quint8 m_transmissionRiskLevel;
 };
+
+QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKey &temporaryExposureKey);
+QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKey &temporaryExposureKey);
+
+Q_DECLARE_METATYPE(TemporaryExposureKey)
 
 #endif // TEMPORARYEXPOSUREKEY_H

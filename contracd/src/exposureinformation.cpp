@@ -15,12 +15,12 @@ ExposureInformation::ExposureInformation(QObject *parent)
 
 ExposureInformation::ExposureInformation(ExposureInformation const &exposureInformation)
     : QObject(exposureInformation.parent())
-    , m_dateMillisSinceEpoch(exposureInformation.dateMillisSinceEpoch())
-    , m_durationMinutes(exposureInformation.durationMinutes())
-    , m_attenuationValue(exposureInformation.attenuationValue())
-    , m_transmissionRiskLevel(exposureInformation.transmissionRiskLevel())
-    , m_totalRiskScore(exposureInformation.totalRiskScore())
-    , m_attenuationDurations(exposureInformation.attenuationDurations())
+    , m_dateMillisSinceEpoch(exposureInformation.m_dateMillisSinceEpoch)
+    , m_durationMinutes(exposureInformation.m_durationMinutes)
+    , m_attenuationValue(exposureInformation.m_attenuationValue)
+    , m_transmissionRiskLevel(exposureInformation.m_transmissionRiskLevel)
+    , m_totalRiskScore(exposureInformation.m_totalRiskScore)
+    , m_attenuationDurations(exposureInformation.m_attenuationDurations)
 {
 }
 
@@ -36,6 +36,44 @@ ExposureInformation& ExposureInformation::operator=( const ExposureInformation &
     }
 
     return *this;
+}
+
+QDBusArgument &operator<<(QDBusArgument &argument, const ExposureInformation &exposureInformation)
+{
+    argument.beginStructure();
+    argument << exposureInformation.dateMillisSinceEpoch();
+    argument << exposureInformation.durationMinutes();
+    argument << exposureInformation.attenuationValue();
+    argument << exposureInformation.transmissionRiskLevel();
+    argument << exposureInformation.totalRiskScore();
+    argument << exposureInformation.attenuationDurations();
+    argument.endStructure();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformation &exposureInformation)
+{
+    quint64 valueInt64;
+    qint32 valueInt32;
+    QList<qint32> valueList;
+
+    argument.beginStructure();
+    argument >> valueInt64;
+    exposureInformation.setDateMillisSinceEpoch(valueInt64);
+    argument >> valueInt32;
+    exposureInformation.setDurationMinutes(valueInt32);
+    argument >> valueInt32;
+    exposureInformation.setAttenuationValue(valueInt32);
+    argument >> valueInt32;
+    exposureInformation.setTransmissionRiskLevel(valueInt32);
+    argument >> valueInt32;
+    exposureInformation.setTotalRiskScore(valueInt32);
+    argument >> valueList;
+    exposureInformation.setAttenuationDurations(valueList);
+    argument.endStructure();
+
+    return argument;
 }
 
 quint64 ExposureInformation::dateMillisSinceEpoch() const

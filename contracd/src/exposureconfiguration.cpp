@@ -1,8 +1,97 @@
 #include "exposureconfiguration.h"
 
+
 ExposureConfiguration::ExposureConfiguration(QObject *parent) : QObject(parent)
 {
+}
 
+ExposureConfiguration::ExposureConfiguration(ExposureConfiguration const &exposureConfiguration)
+    : QObject(exposureConfiguration.parent())
+    , m_minimumRiskScore(exposureConfiguration.m_minimumRiskScore)
+    , m_attenuationScores(exposureConfiguration.m_attenuationScores)
+    , m_daysSinceLastExposureScores(exposureConfiguration.m_daysSinceLastExposureScores)
+    , m_durationScores(exposureConfiguration.m_durationScores)
+    , m_transmissionRiskScores(exposureConfiguration.m_transmissionRiskScores)
+    , m_attenuationWeight(exposureConfiguration.m_attenuationWeight)
+    , m_daysSinceLastExposureWeight(exposureConfiguration.m_daysSinceLastExposureWeight)
+    , m_durationWeight(exposureConfiguration.m_durationWeight)
+    , m_transmissionRiskWeight(exposureConfiguration.m_transmissionRiskWeight)
+    , m_durationAtAttenuationThresholds(exposureConfiguration.m_durationAtAttenuationThresholds)
+{
+}
+
+ExposureConfiguration& ExposureConfiguration::operator=( const ExposureConfiguration &other)
+{
+    if (this != &other) {
+        m_minimumRiskScore = other.m_minimumRiskScore;
+        m_attenuationScores = other.m_attenuationScores;
+        m_daysSinceLastExposureScores = other.m_daysSinceLastExposureScores;
+        m_durationScores = other.m_durationScores;
+        m_transmissionRiskScores= other.m_transmissionRiskScores;
+        m_attenuationWeight = other.m_attenuationWeight;
+        m_daysSinceLastExposureWeight = other.m_daysSinceLastExposureWeight;
+        m_durationWeight = other.m_durationWeight;
+        m_transmissionRiskWeight = other.m_transmissionRiskWeight;
+        m_durationAtAttenuationThresholds = other.m_durationAtAttenuationThresholds;
+    }
+
+    return *this;
+}
+
+QDBusArgument &operator<<(QDBusArgument &argument, const ExposureConfiguration &exposureConfiguration)
+{
+    argument.beginStructure();
+    argument << exposureConfiguration.minimumRiskScore();
+    argument << exposureConfiguration.attenuationScores();
+    argument << exposureConfiguration.daysSinceLastExposureScores();
+    argument << exposureConfiguration.durationScores();
+    argument << exposureConfiguration.transmissionRiskScores();
+    argument << exposureConfiguration.attenuationWeight();
+    argument << exposureConfiguration.daysSinceLastExposureWeight();
+    argument << exposureConfiguration.durationWeight();
+    argument << exposureConfiguration.transmissionRiskWeight();
+    argument << exposureConfiguration.durationAtAttenuationThresholds();
+    argument.endStructure();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureConfiguration &exposureConfiguration)
+{
+    quint8 valueInt8;
+    QList<quint32> valueUnsignedList;
+    double valueDouble;
+    QList<qint32> valueSignedList;
+
+    argument.beginStructure();
+    argument >> valueInt8;
+    exposureConfiguration.setMinimumRiskScore(valueInt8);
+    argument >> valueUnsignedList;
+    exposureConfiguration.setAttenuationScores(valueUnsignedList);
+    argument >> valueUnsignedList;
+    exposureConfiguration.setDaysSinceLastExposureScores(valueUnsignedList);
+    argument >> valueUnsignedList;
+    exposureConfiguration.setDurationScores(valueUnsignedList);
+    argument >> valueUnsignedList;
+    exposureConfiguration.setTransmissionRiskScores(valueUnsignedList);
+    argument >> valueDouble;
+    exposureConfiguration.setAttenuationWeight(valueDouble);
+    argument >> valueDouble;
+    exposureConfiguration.setDaysSinceLastExposureWeight(valueDouble);
+    argument >> valueDouble;
+    exposureConfiguration.setDurationWeight(valueDouble);
+    argument >> valueDouble;
+    exposureConfiguration.setTransmissionRiskWeight(valueDouble);
+    argument >> valueSignedList;
+    exposureConfiguration.setDurationAtAttenuationThresholds(valueSignedList);
+    argument.endStructure();
+
+    return argument;
+}
+
+quint8 ExposureConfiguration::minimumRiskScore() const
+{
+    return m_minimumRiskScore;
 }
 
 QList<quint32> ExposureConfiguration::attenuationScores() const
@@ -48,6 +137,14 @@ double ExposureConfiguration::transmissionRiskWeight() const
 QList<qint32> ExposureConfiguration::durationAtAttenuationThresholds() const
 {
     return m_durationAtAttenuationThresholds;
+}
+
+void ExposureConfiguration::setMinimumRiskScore(quint8 minimumRiskScore)
+{
+    if (m_minimumRiskScore != minimumRiskScore) {
+        m_minimumRiskScore = minimumRiskScore;
+        emit minimumRiskScoreChanged();
+    }
 }
 
 void ExposureConfiguration::setAttenuationScores(QList<quint32> attenuationScores)

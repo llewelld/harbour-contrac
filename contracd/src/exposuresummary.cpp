@@ -7,11 +7,11 @@ ExposureSummary::ExposureSummary(QObject *parent) : QObject(parent)
 
 ExposureSummary::ExposureSummary(ExposureSummary const &exposureSummary)
     : QObject(exposureSummary.parent())
-    , m_daysSinceLastExposure(exposureSummary.daysSinceLastExposure())
-    , m_matchedKeyCount(exposureSummary.daysSinceLastExposure())
-    , m_maximumRiskScore(exposureSummary.maximumRiskScore())
-    , m_attenuationDurations(exposureSummary.attenuationDurations())
-    , m_summationRiskScore(exposureSummary.summationRiskScore())
+    , m_daysSinceLastExposure(exposureSummary.m_daysSinceLastExposure)
+    , m_matchedKeyCount(exposureSummary.m_matchedKeyCount)
+    , m_maximumRiskScore(exposureSummary.m_maximumRiskScore)
+    , m_attenuationDurations(exposureSummary.m_attenuationDurations)
+    , m_summationRiskScore(exposureSummary.m_summationRiskScore)
 {
 }
 
@@ -26,6 +26,41 @@ ExposureSummary& ExposureSummary::operator=( const ExposureSummary &other)
     }
 
     return *this;
+}
+
+QDBusArgument &operator<<(QDBusArgument &argument, const ExposureSummary &exposureSummary)
+{
+    argument.beginStructure();
+    argument << exposureSummary.daysSinceLastExposure();
+    argument << exposureSummary.matchedKeyCount();
+    argument << exposureSummary.maximumRiskScore();
+    argument << exposureSummary.attenuationDurations();
+    argument << exposureSummary.summationRiskScore();
+    argument.endStructure();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureSummary &exposureSummary)
+{
+    quint32 valueUnsignedInt;
+    qint32 valueSignedInt;
+    QList<qint32> valueList;
+
+    argument.beginStructure();
+    argument >> valueUnsignedInt;
+    exposureSummary.setDaysSinceLastExposure(valueUnsignedInt);
+    argument >> valueUnsignedInt;
+    exposureSummary.setMatchedKeyCount(valueUnsignedInt);
+    argument >> valueSignedInt;
+    exposureSummary.setMaximumRiskScore(valueSignedInt);
+    argument >> valueList;
+    exposureSummary.setAttenuationDurations(valueList);
+    argument >> valueSignedInt;
+    exposureSummary.setSummationRiskScore(valueSignedInt);
+    argument.endStructure();
+
+    return argument;
 }
 
 quint32 ExposureSummary::daysSinceLastExposure() const

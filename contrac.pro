@@ -23,11 +23,19 @@ CONFIG += sailfishapp
 
 HEADERS += \
     src/dbusproxy.h \
-    src/contactmodel.h
+    src/contactmodel.h \
+    contracd/src/exposuresummary.h \
+    contracd/src/exposureinformation.h \
+    contracd/src/temporaryexposurekey.h \
+    contracd/src/exposureconfiguration.h
 
 SOURCES += src/harbour-contrac.cpp \
     src/dbusproxy.cpp \
-    src/contactmodel.cpp
+    src/contactmodel.cpp \
+    contracd/src/exposuresummary.cpp \
+    contracd/src/exposureinformation.cpp \
+    contracd/src/temporaryexposurekey.cpp \
+    contracd/src/exposureconfiguration.cpp
 
 DISTFILES += qml/harbour-contrac.qml \
     qml/cover/CoverPage.qml \

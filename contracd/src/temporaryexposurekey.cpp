@@ -17,6 +17,38 @@ TemporaryExposureKey::TemporaryExposureKey(TemporaryExposureKey const& temporary
 {
 }
 
+QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKey &temporaryExposureKey)
+{
+    argument.beginStructure();
+    argument << temporaryExposureKey.keyData();
+    argument << temporaryExposureKey.rollingStartNumber();
+    argument << temporaryExposureKey.rollingPeriod();
+    argument << temporaryExposureKey.transmissionRiskLevel();
+    argument.endStructure();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKey &temporaryExposureKey)
+{
+    QByteArray valueByteArray;
+    quint32 valueInt32;
+    quint8 valueInt8;
+
+    argument.beginStructure();
+    argument >> valueByteArray;
+    temporaryExposureKey.setKeyData(valueByteArray);
+    argument >> valueInt32;
+    temporaryExposureKey.setRollingStartNumber(valueInt32);
+    argument >> valueInt32;
+    temporaryExposureKey.setRollingPeriod(valueInt32);
+    argument >> valueInt8;
+    temporaryExposureKey.setTransmissionRiskLevel(valueInt8);
+    argument.endStructure();
+
+    return argument;
+}
+
 QByteArray TemporaryExposureKey::keyData() const
 {
     return m_keyData;
