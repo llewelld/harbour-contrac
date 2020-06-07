@@ -12,6 +12,13 @@ DBusInterface::DBusInterface(QObject *parent)
 
     qDebug() << "CONTRAC: Initialising the dbus interface";
 
+    qDBusRegisterMetaType<TemporaryExposureKey>();
+    qDBusRegisterMetaType<ExposureInformation>();
+    qDBusRegisterMetaType<ExposureSummary>();
+    qDBusRegisterMetaType<ExposureConfiguration>();
+    qDBusRegisterMetaType<TemporaryExposureKeyList>();
+    qDBusRegisterMetaType<ExposureInformationList>();
+
     connect(&m_exposureNotification, &ExposureNotification::statusChanged, this, &DBusInterface::statusChanged);
     connect(&m_exposureNotification, &ExposureNotification::isEnabledChanged, this, &DBusInterface::isEnabledChanged);
     connect(&m_exposureNotification, &ExposureNotification::beaconSent, this, &DBusInterface::incrementSentCount);
@@ -142,3 +149,50 @@ void DBusInterface::incrementSentCount()
     emit sentCountChanged();
 }
 
+QDBusArgument &operator<<(QDBusArgument &argument, const ExposureInformationList &exposureInformationList)
+{
+    argument.beginArray();
+    for (ExposureInformation const & exposureInformation : exposureInformationList) {
+        argument << exposureInformation;
+    }
+    argument.endArray();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformationList &exposureInformationList)
+{
+    argument.beginArray();
+    while (!argument.atEnd()) {
+        ExposureInformation exposureInformation;
+        argument >> exposureInformation;
+        exposureInformationList.append(exposureInformation);
+    }
+    argument.endArray();
+
+    return argument;
+}
+
+QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKeyList &temporaryExposureKeyList)
+{
+    argument.beginArray();
+    for (TemporaryExposureKey const & temporaryExposureKey : temporaryExposureKeyList) {
+        argument << temporaryExposureKey;
+    }
+    argument.endArray();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKeyList &temporaryExposureKeyList)
+{
+    argument.beginArray();
+    while (!argument.atEnd()) {
+        TemporaryExposureKey temporaryExposureKey;
+        argument >> temporaryExposureKey;
+        temporaryExposureKeyList.append(temporaryExposureKey);
+    }
+    argument.endArray();
+
+    return argument;
+}

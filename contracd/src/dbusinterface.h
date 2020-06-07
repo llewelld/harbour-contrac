@@ -65,4 +65,19 @@ private:
     quint32 m_receivedCount;
 };
 
+typedef QList<TemporaryExposureKey> TemporaryExposureKeyList;
+
+QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKeyList &temporaryExposureKeyList);
+QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKeyList &temporaryExposureKeyList);
+
+Q_DECLARE_METATYPE(TemporaryExposureKeyList)
+
+typedef QList<ExposureInformation> ExposureInformationList;
+
+QDBusArgument &operator<<(QDBusArgument &argument, const ExposureInformationList &exposureInformationList);
+QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformationList &exposureInformationList);
+
+Q_DECLARE_METATYPE(ExposureInformationList)
+
+
 #endif // DBUSINTERFACE_H

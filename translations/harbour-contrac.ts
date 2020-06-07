@@ -64,23 +64,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_title">
-        <location filename="../qml/pages/Main.qml" line="33"/>
+        <location filename="../qml/pages/Main.qml" line="49"/>
         <source>BLE Contact Tracing</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_scan">
-        <location filename="../qml/pages/Main.qml" line="38"/>
+        <location filename="../qml/pages/Main.qml" line="54"/>
         <source>Scan and send active</source>
         <oldsource>Scan and transmit</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_sent">
-        <location filename="../qml/pages/Main.qml" line="58"/>
+        <location filename="../qml/pages/Main.qml" line="74"/>
         <source>Sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_received">
-        <location filename="../qml/pages/Main.qml" line="66"/>
+        <location filename="../qml/pages/Main.qml" line="82"/>
         <source>Received</source>
         <oldsource>Beacons received</oldsource>
         <translation type="unfinished"></translation>

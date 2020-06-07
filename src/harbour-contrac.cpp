@@ -30,6 +30,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("harbour-contrac");
 
     qmlRegisterType<DBusProxy>("uk.co.flypig", 1, 0, "DBusProxy");
+    qmlRegisterType<TemporaryExposureKey>("uk.co.flypig", 1, 0, "TemporaryExposureKey");
+    qmlRegisterType<ExposureSummary>("uk.co.flypig", 1, 0, "ExposureSummary");
+    qmlRegisterType<ExposureInformation>("uk.co.flypig", 1, 0, "ExposureInformation");
+    qmlRegisterType<ExposureConfiguration>("uk.co.flypig", 1, 0, "ExposureConfiguration");
 
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));

@@ -46,10 +46,10 @@ public:
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
-    Q_INVOKABLE QList<TemporaryExposureKey> getTemporaryExposureKeyHistory();
+    Q_INVOKABLE QList<TemporaryExposureKey> *getTemporaryExposureKeyHistory();
     Q_INVOKABLE void provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token);
-    Q_INVOKABLE ExposureSummary getExposureSummary(QString const &token) const;
-    Q_INVOKABLE QList<ExposureInformation> getExposureInformation(QString const &token) const;
+    Q_INVOKABLE ExposureSummary *getExposureSummary(QString const &token) const;
+    Q_INVOKABLE QList<ExposureInformation> *getExposureInformation(QString const &token) const;
     Q_INVOKABLE void resetAllData();
 
     // Non-standard additions

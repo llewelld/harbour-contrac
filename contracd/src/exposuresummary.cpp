@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "exposuresummary.h"
 
 ExposureSummary::ExposureSummary(QObject *parent) : QObject(parent)

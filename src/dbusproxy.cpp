@@ -131,16 +131,21 @@ void DBusProxy::resetAllData()
     m_interface->call("resetAllData");
 }
 
-ExposureSummary DBusProxy::getExposureSummary(QString const &token) const
+ExposureSummary *DBusProxy::getExposureSummary(QString const &token) const
 {
     QDBusReply<ExposureSummary> reply = m_interface->call("getExposureSummary", token);
-    return reply;
+    ExposureSummary *result = new ExposureSummary(reply);
+    result->setParent(nullptr);
+
+    return result;
 }
 
-QList<TemporaryExposureKey> DBusProxy::getTemporaryExposureKeyHistory()
+QList<TemporaryExposureKey> *DBusProxy::getTemporaryExposureKeyHistory()
 {
     QDBusReply<QList<TemporaryExposureKey>> reply = m_interface->call("getTemporaryExposureKeyHistory");
-    return reply;
+    QList<TemporaryExposureKey> *result = new QList<TemporaryExposureKey>(reply);
+
+    return result;
 }
 
 void DBusProxy::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token)
@@ -150,10 +155,12 @@ void DBusProxy::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfig
     m_interface->call("provideDiagnosisKeys", keyFiles, configurationVariant, token);
 }
 
-QList<ExposureInformation> DBusProxy::getExposureInformation(QString const &token) const
+QList<ExposureInformation> *DBusProxy::getExposureInformation(QString const &token) const
 {
     QDBusReply<QList<ExposureInformation>> reply = m_interface->call("getExposureInformation", token);
-    return reply;
+    QList<ExposureInformation> *result = new QList<ExposureInformation>(reply);
+
+    return result;
 }
 
 QDBusArgument &operator<<(QDBusArgument &argument, const ExposureInformationList &exposureInformationList)
