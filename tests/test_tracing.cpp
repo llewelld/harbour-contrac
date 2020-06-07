@@ -15,6 +15,7 @@ namespace { // Anonymous namespace
 quint32 countBloomFiles()
 {
     QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
+    qDebug() << "Counting Bloom filter files in " << folder;
     QDir dataDir;
     QFileInfoList files;
     quint32 count;
@@ -29,12 +30,14 @@ quint32 countBloomFiles()
             ++count;
         }
     }
+    qDebug() << "Found " << count << " files";
     return count;
 }
 
 quint32 countDataFiles()
 {
     QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
+    qDebug() << "Counting data files in " << folder;
     QDir dataDir;
     QFileInfoList files;
     quint32 count;
@@ -49,6 +52,7 @@ quint32 countDataFiles()
             ++count;
         }
     }
+    qDebug() << "Found " << count << " files";
     return count;
 }
 
@@ -254,6 +258,7 @@ void Test_Tracing::testStorage()
 {
     quint32 day;
     QByteArray rpi_bytes;
+    QDateTime time;
 
     ContactStorage::clearAllDataFiles();
     QCOMPARE(countDataFiles(), 0u);
@@ -265,14 +270,15 @@ void Test_Tracing::testStorage()
     contrac = new Contrac(this);
     QVERIFY(contrac != nullptr);
 
-    QDateTime time = QDateTime::fromMSecsSinceEpoch(0).addDays(176).addSecs(60 * 10 * 5);
+    time = QDateTime::fromMSecsSinceEpoch(0).addDays(176).addSecs(60 * 10 * 5);
     contrac->setTime(time);
 
     storage = new ContactStorage(contrac);
     QVERIFY(storage != nullptr);
 
-    for (day = 176; day < 176 + 18; ++day) {
-        QDateTime time = QDateTime::fromMSecsSinceEpoch(0).addDays(day).addSecs(60 * 10 * 5);
+    // First ten files
+    for (day = 176; day < 176 + 10; ++day) {
+        time = QDateTime::fromMSecsSinceEpoch(0).addDays(day).addSecs(60 * 10 * 5);
         contrac->setTime(time);
         QCOMPARE(contrac->dayNumber(), static_cast<quint32>(day));
         QCOMPARE(contrac->timeIntervalNumber(), static_cast<quint8>(5));
@@ -280,18 +286,41 @@ void Test_Tracing::testStorage()
         rpi_bytes = contrac->rpi();
         storage->addContact(5, rpi_bytes, -64);
     }
+
     delete storage;
 
-    QCOMPARE(countDataFiles(), 18u);
-    QCOMPARE(countBloomFiles(), 18u);
+    // All files should be there
+    QCOMPARE(countDataFiles(), 10u);
+    QCOMPARE(countBloomFiles(), 10u);
+
+    storage = new ContactStorage(contrac);
+    QVERIFY(storage != nullptr);
+
+    // Next 8 files
+    for (day = 176 + 11; day < 176 + 18; ++day) {
+        time = QDateTime::fromMSecsSinceEpoch(0).addDays(day).addSecs(60 * 10 * 5);
+        contrac->setTime(time);
+        QCOMPARE(contrac->dayNumber(), static_cast<quint32>(day));
+        QCOMPARE(contrac->timeIntervalNumber(), static_cast<quint8>(5));
+
+        rpi_bytes = contrac->rpi();
+        storage->addContact(5, rpi_bytes, -64);
+    }
+
+    delete storage;
+
+    // Files will be harvested down to the last DAYS_TO_STORE (which should be at least 14)
+    QVERIFY(DAYS_TO_STORE >= 14u);
+    QCOMPARE(countDataFiles(), DAYS_TO_STORE);
+    QCOMPARE(countBloomFiles(), DAYS_TO_STORE);
 
     storage = new ContactStorage(contrac);
     QVERIFY(storage != nullptr);
 
     storage->harvestOldData();
 
-    QCOMPARE(countDataFiles(), 15u);
-    QCOMPARE(countBloomFiles(), 15u);
+    QCOMPARE(countDataFiles(), DAYS_TO_STORE);
+    QCOMPARE(countBloomFiles(), DAYS_TO_STORE);
 
     // Clean up
     delete storage;
@@ -307,11 +336,12 @@ void Test_Tracing::testMatch()
     QList<QPair<QByteArray, quint32>> diagnosis_list;
     // There are four matches in amongst this lot
     // (day, time) = (12, 15), (1175, 142), (1175, 67), (12, 93)
-    quint32 beacon_days[8] = {55, 12, 0, 8787, 1175, 1175, 187, 12};
-    quint8 beacon_times[8] = {1, 15, 5, 101, 142, 67, 51, 93};
-    quint32 diagnosis_days[2] = {1175, 12};
+    quint32 beacon_days[9] = {1174 - DAYS_TO_STORE, 1171, 1170, 1172, 1173, 1175, 1175, 1174, 1170};
+    quint8 beacon_times[9] = {33, 1, 15, 5, 101, 142, 67, 51, 93};
+    // Note that the first diagnosis day will be dropped as out of range
+    quint32 diagnosis_days[3] = {1174 - DAYS_TO_STORE, 1170, 1175};
     // Summarise the four matches
-    QList<quint32> match_days({12, 1175, 1175, 12});
+    QList<quint32> match_days({1170, 1175, 1175, 1170});
     QList<quint8> match_times({15, 142, 67, 93});
     int pos;
     QByteArray rpi_bytes;
@@ -333,7 +363,7 @@ void Test_Tracing::testMatch()
     contrac->setTk(QByteArray::fromBase64(tracing_key_base64));
 
     // Generate some beacons (as if collected over BlueTooth)
-    for (pos = 0; pos < 8; ++pos) {
+    for (pos = 0; pos < 9; ++pos) {
         QDateTime time = QDateTime::fromMSecsSinceEpoch(0).addDays(beacon_days[pos]).addSecs(60 * 10 * beacon_times[pos]);
         contrac->setTime(time);
         QCOMPARE(contrac->dayNumber(), static_cast<quint32>(beacon_days[pos]));
@@ -347,7 +377,7 @@ void Test_Tracing::testMatch()
     }
 
     // Generate some diagnosis data (as if provided by a diagnosis server)
-    for (pos = 0; pos < 2; ++pos) {
+    for (pos = 0; pos < 3; ++pos) {
         QDateTime time = QDateTime::fromMSecsSinceEpoch(0).addDays(diagnosis_days[pos]).addSecs(60 * 10 * 50);
         contrac->setTime(time);
         QCOMPARE(contrac->dayNumber(), static_cast<quint32>(diagnosis_days[pos]));

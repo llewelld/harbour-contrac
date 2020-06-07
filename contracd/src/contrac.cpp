@@ -196,7 +196,6 @@ QByteArray Contrac::dtk() const
 
 QByteArray Contrac::rpi() const
 {
-    qDebug() << "CONTRAC: returning Rpi";
     return m_rpi;
 }
 

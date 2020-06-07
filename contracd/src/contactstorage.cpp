@@ -35,6 +35,7 @@ void ContactStorage::onTimeChanged()
 
     day = m_contrac->dayNumber();
     if (day != m_today->dayNumber()) {
+        qDebug() << "Storage day set to " << day;
         delete m_today;
         m_today = new DayStorage(day, this);
         harvestOldData();
@@ -103,6 +104,7 @@ void ContactStorage::harvestOldData()
             bool ok;
             fileDay = base.toUInt(&ok, 16);
             if (ok && (fileDay < (day - DAYS_TO_STORE))) {
+                qDebug() << "Harvesting file: " << file.fileName();
                 dataDir.remove(file.fileName());
             }
         }

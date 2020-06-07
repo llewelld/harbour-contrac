@@ -185,6 +185,7 @@ void DayStorage::addContact(ctinterval interval, const QByteArray &rpi, qint16 r
     data += QByteArray((char const *)&interval, sizeof(interval));
     data += QByteArray((char const *)&rssi, sizeof(rssi));
 
+    qDebug() << "Outputting to file: " << m_contacts.fileName();
     m_contacts.write(data);
     m_filter->add(rpi);
     m_filter_changed = true;
