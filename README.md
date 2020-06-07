@@ -17,9 +17,10 @@ More info: https://www.flypig.co.uk/contrac
 7.  Risk calculation - DONE
 8.  Align with GApple API - DONE
 9.  Run as a service - DONE
-10. Service dbus interface - WORKING
-10. Notification download
-11. DTK upload
+10. Service dbus interface - DONE
+11. Test with official apps - WORKING
+12. Notification download
+13. DTK upload
 
 ## Contact Tracing Apps
 
