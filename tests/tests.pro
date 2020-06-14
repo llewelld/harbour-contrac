@@ -22,7 +22,7 @@ INCLUDEPATH += ../src/
 
 PKGCONFIG += \
     openssl \
-    protobuf \
+    protobuf-lite \
 
 LIBS += -lquazip
 

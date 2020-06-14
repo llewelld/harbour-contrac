@@ -18,14 +18,16 @@ Source0:    %{name}-%{version}.tar.bz2
 Source100:  harbour-contrac.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   openssl
-Requires:   protobuf
+Requires:   protobuf-lite
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(Qt5Test)
-BuildRequires:  pkgconfig(protobuf)
+BuildRequires:  pkgconfig(protobuf-lite)
+BuildRequires:  pkgconfig(libcurl)
+BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  quazip-devel
 BuildRequires:  desktop-file-utils
 

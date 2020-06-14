@@ -24,6 +24,10 @@ CONFIG += sailfishapp
 HEADERS += \
     src/dbusproxy.h \
     src/contactmodel.h \
+    src/s3access.h \
+    src/s3/s3.h \
+    src/s3/s3internal.h \
+    src/s3/s3xml.h \
     contracd/src/exposuresummary.h \
     contracd/src/exposureinformation.h \
     contracd/src/temporaryexposurekey.h \
@@ -32,6 +36,12 @@ HEADERS += \
 SOURCES += src/harbour-contrac.cpp \
     src/dbusproxy.cpp \
     src/contactmodel.cpp \
+    src/s3access.cpp \
+    src/s3/s3bucket.c \
+    src/s3/s3digest.c \
+    src/s3/s3ops.c \
+    src/s3/s3string.c \
+    src/s3/s3xml.c \
     contracd/src/exposuresummary.cpp \
     contracd/src/exposureinformation.cpp \
     contracd/src/temporaryexposurekey.cpp \
@@ -58,6 +68,13 @@ CONFIG += sailfishapp_i18n_unfinished
 # modify the localized app name in the the .desktop file.
 TRANSLATIONS += translations/harbour-contrac.ts
 TRANSLATIONS += translations/harbour-contrac-en.ts
+
+PKGCONFIG += \
+    openssl \
+    libxml-2.0 \
+    libcurl
+
+DEFINES += LINUX
 
 QT += dbus
 
