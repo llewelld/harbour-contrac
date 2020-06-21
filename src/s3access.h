@@ -18,6 +18,8 @@ public:
 
 signals:
     void finished();
+protected slots:
+    virtual void onFinished();
 
 protected:
     QNetworkReply *m_reply;
@@ -30,7 +32,6 @@ class S3ListResult : public S3Result
 
 public:
     explicit S3ListResult(QNetworkReply *reply, QObject *parent = nullptr);
-    ~S3ListResult();
 
     QStringList keys() const;
 
@@ -38,7 +39,7 @@ signals:
     void keysChanged();
 
 private slots:
-    void onFinished();
+    virtual void onFinished();
 
 private:
     QStringList m_keys;
@@ -51,7 +52,6 @@ class S3GetResult : public S3Result
 
 public:
     explicit S3GetResult(QNetworkReply *reply, QObject *parent = nullptr);
-    ~S3GetResult();
 
     QByteArray data() const;
 
@@ -59,10 +59,24 @@ signals:
     void dataChanged();
 
 private slots:
-    void onFinished();
+    virtual void onFinished();
 
 private:
     QByteArray m_data;
+};
+
+class S3GetFileResult : public S3Result
+{
+    Q_OBJECT
+
+public:
+    explicit S3GetFileResult(QNetworkReply *reply, QString const &filename, QObject *parent = nullptr);
+
+private slots:
+    virtual void onFinished();
+
+private:
+    QString m_filename;
 };
 
 class S3Access : public QObject
@@ -80,9 +94,9 @@ public:
 
     S3ListResult *list(QString const &prefix);
     S3GetResult *get(QString const &key);
-    S3Result *get(QString const &key, QString const &filename);
-    S3Result *put(QString const &key, QString const &contentType, QString const &filename);
+    S3GetFileResult *getFile(QString const &key, QString const &filename);
     S3Result *put(QString const &key, QString const &contentType, QByteArray const &data);
+    S3Result *putFile(QString const &key, QString const &contentType, QString const &filename);
     S3Result *remove(QString const &key);
 
     QString id() const;
@@ -110,7 +124,7 @@ private:
         DELETE
     };
     void initialise();
-    QNetworkReply *performOp(Method method, const char *url, const char *sign_data, const char *date, QIODevice *in, const char *content_md5, const char *content_type);
+    QNetworkReply *performOp(Method method, QString const &url, QString const &sign_data, const char *date, QIODevice *in, const char *content_md5, const char *content_type);
 
 private:
     QString m_id;

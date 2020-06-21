@@ -7,9 +7,10 @@
  */
 
 #include <QtQuick>
+#include <openssl/rand.h>
 
 #include "dbusproxy.h"
-#include <openssl/rand.h>
+#include "download.h"
 
 #include <sailfishapp.h>
 
@@ -34,6 +35,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<ExposureSummary>("uk.co.flypig", 1, 0, "ExposureSummary");
     qmlRegisterType<ExposureInformation>("uk.co.flypig", 1, 0, "ExposureInformation");
     qmlRegisterType<ExposureConfiguration>("uk.co.flypig", 1, 0, "ExposureConfiguration");
+    qmlRegisterType<Download>("uk.co.flypig", 1, 0, "Download");
 
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));

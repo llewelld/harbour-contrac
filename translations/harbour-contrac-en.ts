@@ -59,7 +59,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_about">
-        <location filename="../qml/pages/Main.qml" line="21"/>
+        <location filename="../qml/pages/Main.qml" line="37"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>

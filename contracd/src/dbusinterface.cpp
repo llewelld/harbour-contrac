@@ -93,10 +93,10 @@ QList<TemporaryExposureKey> DBusInterface::getTemporaryExposureKeyHistory()
     return m_exposureNotification.getTemporaryExposureKeyHistory();
 }
 
-void DBusInterface::provideDiagnosisKeys(QVector<QString> const &keyFiles, ExposureConfiguration const &configuration, QString token)
+void DBusInterface::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token)
 {
     qDebug() << "CONTRAC: provideDiagnosisKeys()";
-    m_exposureNotification.provideDiagnosisKeys(keyFiles, configuration, token);
+    m_exposureNotification.provideDiagnosisKeys(keyFiles.toVector(), configuration, token);
 }
 
 ExposureSummary DBusInterface::getExposureSummary(QString const &token) const

@@ -24,6 +24,7 @@ CONFIG += sailfishapp
 HEADERS += \
     src/dbusproxy.h \
     src/contactmodel.h \
+    src/download.h \
     src/s3access.h \
     src/s3/s3.h \
     src/s3/s3internal.h \
@@ -36,6 +37,7 @@ HEADERS += \
 SOURCES += src/harbour-contrac.cpp \
     src/dbusproxy.cpp \
     src/contactmodel.cpp \
+    src/download.cpp \
     src/s3access.cpp \
     src/s3/s3bucket.c \
     src/s3/s3digest.c \

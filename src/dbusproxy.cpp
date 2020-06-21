@@ -150,9 +150,11 @@ QList<TemporaryExposureKey> *DBusProxy::getTemporaryExposureKeyHistory()
 
 void DBusProxy::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token)
 {
+    qDebug() << "Callling provideDiagnosisKeys";
     QVariant configurationVariant;
     configurationVariant.setValue(configuration);
-    m_interface->call("provideDiagnosisKeys", keyFiles, configurationVariant, token);
+    QDBusMessage result = m_interface->call("provideDiagnosisKeys", keyFiles, configurationVariant, token);
+    qDebug() << "Result: " << result.errorMessage();
 }
 
 QList<ExposureInformation> *DBusProxy::getExposureInformation(QString const &token) const

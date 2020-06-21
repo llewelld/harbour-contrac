@@ -2,32 +2,27 @@ extern "C" {
 #include "s3/s3internal.h"
 }
 
+#include <QFile>
+
 #include "s3access.h"
 
 S3Result::S3Result(QNetworkReply *reply, QObject *parent) : QObject(parent)
   , m_reply(reply)
 {
-    connect(reply, &QNetworkReply::finished, this, &S3Result::finished);
+    connect(reply, &QNetworkReply::finished, this, &S3Result::onFinished);
 }
 
 S3ListResult::S3ListResult(QNetworkReply *reply, QObject *parent) : S3Result (reply, parent)
 {
-    connect(reply, &QNetworkReply::finished, this, &S3ListResult::onFinished);
-}
-
-S3ListResult::~S3ListResult()
-{
-    disconnect(m_reply, &QNetworkReply::finished, this, &S3ListResult::onFinished);
 }
 
 S3GetResult::S3GetResult(QNetworkReply *reply, QObject *parent) : S3Result (reply, parent)
 {
-    connect(reply, &QNetworkReply::finished, this, &S3GetResult::onFinished);
 }
 
-S3GetResult::~S3GetResult()
+S3GetFileResult::S3GetFileResult(QNetworkReply *reply, QString const &filename, QObject *parent) : S3Result (reply, parent)
+  , m_filename(filename)
 {
-    disconnect(m_reply, &QNetworkReply::finished, this, &S3GetResult::onFinished);
 }
 
 S3Result::~S3Result()
@@ -116,45 +111,47 @@ QString S3Access::bucket() const
 S3ListResult *S3Access::list(QString const &prefix)
 {
     char *date;
-    char *sign_data;
-    char *url;
+    QString signData;
+    QString url;
     QNetworkReply *reply;
     S3ListResult *result;
 
     date = s3_make_date();
+    signData = "GET\n\n\n" + QString(date) + "\n/" + m_bucket + "/";
+    url = "http://" + m_baseUrl + "/" + m_bucket + "/?delimiter=/";
+    if (!prefix.isEmpty()) {
+        url += "&prefix=" + prefix;
+    }
 
-    asprintf(&sign_data, "%s\n\n\n%s\n/%s/", "GET", date, m_bucket.toLatin1().data());
-    asprintf(&url, "http://%s.%s/?delimiter=/%s%s", m_bucket.toLatin1().data(), m_baseUrl.toLatin1().data(), !prefix.isEmpty() ? "&prefix=" : "", !prefix.isEmpty() ? prefix.toLatin1().data() : "");
-
-    reply = performOp(GET, url, sign_data, date, nullptr, nullptr, nullptr);
-
+    reply = performOp(GET, url, signData, date, nullptr, nullptr, nullptr);
     result = new S3ListResult(reply, this);
-
-    free(url);
-    free(sign_data);
     free(date);
 
     return result;
 }
 
-QNetworkReply *S3Access::performOp(Method method, const char *url, const char *sign_data, const char *date, QIODevice *in, const char *content_md5, const char *content_type)
+QNetworkReply *S3Access::performOp(Method method, QString const &url, QString const &sign_data, const char *date, QIODevice *in, const char *content_md5, const char *content_type)
 {
     QNetworkRequest request;
     char *digest;
     QNetworkReply *reply;
 
     request.setUrl(QUrl(QString(url)));
-    digest = s3_hmac_sign(m_secret.toLatin1().data(), sign_data, strlen(sign_data));
+    digest = s3_hmac_sign(m_secret.toLatin1().data(), sign_data.toLatin1().data(), sign_data.toLatin1().size());
 
     request.setRawHeader("Date", date);
     request.setRawHeader("Authorization", QString(QStringLiteral("AWS %1:%2")).arg(m_id).arg(digest).toLocal8Bit());
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
+    qDebug() << "Request to: " << url;
+
     switch (method) {
     case DELETE:
+        qDebug() << "DELETE request";
         reply = m_manager->deleteResource(request);
         break;
     case PUT:
+        qDebug() << "PUT request";
         if (content_type) {
             request.setHeader(QNetworkRequest::ContentTypeHeader, content_type);
         }
@@ -166,6 +163,7 @@ QNetworkReply *S3Access::performOp(Method method, const char *url, const char *s
         reply = m_manager->put(request, in);
         break;
     default: // GET
+        qDebug() << "GET request";
         reply = m_manager->get(request);
         break;
     }
@@ -177,22 +175,30 @@ QNetworkReply *S3Access::performOp(Method method, const char *url, const char *s
 
 void S3ListResult::onFinished()
 {
+    qDebug() << "S3ListResult::onFinished";
+
     QByteArray data;
     struct s3_bucket_entry_head *entries;
     struct s3_bucket_entry *e;
 
     data = m_reply->readAll();
+    if (m_reply->error() == QNetworkReply::NoError) {
+        entries = s3_parse_bucket_response(data.data());
 
-    entries = s3_parse_bucket_response(data.data());
-
-    m_keys.clear();
-    if (entries != nullptr) {
-        TAILQ_FOREACH(e, entries, list) {
-            m_keys.append(QString(e->key));
+        m_keys.clear();
+        if (entries != nullptr) {
+            TAILQ_FOREACH(e, entries, list) {
+                m_keys.append(QString(e->key));
+            }
+            s3_bucket_entries_free(entries);
         }
-        s3_bucket_entries_free(entries);
+        emit keysChanged();
     }
-    emit keysChanged();
+    else {
+        qDebug() << "Error: " << m_reply->error();
+    }
+
+    emit finished();
 }
 
 QStringList S3ListResult::keys() const
@@ -212,3 +218,57 @@ QByteArray S3GetResult::data() const
     return m_data;
 }
 
+S3GetFileResult *S3Access::getFile(QString const &key, QString const &filename)
+{
+    char *date;
+    QString signData;
+    QString url;
+    QNetworkReply *reply;
+    S3GetFileResult *result;
+
+    date = s3_make_date();
+    signData = "GET\n\n\n" + QString(date) + "\n/" + m_bucket + "/" + key;
+    url = "http://" + m_baseUrl + "/" + m_bucket + "/" + key;
+
+    reply = performOp(GET, url, signData, date, nullptr, nullptr, nullptr);
+    result = new S3GetFileResult(reply, filename, this);
+    free(date);
+
+    return result;
+}
+
+void S3Result::onFinished()
+{
+    qDebug() << "S3Result::onFinished";
+
+    if (m_reply->error() == QNetworkReply::NoError) {
+        qDebug() << "Download complete";
+    }
+    else {
+        qDebug() << "Error: " << m_reply->error();
+    }
+
+    emit finished();
+}
+
+void S3GetFileResult::onFinished()
+{
+    qDebug() << "S3Result::onFinished";
+
+    if (m_reply->error() == QNetworkReply::NoError) {
+        QFile file(m_filename);
+        if (file.open(QIODevice::WriteOnly)) {
+            file.write(m_reply->readAll());
+            file.close();
+            qDebug() << "Data written to file: " << m_filename;
+        }
+        else {
+            qDebug() << "Error writing to file: " << m_filename;
+        }
+    }
+    else {
+        qDebug() << "Error: " << m_reply->error();
+    }
+
+    emit finished();
+}
