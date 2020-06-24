@@ -4,12 +4,25 @@ VERSION_MAJOR = 0
 VERSION_MINOR = 0
 VERSION_BUILD = 1
 
+#protobuf build step
+PRE_TARGETDEPS += proto/contrac.pb.cc
+protobuf.target = proto/contrac.pb.cc
+protobuf.path = $$OUT_PWD/contracd
+protobuf.commands = \
+    mkdir -p $$OUT_PWD/proto; \
+    protoc --proto_path=$$PWD/src --cpp_out=$$OUT_PWD/proto $$PWD/src/contrac.proto
+
+INCLUDEPATH += $$OUT_PWD/proto
+
+QMAKE_EXTRA_TARGETS += protobuf
+
 #Target version
 VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}-$${VERSION_BUILD}
 
 CONFIG += sailfishapp
 
 HEADERS += \
+    proto/contrac.pb.h \
     src/contracd.h \
     src/dbusinterface.h \
     src/bleadvertisement.h \
@@ -20,7 +33,6 @@ HEADERS += \
     src/contactmatch.h \
     src/contactstorage.h \
     src/contrac.h \
-    src/contrac.pb.h \
     src/controller.h \
     src/daystorage.h \
     src/diagnosiskey.h \
@@ -36,6 +48,7 @@ HEADERS += \
     src/zipistreambuffer.h
 
 SOURCES += \
+    proto/contrac.pb.cc \
     src/contracd.cpp \
     src/dbusinterface.cpp \
     src/bleadvertisement.cpp \
@@ -46,7 +59,6 @@ SOURCES += \
     src/contactmatch.cpp \
     src/contactstorage.cpp \
     src/contrac.cpp \
-    src/contrac.pb.cc \
     src/controller.cpp \
     src/daystorage.cpp \
     src/diagnosiskey.cpp \
@@ -67,7 +79,7 @@ DISTFILES += \
 
 PKGCONFIG += \
     openssl \
-    protobuf \
+    protobuf-lite \
 
 QT += dbus
 

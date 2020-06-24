@@ -33,6 +33,7 @@ HEADERS += \
 
 HEADERS += \
     ../src/contactmodel.h \
+    ../contracd/proto/contrac.pb.h \
     ../contracd/src/bleadvertisement.h \
     ../contracd/src/bleadvertisementmanager.h \
     ../contracd/src/bleascanner.h \
@@ -41,7 +42,6 @@ HEADERS += \
     ../contracd/src/contactmatch.h \
     ../contracd/src/contactstorage.h \
     ../contracd/src/contrac.h \
-    ../contracd/src/contrac.pb.h \
     ../contracd/src/controller.h \
     ../contracd/src/daystorage.h \
     ../contracd/src/diagnosiskey.h \
@@ -58,6 +58,7 @@ HEADERS += \
 
 SOURCES += \
     ../src/contactmodel.cpp \
+    ../contracd/proto/contrac.pb.cc \
     ../contracd/src/bleadvertisement.cpp \
     ../contracd/src/bleadvertisementmanager.cpp \
     ../contracd/src/blescanner.cpp \
@@ -66,7 +67,6 @@ SOURCES += \
     ../contracd/src/contactmatch.cpp \
     ../contracd/src/contactstorage.cpp \
     ../contracd/src/contrac.cpp \
-    ../contracd/src/contrac.pb.cc \
     ../contracd/src/controller.cpp \
     ../contracd/src/daystorage.cpp \
     ../contracd/src/diagnosiskey.cpp \
@@ -79,6 +79,8 @@ SOURCES += \
     ../contracd/src/rpidataitem.cpp \
     ../contracd/src/temporaryexposurekey.cpp \
     ../contracd/src/zipistreambuffer.cpp \
+
+INCLUDEPATH += $$OUT_PWD/../contracd/proto
 
 data.files = sample_diagnosis_key_file.zip
 data.path = /usr/share/$${PACKAGENAME}-tests

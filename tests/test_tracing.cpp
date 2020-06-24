@@ -6,7 +6,7 @@
 #include "../contracd/src/exposurenotification.h"
 #include "../contracd/src/exposurenotification_p.h"
 #include "../contracd/src/exposureconfiguration.h"
-#include "../contracd/src/contrac.pb.h"
+#include "../contracd/proto/contrac.pb.h"
 
 #include "test_tracing.h"
 

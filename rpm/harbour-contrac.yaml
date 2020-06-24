@@ -32,6 +32,7 @@ PkgConfigBR:
 # Build dependencies without a pkgconfig setup can be listed here
 PkgBR:
   - quazip-devel
+  - protobuf-compiler
 
 # Runtime dependencies which are not automatically detected
 Requires:

@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS = contrac.pro tests contracd
+tests.depends = contracd contrac.pro
 
 DISTFILES += \
     rpm/harbour-contrac.changes.in \

@@ -16,6 +16,8 @@ syntax = "proto2";
 
 package diagnosis;
 
+option optimize_for = LITE_RUNTIME;
+
 // Protobuf definition for exports of confirmed temporary exposure keys.
 //
 // The full file format is documented under "Exposure Key Export File Format
