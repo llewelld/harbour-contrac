@@ -53,8 +53,8 @@ DISTFILES += qml/harbour-contrac.qml \
     qml/cover/CoverPage.qml \
     qml/pages/About.qml \
     qml/pages/Main.qml \
-    qml/components/InfoRow.qml
-    translations/*.ts \
+    qml/components/InfoRow.qml \
+    translations/*.ts
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
 
@@ -70,6 +70,7 @@ CONFIG += sailfishapp_i18n_unfinished
 # modify the localized app name in the the .desktop file.
 TRANSLATIONS += translations/harbour-contrac.ts
 TRANSLATIONS += translations/harbour-contrac-en.ts
+TRANSLATIONS += translations/harbour-contrac-zh_CN.ts
 
 PKGCONFIG += \
     openssl \
