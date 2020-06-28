@@ -29,4 +29,5 @@ Relevant Google/Apple or DP-3T protocol apps.
 1. SwissCovid (DP-3T): https://github.com/DP-3T/dp3t-app-android-ch
 2. Covid-Warn-App (GA): https://github.com/corona-warn-app
 3. Immuni (GA): https://github.com/immuni-app
+4. eRouška (bespoke): https://github.com/covid19cz/erouska-android
 
