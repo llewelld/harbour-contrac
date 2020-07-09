@@ -15,7 +15,9 @@ class TemporaryExposureKey : public QObject
 
 public:
     explicit TemporaryExposureKey(QObject *parent = nullptr);
-    explicit TemporaryExposureKey(TemporaryExposureKey const& temporaryExopsureKey);
+    TemporaryExposureKey(TemporaryExposureKey const& temporaryExopsureKey);
+    TemporaryExposureKey& operator=( const TemporaryExposureKey &other);
+
     enum RiskLevel
     {
         RiskLevelInvalid = 0,
@@ -58,5 +60,10 @@ QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKey &t
 QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKey &temporaryExposureKey);
 
 Q_DECLARE_METATYPE(TemporaryExposureKey)
+
+QDBusArgument &operator<<(QDBusArgument &argument, const QList<TemporaryExposureKey> &temporaryExposureKeyList);
+QDBusArgument const &operator>>(const QDBusArgument &argument, QList<TemporaryExposureKey> &temporaryExposureKeyList);
+
+Q_DECLARE_METATYPE(QList<TemporaryExposureKey>)
 
 #endif // TEMPORARYEXPOSUREKEY_H

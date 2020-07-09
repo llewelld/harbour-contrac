@@ -39,6 +39,7 @@ Requires:
   - sailfishsilica-qt5 >= 0.10.9 
   - openssl
   - protobuf-lite
+  - nemo-qml-plugin-time-qt5
 
 # All installed files
 Files:

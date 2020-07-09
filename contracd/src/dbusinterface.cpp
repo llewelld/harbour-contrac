@@ -16,13 +16,14 @@ DBusInterface::DBusInterface(QObject *parent)
     qDBusRegisterMetaType<ExposureInformation>();
     qDBusRegisterMetaType<ExposureSummary>();
     qDBusRegisterMetaType<ExposureConfiguration>();
-    qDBusRegisterMetaType<TemporaryExposureKeyList>();
-    qDBusRegisterMetaType<ExposureInformationList>();
+    qDBusRegisterMetaType<QList<TemporaryExposureKey>>();
+    qDBusRegisterMetaType<QList<ExposureInformation>>();
 
     connect(&m_exposureNotification, &ExposureNotification::statusChanged, this, &DBusInterface::statusChanged);
     connect(&m_exposureNotification, &ExposureNotification::isEnabledChanged, this, &DBusInterface::isEnabledChanged);
     connect(&m_exposureNotification, &ExposureNotification::beaconSent, this, &DBusInterface::incrementSentCount);
     connect(&m_exposureNotification, &ExposureNotification::beaconReceived, this, &DBusInterface::incrementReceiveCount);
+    connect(&m_exposureNotification, &ExposureNotification::isBusyChanged, this, &DBusInterface::isBusyChanged);
 
     result = m_connection.registerService(QStringLiteral(SERVICE_NAME));
     qDebug() << "CONTRAC: service registration: " << result;
@@ -47,6 +48,7 @@ DBusInterface::~DBusInterface()
     disconnect(&m_exposureNotification, &ExposureNotification::isEnabledChanged, this, &DBusInterface::isEnabledChanged);
     disconnect(&m_exposureNotification, &ExposureNotification::beaconSent, this, &DBusInterface::incrementSentCount);
     disconnect(&m_exposureNotification, &ExposureNotification::beaconReceived, this, &DBusInterface::incrementReceiveCount);
+    disconnect(&m_exposureNotification, &ExposureNotification::isBusyChanged, this, &DBusInterface::isBusyChanged);
 
     m_connection.unregisterObject(SERVICE_PATH);
     result = m_connection.unregisterService(QStringLiteral(SERVICE_NAME));
@@ -81,6 +83,12 @@ bool DBusInterface::isEnabled() const
     return m_exposureNotification.isEnabled();
 }
 
+bool DBusInterface::isBusy() const
+{
+    qDebug() << "CONTRAC: isBusy()";
+    return m_exposureNotification.isBusy();
+}
+
 quint32 DBusInterface::maxDiagnosisKeys() const
 {
     qDebug() << "CONTRAC: maxDiagnosisKeys()";
@@ -90,7 +98,10 @@ quint32 DBusInterface::maxDiagnosisKeys() const
 QList<TemporaryExposureKey> DBusInterface::getTemporaryExposureKeyHistory()
 {
     qDebug() << "CONTRAC: getTemporaryExposureKeyHistory()";
-    return m_exposureNotification.getTemporaryExposureKeyHistory();
+    QList<TemporaryExposureKey> keys = m_exposureNotification.getTemporaryExposureKeyHistory();
+    qDebug() << "CONTRAC: Sending " << keys.size() << "keys";
+
+    return keys;
 }
 
 void DBusInterface::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token)
@@ -149,50 +160,4 @@ void DBusInterface::incrementSentCount()
     emit sentCountChanged();
 }
 
-QDBusArgument &operator<<(QDBusArgument &argument, const ExposureInformationList &exposureInformationList)
-{
-    argument.beginArray();
-    for (ExposureInformation const & exposureInformation : exposureInformationList) {
-        argument << exposureInformation;
-    }
-    argument.endArray();
 
-    return argument;
-}
-
-QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformationList &exposureInformationList)
-{
-    argument.beginArray();
-    while (!argument.atEnd()) {
-        ExposureInformation exposureInformation;
-        argument >> exposureInformation;
-        exposureInformationList.append(exposureInformation);
-    }
-    argument.endArray();
-
-    return argument;
-}
-
-QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKeyList &temporaryExposureKeyList)
-{
-    argument.beginArray();
-    for (TemporaryExposureKey const & temporaryExposureKey : temporaryExposureKeyList) {
-        argument << temporaryExposureKey;
-    }
-    argument.endArray();
-
-    return argument;
-}
-
-QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKeyList &temporaryExposureKeyList)
-{
-    argument.beginArray();
-    while (!argument.atEnd()) {
-        TemporaryExposureKey temporaryExposureKey;
-        argument >> temporaryExposureKey;
-        temporaryExposureKeyList.append(temporaryExposureKey);
-    }
-    argument.endArray();
-
-    return argument;
-}

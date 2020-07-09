@@ -25,6 +25,7 @@ class DBusProxy : public QObject
     // Non-standard additions
     Q_PROPERTY(quint32 receivedCount READ receivedCount NOTIFY receivedCountChanged)
     Q_PROPERTY(quint32 sentCount READ sentCount NOTIFY sentCountChanged)
+    Q_PROPERTY(bool isBusy READ isBusy NOTIFY isBusyChanged)
 public:
     explicit DBusProxy(QObject *parent = nullptr);
     ~DBusProxy();
@@ -46,7 +47,7 @@ public:
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
-    Q_INVOKABLE QList<TemporaryExposureKey> *getTemporaryExposureKeyHistory();
+    Q_INVOKABLE QList<TemporaryExposureKey> getTemporaryExposureKeyHistory();
     Q_INVOKABLE void provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token);
     Q_INVOKABLE ExposureSummary *getExposureSummary(QString const &token) const;
     Q_INVOKABLE QList<ExposureInformation> *getExposureInformation(QString const &token) const;
@@ -55,6 +56,7 @@ public:
     // Non-standard additions
     quint32 receivedCount() const;
     quint32 sentCount() const;
+    bool isBusy() const;
 
 signals:
     void statusChanged();
@@ -63,6 +65,7 @@ signals:
     // Non-standard additions
     void receivedCountChanged();
     void sentCountChanged();
+    void isBusyChanged();
 
 public slots:
 
@@ -73,20 +76,5 @@ private:
 };
 
 Q_DECLARE_METATYPE(DBusProxy::Status)
-
-typedef QList<TemporaryExposureKey> TemporaryExposureKeyList;
-
-QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKeyList &temporaryExposureKeyList);
-QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKeyList &temporaryExposureKeyList);
-
-Q_DECLARE_METATYPE(TemporaryExposureKeyList)
-
-typedef QList<ExposureInformation> ExposureInformationList;
-
-QDBusArgument &operator<<(QDBusArgument &argument, const ExposureInformationList &exposureInformationList);
-QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformationList &exposureInformationList);
-
-Q_DECLARE_METATYPE(ExposureInformationList)
-
 
 #endif // DBUSPROXY_H

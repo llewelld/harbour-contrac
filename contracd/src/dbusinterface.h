@@ -21,14 +21,15 @@ class DBusInterface : public QObject
     // Non-standard additions
     Q_PROPERTY(quint32 receivedCount READ receivedCount NOTIFY receivedCountChanged)
     Q_PROPERTY(quint32 sentCount READ sentCount NOTIFY sentCountChanged)
+    Q_PROPERTY(bool isBusy READ isBusy NOTIFY isBusyChanged)
 
 public:
     explicit DBusInterface(QObject *parent = nullptr);
     ~DBusInterface();
 
-    ExposureNotification::Status status() const;
-    bool isEnabled() const;
-    quint32 maxDiagnosisKeys() const;
+    Q_INVOKABLE ExposureNotification::Status status() const;
+    Q_INVOKABLE bool isEnabled() const;
+    Q_INVOKABLE quint32 maxDiagnosisKeys() const;
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
@@ -42,6 +43,7 @@ public:
     // Non-standard additions
     Q_INVOKABLE quint32 receivedCount() const;
     Q_INVOKABLE quint32 sentCount() const;
+    Q_INVOKABLE bool isBusy() const;
 
 signals:
     void statusChanged();
@@ -50,6 +52,7 @@ signals:
     // Non-standard additions
     void receivedCountChanged();
     void sentCountChanged();
+    void isBusyChanged();
 
 public slots:
 
@@ -65,19 +68,6 @@ private:
     quint32 m_receivedCount;
 };
 
-typedef QList<TemporaryExposureKey> TemporaryExposureKeyList;
-
-QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKeyList &temporaryExposureKeyList);
-QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKeyList &temporaryExposureKeyList);
-
-Q_DECLARE_METATYPE(TemporaryExposureKeyList)
-
-typedef QList<ExposureInformation> ExposureInformationList;
-
-QDBusArgument &operator<<(QDBusArgument &argument, const ExposureInformationList &exposureInformationList);
-QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformationList &exposureInformationList);
-
-Q_DECLARE_METATYPE(ExposureInformationList)
 
 
 #endif // DBUSINTERFACE_H
