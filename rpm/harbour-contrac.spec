@@ -28,7 +28,7 @@ BuildRequires:  pkgconfig(Qt5Test)
 BuildRequires:  pkgconfig(protobuf-lite)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libxml-2.0)
-BuildRequires:  quazip-devel
+BuildRequires:  pkgconfig(quazip)
 BuildRequires:  protobuf-compiler
 BuildRequires:  desktop-file-utils
 

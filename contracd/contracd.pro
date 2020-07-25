@@ -80,10 +80,9 @@ DISTFILES += \
 PKGCONFIG += \
     openssl \
     protobuf-lite \
+    quazip
 
 QT += dbus
-
-LIBS += -lquazip
 
 OTHER_FILES += \
 

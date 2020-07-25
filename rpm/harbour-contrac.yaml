@@ -28,10 +28,10 @@ PkgConfigBR:
   - protobuf-lite
   - libcurl
   - libxml-2.0
+  - quazip
 
 # Build dependencies without a pkgconfig setup can be listed here
 PkgBR:
-  - quazip-devel
   - protobuf-compiler
 
 # Runtime dependencies which are not automatically detected
