@@ -6,6 +6,9 @@ extern "C" {
 
 #include "s3access.h"
 
+// Needed for performOp
+#include <openssl/hmac.h>
+
 S3Result::S3Result(QNetworkReply *reply, QObject *parent) : QObject(parent)
   , m_reply(reply)
 {
@@ -130,7 +133,9 @@ S3ListResult *S3Access::list(QString const &prefix)
 QNetworkReply *S3Access::performOp(Method method, QString const &url, QIODevice *in, const char *content_md5, const char *content_type, QString signDataKey)
 {
     QNetworkRequest request;
-    char *digest;
+    unsigned char digest[EVP_MAX_MD_SIZE];
+    QByteArray digest_base64;
+    unsigned int out_length = 0;
     QString methodStr;
     QString date = QDateTime::currentDateTimeUtc().toString(Qt::RFC2822Date);
     QNetworkReply *reply;
@@ -156,10 +161,11 @@ QNetworkReply *S3Access::performOp(Method method, QString const &url, QIODevice 
         signData+=signDataKey;
 
     request.setUrl(QUrl(QString(url)));
-    digest = s3_hmac_sign(m_secret.toLatin1().data(), signData.toLatin1().data(), signData.toLatin1().size());
+    HMAC(EVP_sha1(), m_secret.toLatin1().data(), m_secret.toLatin1().size(), (unsigned char*)signData.toLatin1().data(), signData.toLatin1().size(), digest, &out_length);
+    digest_base64 = QByteArray((const char*)digest, out_length).toBase64();
 
     request.setRawHeader("Date", date.toLocal8Bit());
-    request.setRawHeader("Authorization", QString(QStringLiteral("AWS %1:%2")).arg(m_id).arg(digest).toLocal8Bit());
+    request.setRawHeader("Authorization", QString(QStringLiteral("AWS %1:%2")).arg(m_id).arg(digest_base64.data()).toLocal8Bit());
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
     qDebug() << "Request to: " << url;
@@ -187,7 +193,6 @@ QNetworkReply *S3Access::performOp(Method method, QString const &url, QIODevice 
         break;
     }
 
-    free(digest);
 
     return reply;
 }
