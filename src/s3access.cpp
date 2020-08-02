@@ -34,33 +34,18 @@ S3Result::~S3Result()
 }
 
 S3Access::S3Access(QObject *parent) : QObject(parent)
-  , m_s3(nullptr)
   , m_manager(new QNetworkAccessManager(this))
 {
 }
 
 S3Access::~S3Access()
 {
-    if (m_s3) {
-        s3_free(m_s3);
-        m_s3 = nullptr;
-    }
-}
-
-void S3Access::initialise()
-{
-    if (m_s3) {
-        s3_free(m_s3);
-        m_s3 = nullptr;
-    }
-    m_s3 = s3_init(m_id.toLatin1().data(), m_baseUrl.toLatin1().data(), m_baseUrl.toLatin1().data());
 }
 
 void S3Access::setId(QString const &id)
 {
     if (m_id != id) {
         m_id = id;
-        initialise();
         emit idChanged();
     }
 }
@@ -69,7 +54,6 @@ void S3Access::setSecret(QString const &secret)
 {
     if (m_secret != secret) {
         m_secret = secret;
-        initialise();
         emit secretChanged();
     }
 }
@@ -78,7 +62,6 @@ void S3Access::setBaseUrl(QString const &baseUrl)
 {
     if (m_baseUrl != baseUrl) {
         m_baseUrl = baseUrl;
-        initialise();
         emit baseUrlChanged();
     }
 }

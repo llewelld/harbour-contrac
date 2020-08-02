@@ -132,7 +132,6 @@ private:
     QString m_baseUrl;
     QString m_bucket;
 
-    struct S3 *m_s3;
     QNetworkAccessManager *m_manager;
 };
 
