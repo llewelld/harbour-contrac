@@ -140,9 +140,9 @@ QNetworkReply *S3Access::performOp(Method method, QString const &url, QIODevice 
 
     QString signData = methodStr + "\n\n\n" + date  + "\n/" + m_bucket + "/";
 
-    if (signDataKey != nullptr)
+    if (signDataKey != nullptr) {
         signData+=signDataKey;
-
+    }
     request.setUrl(QUrl(QString(url)));
     HMAC(EVP_sha1(), m_secret.toLatin1().data(), m_secret.toLatin1().size(), (unsigned char*)signData.toLatin1().data(), signData.toLatin1().size(), digest, &out_length);
     digest_base64 = QByteArray((const char*)digest, out_length).toBase64();
