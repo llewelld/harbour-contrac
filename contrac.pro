@@ -46,6 +46,7 @@ HEADERS += \
     contracd/src/exposureinformation.h \
     contracd/src/temporaryexposurekey.h \
     contracd/src/exposureconfiguration.h \
+    src/settings.h \
     src/upload.h
 
 SOURCES += \
@@ -64,6 +65,7 @@ SOURCES += \
     contracd/src/exposureinformation.cpp \
     contracd/src/temporaryexposurekey.cpp \
     contracd/src/exposureconfiguration.cpp \
+    src/settings.cpp \
     src/upload.cpp
 
 DISTFILES += \

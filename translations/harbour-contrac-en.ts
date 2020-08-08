@@ -87,5 +87,25 @@
         <source>Using the Corona Warn App servers</source>
         <translation type="unfinished"></translation>
     </message>
+    <message id="contrac-settings_he_servers">
+        <source>Servers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_tf_download_server">
+        <source>Download server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_settings">
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_tf_upload_server">
+        <source>Upload server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_tf_verification_server">
+        <source>Verification server</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../components"
+import uk.co.flypig.contrac 1.0
 
 Page {
     id: aboutPage

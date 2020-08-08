@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.nemomobile.time 1.0
-import uk.co.flypig 1.0
+import uk.co.flypig.contrac 1.0
 
 Page {
     id: page
@@ -61,6 +61,11 @@ Page {
                 //% "About"
                 text: qsTrId("contrac-main_about")
                 onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
+            }
+            MenuItem {
+                //% "Settings"
+                text: qsTrId("contrac-main_settings")
+                onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml"))
             }
         }
 
@@ -147,7 +152,9 @@ Page {
                 width: parent.width
                 maximumValue: 100
                 value: upload.available ? upload.progress * 100.0 : 100.0
-                label: (upload.status == Upload.StatusError) ? "Error" : "Upload progress"
+                label: upload.available ? ((upload.status === Upload.StatusError) ? "Error"
+                                                                                  : "Upload progress")
+                                        : "Up-do-date"
             }
 
             Button {
@@ -177,7 +184,9 @@ Page {
                 width: parent.width
                 maximumValue: 100
                 value: download.available ? download.progress * 100.0 : 100.0
-                label: "Download progress"
+                label: download.available ? ((download.status === Download.StatusError) ? "Error"
+                                                                                        : "Download progress")
+                                          : "Up-to-date"
             }
 
             Button {

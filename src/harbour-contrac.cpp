@@ -12,6 +12,7 @@
 #include "dbusproxy.h"
 #include "download.h"
 #include "upload.h"
+#include "settings.h"
 
 #include <sailfishapp.h>
 
@@ -31,13 +32,17 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("www.flypig.co.uk");
     QCoreApplication::setApplicationName("harbour-contrac");
 
-    qmlRegisterType<DBusProxy>("uk.co.flypig", 1, 0, "DBusProxy");
-    qmlRegisterType<TemporaryExposureKey>("uk.co.flypig", 1, 0, "TemporaryExposureKey");
-    qmlRegisterType<ExposureSummary>("uk.co.flypig", 1, 0, "ExposureSummary");
-    qmlRegisterType<ExposureInformation>("uk.co.flypig", 1, 0, "ExposureInformation");
-    qmlRegisterType<ExposureConfiguration>("uk.co.flypig", 1, 0, "ExposureConfiguration");
-    qmlRegisterType<Download>("uk.co.flypig", 1, 0, "Download");
-    qmlRegisterType<Upload>("uk.co.flypig", 1, 0, "Upload");
+    Settings::instantiate();
+
+    qmlRegisterType<DBusProxy>("uk.co.flypig.contrac", 1, 0, "DBusProxy");
+    qmlRegisterType<TemporaryExposureKey>("uk.co.flypig.contrac", 1, 0, "TemporaryExposureKey");
+    qmlRegisterType<ExposureSummary>("uk.co.flypig.contrac", 1, 0, "ExposureSummary");
+    qmlRegisterType<ExposureInformation>("uk.co.flypig.contrac", 1, 0, "ExposureInformation");
+    qmlRegisterType<ExposureConfiguration>("uk.co.flypig.contrac", 1, 0, "ExposureConfiguration");
+    qmlRegisterType<Download>("uk.co.flypig.contrac", 1, 0, "Download");
+    qmlRegisterType<Upload>("uk.co.flypig.contrac", 1, 0, "Upload");
+
+    qmlRegisterSingletonType<Settings>("uk.co.flypig.contrac", 1, 0, "Settings", Settings::provider);
 
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));

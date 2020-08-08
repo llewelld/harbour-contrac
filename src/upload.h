@@ -42,7 +42,7 @@ signals:
     void latestChanged();
     void statusChanged();
 
-public slots:
+private slots:
     void setStatus(Status status);
     void onTeleTANFinished();
     void onRegTokenFinished();
