@@ -25,6 +25,7 @@ class ExposureNotification : public QObject
     Q_ENUMS(Status)
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(bool isEnabled READ isEnabled NOTIFY isEnabledChanged)
+    Q_PROPERTY(bool isBusy READ isBusy NOTIFY isBusyChanged)
     Q_PROPERTY(quint32 maxDiagnosisKeys READ maxDiagnosisKeys CONSTANT)
 public:
     explicit ExposureNotification(QObject *parent = nullptr);
@@ -43,6 +44,7 @@ public:
 
     Status status() const;
     bool isEnabled() const;
+    bool isBusy() const;
     quint32 maxDiagnosisKeys() const;
 
     Q_INVOKABLE void start();
@@ -57,6 +59,7 @@ public:
 signals:
     void statusChanged();
     void isEnabledChanged();
+    void isBusyChanged();
 
     void beaconSent();
     void beaconReceived();

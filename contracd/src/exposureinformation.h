@@ -56,4 +56,9 @@ QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformati
 
 Q_DECLARE_METATYPE(ExposureInformation)
 
+QDBusArgument &operator<<(QDBusArgument &argument, const QList<ExposureInformation> &exposureInformationList);
+QDBusArgument const &operator>>(const QDBusArgument &argument, QList<ExposureInformation> &exposureInformationList);
+
+Q_DECLARE_METATYPE(QList<ExposureInformation>)
+
 #endif // EXPOSUREINFORMATION_H

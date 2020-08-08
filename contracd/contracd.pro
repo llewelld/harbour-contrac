@@ -4,6 +4,9 @@ VERSION_MAJOR = 0
 VERSION_MINOR = 0
 VERSION_BUILD = 1
 
+#Target version
+VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}-$${VERSION_BUILD}
+
 #protobuf build step
 PRE_TARGETDEPS += proto/contrac.pb.cc
 protobuf.target = proto/contrac.pb.cc
@@ -15,9 +18,6 @@ protobuf.commands = \
 INCLUDEPATH += $$OUT_PWD/proto
 
 QMAKE_EXTRA_TARGETS += protobuf
-
-#Target version
-VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}-$${VERSION_BUILD}
 
 CONFIG += sailfishapp
 
@@ -73,7 +73,6 @@ SOURCES += \
     src/zipistreambuffer.cpp
 
 DISTFILES += \
-    src/contrac.proto \
     contracd.service \
     contracd.privileges \
 
@@ -85,6 +84,7 @@ PKGCONFIG += \
 QT += dbus
 
 OTHER_FILES += \
+    src/contrac.proto
 
 service.files = $${TARGET}.service
 service.path = /usr/lib/systemd/user/

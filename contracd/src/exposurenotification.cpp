@@ -86,6 +86,8 @@ ExposureNotificationPrivate::ExposureNotificationPrivate(ExposureNotification *q
     q_ptr->connect(m_contrac, &Contrac::timeChanged, m_contacts, &ContactStorage::onTimeChanged);
     q_ptr->connect(&m_intervalUpdate, &QTimer::timeout, q_ptr, &ExposureNotification::intervalUpdate);
     q_ptr->connect(m_scanner, &BleScanner::beaconDiscovered, q_ptr, &ExposureNotification::beaconDiscovered);
+    q_ptr->connect(m_scanner, &BleScanner::scanChanged, q_ptr, &ExposureNotification::isEnabledChanged);
+    q_ptr->connect(m_scanner, &BleScanner::busyChanged, q_ptr, &ExposureNotification::isBusyChanged);
 }
 
 ExposureNotificationPrivate::~ExposureNotificationPrivate()
@@ -94,6 +96,8 @@ ExposureNotificationPrivate::~ExposureNotificationPrivate()
     q_ptr->disconnect(&m_intervalUpdate, &QTimer::timeout, q_ptr, &ExposureNotification::intervalUpdate);
     q_ptr->disconnect(m_contrac, &Contrac::timeChanged, m_contacts, &ContactStorage::onTimeChanged);
     q_ptr->disconnect(m_contrac, &Contrac::rpiChanged, q_ptr, &ExposureNotification::onRpiChanged);
+    q_ptr->disconnect(m_scanner, &BleScanner::scanChanged, q_ptr, &ExposureNotification::isEnabledChanged);
+    q_ptr->disconnect(m_scanner, &BleScanner::busyChanged, q_ptr, &ExposureNotification::isBusyChanged);
 }
 
 ExposureNotification::ExposureNotification(QObject *parent)
@@ -114,6 +118,13 @@ bool ExposureNotification::isEnabled() const
     Q_D(const ExposureNotification);
 
     return d->m_scanner->scan();
+}
+
+bool ExposureNotification::isBusy() const
+{
+    Q_D(const ExposureNotification);
+
+    return d->m_scanner->busy();
 }
 
 quint32 ExposureNotification::maxDiagnosisKeys() const
@@ -157,13 +168,13 @@ QList<TemporaryExposureKey> ExposureNotification::getTemporaryExposureKeyHistory
 {
     Q_D(ExposureNotification);
 
-    QList<TemporaryExposureKey>  keys;
+    QList<TemporaryExposureKey> keys;
     quint32 today;
     quint32 day;
 
     today = d->m_contrac->dayNumber();
     day = today < 14 ? 0 : today - 14;
-    while ( day < today) {
+    while (day < today) {
         QByteArray dtk;
         dtk = d->m_contrac->dailyTracingKey(d->m_contrac->tk(), day);
         TemporaryExposureKey key(this);
@@ -173,6 +184,7 @@ QList<TemporaryExposureKey> ExposureNotification::getTemporaryExposureKeyHistory
         // TODO: Figure out where this is supposed to come from
         key.setTransmissionRiskLevel(TemporaryExposureKey::RiskLevelMedium);
         keys.append(key);
+        ++day;
     }
 
     return keys;

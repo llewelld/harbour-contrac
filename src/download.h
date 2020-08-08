@@ -12,6 +12,8 @@ class Download : public QObject
     Q_OBJECT
     Q_PROPERTY(QDate latest READ latest NOTIFY latestChanged)
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+    Q_PROPERTY(float progress READ progress NOTIFY progressChanged)
+
 public:
     explicit Download(QObject *parent = nullptr);
 
@@ -19,11 +21,13 @@ public:
 
     QDate latest() const;
     bool downloading() const;
+    float progress() const;
 
 signals:
     void latestChanged();
     void downloadingChanged();
     void downloadComplete(QString const &filename);
+    void progressChanged();
 
 public slots:
 
@@ -41,6 +45,8 @@ private:
     QMap<QDate, QStringList> m_fileQueue;
     QDate m_latest;
     bool m_downloading;
+    qint64 m_filesReceived;
+    qint64 m_filesTotal;
 };
 
 #endif // DOWNLOAD_H

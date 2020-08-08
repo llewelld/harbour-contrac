@@ -18,9 +18,15 @@ More info: https://www.flypig.co.uk/contrac
 8.  Align with GApple API - DONE
 9.  Run as a service - DONE
 10. Service dbus interface - DONE
-11. Diagnosis key download - WORKING
-12. Diagnosis key upload
-13. Test against official apps
+11. Diagnosis key download - DONE
+12. Diagnosis key upload - DONE
+13. Test against official apps - PARTIAL
+14. Update to latest GApple protocol
+15. Risk config download
+16. Persistent settings
+17. User teleTAN input
+18. Test against official servers
+19. Scrub up the UI
 
 ## Contact Tracing Apps
 

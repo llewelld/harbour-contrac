@@ -1,3 +1,5 @@
+#include <qdebug.h>
+
 #include "temporaryexposurekey.h"
 
 TemporaryExposureKey::TemporaryExposureKey(QObject *parent)
@@ -11,9 +13,10 @@ TemporaryExposureKey::TemporaryExposureKey(QObject *parent)
 
 TemporaryExposureKey::TemporaryExposureKey(TemporaryExposureKey const& temporaryExopsureKey)
     : QObject(temporaryExopsureKey.parent())
-    , m_rollingStartNumber(temporaryExopsureKey.rollingStartNumber())
-    , m_rollingPeriod(temporaryExopsureKey.rollingPeriod())
-    , m_transmissionRiskLevel(temporaryExopsureKey.transmissionRiskLevel())
+    , m_keyData(temporaryExopsureKey.m_keyData)
+    , m_rollingStartNumber(temporaryExopsureKey.m_rollingStartNumber)
+    , m_rollingPeriod(temporaryExopsureKey.m_rollingPeriod)
+    , m_transmissionRiskLevel(temporaryExopsureKey.m_transmissionRiskLevel)
 {
 }
 
@@ -45,6 +48,43 @@ QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposure
     argument >> valueInt8;
     temporaryExposureKey.setTransmissionRiskLevel(valueInt8);
     argument.endStructure();
+
+    return argument;
+}
+
+TemporaryExposureKey& TemporaryExposureKey::operator=( const TemporaryExposureKey &other)
+{
+    if (this != &other) {
+        setParent(other.parent());
+        m_keyData = other.m_keyData;
+        m_rollingStartNumber = other.m_rollingStartNumber;
+        m_rollingPeriod = other.m_rollingPeriod;
+        m_transmissionRiskLevel = other.m_transmissionRiskLevel;
+    }
+
+    return *this;
+}
+
+QDBusArgument &operator<<(QDBusArgument &argument, const QList<TemporaryExposureKey> &temporaryExposureKeyList)
+{
+    argument.beginArray(qMetaTypeId<TemporaryExposureKey>());
+    for (TemporaryExposureKey const & temporaryExposureKey : temporaryExposureKeyList) {
+        argument << temporaryExposureKey;
+    }
+    argument.endArray();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, QList<TemporaryExposureKey> &temporaryExposureKeyList)
+{
+    argument.beginArray();
+    while (!argument.atEnd()) {
+        TemporaryExposureKey temporaryExposureKey;
+        argument >> temporaryExposureKey;
+        temporaryExposureKeyList.append(temporaryExposureKey);
+    }
+    argument.endArray();
 
     return argument;
 }

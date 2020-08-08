@@ -19,9 +19,22 @@ VERSION_BUILD = 1
 #Target version
 VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}-$${VERSION_BUILD}
 
+#protobuf build step
+PRE_TARGETDEPS += proto/submissionpayload.pb.cc
+protobuf.target = proto/submissionpayload.pb.cc
+protobuf.path = $$OUT_PWD
+protobuf.commands = \
+    mkdir -p $$OUT_PWD/proto; \
+    protoc --proto_path=$$PWD/src --cpp_out=$$OUT_PWD/proto $$PWD/src/submissionpayload.proto
+
+INCLUDEPATH += $$OUT_PWD/proto
+
+QMAKE_EXTRA_TARGETS += protobuf
+
 CONFIG += sailfishapp
 
 HEADERS += \
+    proto/submissionpayload.pb.h \
     src/dbusproxy.h \
     src/contactmodel.h \
     src/download.h \
@@ -32,9 +45,12 @@ HEADERS += \
     contracd/src/exposuresummary.h \
     contracd/src/exposureinformation.h \
     contracd/src/temporaryexposurekey.h \
-    contracd/src/exposureconfiguration.h
+    contracd/src/exposureconfiguration.h \
+    src/upload.h
 
-SOURCES += src/harbour-contrac.cpp \
+SOURCES += \
+    proto/submissionpayload.pb.cc \
+    src/harbour-contrac.cpp \
     src/dbusproxy.cpp \
     src/contactmodel.cpp \
     src/download.cpp \
@@ -47,9 +63,11 @@ SOURCES += src/harbour-contrac.cpp \
     contracd/src/exposuresummary.cpp \
     contracd/src/exposureinformation.cpp \
     contracd/src/temporaryexposurekey.cpp \
-    contracd/src/exposureconfiguration.cpp
+    contracd/src/exposureconfiguration.cpp \
+    src/upload.cpp
 
-DISTFILES += qml/harbour-contrac.qml \
+DISTFILES += \
+    qml/harbour-contrac.qml \
     qml/cover/CoverPage.qml \
     qml/pages/About.qml \
     qml/pages/Main.qml \
@@ -75,11 +93,13 @@ TRANSLATIONS += translations/harbour-contrac-zh_CN.ts
 PKGCONFIG += \
     openssl \
     libxml-2.0 \
-    libcurl
+    libcurl \
+    protobuf-lite \
 
 DEFINES += LINUX
 
 QT += dbus
 
 OTHER_FILES += \
+    src/submissionpayload.proto \
     icons/*.svg

@@ -19,6 +19,7 @@ Source100:  harbour-contrac.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   openssl
 Requires:   protobuf-lite
+Requires:   nemo-qml-plugin-time-qt5
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)

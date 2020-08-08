@@ -76,6 +76,30 @@ QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformati
     return argument;
 }
 
+QDBusArgument &operator<<(QDBusArgument &argument, const QList<ExposureInformation> &exposureInformationList)
+{
+    argument.beginArray(qMetaTypeId<ExposureInformation>());
+    for (ExposureInformation const & exposureInformation : exposureInformationList) {
+        argument << exposureInformation;
+    }
+    argument.endArray();
+
+    return argument;
+}
+
+QDBusArgument const &operator>>(const QDBusArgument &argument, QList<ExposureInformation> &exposureInformationList)
+{
+    argument.beginArray();
+    while (!argument.atEnd()) {
+        ExposureInformation exposureInformation;
+        argument >> exposureInformation;
+        exposureInformationList.append(exposureInformation);
+    }
+    argument.endArray();
+
+    return argument;
+}
+
 quint64 ExposureInformation::dateMillisSinceEpoch() const
 {
     return m_dateMillisSinceEpoch;

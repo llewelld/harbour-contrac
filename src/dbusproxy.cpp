@@ -17,8 +17,8 @@ DBusProxy::DBusProxy(QObject *parent)
     qDBusRegisterMetaType<ExposureInformation>();
     qDBusRegisterMetaType<ExposureSummary>();
     qDBusRegisterMetaType<ExposureConfiguration>();
-    qDBusRegisterMetaType<TemporaryExposureKeyList>();
-    qDBusRegisterMetaType<ExposureInformationList>();
+    qDBusRegisterMetaType<QList<TemporaryExposureKey>>();
+    qDBusRegisterMetaType<QList<ExposureInformation>>();
 
     m_interface = new QDBusInterface(QStringLiteral(SERVICE_NAME), QStringLiteral("/"), QString(), QDBusConnection::sessionBus(), this);
 
@@ -38,6 +38,9 @@ DBusProxy::DBusProxy(QObject *parent)
 
     result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "isEnabledChanged", argumentMatch, signature, this, SIGNAL(isEnabledChanged()));
     qDebug() << "Connection isEnabledChanged result: " << result;
+
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "isBusyChanged", argumentMatch, signature, this, SIGNAL(isBusyChanged()));
+    qDebug() << "Connection isBusyChanged result: " << result;
 }
 
 DBusProxy::~DBusProxy()
@@ -120,6 +123,12 @@ bool DBusProxy::isEnabled() const
     return reply;
 }
 
+bool DBusProxy::isBusy() const
+{
+    QDBusReply<bool> reply = m_interface->call("isBusy");
+    return reply;
+}
+
 quint32 DBusProxy::getMaxDiagnosisKeys() const
 {
     QDBusReply<quint32> reply = m_interface->call("maxDiagnosisKeys");
@@ -140,10 +149,12 @@ ExposureSummary *DBusProxy::getExposureSummary(QString const &token) const
     return result;
 }
 
-QList<TemporaryExposureKey> *DBusProxy::getTemporaryExposureKeyHistory()
+QList<TemporaryExposureKey> DBusProxy::getTemporaryExposureKeyHistory()
 {
+    qDebug() << "Calling dbus";
     QDBusReply<QList<TemporaryExposureKey>> reply = m_interface->call("getTemporaryExposureKeyHistory");
-    QList<TemporaryExposureKey> *result = new QList<TemporaryExposureKey>(reply);
+    QList<TemporaryExposureKey> result(reply);
+    qDebug() << "Returning " << result.size() << " keys";
 
     return result;
 }
@@ -164,53 +175,3 @@ QList<ExposureInformation> *DBusProxy::getExposureInformation(QString const &tok
 
     return result;
 }
-
-QDBusArgument &operator<<(QDBusArgument &argument, const ExposureInformationList &exposureInformationList)
-{
-    argument.beginArray();
-    for (ExposureInformation const & exposureInformation : exposureInformationList) {
-        argument << exposureInformation;
-    }
-    argument.endArray();
-
-    return argument;
-}
-
-QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureInformationList &exposureInformationList)
-{
-    argument.beginArray();
-    while (!argument.atEnd()) {
-        ExposureInformation exposureInformation;
-        argument >> exposureInformation;
-        exposureInformationList.append(exposureInformation);
-    }
-    argument.endArray();
-
-    return argument;
-}
-
-QDBusArgument &operator<<(QDBusArgument &argument, const TemporaryExposureKeyList &temporaryExposureKeyList)
-{
-    argument.beginArray();
-    for (TemporaryExposureKey const & temporaryExposureKey : temporaryExposureKeyList) {
-        argument << temporaryExposureKey;
-    }
-    argument.endArray();
-
-    return argument;
-}
-
-QDBusArgument const &operator>>(const QDBusArgument &argument, TemporaryExposureKeyList &temporaryExposureKeyList)
-{
-    argument.beginArray();
-    while (!argument.atEnd()) {
-        TemporaryExposureKey temporaryExposureKey;
-        argument >> temporaryExposureKey;
-        temporaryExposureKeyList.append(temporaryExposureKey);
-    }
-    argument.endArray();
-
-    return argument;
-}
-
-

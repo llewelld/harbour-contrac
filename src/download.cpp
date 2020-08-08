@@ -7,23 +7,40 @@
 
 #include "download.h"
 
+#define SERVER_ADDRESS "127.0.0.1:8003"
+
 Download::Download(QObject *parent) : QObject(parent)
   , m_s3Access(new S3Access(this))
   , m_fileQueue()
   , m_latest()
   , m_downloading(false)
+  , m_filesReceived(0)
+  , m_filesTotal(0)
 {
     m_s3Access->setId("accessKey1");
     m_s3Access->setSecret("verySecretKey1");
-    m_s3Access->setBaseUrl("192.168.1.2:8003");
+    m_s3Access->setBaseUrl(SERVER_ADDRESS);
     m_s3Access->setBucket("cwa");
 }
 
 Q_INVOKABLE void Download::downloadLatest()
 {
+    qint64 daysTotal;
     qDebug() << "Requesting keys";
 
     if (!m_downloading) {
+        m_filesReceived = 0;
+        if (m_latest.isValid()) {
+            daysTotal = m_latest.daysTo(QDate::currentDate());
+        }
+        else{
+            daysTotal = 14;
+        }
+        if (daysTotal > 14) {
+            daysTotal = 14;
+        }
+        m_filesTotal = daysTotal * 24;
+        emit progressChanged();
         startNextDateDownload();
     }
 }
@@ -92,7 +109,9 @@ void Download::startNextFileDownload() {
         connect(result, &S3Result::finished, this, [this, result, date, filename]() {
             qDebug() << "Finished downloading:" << m_fileQueue[date].first();
 
+            ++m_filesReceived;
             emit downloadComplete(filename);
+            emit progressChanged();
 
             m_fileQueue[date].removeFirst();
             if (m_fileQueue[date].size() == 0) {
@@ -126,11 +145,14 @@ void Download::startNextDateDownload()
     else {
         qDebug() << "All dates downloaded";
         m_downloading = false;
+        m_filesTotal = 0;
+        m_filesReceived = 0;
     }
 
     if (m_downloading != downloading) {
         emit downloadingChanged();
     }
+    emit progressChanged();
 }
 
 void Download::startDateDownload(QDate const &date)
@@ -174,4 +196,14 @@ void Download::createDateFolder(QDate const &date) const
 bool Download::downloading() const
 {
     return m_downloading;
+}
+
+float Download::progress() const
+{
+    float progress = 0.0f;
+    if (m_filesTotal > 0) {
+        progress = static_cast<float>(m_filesReceived) / static_cast<float>(m_filesTotal);
+    }
+
+    return progress;
 }
