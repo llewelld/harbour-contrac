@@ -171,7 +171,7 @@ void Upload::submitDiagnosisKeys(QString const &tan)
         // Convert the keys into protobuffer format
         for (TemporaryExposureKey const &key : exposureKeys) {
             diagnosis::TemporaryExposureKey *keys= payload.add_keys();
-            keys->set_key_data(key.keyData());
+            keys->set_key_data(key.keyData().data(), static_cast<size_t>(key.keyData().length()));
             keys->set_rolling_start_interval_number(static_cast<qint32>(key.rollingStartNumber()));
             keys->set_rolling_period(static_cast<qint32>(key.rollingPeriod()));
             keys->set_transmission_risk_level(key.transmissionRiskLevel());
@@ -187,6 +187,7 @@ void Upload::submitDiagnosisKeys(QString const &tan)
         qDebug() << "Keys included: " << payload.keys_size();
 
         QByteArray data = QByteArray::fromStdString(payload.SerializeAsString());
+        qDebug() << "Upload size: " << data.length();
 
         request.setUrl(QUrl("http://" UPLOAD_SERVER_ADDRESS "/version/v1/diagnosis-keys"));
         request.setRawHeader("accept", "*/*");
