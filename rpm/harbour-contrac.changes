@@ -12,7 +12,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* Sun Apr 13 2014 Jack Tar <jack.tar@example.com> 0.0.1-1
-- Scrubbed the deck
-- Hoisted the sails
+* Sun Aug 9 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.1.1-1
+- Supports diagnosis key downloads from the test server.
+- Supports diagnosis key upload to the test server.
+- Adds a setting page for configurating the sever to use.
+
+* Tue Jul 7 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.0.1-1
+- Initial alpha release.
+- Supports beacon scan and send.
 
