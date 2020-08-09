@@ -46,6 +46,12 @@ int main(int argc, char *argv[])
 
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));
+    QQmlContext *ctxt = view->rootContext();
+    ctxt->setContextProperty("version", VERSION);
+    qDebug() << "harbour-getiplay VERSION string: " << VERSION;
+    qDebug() << "VERSION_MAJOR: " << VERSION_MAJOR;
+    qDebug() << "VERSION_MINOR: " << VERSION_MINOR;
+    qDebug() << "VERSION_BUILD: " << VERSION_BUILD;
 
     view->show();
 

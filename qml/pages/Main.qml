@@ -82,17 +82,10 @@ Page {
             Label {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
-                //% "Using the Google/Apple API"
-                text: qsTrId("contrac-main_using_google_apple_api")
+                //% "Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing."
+                text: qsTrId("contrac-main_info")
                 color: Theme.highlightColor
-            }
-
-            Label {
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                x: Theme.horizontalPageMargin
-                //% "Using the Corona Warn App servers"
-                text: qsTrId("contrac-main_using_corona_warn_app_servers")
-                color: Theme.highlightColor
+                wrapMode: Text.Wrap
             }
 
             SectionHeader {

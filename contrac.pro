@@ -12,12 +12,12 @@
 # The name of your application
 TARGET = harbour-contrac
 
-VERSION_MAJOR = 0
-VERSION_MINOR = 0
-VERSION_BUILD = 1
+include(version.pri)
 
-#Target version
-VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}-$${VERSION_BUILD}
+DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR" \
+    "VERSION_MINOR=$$VERSION_MINOR" \
+    "VERSION_BUILD=$$VERSION_BUILD" \
+    "VERSION=\\\"$$VERSION\\\""
 
 #protobuf build step
 PRE_TARGETDEPS += proto/submissionpayload.pb.cc
@@ -103,5 +103,6 @@ DEFINES += LINUX
 QT += dbus
 
 OTHER_FILES += \
+    version.pri \
     src/submissionpayload.proto \
     icons/*.svg

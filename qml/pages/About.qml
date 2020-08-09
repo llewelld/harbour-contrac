@@ -41,7 +41,9 @@ Page {
             InfoRow {
                 //% "Version"
                 label: qsTrId("contrac-about_verion")
-                value: "0.0.1"
+                // The version property is set in the application
+                // initialisation code in harbour-contrac.cpp
+                value: version
                 midlineRatio: 0.4
                 midlineMin: Theme.fontSizeSmall * 5
                 midlineMax: Theme.fontSizeSmall * 10

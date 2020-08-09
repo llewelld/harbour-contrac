@@ -109,5 +109,10 @@
         <source>Verification server</source>
         <translation type="unfinished"></translation>
     </message>
+    <message id="contrac-main_info">
+        <source>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing.</source>
+        <oldsource>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
