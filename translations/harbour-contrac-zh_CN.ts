@@ -73,14 +73,6 @@
         <source>Contact beacons</source>
         <translation>通讯信标</translation>
     </message>
-    <message id="contrac-main_diagnosis_key_uploadss">
-        <source>Diagnosis key uploads</source>
-        <translation>诊断密钥更新</translation>
-    </message>
-    <message id="contrac-main_diagnosis_key_downloads">
-        <source>Diagnosis key downloads</source>
-        <translation>诊断密钥下载</translation>
-    </message>
     <message id="contrac-settings_he_servers">
         <source>Servers</source>
         <translation type="unfinished"></translation>
@@ -105,6 +97,126 @@
         <source>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing.</source>
         <oldsource>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing</oldsource>
         <translation type="unfinished">使用谷歌及苹果的API. 使用 Corona Warn 软件服务.</translation>
+    </message>
+    <message id="contrac-teletan_he_tan_entry">
+        <source>TAN entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-teletan_instructions">
+        <source>Please enter the 10-digit TAN that you were given.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_he_uploading">
+        <source>Uploading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_instructions">
+        <source>Please wait while your keys are uploaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_error_invalid-tan">
+        <source>Error: Invalid TAN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_error_invalid-reg-token">
+        <source>Error: Invalid registration token</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_error_invalid-diagnosis-keys">
+        <source>Error: Invalid diagnosis keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_error_parsing">
+        <source>Error parsing reply from server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_error_internal-state">
+        <source>Internal state error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_error_none">
+        <source>No error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-teletan_invalid-character">
+        <source>Invald entry. Please check your entry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-teletan_invalid-tan">
+        <source>Invald TAN, please check your entry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-teletan_describe-valid-tans">
+        <source>The only TANs the test server accepts are R3ZNUEV9JA and CG4Z5A9CY9.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-download_error_network-error">
+        <source>Network error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-download_error_none">
+        <source>No error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-download_he_downloading">
+        <source>Downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-download_instructions">
+        <source>Please wait while keys are downloaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_error_network-error">
+        <source>Network error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_diagnosis_keys">
+        <source>Diagnosis keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_latest-upload">
+        <source>Latest upload: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_latest-download">
+        <source>Latest download: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-uploading">
+        <source>Uploading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-downloading">
+        <source>Downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-upload_error">
+        <source>Error uploading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-download_err0r">
+        <source>Error downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-no_ssues">
+        <source>No issues</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_bu_enter-teletan">
+        <source>Enter TeleTAN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_bu_download-keys">
+        <source>Download latest keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_error_no-diagnosis-keys">
+        <source>Error: No diagnosis keys to upload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-upload_error_unknown">
+        <source>Unkown error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

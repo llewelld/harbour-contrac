@@ -42,7 +42,7 @@ Q_INVOKABLE void Download::downloadLatest()
         }
         m_filesTotal = daysTotal * 24;
         emit progressChanged();
-        setStatus(Status::StatusDownloading);
+        setStatus(StatusDownloading);
         startNextDateDownload();
     }
 }
@@ -147,7 +147,7 @@ void Download::startNextDateDownload()
     else {
         qDebug() << "All dates downloaded";
         finalise();
-        setStatus(Status::StatusIdle);
+        setStatus(StatusIdle);
     }
 
     if (m_downloading != downloading) {
@@ -162,8 +162,11 @@ void Download::startDateDownload(QDate const &date)
     QString url = "version/v1/diagnosis-keys/country/DE/date/" + date.toString("yyyy-MM-dd") + "/hour/";
     S3ListResult *result = m_s3Access->list(url);
     connect(result, &S3ListResult::finished, this, [this, result, date]() {
-        if (result->error() == QNetworkReply::NoError) {
-            QStringList keys = result->keys();
+        QStringList keys;
+
+        switch (result->error()) {
+        case QNetworkReply::NoError:
+            keys = result->keys();
             if (keys.size() > 0){
                 qDebug() << "Key list completed: " << keys.size();
                 createDateFolder(date);
@@ -177,12 +180,15 @@ void Download::startDateDownload(QDate const &date)
                 emit latestChanged();
                 startNextDateDownload();
             }
-        }
-        else {
-            qDebug() << "Error";
+            break;
+        default:
+            qDebug() << "Network error while downloading keys: " << result->error();
             finalise();
-            setStatus(Status::StatusError);
+            setStatusError(ErrorNetwork);
+            break;
         }
+
+
         result->deleteLater();
     });
 }
@@ -237,6 +243,30 @@ void Download::setStatus(Status status)
     if (m_status != status) {
         qDebug() << "Setting status: " << status;
         m_status = status;
+
+        if (m_error != ErrorNone) {
+            m_error = ErrorNone;
+            emit errorChanged();
+        }
         emit statusChanged();
+    }
+}
+
+Download::ErrorType Download::error() const
+{
+    return m_error;
+}
+
+void Download::setStatusError(ErrorType error)
+{
+    if (m_error != error) {
+        qDebug() << "Setting error: " << error;
+        m_error = error;
+
+        if (m_status != StatusError) {
+            m_status = StatusError;
+            emit statusChanged();
+        }
+        emit errorChanged();
     }
 }
