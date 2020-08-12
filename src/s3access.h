@@ -16,6 +16,8 @@ public:
     explicit S3Result(QNetworkReply *reply, QObject *parent = nullptr);
     ~S3Result();
 
+    virtual QNetworkReply::NetworkError error() const;
+
 signals:
     void finished();
 protected slots:

@@ -79,12 +79,29 @@
         <source>Diagnosis key downloads</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-main_using_google_apple_api">
-        <source>Using the Google/Apple API</source>
+    <message id="contrac-settings_he_servers">
+        <source>Servers</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-main_using_corona_warn_app_servers">
-        <source>Using the Corona Warn App servers</source>
+    <message id="contrac-settings_tf_download_server">
+        <source>Download server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_settings">
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_tf_upload_server">
+        <source>Upload server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_tf_verification_server">
+        <source>Verification server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_info">
+        <source>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing.</source>
+        <oldsource>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>

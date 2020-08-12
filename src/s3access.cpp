@@ -30,6 +30,11 @@ S3Result::~S3Result()
     m_reply->deleteLater();
 }
 
+QNetworkReply::NetworkError S3Result::error() const
+{
+    return m_reply->error();
+}
+
 S3Access::S3Access(QObject *parent) : QObject(parent)
   , m_s3(nullptr)
   , m_manager(new QNetworkAccessManager(this))

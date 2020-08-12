@@ -3,11 +3,10 @@
 #include <QDir>
 #include <QStandardPaths>
 
+#include "settings.h"
 #include "s3access.h"
 
 #include "download.h"
-
-#define SERVER_ADDRESS "127.0.0.1:8003"
 
 Download::Download(QObject *parent) : QObject(parent)
   , m_s3Access(new S3Access(this))
@@ -16,10 +15,11 @@ Download::Download(QObject *parent) : QObject(parent)
   , m_downloading(false)
   , m_filesReceived(0)
   , m_filesTotal(0)
+  , m_status(StatusIdle)
 {
     m_s3Access->setId("accessKey1");
     m_s3Access->setSecret("verySecretKey1");
-    m_s3Access->setBaseUrl(SERVER_ADDRESS);
+    m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
     m_s3Access->setBucket("cwa");
 }
 
@@ -29,6 +29,7 @@ Q_INVOKABLE void Download::downloadLatest()
     qDebug() << "Requesting keys";
 
     if (!m_downloading) {
+        m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
         m_filesReceived = 0;
         if (m_latest.isValid()) {
             daysTotal = m_latest.daysTo(QDate::currentDate());
@@ -41,6 +42,7 @@ Q_INVOKABLE void Download::downloadLatest()
         }
         m_filesTotal = daysTotal * 24;
         emit progressChanged();
+        setStatus(Status::StatusDownloading);
         startNextDateDownload();
     }
 }
@@ -144,15 +146,13 @@ void Download::startNextDateDownload()
     }
     else {
         qDebug() << "All dates downloaded";
-        m_downloading = false;
-        m_filesTotal = 0;
-        m_filesReceived = 0;
+        finalise();
+        setStatus(Status::StatusIdle);
     }
 
     if (m_downloading != downloading) {
         emit downloadingChanged();
     }
-    emit progressChanged();
 }
 
 void Download::startDateDownload(QDate const &date)
@@ -161,20 +161,27 @@ void Download::startDateDownload(QDate const &date)
 
     QString url = "version/v1/diagnosis-keys/country/DE/date/" + date.toString("yyyy-MM-dd") + "/hour/";
     S3ListResult *result = m_s3Access->list(url);
-    connect(result, &S3ListResult::keysChanged, this, [this, result, date]() {
-        QStringList keys = result->keys();
-        if (keys.size() > 0){
-            qDebug() << "Key list completed: " << keys.size();
-            createDateFolder(date);
-            for (QString key : keys) {
-                qDebug() << "Key: " << key;
+    connect(result, &S3ListResult::finished, this, [this, result, date]() {
+        if (result->error() == QNetworkReply::NoError) {
+            QStringList keys = result->keys();
+            if (keys.size() > 0){
+                qDebug() << "Key list completed: " << keys.size();
+                createDateFolder(date);
+                for (QString key : keys) {
+                    qDebug() << "Key: " << key;
+                }
+                addToFileQueue(date, keys);
             }
-            addToFileQueue(date, keys);
+            else {
+                m_latest = date;
+                emit latestChanged();
+                startNextDateDownload();
+            }
         }
         else {
-            m_latest = date;
-            emit latestChanged();
-            startNextDateDownload();
+            qDebug() << "Error";
+            finalise();
+            setStatus(Status::StatusError);
         }
         result->deleteLater();
     });
@@ -206,4 +213,30 @@ float Download::progress() const
     }
 
     return progress;
+}
+
+void Download::finalise()
+{
+    if (m_downloading) {
+        m_downloading = false;
+        m_filesTotal = 0;
+        m_filesReceived = 0;
+
+        emit downloadingChanged();
+    }
+    emit progressChanged();
+}
+
+Download::Status Download::status() const
+{
+    return m_status;
+}
+
+void Download::setStatus(Status status)
+{
+    if (m_status != status) {
+        qDebug() << "Setting status: " << status;
+        m_status = status;
+        emit statusChanged();
+    }
 }

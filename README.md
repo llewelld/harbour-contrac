@@ -23,7 +23,7 @@ More info: https://www.flypig.co.uk/contrac
 13. Test against official apps - PARTIAL
 14. Update to latest GApple protocol
 15. Risk config download
-16. Persistent settings
+16. Persistent settings - PARTIAL
 17. User teleTAN input
 18. Test against official servers
 19. Scrub up the UI

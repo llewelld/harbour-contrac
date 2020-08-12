@@ -4,12 +4,12 @@
 #include <qjsondocument.h>
 #include <qdebug.h>
 
-#include "proto/submissionpayload.pb.h"
 #include <openssl/evp.h>
-#include "upload.h"
 
-#define UPLOAD_SERVER_ADDRESS "127.0.0.1:8000"
-#define VERIFICATION_SERVER_ADDRESS "127.0.0.1:8004"
+#include "proto/submissionpayload.pb.h"
+#include "settings.h"
+
+#include "upload.h"
 
 Upload::Upload(QObject *parent) : QObject(parent)
   , m_manager(new QNetworkAccessManager(this))
@@ -45,7 +45,7 @@ void Upload::submitTeleTAN(QString const &teleTAN)
     if ((m_status == StatusSubmitTeleTAN) && (m_reply == nullptr)) {
         QNetworkRequest request;
 
-        request.setUrl(QUrl("http://" VERIFICATION_SERVER_ADDRESS "/version/v1/registrationToken"));
+        request.setUrl(QUrl("http://" + Settings::getInstance().verificationServer() + "/version/v1/registrationToken"));
         request.setRawHeader("accept", "*/*");
         request.setRawHeader("Content-Type", "application/json");
         request.setRawHeader("cwa-fake", "0");
@@ -103,7 +103,7 @@ void Upload::submitRegToken(QString const &regToken)
     if ((m_status == StatusSubmitRegToken) && (m_reply == nullptr)) {
         QNetworkRequest request;
 
-        request.setUrl(QUrl("http://" VERIFICATION_SERVER_ADDRESS "/version/v1/tan"));
+        request.setUrl(QUrl("http://" + Settings::getInstance().verificationServer() + "/version/v1/tan"));
         request.setRawHeader("accept", "*/*");
         request.setRawHeader("Content-Type", "application/json");
         request.setRawHeader("cwa-fake", "0");
@@ -189,7 +189,7 @@ void Upload::submitDiagnosisKeys(QString const &tan)
         QByteArray data = QByteArray::fromStdString(payload.SerializeAsString());
         qDebug() << "Upload size: " << data.length();
 
-        request.setUrl(QUrl("http://" UPLOAD_SERVER_ADDRESS "/version/v1/diagnosis-keys"));
+        request.setUrl(QUrl("http://" + Settings::getInstance().uploadServer() + "/version/v1/diagnosis-keys"));
         request.setRawHeader("accept", "*/*");
         request.setRawHeader("Content-Type", "application/x-protobuf");
         request.setRawHeader("cwa-authorization", tan.toLatin1());
