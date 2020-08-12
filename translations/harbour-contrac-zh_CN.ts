@@ -13,7 +13,7 @@
     </message>
     <message id="contrac-about_description">
         <source>Demonstration of the Apple/Google Contract Tracing API</source>
-        <translation>苹果/谷歌 示例接触追踪API</translation>
+        <translation>苹果及谷歌的示例接触追踪API</translation>
     </message>
     <message id="contrac-about_verion">
         <source>Version</source>
@@ -71,23 +71,23 @@
     </message>
     <message id="contrac-main_contact_beacons">
         <source>Contact beacons</source>
-        <translation type="unfinished"></translation>
+        <translation>通讯信标</translation>
     </message>
     <message id="contrac-main_diagnosis_key_uploadss">
         <source>Diagnosis key uploads</source>
-        <translation type="unfinished"></translation>
+        <translation>诊断密钥更新</translation>
     </message>
     <message id="contrac-main_diagnosis_key_downloads">
         <source>Diagnosis key downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>诊断密钥下载</translation>
     </message>
     <message id="contrac-main_using_google_apple_api">
         <source>Using the Google/Apple API</source>
-        <translation type="unfinished"></translation>
+        <translation>使用谷歌及苹果的API</translation>
     </message>
     <message id="contrac-main_using_corona_warn_app_servers">
         <source>Using the Corona Warn App servers</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 Corona Warn 软件服务</translation>
     </message>
 </context>
 </TS>
