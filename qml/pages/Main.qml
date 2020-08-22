@@ -6,6 +6,8 @@ import uk.co.flypig.contrac 1.0
 Page {
     id: page
     property string token: "abcdef"
+    property alias upload: upload
+    property alias download: download
 
     allowedOrientations: Orientation.All
 
@@ -129,64 +131,99 @@ Page {
             }
 
             SectionHeader {
-                //% "Diagnosis key uploads"
-                text: qsTrId("contrac-main_diagnosis_key_uploadss")
+                //% "Diagnosis keys"
+                text: qsTrId("contrac-main_diagnosis_keys")
             }
 
             Label {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
-                text: "Latest upload: " + Qt.formatDate(upload.latest, "d MMM yyyy")
+                //% "Latest upload: "
+                text: qsTrId("contrac-main_la_latest-upload") + Qt.formatDate(upload.latest, "d MMM yyyy")
                 color: Theme.highlightColor
             }
 
-            ProgressBar {
-                id: uploadProgress
-                width: parent.width
-                maximumValue: 100
-                value: upload.available ? upload.progress * 100.0 : 100.0
-                label: upload.available ? ((upload.status === Upload.StatusError) ? "Error"
-                                                                                  : "Upload progress")
-                                        : "Up-do-date"
+            Label {
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                x: Theme.horizontalPageMargin
+                //% "Latest download: "
+                text: qsTrId("contrac-main_la_latest-download") + Qt.formatDate(download.latest, "d MMM yyyy")
+                color: Theme.highlightColor
             }
 
-            Button {
-                anchors.horizontalCenter: parent.horizontalCenter
-                enabled: !upload.uploading && (dbusproxy.sentCount > 0) && upload.available
-                text: upload.uploading ? "Uploading" : "Upload"
-                onClicked: {
-                    console.log("Uploading")
-                    upload.upload("R3ZNUEV9JA")
+            Item {
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                height: Theme.itemSizeSmall
+
+                BusyIndicator {
+                    id: progress
+                    anchors.verticalCenter: parent.verticalCenter
+                    running: true
+                    size: BusyIndicatorSize.Small
+                    visible: upload.uploaindg || download.downloading
+                }
+
+                Image {
+                    anchors.fill: progress
+                    visible: !progress.visible
+                    source: (upload.status === Upload.StatusError) || (download.status === Download.StatusError) ? "image://theme/icon-s-warning" : "image://theme/icon-s-installed"
+                }
+
+                Label {
+                    id: statusLabel
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: progress.right
+                        right: parent.right
+                        leftMargin: Theme.paddingMedium
+                    }
+
+                    text: {
+                        if (upload.uploading) {
+                            //% "Uploading"
+                            return qsTrId("contrac-main_la_status-uploading")
+                        } else if (download.downloading) {
+                            //% "Downloading"
+                            return qsTrId("contrac-main_la_status-downloading")
+                        } else if (upload.status === Upload.StatusError) {
+                            //% "Error uploading"
+                            return qsTrId("contrac-main_la_status-upload_error")
+                        } else if (download.status === Download.StatusError) {
+                            //% "Error downloading"
+                            return qsTrId("contrac-main_la_status-download_err0r")
+                        } else {
+                            //% "No issues"
+                            return qsTrId("contrac-main_la_status-no_ssues")
+                        }
+                    }
+                    color: Theme.highlightColor
                 }
             }
 
-            SectionHeader {
-                //% "Diagnosis key downloads"
-                text: qsTrId("contrac-main_diagnosis_key_downloads")
-            }
-
-            Label {
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                x: Theme.horizontalPageMargin
-                text: "Latest download: " + Qt.formatDate(download.latest, "d MMM yyyy")
-                color: Theme.highlightColor
-            }
-
-            ProgressBar {
-                id: downloadProgress
-                width: parent.width
-                maximumValue: 100
-                value: download.available ? download.progress * 100.0 : 100.0
-                label: download.available ? ((download.status === Download.StatusError) ? "Error"
-                                                                                        : "Download progress")
-                                          : "Up-to-date"
+            Button {
+                id: tanButton
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: Math.max(tanButton.implicitWidth, downloadButton.implicitWidth)
+                //% "Enter TeleTAN"
+                text: qsTrId("contrac-main_bu_enter-teletan")
+                enabled: !upload.uploading
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("TeleTAN.qml"), {upload: page.upload})
+                }
             }
 
             Button {
+                id: downloadButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                enabled: !download.downloading && download.available
-                text: download.downloading ? "Downloading" : "Download"
-                onClicked: download.downloadLatest()
+                width: Math.max(tanButton.implicitWidth, downloadButton.implicitWidth)
+                enabled: !download.downloading
+                //% "Download latest keys"
+                text: qsTrId("contrac-main_bu_download-keys")
+                onClicked: {
+                    download.downloadLatest()
+                    pageStack.push(Qt.resolvedUrl("DownloadInfo.qml"), {download: page.download})
+                }
             }
         }
     }

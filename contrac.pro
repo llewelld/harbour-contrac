@@ -71,9 +71,15 @@ SOURCES += \
 DISTFILES += \
     qml/harbour-contrac.qml \
     qml/cover/CoverPage.qml \
-    qml/pages/About.qml \
     qml/pages/Main.qml \
+    qml/pages/About.qml \
+    qml/pages/Settings.qml \
+    qml/pages/TeleTAN.qml \
+    qml/pages/UploadInfo.qml \
+    qml/pages/DownloadInfo.qml \
+    qml/components/Dash.qml \
     qml/components/InfoRow.qml \
+    qml/components/TanChar.qml \
     translations/*.ts
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
