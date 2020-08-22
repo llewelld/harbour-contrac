@@ -12,6 +12,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sat Aug 22 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.2.1-1
+- Adds TeleTAN submission by the user.
+- Adds separate pages to show upload and download progress.
+- Improves error reporting for uploads and downloads.
+- Streamlines the main page to remove progress indicators and add a status line.
+
 * Sun Aug 9 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.1.1-1
 - Supports diagnosis key downloads from the test server.
 - Supports diagnosis key upload to the test server.

@@ -9,7 +9,7 @@ Name:       harbour-contrac
 # << macros
 
 Summary:    Contrac
-Version:    0.1.1
+Version:    0.2.1
 Release:    1
 Group:      Qt/Qt
 License:    LICENSE
