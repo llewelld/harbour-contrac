@@ -63,9 +63,6 @@ private slots:
 private:
     QDBusConnection m_connection;
     ExposureNotification m_exposureNotification;
-
-    quint32 m_sentCount;
-    quint32 m_receivedCount;
 };
 
 

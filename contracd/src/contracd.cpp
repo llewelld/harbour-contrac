@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include "dbusinterface.h"
+#include "settings.h"
 #include "contracd.h"
 
 static void signal_handler(int sig);
@@ -24,7 +25,15 @@ int main(int argc, char *argv[])
 
     QCoreApplication *app = new QCoreApplication(argc, argv);
     QCoreApplication::setOrganizationDomain("www.flypig.co.uk");
+    QCoreApplication::setOrganizationName("contracd");
     QCoreApplication::setApplicationName("contracd");
+
+    qDebug() << "contrac VERSION string:" << VERSION;
+    qDebug() << "VERSION_MAJOR:" << VERSION_MAJOR;
+    qDebug() << "VERSION_MINOR:" << VERSION_MINOR;
+    qDebug() << "VERSION_BUILD:" << VERSION_BUILD;
+
+    Settings::instantiate(app);
 
     umask(0);
 
@@ -33,6 +42,7 @@ int main(int argc, char *argv[])
     if (result >= 0) {
         signal(SIGHUP, signal_handler);
         signal(SIGTERM, signal_handler);
+        signal(SIGINT, signal_handler);
 
         setlinebuf(stdout);
         setlinebuf(stderr);
@@ -40,16 +50,23 @@ int main(int argc, char *argv[])
         dbus = new DBusInterface();
         result = dbus == nullptr ? 0 : 1;
     }
+    else {
+        qDebug() << "No /tmp directory";
+    }
 
     if (result >= 0) {
+        qDebug() << "Execution started";
         result = app->exec();
+    }
+    else {
+        qDebug() << "DBusInterface could not be created";
     }
 
     if (dbus) {
         delete dbus;
     }
 
-    qDebug() << "Execution finished: " << result;
+    qDebug() << "Execution finished:" << result;
     delete app;
     qDebug() << "Deleted app";
 
@@ -60,10 +77,14 @@ static void signal_handler(int sig)
 {
     switch (sig) {
     case SIGHUP:
-        printf("Received SIGHUP signal");
+        printf("Received SIGHUP signal\n");
         break;
     case SIGTERM:
-        printf("Received SIGTERM signal");
+        printf("Received SIGTERM signal\n");
+        QCoreApplication::quit();
+        break;
+    case SIGINT:
+        printf("Received SIGINT signal\n");
         QCoreApplication::quit();
         break;
     }

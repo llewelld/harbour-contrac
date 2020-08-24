@@ -59,8 +59,9 @@ HEADERS += \
     ../contracd/src/fnv.h \
     ../contracd/src/hkdfsha256.h \
     ../contracd/src/rpidataitem.h \
+    ../contracd/src/settings.h \
     ../contracd/src/temporaryexposurekey.h \
-    ../contracd/src/zipistreambuffer.h \
+    ../contracd/src/zipistreambuffer.h
 
 SOURCES += \
     ../src/contactmodel.cpp \
@@ -83,8 +84,9 @@ SOURCES += \
     ../contracd/src/fnv.cpp \
     ../contracd/src/hkdfsha256.cpp \
     ../contracd/src/rpidataitem.cpp \
+    ../contracd/src/settings.cpp \
     ../contracd/src/temporaryexposurekey.cpp \
-    ../contracd/src/zipistreambuffer.cpp \
+    ../contracd/src/zipistreambuffer.cpp
 
 INCLUDEPATH += $$OUT_PWD/../contracd/proto
 

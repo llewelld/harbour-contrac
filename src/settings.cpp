@@ -11,7 +11,7 @@ Settings::Settings(QObject *parent) : QObject(parent),
     m_uploadServer = settings.value(QStringLiteral("servers/uploadServer"), QStringLiteral("127.0.0.1:8000")).toString();
     m_verificationServer = settings.value(QStringLiteral("servers/verificationServer"), QStringLiteral("127.0.0.1:8004")).toString();
 
-    qDebug() << "Settings created";
+    qDebug() << "Settings created: " << settings.fileName();
 }
 
 Settings::~Settings()
@@ -20,7 +20,7 @@ Settings::~Settings()
     settings.setValue(QStringLiteral("servers/uploadServer"), m_uploadServer);
     settings.setValue(QStringLiteral("servers/verificationServer"), m_verificationServer);
 
-    qDebug() << "Settings deleted";
+    qDebug() << "Deleted settings";
 }
 
 void Settings::instantiate(QObject *parent) {

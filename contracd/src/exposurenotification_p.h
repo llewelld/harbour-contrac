@@ -12,8 +12,9 @@ namespace diagnosis {
 class TemporaryExposureKeyExport;
 } // namespace diagnosis
 
-class ExposureNotificationPrivate
+class ExposureNotificationPrivate : public QObject
 {
+    Q_OBJECT
 public:
     explicit ExposureNotificationPrivate(ExposureNotification *q);
     ~ExposureNotificationPrivate();
@@ -26,6 +27,9 @@ private:
     ExposureNotification *q_ptr;
 
     Q_DECLARE_PUBLIC(ExposureNotification)
+
+public slots:
+    void scanChanged();
 
 public:
     QMap<QString, QList<ExposureInformation>> m_exposures;
