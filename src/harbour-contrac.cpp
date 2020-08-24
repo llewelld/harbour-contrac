@@ -30,9 +30,15 @@ int main(int argc, char *argv[])
 
     QGuiApplication *app = SailfishApp::application(argc, argv);
     QCoreApplication::setOrganizationDomain("www.flypig.co.uk");
+    QCoreApplication::setOrganizationName("harbour-contrac");
     QCoreApplication::setApplicationName("harbour-contrac");
 
-    Settings::instantiate();
+    qDebug() << "harbour-getiplay VERSION string:" << VERSION;
+    qDebug() << "VERSION_MAJOR:" << VERSION_MAJOR;
+    qDebug() << "VERSION_MINOR:" << VERSION_MINOR;
+    qDebug() << "VERSION_BUILD:" << VERSION_BUILD;
+
+    Settings::instantiate(app);
 
     qmlRegisterType<DBusProxy>("uk.co.flypig.contrac", 1, 0, "DBusProxy");
     qmlRegisterType<TemporaryExposureKey>("uk.co.flypig.contrac", 1, 0, "TemporaryExposureKey");
@@ -48,16 +54,12 @@ int main(int argc, char *argv[])
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));
     QQmlContext *ctxt = view->rootContext();
     ctxt->setContextProperty("version", VERSION);
-    qDebug() << "harbour-getiplay VERSION string: " << VERSION;
-    qDebug() << "VERSION_MAJOR: " << VERSION_MAJOR;
-    qDebug() << "VERSION_MINOR: " << VERSION_MINOR;
-    qDebug() << "VERSION_BUILD: " << VERSION_BUILD;
 
     view->show();
 
     int result = app->exec();
 
-    qDebug() << "Execution finished: " << result;
+    qDebug() << "Execution finished:" << result;
     delete view;
     qDebug() << "Deleted view";
     delete app;

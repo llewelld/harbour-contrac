@@ -7,6 +7,7 @@
 #include "zipistreambuffer.h"
 #include "contactinterval.h"
 #include "exposuresummary.h"
+#include "settings.h"
 
 #include "exposurenotification.h"
 #include "exposurenotification_p.h"
@@ -56,11 +57,10 @@ inline T clamp(T value, T min, T max)
 }
 
 ExposureNotificationPrivate::ExposureNotificationPrivate(ExposureNotification *q)
-    : q_ptr(q)
+    : QObject(q)
+    , q_ptr(q)
     , m_status(ExposureNotification::Success)
 {
-    bool result;
-
     qDebug() << "Contrac";
     m_contrac = new Contrac(q);
     qDebug() << "Controller";
@@ -75,18 +75,23 @@ ExposureNotificationPrivate::ExposureNotificationPrivate(ExposureNotification *q
     m_intervalUpdate.setSingleShot(false);
 
     qDebug() << "Load";
-    result = m_contrac->loadTracingKey();
-    if (!result) {
+    QByteArray tk = Settings::getInstance().tracingKey();
+    if (tk.isEmpty()) {
         m_contrac->generateTracingKey();
-        m_contrac->saveTracingKey();
+        tk = m_contrac->tk();
+        Settings::getInstance().setTracingKey(tk);
     }
+    else {
+        m_contrac->setTk(tk);
+    }
+    m_contrac->updateKeys();
 
     qDebug() << "Connections";
     q_ptr->connect(m_contrac, &Contrac::rpiChanged, q_ptr, &ExposureNotification::onRpiChanged);
     q_ptr->connect(m_contrac, &Contrac::timeChanged, m_contacts, &ContactStorage::onTimeChanged);
     q_ptr->connect(&m_intervalUpdate, &QTimer::timeout, q_ptr, &ExposureNotification::intervalUpdate);
     q_ptr->connect(m_scanner, &BleScanner::beaconDiscovered, q_ptr, &ExposureNotification::beaconDiscovered);
-    q_ptr->connect(m_scanner, &BleScanner::scanChanged, q_ptr, &ExposureNotification::isEnabledChanged);
+    q_ptr->connect(m_scanner, &BleScanner::scanChanged, this, &ExposureNotificationPrivate::scanChanged);
     q_ptr->connect(m_scanner, &BleScanner::busyChanged, q_ptr, &ExposureNotification::isBusyChanged);
 }
 
@@ -96,7 +101,7 @@ ExposureNotificationPrivate::~ExposureNotificationPrivate()
     q_ptr->disconnect(&m_intervalUpdate, &QTimer::timeout, q_ptr, &ExposureNotification::intervalUpdate);
     q_ptr->disconnect(m_contrac, &Contrac::timeChanged, m_contacts, &ContactStorage::onTimeChanged);
     q_ptr->disconnect(m_contrac, &Contrac::rpiChanged, q_ptr, &ExposureNotification::onRpiChanged);
-    q_ptr->disconnect(m_scanner, &BleScanner::scanChanged, q_ptr, &ExposureNotification::isEnabledChanged);
+    q_ptr->disconnect(m_scanner, &BleScanner::scanChanged, this, &ExposureNotificationPrivate::scanChanged);
     q_ptr->disconnect(m_scanner, &BleScanner::busyChanged, q_ptr, &ExposureNotification::isBusyChanged);
 }
 
@@ -382,6 +387,17 @@ bool ExposureNotificationPrivate::loadDiagnosisKeys(QString const &keyFile, diag
     }
 
     return result;
+}
+
+void ExposureNotificationPrivate::scanChanged()
+{
+    Q_Q(ExposureNotification);
+
+    Settings &settings = Settings::getInstance();
+    bool scan = m_scanner->scan();
+    settings.setEnabled(scan);
+
+    emit q->isEnabledChanged();
 }
 
 ExposureSummary ExposureNotification::getExposureSummary(QString const &token) const

@@ -44,6 +44,7 @@ HEADERS += \
     src/fnv.h \
     src/hkdfsha256.h \
     src/rpidataitem.h \
+    src/settings.h \
     src/temporaryexposurekey.h \
     src/zipistreambuffer.h
 
@@ -69,6 +70,7 @@ SOURCES += \
     src/fnv.cpp \
     src/hkdfsha256.cpp \
     src/rpidataitem.cpp \
+    src/settings.cpp \
     src/temporaryexposurekey.cpp \
     src/zipistreambuffer.cpp
 

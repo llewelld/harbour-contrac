@@ -1,12 +1,12 @@
 #include <QDebug>
 
+#include "settings.h"
+
 #include "dbusinterface.h"
 
 DBusInterface::DBusInterface(QObject *parent)
     : QObject(parent)
     , m_connection(QDBusConnection::sessionBus())
-    , m_sentCount(0)
-    , m_receivedCount(0)
 {
     bool result;
 
@@ -37,6 +37,12 @@ DBusInterface::DBusInterface(QObject *parent)
 
     if (!result) {
         qDebug() << "CONTRAC: Error initialising dbus interface";
+    }
+
+    Settings &settings = Settings::getInstance();
+    if (settings.enabled()) {
+        qDebug() << "Starting automatically";
+        m_exposureNotification.start();
     }
 }
 
@@ -136,27 +142,27 @@ void DBusInterface::resetAllData()
 
 quint32 DBusInterface::receivedCount() const
 {
-    return m_receivedCount;
+    return Settings::getInstance().received();
 }
 
 quint32 DBusInterface::sentCount() const
 {
-    return m_sentCount;
+    return Settings::getInstance().sent();
 }
 
 void DBusInterface::incrementReceiveCount()
 {
     qDebug() << "CONTRAC: incrementReceiveCount()";
-    ++m_receivedCount;
-    qDebug() << "CONTRAC: receiveCount:" << m_receivedCount;
+    Settings &settings = Settings::getInstance();
+    settings.setReceived(settings.received() + 1);
     emit receivedCountChanged();
 }
 
 void DBusInterface::incrementSentCount()
 {
     qDebug() << "CONTRAC: incrementSentCount()";
-    ++m_sentCount;
-    qDebug() << "CONTRAC: receiveCount:" << m_sentCount;
+    Settings &settings = Settings::getInstance();
+    settings.setSent(settings.sent() + 1);
     emit sentCountChanged();
 }
 
