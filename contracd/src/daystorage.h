@@ -19,7 +19,7 @@ public:
     QList<RpiDataItem> findRpiMatches(QList<QByteArray> const &rpis);
     QList<ContactMatch> findDtkMatches(QList<DiagnosisKey> const &dtks);
 
-    void addContact(ctinterval interval, const QByteArray &rpi, qint16 rssi);
+    void addContact(ctinterval interval, const QByteArray &rpi, const QByteArray &aem, qint16 rssi);
     void load();
     void save();
     quint32 dayNumber() const;

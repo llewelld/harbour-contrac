@@ -3,7 +3,7 @@
 #include <QDBusArgument>
 #include <QDBusMetaType>
 
-#include "bleascanner.h"
+#include "blescanner.h"
 
 BleScanner::BleScanner(QObject *parent) : QObject(parent)
   , m_adapterInterface(nullptr)

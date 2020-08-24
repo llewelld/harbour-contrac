@@ -42,7 +42,7 @@ HEADERS += \
     ../contracd/proto/contrac.pb.h \
     ../contracd/src/bleadvertisement.h \
     ../contracd/src/bleadvertisementmanager.h \
-    ../contracd/src/bleascanner.h \
+    ../contracd/src/blescanner.h \
     ../contracd/src/bloomfilter.h \
     ../contracd/src/contactinterval.h \
     ../contracd/src/contactmatch.h \
@@ -61,7 +61,8 @@ HEADERS += \
     ../contracd/src/rpidataitem.h \
     ../contracd/src/settings.h \
     ../contracd/src/temporaryexposurekey.h \
-    ../contracd/src/zipistreambuffer.h
+    ../contracd/src/zipistreambuffer.h \
+    ../contracd/src/metadata.h
 
 SOURCES += \
     ../src/contactmodel.cpp \
@@ -86,7 +87,8 @@ SOURCES += \
     ../contracd/src/rpidataitem.cpp \
     ../contracd/src/settings.cpp \
     ../contracd/src/temporaryexposurekey.cpp \
-    ../contracd/src/zipistreambuffer.cpp
+    ../contracd/src/zipistreambuffer.cpp \
+    ../contracd/src/metadata.cpp
 
 INCLUDEPATH += $$OUT_PWD/../contracd/proto
 

@@ -42,9 +42,9 @@ void ContactStorage::onTimeChanged()
     }
 }
 
-void ContactStorage::addContact(ctinterval interval, const QByteArray &rpi, qint16 rssi)
+void ContactStorage::addContact(ctinterval interval, const QByteArray &rpi, const QByteArray &aem, qint16 rssi)
 {
-    m_today->addContact(interval, rpi, rssi);
+    m_today->addContact(interval, rpi, aem, rssi);
 }
 
 void ContactStorage::dumpData(quint32 day)

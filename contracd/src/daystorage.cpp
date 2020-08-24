@@ -6,6 +6,7 @@
 #include "bloomfilter.h"
 #include "contrac.h"
 #include "contactmatch.h"
+#include "metadata.h"
 
 #include "daystorage.h"
 
@@ -88,7 +89,7 @@ QList<ContactMatch> DayStorage::findDtkMatches(QList<DiagnosisKey> const &dtks)
     ContactMatch probable;
     QList<QList<RpiDataItem>> actuals;
 
-    // Generate all the rpis from the dtks and do a quick with the Bloom filter
+    // Generate all the rpis from the dtks and do a quick pass with the Bloom filter
     for (DiagnosisKey const &dtk : dtks) {
         quint8 startTime = dtk.m_rollingStartIntervalNumber % 144;
         quint8 endTime;
@@ -99,13 +100,13 @@ QList<ContactMatch> DayStorage::findDtkMatches(QList<DiagnosisKey> const &dtks)
             endTime = startTime + static_cast<quint8>(dtk.m_rollingPeriod);
         }
         // Generate up to 144 rpis for each dtk
-        for (quint8 interval = startTime; interval< endTime; ++interval) {
+        for (quint8 interval = startTime; interval < endTime; ++interval) {
             QByteArray rpi(Contrac::randomProximityIdentifier(dtk.m_dtk, interval));
             if (m_filter->test(rpi)) {
                 // Probable match
                 probable.m_dtk = &dtk;
                 ctinterval quantised = intervalToCtInterval(interval);
-                probable.m_rpis.append(RpiDataItem(quantised, 0, rpi));
+                probable.m_rpis.append(RpiDataItem(quantised, 0, rpi, QByteArray(AEM_SIZE, '\0')));
             }
         }
         if (probable.m_rpis.size() > 0) {
@@ -138,8 +139,8 @@ QList<ContactMatch> DayStorage::findDtkMatches(QList<DiagnosisKey> const &dtks)
                         RpiDataItem &probable_rpi = probable.m_rpis[rpi_pos];
                         if ((rpi.m_rpi == probable_rpi.m_rpi) && ctIntervalsMatch(rpi.m_interval, probable_rpi.m_interval)) {
                             // We have a match!
+                            // There could be multiple beacons matching this rpi, so we can't remove it yet
                             actuals[dtk_pos].append(rpi);
-                            probable.m_rpis.removeAt(rpi_pos);
                         }
                         else {
                             if (rpi.m_rpi == probable_rpi.m_rpi) {
@@ -147,8 +148,8 @@ QList<ContactMatch> DayStorage::findDtkMatches(QList<DiagnosisKey> const &dtks)
                                 qDebug() << "Beacon time: " << rpi.m_interval;
                                 qDebug() << "Diagnosis time: " << probable_rpi.m_interval;
                             }
-                            ++rpi_pos;
                         }
+                        ++rpi_pos;
                     }
                     ++dtk_pos;
                 }
@@ -178,17 +179,21 @@ QList<ContactMatch> DayStorage::findDtkMatches(QList<DiagnosisKey> const &dtks)
     return probables;
 }
 
-void DayStorage::addContact(ctinterval interval, const QByteArray &rpi, qint16 rssi)
+void DayStorage::addContact(ctinterval interval, const QByteArray &rpi, const QByteArray &aem, qint16 rssi)
 {
+    RpiDataItem dataItem(interval, rssi, rpi, aem);
     QByteArray data(rpi);
 
-    data += QByteArray((char const *)&interval, sizeof(interval));
-    data += QByteArray((char const *)&rssi, sizeof(rssi));
-
-    qDebug() << "Outputting to file: " << m_contacts.fileName();
-    m_contacts.write(data);
-    m_filter->add(rpi);
-    m_filter_changed = true;
+    data = dataItem.serialise();
+    if (!data.isEmpty()) {
+        qDebug() << "Outputting to file: " << m_contacts.fileName();
+        m_contacts.write(data);
+        m_filter->add(rpi);
+        m_filter_changed = true;
+    }
+    else {
+        qDebug() << "Contact could not be stored: incorrect data size";
+    }
 }
 
 void DayStorage::load()
@@ -255,7 +260,7 @@ void DayStorage::dumpData()
         RpiDataItem rpi;
         result = rpi.deserialise(read);
         if (result) {
-            qDebug() << rpi.m_rpi.toHex() << ", " << rpi.m_interval << ", " << rpi.m_rssi;
+            qDebug() << rpi.m_rpi.toHex() << ", " << rpi.m_aem.toHex() << "," << rpi.m_interval << ", " << rpi.m_rssi;
         }
         read = m_contacts.read(RPI_SERIALISE_SIZE);
     }

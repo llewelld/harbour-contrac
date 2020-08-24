@@ -23,11 +23,11 @@ CONFIG += sailfishapp
 
 HEADERS += \
     proto/contrac.pb.h \
+    src/blescanner.h \
     src/contracd.h \
     src/dbusinterface.h \
     src/bleadvertisement.h \
     src/bleadvertisementmanager.h \
-    src/bleascanner.h \
     src/bloomfilter.h \
     src/contactinterval.h \
     src/contactmatch.h \
@@ -43,6 +43,7 @@ HEADERS += \
     src/exposuresummary.h \
     src/fnv.h \
     src/hkdfsha256.h \
+    src/metadata.h \
     src/rpidataitem.h \
     src/settings.h \
     src/temporaryexposurekey.h \
@@ -69,6 +70,7 @@ SOURCES += \
     src/exposuresummary.cpp \
     src/fnv.cpp \
     src/hkdfsha256.cpp \
+    src/metadata.cpp \
     src/rpidataitem.cpp \
     src/settings.cpp \
     src/temporaryexposurekey.cpp \

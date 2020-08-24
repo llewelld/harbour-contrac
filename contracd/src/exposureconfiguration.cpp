@@ -1,7 +1,18 @@
 #include "exposureconfiguration.h"
 
 
-ExposureConfiguration::ExposureConfiguration(QObject *parent) : QObject(parent)
+ExposureConfiguration::ExposureConfiguration(QObject *parent)
+    : QObject(parent)
+    , m_minimumRiskScore(0)
+    , m_attenuationScores({0, 1, 2, 3, 4, 5, 6, 7})
+    , m_daysSinceLastExposureScores({0, 1, 2, 3, 4, 5, 6, 7})
+    , m_durationScores({0, 1, 2, 3, 4, 5, 6, 7})
+    , m_transmissionRiskScores({0, 1, 2, 3, 4, 5, 6, 7})
+    , m_attenuationWeight(1.0)
+    , m_daysSinceLastExposureWeight(1.0)
+    , m_durationWeight(1.0)
+    , m_transmissionRiskWeight(1.0)
+    , m_durationAtAttenuationThresholds({8, 64})
 {
 }
 

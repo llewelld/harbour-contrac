@@ -26,7 +26,7 @@ public:
     Q_INVOKABLE void registerAdvert();
     Q_INVOKABLE void unRegisterAdvert();
 
-    Q_INVOKABLE void setRpi(QByteArray rpi);
+    Q_INVOKABLE void setAdvertData(QByteArray const &rpi, QByteArray const &metadata);
     Q_INVOKABLE static QString binaryToHex(QByteArray binary, int lineLength);
 
     bool active() const;
