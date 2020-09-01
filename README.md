@@ -20,12 +20,12 @@ More info: https://www.flypig.co.uk/contrac
 10. Service dbus interface - DONE
 11. Diagnosis key download - DONE
 12. Diagnosis key upload - DONE
-13. Test against official apps - PARTIAL
-14. Update to latest GApple protocol
-15. Risk config download
-16. Persistent settings - PARTIAL
-17. User teleTAN input
-18. Test against official servers
+13. Update to latest GApple protocol - DONE
+14. Persistent settings - DONE
+15. User teleTAN input - DONE
+16. Risk config download
+17. Test against official servers
+18. Test against official apps - PARTIAL
 19. Scrub up the UI
 
 ## Contact Tracing Apps
@@ -36,4 +36,4 @@ Relevant Google/Apple or DP-3T protocol apps.
 2. Covid-Warn-App (GA): https://github.com/corona-warn-app
 3. Immuni (GA): https://github.com/immuni-app
 4. eRouška (bespoke): https://github.com/covid19cz/erouska-android
-
+5. Koronavilkku (GA): https://github.com/THLfi/koronavilkku-android

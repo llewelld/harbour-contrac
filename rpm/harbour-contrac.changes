@@ -12,6 +12,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Tue Sep 1 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.4.1-1
+- Adds encrypted beacon metadata send/receive.
+- Refines the data aggregation algorithm to give improved results.
+- Adds unit tests for metadata, metadata validity and data aggregation.
+- Improves the beacon matching unit tests.
+
 * Mon Aug 24 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.3.1-1
 - Adds persistent state to contracd.
 - Send/received counts are now persistent.
