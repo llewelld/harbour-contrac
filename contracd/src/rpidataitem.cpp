@@ -1,3 +1,4 @@
+#include <qdebug.h>
 #include"contrac.h"
 
 #include "rpidataitem.h"
@@ -15,7 +16,7 @@ template<class T>
 inline T read(QByteArray const &data, quint8 &pos)
 {
     T bytes;
-    bytes = *(T*)data.mid(pos, sizeof(T)).data();
+    bytes = *reinterpret_cast<T*>(data.mid(pos, sizeof(T)).data());
     pos += sizeof(T);
     return bytes;
 }
@@ -29,19 +30,22 @@ RpiDataItem::RpiDataItem()
 {
 }
 
-RpiDataItem::RpiDataItem(ctinterval interval, qint16 rssi, QByteArray rpi)
+RpiDataItem::RpiDataItem(ctinterval interval, qint16 rssi, QByteArray const &rpi, QByteArray const &aem)
     : m_interval(interval)
     , m_rssi(rssi)
     , m_rpi(rpi)
+    , m_aem(aem)
 {
 }
 
 QByteArray RpiDataItem::serialise() const
 {
-    QByteArray data(m_rpi);
+    QByteArray data;
 
-    data += QByteArray((char const *)&m_interval, sizeof(m_interval));
-    data += QByteArray((char const *)&m_rssi, sizeof(m_rssi));
+    data = m_rpi;
+    data += m_aem;
+    data += QByteArray(reinterpret_cast<char const *>(&m_interval), sizeof(m_interval));
+    data += QByteArray(reinterpret_cast<char const *>(&m_rssi), sizeof(m_rssi));
 
     return data;
 }
@@ -54,6 +58,7 @@ bool RpiDataItem::deserialise(QByteArray const &data)
     if (data.size() == RPI_SERIALISE_SIZE) {
         pos = 0;
         m_rpi = read(data, pos, RPI_SIZE);
+        m_aem = read(data, pos, AEM_SIZE);
         m_interval = read<ctinterval>(data, pos);
         m_rssi = read<qint16>(data, pos);
         result = true;

@@ -79,17 +79,17 @@ QByteArray Contrac::dailyTracingKey(QByteArray tracingKey, quint32 day_number)
         // From the spec it's not clear whether this is string or byte concatenation.
         // Here we use byte, but it might have to be changed
         memcpy(encode, DTK_INFO_PREFIX, sizeof(DTK_INFO_PREFIX));
-        ((uint32_t *)(encode + sizeof(DTK_INFO_PREFIX)))[0] = day_number;
+        (reinterpret_cast<uint32_t *>(encode + sizeof(DTK_INFO_PREFIX)))[0] = day_number;
 
-        tk = (unsigned char *)tracingKey.data();
+        tk = reinterpret_cast<unsigned char const *>(tracingKey.data());
 
         out_length = DTK_SIZE;
-        result = HKDF(data, out_length, EVP_sha256(), tk, tracingKey.size(), salt, 0, encode, sizeof(encode));
+        result = HKDF(data, out_length, EVP_sha256(), tk, static_cast<size_t>(tracingKey.size()), salt, 0, encode, sizeof(encode));
     }
 
     if ((result > 0) && (out_length == DTK_SIZE)) {
         dtk.clear();
-        dtk.append((char *)data, DTK_SIZE);
+        dtk.append(reinterpret_cast<char *>(data), DTK_SIZE);
     }
     else {
         qDebug() << "Error generating daily key: " << ERR_get_error();
@@ -118,10 +118,10 @@ QByteArray Contrac::randomProximityIdentifier(QByteArray dailyTracingKey, quint8
         // From the spec it's not clear whether this is string or byte concatenation.
         // Here we use byte, but it might have to be changed
         memcpy(encode, RPI_INFO_PREFIX, sizeof(RPI_INFO_PREFIX));
-        ((uint8_t *)(encode + sizeof(RPI_INFO_PREFIX)))[0] = time_interval_number;
+        (static_cast<uint8_t *>(encode + sizeof(RPI_INFO_PREFIX)))[0] = time_interval_number;
         out_length = sizeof(output);
 
-        daily_key = (unsigned char *)dailyTracingKey.data();
+        daily_key = reinterpret_cast<unsigned char const *>(dailyTracingKey.data());
         HMAC(EVP_sha256(), daily_key, RPI_SIZE, encode, sizeof(encode), output, &out_length);
 
         //_Static_assert ((EVP_MAX_MD_SIZE >= 16), "HMAC buffer size too small");
@@ -140,7 +140,7 @@ QByteArray Contrac::randomProximityIdentifier(QByteArray dailyTracingKey, quint8
     if (result > 0) {
         //data->time_interval_number = time_interval_number;
         rpi.clear();
-        rpi.append((char *)data, RPI_SIZE);
+        rpi.append(reinterpret_cast<char *>(data), RPI_SIZE);
     }
     else {
         qDebug() << "Error generating rolling proximity id: " << ERR_get_error();

@@ -10,10 +10,13 @@ public:
     explicit Test_Tracing(QObject *parent = nullptr);
 
 private slots:
+    void init();
     void cleanup();
 
     void testDtk();
     void testRpi();
+    void testMetadata();
+    void testMatchAggregation();
     void testBloomFilter();
     void testStorage();
     void testMatch();

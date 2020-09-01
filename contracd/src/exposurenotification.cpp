@@ -1,6 +1,7 @@
 #include <QList>
 #include <QDebug>
 #include <string.h>
+#include <math.h>
 
 #include "temporaryexposurekey.h"
 #include "contrac.pb.h"
@@ -16,7 +17,7 @@
 #define EXPORT_BIN_HEADER QLatin1String("EK Export v1    ")
 
 // In milliseconds
-#define CONTIGUOUS_PERIOD_THRESHOLD (10 * 1000)
+#define CONTIGUOUS_PERIOD_THRESHOLD (10 * 60 * 1000)
 
 namespace {
 
@@ -54,6 +55,21 @@ inline T clamp(T value, T min, T max)
     return value;
 }
 
+inline qint32 attenuationCalculation(qint16 rssiMeasured, qint8 rssiCorrection, qint8 txPower)
+{
+    // Attenuation = TX_power - (RSSI_measured + RSSI_correction)
+    // See https://developers.google.com/android/exposure-notifications/ble-attenuation-overview
+    qint32 attenuation;
+
+    attenuation = txPower - (rssiMeasured + rssiCorrection);
+
+    return attenuation;
+}
+
+inline bool compareIntervals(RpiDataItem const &rpi1, RpiDataItem const & rpi2) {
+    return rpi1.m_interval < rpi2.m_interval;
+}
+
 }
 
 ExposureNotificationPrivate::ExposureNotificationPrivate(ExposureNotification *q)
@@ -77,11 +93,13 @@ ExposureNotificationPrivate::ExposureNotificationPrivate(ExposureNotification *q
     qDebug() << "Load";
     QByteArray tk = Settings::getInstance().tracingKey();
     if (tk.isEmpty()) {
+        qDebug() << "Generating new tracing key";
         m_contrac->generateTracingKey();
         tk = m_contrac->tk();
         Settings::getInstance().setTracingKey(tk);
     }
     else {
+        qDebug() << "Using existing tracing key";
         m_contrac->setTk(tk);
     }
     m_contrac->updateKeys();
@@ -222,7 +240,7 @@ void ExposureNotification::provideDiagnosisKeys(QVector<QString> const &keyFiles
             for(pos = 0; pos < keyExport.keys_size(); ++pos) {
                 diagnosis::TemporaryExposureKey const &key = keyExport.keys(pos);
                 QByteArray dtk(key.key_data().data(), static_cast<int>(key.key_data().length()));
-                DiagnosisKey diagnosisKey(dtk, static_cast<quint32>(key.transmission_risk_level()), static_cast<quint32>(key.rolling_start_interval_number()), static_cast<quint32>(key.rolling_period()));
+                DiagnosisKey diagnosisKey(dtk, static_cast<DiagnosisKey::RiskLevel>(key.transmission_risk_level()), static_cast<quint32>(key.rolling_start_interval_number()), static_cast<quint32>(key.rolling_period()));
                 qint64 day = static_cast<quint32>(key.rolling_start_interval_number() / 144) - d->m_contrac->dayNumber();
                 if (day >= 0 && day < DAYS_TO_STORE) {
                     diagnosisKeys[day].append(diagnosisKey);
@@ -240,7 +258,8 @@ void ExposureNotification::provideDiagnosisKeys(QVector<QString> const &keyFiles
             quint32 const dayNumber = d->m_contrac->dayNumber() + day;
             QList<ContactMatch> matches = d->m_contacts->findDtkMatches(dayNumber, diagnosisKeys[day]);
 
-            exposureInfoList.append(d->aggregateExposureData(dayNumber, configuration, matches));
+            qint32 days_ago = static_cast<qint32>(dayNumber) - static_cast<qint32>(d->m_contrac->dayNumber());
+            exposureInfoList.append(d->aggregateExposureData(dayNumber, configuration, matches, days_ago));
         }
     }
 
@@ -248,7 +267,7 @@ void ExposureNotification::provideDiagnosisKeys(QVector<QString> const &keyFiles
     d->m_exposures.insert(token, exposureInfoList);
 }
 
-QList<ExposureInformation> ExposureNotificationPrivate::aggregateExposureData(quint32 dayNumber, ExposureConfiguration const &configuration, QList<ContactMatch> matches)
+QList<ExposureInformation> ExposureNotificationPrivate::aggregateExposureData(quint32 dayNumber, ExposureConfiguration const &configuration, QList<ContactMatch> matches, qint32 const days_ago)
 {
     QList<ExposureInformation> exposures;
     qint32 attenuationThreshold[2];
@@ -257,11 +276,29 @@ QList<ExposureInformation> ExposureNotificationPrivate::aggregateExposureData(qu
 
     qint32 transmissionRisk;
     qint32 totalDuration;
-    qint32 days_ago;
+    //qint32 days_ago;
     qint32 attenuationValue;
 
+    Metadata metadata;
+    qint8 rssiCorrection;
+    qint8 txPower;
+    qint32 attenuation;
+
+    rssiCorrection = Settings::getInstance().rssiCorrection();
+
     for (ContactMatch match : matches) {
+        metadata.setDtk(match.m_dtk->m_dtk);
+
+        // The aggregation process assumes that rpi intervals are increasing
+        // So order the RPIs if necessary to ensure this
+        // This is just for safety, by far the most likely situation is that they'll already be ordered
+        if (!std::is_sorted(match.m_rpis.begin(), match.m_rpis.end(), compareIntervals)) {
+            qDebug() << "Reordering RPIs to have increasing interval values";
+            std::sort(match.m_rpis.begin(), match.m_rpis.end(), compareIntervals);
+        }
+
         int rpi_pos = 0;
+        qDebug() << "Aggregating data for rpi matches:" << match.m_rpis.size();
         while (rpi_pos < match.m_rpis.size()) {
             ExposureInformation exposure;
 
@@ -270,49 +307,71 @@ QList<ExposureInformation> ExposureNotificationPrivate::aggregateExposureData(qu
             transmissionRisk = static_cast<qint32>(match.m_dtk->m_transmissionRiskLevel);
             exposure.setTransmissionRiskLevel(transmissionRisk);
 
-            ctinterval start = match.m_rpis[0].m_interval;
-            quint64 interval = match.m_rpis[0].m_interval;
+            qint64 interval = match.m_rpis[rpi_pos].m_interval;
             totalDuration = 0;
             quint32 totalRiskScore;
             qint32 attenuationDurations[3] = {0, 0, 0};
             qint64 attenuationSum = 0;
-            while (rpi_pos < match.m_rpis.size() && (match.m_rpis[0].m_interval < interval + (CONTIGUOUS_PERIOD_THRESHOLD / CTINTERVAL_DURATION))) {
-                RpiDataItem const &rpi = match.m_rpis[0];
-                qint32 timeDelta = static_cast<qint32>(rpi.m_interval - interval);
-                if (rpi.m_rssi < attenuationThreshold[0]) {
-                    attenuationDurations[0] += timeDelta;
-                }
-                else {
-                    if (rpi.m_rssi < attenuationThreshold[1]) {
-                        attenuationDurations[1] += timeDelta;
+            while (rpi_pos < match.m_rpis.size() && (match.m_rpis[rpi_pos].m_interval < interval + (CONTIGUOUS_PERIOD_THRESHOLD / CTINTERVAL_DURATION) + 1)) {
+                RpiDataItem const &rpi = match.m_rpis[rpi_pos];
+                // The timeDelta value should be measured in minutes and rounded upwards
+                qint64 timeDelta = qint64(ceil((qint64(1 + rpi.m_interval) - interval) / double(60 * 1000 / CTINTERVAL_DURATION)));
+                // Make use of the txPower stored in the AEM
+                metadata.setEncryptedMetadata(rpi.m_aem);
+                metadata.setRpi(rpi.m_rpi);
+                txPower = metadata.txPower();
+                // The metadata must also be valid
+                if (metadata.valid()) {
+                    attenuation = attenuationCalculation(rpi.m_rssi, rssiCorrection, txPower);
+
+                    // Attenuation durations in minutes
+                    // From the specification:
+                    // "Array of durations in minutes at certain radio signal attenuations."
+                    if (attenuation < attenuationThreshold[0]) {
+                        attenuationDurations[0] += timeDelta;
                     }
                     else {
-                        attenuationDurations[2] += timeDelta;
+                        if (attenuation < attenuationThreshold[1]) {
+                            attenuationDurations[1] += timeDelta;
+                        }
+                        else {
+                            attenuationDurations[2] += timeDelta;
+                        }
                     }
+                    attenuationSum += (attenuation * timeDelta);
+
+                    interval = rpi.m_interval;
+                    totalDuration += timeDelta;
                 }
-                attenuationSum += (rpi.m_rssi * timeDelta);
-
-
-                interval = rpi.m_interval;
-                totalDuration = rpi.m_interval - start;
+                else {
+                    qDebug() << "Invalid metadata";
+                }
 
                 ++rpi_pos;
             }
-            exposure.setDurationMinutes(totalDuration / ((60 * 1000) / CTINTERVAL_DURATION));
+            // Duration to the nearest 5 minutes
+            // From the specification:
+            // "Length of exposure in 5 minute increments, with a 30 minute maximum."
+            qint32 durationMinutes = 5 * qint32(ceil(totalDuration / 5.0));
+            if (durationMinutes > 30) {
+                durationMinutes = 30;
+            }
+            exposure.setDurationMinutes(durationMinutes);
             QList<qint32> attenuationDurationList;
             attenuationDurationList.append(attenuationDurations[0]);
             attenuationDurationList.append(attenuationDurations[1]);
             attenuationDurationList.append(attenuationDurations[2]);
             exposure.setAttenuationDurations(attenuationDurationList);
-            attenuationValue = static_cast<qint32>(attenuationSum / totalDuration);
+            attenuationValue = totalDuration > 0 ? qint32(attenuationSum / totalDuration) : 0;
             exposure.setAttenuationValue(attenuationValue);
-            days_ago = static_cast<qint32>(dayNumber) - static_cast<qint32>(m_contrac->dayNumber());
 
+            // We no longer calculate days_ago to allow unit tests to work correctly
+            //days_ago = static_cast<qint32>(dayNumber) - static_cast<qint32>(m_contrac->dayNumber());
             totalRiskScore = calculateRiskScore(configuration, transmissionRisk, totalDuration, days_ago, attenuationValue);
 
             exposure.setTotalRiskScore(static_cast<qint32>(totalRiskScore));
 
-            ++rpi_pos;
+            exposures.append(exposure);
         }
     }
 
@@ -328,11 +387,11 @@ quint32 ExposureNotificationPrivate::calculateRiskScore(ExposureConfiguration co
     quint32 transmissionRiskScore;
     qint8 pos;
 
-    qint32 attenuationThresholds[8] = {-73, -63, -51, -33, -27, -15, -10};
+    qint32 attenuationThresholds[8] = {73, 63, 51, 33, 27, 15, 10};
     qint32 daysThresholds[8] = {14, 12, 10, 8, 6, 4, 2};
     qint32 durationThreshold[8] = {1, 6, 11, 16, 21, 26, 31};
 
-    attenuationScore = checkLowerThreshold(attenuationThresholds, configuration.attenuationScores(), attenuationValue);
+    attenuationScore = checkGreaterThreshold(attenuationThresholds, configuration.attenuationScores(), attenuationValue);
     daysSinceLastExposureScore = checkGreaterThreshold(daysThresholds, configuration.daysSinceLastExposureScores(), days_ago);
     durationScore = checkLowerThreshold(durationThreshold, configuration.durationScores(), duration);
 
@@ -465,18 +524,30 @@ void ExposureNotification::resetAllData()
     d->m_contacts->clearAllDataFiles();
 }
 
-void ExposureNotification::beaconDiscovered(const QString &, const QByteArray &rpi, qint16 rssi)
+void ExposureNotification::beaconDiscovered(const QString &, const QByteArray &data, qint16 rssi)
 {
     Q_D(ExposureNotification);
+    QByteArray rpi;
+    QByteArray aem;
     qDebug() << "Beacon discovered";
 
-    qint64 millisecondsSinceEpoch = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    if (data.length() == (RPI_SIZE + AEM_SIZE)) {
+        rpi = data.mid(0, RPI_SIZE);
+        qDebug() << "RPI:" << rpi.toHex();
+        aem = data.mid(RPI_SIZE, AEM_SIZE);
+        qDebug() << "AEM:" << aem.toHex();
 
-    ctinterval interval = millisecondsToCtInterval(millisecondsSinceEpoch);
-    d->m_contrac->updateKeys();
-    d->m_contacts->addContact(interval, rpi, rssi);
+        qint64 millisecondsSinceEpoch = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
-    emit beaconReceived();
+        ctinterval interval = millisecondsToCtInterval(millisecondsSinceEpoch);
+        d->m_contrac->updateKeys();
+        d->m_contacts->addContact(interval, rpi, aem, rssi);
+
+        emit beaconReceived();
+    }
+    else {
+        qDebug() << "Beacon has incorrect length: " << data.length();
+    }
 }
 
 void ExposureNotification::intervalUpdate()
@@ -490,11 +561,24 @@ void ExposureNotification::intervalUpdate()
 void ExposureNotification::onRpiChanged()
 {
     Q_D(ExposureNotification);
+    QByteArray dtk;
     QByteArray rpi;
+    QByteArray metadata;
+    qint8 txPower;
 
     qDebug() << "CONTRAC: onRpiChanged";
+    dtk = d->m_contrac->dtk();
     rpi = d->m_contrac->rpi();
-    d->m_controller->setRpi(rpi);
+    txPower = Settings::getInstance().txPower();
+    d->m_metadata.setDtk(dtk);
+    d->m_metadata.setRpi(rpi);
+    d->m_metadata.setTxPower(txPower);
+    metadata = d->m_metadata.encryptedMetadata();
+    if (!d->m_metadata.valid()) {
+        qDebug() << "Metadata could not be created";
+    }
+
+    d->m_controller->setAdvertData(rpi, metadata);
 
     emit beaconSent();
 }

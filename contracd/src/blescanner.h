@@ -25,7 +25,7 @@ public:
 signals:
     void scanChanged();
     void busyChanged();
-    void beaconDiscovered(const QString &address, const QByteArray &rpi, qint16 rssi);
+    void beaconDiscovered(const QString &address, const QByteArray &data, qint16 rssi);
 
 private:
     enum ScanState {

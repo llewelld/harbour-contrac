@@ -13,7 +13,7 @@
 #include "exposureconfiguration.h"
 #include "temporaryexposurekey.h"
 #include "contrac.h"
-#include "bleascanner.h"
+#include "blescanner.h"
 #include "controller.h"
 #include "contactstorage.h"
 
@@ -65,7 +65,7 @@ signals:
     void beaconReceived();
 
 public slots:
-    void beaconDiscovered(const QString &address, const QByteArray &rpi, qint16 rssi);
+    void beaconDiscovered(const QString &address, const QByteArray &data, qint16 rssi);
     void intervalUpdate();
     void onRpiChanged();
 

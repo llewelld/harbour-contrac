@@ -18,7 +18,7 @@ Controller::Controller(QObject *parent) : QObject(parent)
     QVariantMap data;
     data.insert("0000fd6f-0000-1000-8000-00805f9b34fb", QByteArray("Hello"));
     m_bleadvert->setServiceData(data);
-    m_bleadvert->setLocalName(QStringLiteral("flypig"));
+    //m_bleadvert->setLocalName(QStringLiteral("flypig"));
     m_bleadvert->setDuration(10 * 60);
     m_bleadvert->setTimeout(10 * 60);
 
@@ -56,20 +56,24 @@ void Controller::unRegisterAdvert()
     }
 }
 
-void Controller::setRpi(QByteArray rpi)
+void Controller::setAdvertData(QByteArray const &rpi, QByteArray const &metadata)
 {
     bool registered = m_registered;
+    QByteArray serviceData;
 
     if (registered) {
         qDebug() << "CONTRAC: unregistering";
         unRegisterAdvert();
     }
+    serviceData = rpi;
+    serviceData.append(metadata);
+
     QVariantMap data;
-    data.insert("0000fd6f-0000-1000-8000-00805f9b34fb", rpi);
+    data.insert("0000fd6f-0000-1000-8000-00805f9b34fb", metadata);
     m_bleadvert->setServiceData(data);
-    QString rpiName(rpi.toHex());
-    rpiName.truncate(16);
-    m_bleadvert->setLocalName(rpiName);
+//    QString rpiName(rpi.toHex());
+//    rpiName.truncate(16);
+//    m_bleadvert->setLocalName(rpiName);
     if (registered) {
         registerAdvert();
     }

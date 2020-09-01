@@ -6,6 +6,7 @@
 
 #include "exposureinformation.h"
 #include "contrac.h"
+#include "metadata.h"
 #include "exposurenotification.h"
 
 namespace diagnosis {
@@ -20,7 +21,7 @@ public:
     ~ExposureNotificationPrivate();
 
     static bool loadDiagnosisKeys(QString const &keyFile, diagnosis::TemporaryExposureKeyExport * keyExport);
-    QList<ExposureInformation> aggregateExposureData(quint32 dayNumber, ExposureConfiguration const &configuration, QList<ContactMatch> matches);
+    static QList<ExposureInformation> aggregateExposureData(quint32 dayNumber, ExposureConfiguration const &configuration, QList<ContactMatch> matches, qint32 const days_ago);
     static quint32 calculateRiskScore(ExposureConfiguration const &configuration, qint32 transmissionRisk, qint32 duration, qint32 days_ago, qint32 attenuationValue);
 
 private:
@@ -38,6 +39,7 @@ public:
     BleScanner *m_scanner;
     Controller *m_controller;
     ContactStorage *m_contacts;
+    Metadata m_metadata;
     QTimer m_intervalUpdate;
 };
 

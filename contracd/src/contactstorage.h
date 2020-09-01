@@ -30,7 +30,7 @@ public:
 signals:
 
 public slots:
-    Q_INVOKABLE void addContact(ctinterval interval, const QByteArray &rpi, qint16 rssi);
+    Q_INVOKABLE void addContact(ctinterval interval, const QByteArray &rpi, const QByteArray &aem, qint16 rssi);
     void dumpData(quint32 day = 0);
     void onTimeChanged();
 
