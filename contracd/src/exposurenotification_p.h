@@ -22,7 +22,7 @@ public:
 
     static bool loadDiagnosisKeys(QString const &keyFile, diagnosis::TemporaryExposureKeyExport * keyExport);
     static QList<ExposureInformation> aggregateExposureData(quint32 dayNumber, ExposureConfiguration const &configuration, QList<ContactMatch> matches, qint32 const days_ago);
-    static quint32 calculateRiskScore(ExposureConfiguration const &configuration, qint32 transmissionRisk, qint32 duration, qint32 days_ago, qint32 attenuationValue);
+    static qint32 calculateRiskScore(ExposureConfiguration const &configuration, qint32 transmissionRisk, qint32 duration, qint32 days_ago, qint32 attenuationValue);
 
 private:
     ExposureNotification *q_ptr;

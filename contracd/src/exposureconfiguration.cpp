@@ -70,21 +70,24 @@ QDBusArgument &operator<<(QDBusArgument &argument, const ExposureConfiguration &
 QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureConfiguration &exposureConfiguration)
 {
     quint8 valueInt8;
-    QList<quint32> valueUnsignedList;
     double valueDouble;
     QList<qint32> valueSignedList;
 
     argument.beginStructure();
     argument >> valueInt8;
     exposureConfiguration.setMinimumRiskScore(valueInt8);
-    argument >> valueUnsignedList;
-    exposureConfiguration.setAttenuationScores(valueUnsignedList);
-    argument >> valueUnsignedList;
-    exposureConfiguration.setDaysSinceLastExposureScores(valueUnsignedList);
-    argument >> valueUnsignedList;
-    exposureConfiguration.setDurationScores(valueUnsignedList);
-    argument >> valueUnsignedList;
-    exposureConfiguration.setTransmissionRiskScores(valueUnsignedList);
+    valueSignedList.clear();
+    argument >> valueSignedList;
+    exposureConfiguration.setAttenuationScores(valueSignedList);
+    valueSignedList.clear();
+    argument >> valueSignedList;
+    exposureConfiguration.setDaysSinceLastExposureScores(valueSignedList);
+    valueSignedList.clear();
+    argument >> valueSignedList;
+    exposureConfiguration.setDurationScores(valueSignedList);
+    valueSignedList.clear();
+    argument >> valueSignedList;
+    exposureConfiguration.setTransmissionRiskScores(valueSignedList);
     argument >> valueDouble;
     exposureConfiguration.setAttenuationWeight(valueDouble);
     argument >> valueDouble;
@@ -93,6 +96,7 @@ QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureConfigura
     exposureConfiguration.setDurationWeight(valueDouble);
     argument >> valueDouble;
     exposureConfiguration.setTransmissionRiskWeight(valueDouble);
+    valueSignedList.clear();
     argument >> valueSignedList;
     exposureConfiguration.setDurationAtAttenuationThresholds(valueSignedList);
     argument.endStructure();
@@ -100,27 +104,27 @@ QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureConfigura
     return argument;
 }
 
-quint8 ExposureConfiguration::minimumRiskScore() const
+qint32 ExposureConfiguration::minimumRiskScore() const
 {
     return m_minimumRiskScore;
 }
 
-QList<quint32> ExposureConfiguration::attenuationScores() const
+QList<qint32> ExposureConfiguration::attenuationScores() const
 {
     return m_attenuationScores;
 }
 
-QList<quint32> ExposureConfiguration::daysSinceLastExposureScores() const
+QList<qint32> ExposureConfiguration::daysSinceLastExposureScores() const
 {
     return m_daysSinceLastExposureScores;
 }
 
-QList<quint32> ExposureConfiguration::durationScores() const
+QList<qint32> ExposureConfiguration::durationScores() const
 {
     return m_durationScores;
 }
 
-QList<quint32> ExposureConfiguration::transmissionRiskScores() const
+QList<qint32> ExposureConfiguration::transmissionRiskScores() const
 {
     return m_transmissionRiskScores;
 }
@@ -150,7 +154,7 @@ QList<qint32> ExposureConfiguration::durationAtAttenuationThresholds() const
     return m_durationAtAttenuationThresholds;
 }
 
-void ExposureConfiguration::setMinimumRiskScore(quint8 minimumRiskScore)
+void ExposureConfiguration::setMinimumRiskScore(qint32 minimumRiskScore)
 {
     if (m_minimumRiskScore != minimumRiskScore) {
         m_minimumRiskScore = minimumRiskScore;
@@ -158,7 +162,7 @@ void ExposureConfiguration::setMinimumRiskScore(quint8 minimumRiskScore)
     }
 }
 
-void ExposureConfiguration::setAttenuationScores(QList<quint32> attenuationScores)
+void ExposureConfiguration::setAttenuationScores(QList<qint32> attenuationScores)
 {
     if (m_attenuationScores != attenuationScores) {
         m_attenuationScores = attenuationScores;
@@ -166,7 +170,7 @@ void ExposureConfiguration::setAttenuationScores(QList<quint32> attenuationScore
     }
 }
 
-void ExposureConfiguration::setDaysSinceLastExposureScores(QList<quint32> daysSinceLastExposureScores)
+void ExposureConfiguration::setDaysSinceLastExposureScores(QList<qint32> daysSinceLastExposureScores)
 {
     if (m_daysSinceLastExposureScores != daysSinceLastExposureScores) {
         m_daysSinceLastExposureScores = daysSinceLastExposureScores;
@@ -174,7 +178,7 @@ void ExposureConfiguration::setDaysSinceLastExposureScores(QList<quint32> daysSi
     }
 }
 
-void ExposureConfiguration::setDurationScores(QList<quint32> durationScores)
+void ExposureConfiguration::setDurationScores(QList<qint32> durationScores)
 {
     if (m_durationScores != durationScores) {
         m_durationScores = durationScores;
@@ -182,7 +186,7 @@ void ExposureConfiguration::setDurationScores(QList<quint32> durationScores)
     }
 }
 
-void ExposureConfiguration::setTransmissionRiskScores(QList<quint32> transmissionRiskScores)
+void ExposureConfiguration::setTransmissionRiskScores(QList<qint32> transmissionRiskScores)
 {
     if (m_transmissionRiskScores != transmissionRiskScores) {
         m_transmissionRiskScores = transmissionRiskScores;

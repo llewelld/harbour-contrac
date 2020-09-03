@@ -20,6 +20,7 @@ public:
 
 signals:
     void finished();
+
 protected slots:
     virtual void onFinished();
 

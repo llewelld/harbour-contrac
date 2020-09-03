@@ -1,22 +1,19 @@
-#ifndef DOWNLOAD_H
-#define DOWNLOAD_H
+#ifndef DOWNLOADCONFIG_H
+#define DOWNLOADCONFIG_H
 
 #include <QObject>
-#include <QDate>
-#include <QMap>
 
 class S3Access;
-class DownloadConfig;
 class ExposureConfiguration;
 
-class Download : public QObject
+namespace diagnosis {
+class ApplicationConfiguration;
+}
+
+class DownloadConfig : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(Status)
-    Q_ENUMS(ErrorType)
-    Q_PROPERTY(QDate latest READ latest NOTIFY latestChanged)
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
-    Q_PROPERTY(float progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(ErrorType error READ error NOTIFY errorChanged)
     Q_PROPERTY(ExposureConfiguration config READ config NOTIFY configChanged)
@@ -25,8 +22,7 @@ public:
     enum Status
     {
         StatusIdle,
-        StatusDownloadingConfig,
-        StatusDownloadingKeys,
+        StatusDownloading,
         StatusError
     };
     enum ErrorType
@@ -34,51 +30,37 @@ public:
         ErrorNone,
         ErrorNetwork
     };
-    explicit Download(QObject *parent = nullptr);
+    explicit DownloadConfig(QObject *parent = nullptr);
 
     Q_INVOKABLE void downloadLatest();
 
-    QDate latest() const;
     bool downloading() const;
-    float progress() const;
     Status status() const;
     ErrorType error() const;
     ExposureConfiguration const *config() const;
 
 signals:
-    void latestChanged();
     void downloadingChanged();
     void downloadComplete(QString const &filename);
-    void progressChanged();
     void statusChanged();
     void errorChanged();
     void configChanged();
 
 private slots:
     void setStatus(Status status);
-    void configDownloadComplete(QString const &filename);
 
 private:
-    void addToFileQueue(QDate const &date, QStringList const& download);
-    void startNextFileDownload();
-    void startNextDateDownload();
-    void startDateDownload(QDate const &date);
-    QDate nextDownloadDay() const;
-    QDate oldestDateInQueue();
-    void createDateFolder(QDate const &date) const;
     void finalise();
     void setStatusError(ErrorType error);
+    bool loadConfig();
+    void applyConfiguration(diagnosis::ApplicationConfiguration const &appConfig);
 
 private:
     S3Access *m_s3Access;
-    QMap<QDate, QStringList> m_fileQueue;
-    QDate m_latest;
     bool m_downloading;
-    qint64 m_filesReceived;
-    qint64 m_filesTotal;
     Status m_status;
     ErrorType m_error;
-    DownloadConfig * m_downloadConfig;
+    ExposureConfiguration *m_configuration;
 };
 
-#endif // DOWNLOAD_H
+#endif // DOWNLOADCONFIG_H

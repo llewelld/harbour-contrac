@@ -16,10 +16,6 @@ Page {
         updateFrequency: WallClock.Day
     }
 
-    ExposureConfiguration {
-        id: config
-    }
-
     function moreThanADayAgo(latest) {
         var result = true
         if (!isNaN(latest)) {
@@ -48,6 +44,10 @@ Page {
     Upload {
         id: upload
         property bool available: moreThanADayAgo(latest)
+    }
+
+    DownloadConfig {
+        id: downloadConfig
     }
 
     DBusProxy {
@@ -223,6 +223,19 @@ Page {
                 onClicked: {
                     download.downloadLatest()
                     pageStack.push(Qt.resolvedUrl("DownloadInfo.qml"), {download: page.download})
+                }
+            }
+
+            Button {
+                id: downloadConfigButton
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: Math.max(tanButton.implicitWidth, downloadButton.implicitWidth)
+                enabled: !download.downloading
+                text: "Perform check"
+                onClicked: {
+                    var filelist;
+                    dbusproxy.provideDiagnosisKeys(filelist, download.config, token);
+                    //downloadConfig.downloadLatest()
                 }
             }
         }

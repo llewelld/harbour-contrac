@@ -20,24 +20,34 @@ DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR" \
     "VERSION=\\\"$$VERSION\\\""
 
 #protobuf build step
-PRE_TARGETDEPS += proto/submissionpayload.pb.cc
-protobuf.target = proto/submissionpayload.pb.cc
-protobuf.path = $$OUT_PWD
-protobuf.commands = \
+PRE_TARGETDEPS += proto/submissionpayload.pb.cc \
+    proto/applicationConfiguration.pb.cc
+
+submissionpayload.target = proto/submissionpayload.pb.cc
+submissionpayload.path = $$OUT_PWD
+submissionpayload.commands = \
     mkdir -p $$OUT_PWD/proto; \
     protoc --proto_path=$$PWD/src --cpp_out=$$OUT_PWD/proto $$PWD/src/submissionpayload.proto
 
+applicationconfig.target = proto/applicationConfiguration.pb.cc
+applicationconfig.path = $$OUT_PWD
+applicationconfig.commands = \
+    mkdir -p $$OUT_PWD/proto; \
+    protoc --proto_path=$$PWD/src --cpp_out=$$OUT_PWD/proto $$PWD/src/applicationConfiguration.proto
+
 INCLUDEPATH += $$OUT_PWD/proto
 
-QMAKE_EXTRA_TARGETS += protobuf
+QMAKE_EXTRA_TARGETS += submissionpayload applicationconfig
 
 CONFIG += sailfishapp
 
 HEADERS += \
     proto/submissionpayload.pb.h \
+    proto/applicationConfiguration.pb.h \
     src/dbusproxy.h \
     src/contactmodel.h \
     src/download.h \
+    src/downloadconfig.h \
     src/s3access.h \
     src/s3/s3.h \
     src/s3/s3internal.h \
@@ -46,11 +56,14 @@ HEADERS += \
     contracd/src/exposureinformation.h \
     contracd/src/temporaryexposurekey.h \
     contracd/src/exposureconfiguration.h \
+    contracd/src/zipistreambuffer.h \
     src/settings.h \
     src/upload.h
 
 SOURCES += \
     proto/submissionpayload.pb.cc \
+    proto/applicationConfiguration.pb.cc \
+    src/downloadconfig.cpp \
     src/harbour-contrac.cpp \
     src/dbusproxy.cpp \
     src/contactmodel.cpp \
@@ -65,6 +78,7 @@ SOURCES += \
     contracd/src/exposureinformation.cpp \
     contracd/src/temporaryexposurekey.cpp \
     contracd/src/exposureconfiguration.cpp \
+    contracd/src/zipistreambuffer.cpp \
     src/settings.cpp \
     src/upload.cpp
 
@@ -80,6 +94,7 @@ DISTFILES += \
     qml/components/Dash.qml \
     qml/components/InfoRow.qml \
     qml/components/TanChar.qml \
+    src/applicationConfiguration.proto \
     translations/*.ts
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
@@ -103,6 +118,7 @@ PKGCONFIG += \
     libxml-2.0 \
     libcurl \
     protobuf-lite \
+    quazip
 
 DEFINES += LINUX
 
