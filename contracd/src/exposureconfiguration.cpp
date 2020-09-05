@@ -1,6 +1,5 @@
 #include "exposureconfiguration.h"
 
-
 ExposureConfiguration::ExposureConfiguration(QObject *parent)
     : QObject(parent)
     , m_minimumRiskScore(0)

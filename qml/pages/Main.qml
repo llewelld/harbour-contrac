@@ -8,6 +8,7 @@ Page {
     property string token: "abcdef"
     property alias upload: upload
     property alias download: download
+    property ExposureSummary summary;
 
     allowedOrientations: Orientation.All
 
@@ -44,10 +45,6 @@ Page {
     Upload {
         id: upload
         property bool available: moreThanADayAgo(latest)
-    }
-
-    DownloadConfig {
-        id: downloadConfig
     }
 
     DBusProxy {
@@ -227,15 +224,21 @@ Page {
             }
 
             Button {
-                id: downloadConfigButton
+                id: performCheckButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: Math.max(tanButton.implicitWidth, downloadButton.implicitWidth)
                 enabled: !download.downloading
                 text: "Perform check"
                 onClicked: {
-                    var filelist;
+                    var filelist = download.fileList();
+                    console.log("Files to check: " + filelist.length);
                     dbusproxy.provideDiagnosisKeys(filelist, download.config, token);
-                    //downloadConfig.downloadLatest()
+                    summary = dbusproxy.getExposureSummary(token);
+                    console.log("Attenuation durations: " + summary.attenuationDurations)
+                    console.log("Days since last exposure: " + summary.daysSinceLastExposure)
+                    console.log("Matched key count: " + summary.matchedKeyCount)
+                    console.log("Maximum risk score: " + summary.maximumRiskScore)
+                    console.log("Summation risk score: " + summary.summationRiskScore)
                 }
             }
         }

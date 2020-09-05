@@ -298,3 +298,34 @@ ExposureConfiguration const *Download::config() const
 {
     return m_downloadConfig->config();
 }
+
+QStringList Download::fileList() const
+{
+    QDir root = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/";
+    QStringList result;
+
+    root.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
+    root.setNameFilters(QStringList(QStringLiteral("\?\?\?\?-\?\?-\?\?")));
+    root.setSorting(QDir::Name);
+    QFileInfoList dirs = root.entryInfoList();
+
+    QRegExp dateFormat("\\d{4}-\\d{2}-\\d{2}");
+    QRegExp hourFormat("\\d{1,2}");
+    for (QFileInfo dir : dirs) {
+        if (dateFormat.exactMatch(dir.fileName())) {
+            QDir day(dir.absoluteFilePath());
+            day.setFilter(QDir::Files | QDir::NoDotAndDotDot | QDir::Readable);
+            day.setNameFilters(QStringList(QStringLiteral("\?\?")) << QStringLiteral("\?"));
+            day.setSorting(QDir::Name);
+            QFileInfoList hours = day.entryInfoList();
+            for (QFileInfo hour : hours) {
+                if (hourFormat.exactMatch(hour.fileName())) {
+                    result << hour.absoluteFilePath();
+                }
+            }
+        }
+    }
+
+    return result;
+}
+

@@ -3,8 +3,12 @@
 #include "exposuresummary.h"
 
 ExposureSummary::ExposureSummary(QObject *parent) : QObject(parent)
+  , m_daysSinceLastExposure(0)
+  , m_matchedKeyCount(0)
+  , m_maximumRiskScore(0)
+  , m_attenuationDurations()
+  , m_summationRiskScore(0)
 {
-
 }
 
 ExposureSummary::ExposureSummary(ExposureSummary const &exposureSummary)

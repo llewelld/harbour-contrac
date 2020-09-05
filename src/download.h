@@ -5,9 +5,10 @@
 #include <QDate>
 #include <QMap>
 
+#include "../contracd/src/exposureconfiguration.h"
+
 class S3Access;
 class DownloadConfig;
-class ExposureConfiguration;
 
 class Download : public QObject
 {
@@ -37,6 +38,7 @@ public:
     explicit Download(QObject *parent = nullptr);
 
     Q_INVOKABLE void downloadLatest();
+    Q_INVOKABLE QStringList fileList() const;
 
     QDate latest() const;
     bool downloading() const;
