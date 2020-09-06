@@ -11,6 +11,7 @@
 
 #include "dbusproxy.h"
 #include "download.h"
+#include "downloadconfig.h"
 #include "upload.h"
 #include "settings.h"
 
@@ -47,8 +48,13 @@ int main(int argc, char *argv[])
     qmlRegisterType<ExposureConfiguration>("uk.co.flypig.contrac", 1, 0, "ExposureConfiguration");
     qmlRegisterType<Download>("uk.co.flypig.contrac", 1, 0, "Download");
     qmlRegisterType<Upload>("uk.co.flypig.contrac", 1, 0, "Upload");
+    qmlRegisterType<DownloadConfig>("uk.co.flypig.contrac", 1, 0, "DownloadConfig");
 
     qmlRegisterSingletonType<Settings>("uk.co.flypig.contrac", 1, 0, "Settings", Settings::provider);
+
+    // Needed for Settings save/load
+    qRegisterMetaType<ExposureSummary>();
+    qRegisterMetaTypeStreamOperators<ExposureSummary>("ExposureSummary");
 
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));

@@ -16,6 +16,8 @@ public:
     explicit ExposureSummary(QObject *parent = nullptr);
     ExposureSummary(ExposureSummary const &exposureSummary);
     ExposureSummary& operator=( const ExposureSummary &other);
+    bool operator==( const ExposureSummary &other);
+    bool operator!=( const ExposureSummary &other);
 
     quint32 daysSinceLastExposure() const;
     quint32 matchedKeyCount() const;
@@ -47,6 +49,8 @@ private:
 
 QDBusArgument &operator<<(QDBusArgument &argument, const ExposureSummary &exposureSummary);
 QDBusArgument const &operator>>(const QDBusArgument &argument, ExposureSummary &exposureSummary);
+QDataStream &operator<<(QDataStream &out, const ExposureSummary &exposureSummary);
+QDataStream &operator>>(QDataStream &in, ExposureSummary &exposureSummary);
 
 Q_DECLARE_METATYPE(ExposureSummary)
 

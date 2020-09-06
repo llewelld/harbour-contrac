@@ -14,6 +14,7 @@
 #include "exposurenotification_p.h"
 
 #define MAX_DIAGNOSIS_KEYS (1024)
+// The spaces are intentional, to pad to 16 bytes
 #define EXPORT_BIN_HEADER QLatin1String("EK Export v1    ")
 
 // In milliseconds
@@ -21,7 +22,7 @@
 
 namespace {
 
-inline quint32 checkLowerThreshold(qint32 thresholds[8], QList<quint32> scores, qint32 value)
+inline qint32 checkLowerThreshold(qint32 thresholds[8], QList<qint32> scores, qint32 value)
 {
     qint8  pos = 7;
     while ((pos > 0) && (value < thresholds[pos - 1])) {
@@ -31,7 +32,7 @@ inline quint32 checkLowerThreshold(qint32 thresholds[8], QList<quint32> scores, 
     return scores[pos];
 }
 
-inline quint32 checkGreaterThreshold(qint32 thresholds[8], QList<quint32> scores, qint32 value)
+inline qint32 checkGreaterThreshold(qint32 thresholds[8], QList<qint32> scores, qint32 value)
 {
     qint8 pos = 7;
     while ((pos > 0) && (value > thresholds[pos - 1])) {
@@ -309,7 +310,7 @@ QList<ExposureInformation> ExposureNotificationPrivate::aggregateExposureData(qu
 
             qint64 interval = match.m_rpis[rpi_pos].m_interval;
             totalDuration = 0;
-            quint32 totalRiskScore;
+            qint32 totalRiskScore;
             qint32 attenuationDurations[3] = {0, 0, 0};
             qint64 attenuationSum = 0;
             while (rpi_pos < match.m_rpis.size() && (match.m_rpis[rpi_pos].m_interval < interval + (CONTIGUOUS_PERIOD_THRESHOLD / CTINTERVAL_DURATION) + 1)) {
@@ -369,7 +370,7 @@ QList<ExposureInformation> ExposureNotificationPrivate::aggregateExposureData(qu
             //days_ago = static_cast<qint32>(dayNumber) - static_cast<qint32>(m_contrac->dayNumber());
             totalRiskScore = calculateRiskScore(configuration, transmissionRisk, totalDuration, days_ago, attenuationValue);
 
-            exposure.setTotalRiskScore(static_cast<qint32>(totalRiskScore));
+            exposure.setTotalRiskScore(totalRiskScore);
 
             exposures.append(exposure);
         }
@@ -378,13 +379,13 @@ QList<ExposureInformation> ExposureNotificationPrivate::aggregateExposureData(qu
     return exposures;
 }
 
-quint32 ExposureNotificationPrivate::calculateRiskScore(ExposureConfiguration const &configuration, qint32 transmissionRisk, qint32 duration, qint32 days_ago, qint32 attenuationValue)
+qint32 ExposureNotificationPrivate::calculateRiskScore(ExposureConfiguration const &configuration, qint32 transmissionRisk, qint32 duration, qint32 days_ago, qint32 attenuationValue)
 {
-    quint32 riskScore;
-    quint32 attenuationScore;
-    quint32 daysSinceLastExposureScore;
-    quint32 durationScore;
-    quint32 transmissionRiskScore;
+    qint32 riskScore;
+    qint32 attenuationScore;
+    qint32 daysSinceLastExposureScore;
+    qint32 durationScore;
+    qint32 transmissionRiskScore;
     qint8 pos;
 
     qint32 attenuationThresholds[8] = {73, 63, 51, 33, 27, 15, 10};
@@ -435,14 +436,21 @@ bool ExposureNotificationPrivate::loadDiagnosisKeys(QString const &keyFile, diag
         stream.read(header.data(), 16);
 
         result = (header == QString(EXPORT_BIN_HEADER));
+
         if (result) {
             result = keyExport->ParseFromIstream(&stream);
-            qDebug() << "Diagnosis file region: " << keyExport->region().data();
-            qDebug() << "Diagnosis file start timestamp: " << keyExport->start_timestamp();
-            qDebug() << "Diagnosis file end timestamp: " << keyExport->end_timestamp();
-            qDebug() << "Diagnosis file keys: " << keyExport->keys().size();
-            qDebug() << "Diagnosis file verification key: " << keyExport->signature_infos().size();
         }
+    }
+
+    if (result) {
+        qDebug() << "Diagnosis file region: " << keyExport->region().data();
+        qDebug() << "Diagnosis file start timestamp: " << keyExport->start_timestamp();
+        qDebug() << "Diagnosis file end timestamp: " << keyExport->end_timestamp();
+        qDebug() << "Diagnosis file keys: " << keyExport->keys().size();
+        qDebug() << "Diagnosis file verification key: " << keyExport->signature_infos().size();
+    }
+    else {
+        qDebug() << "TemporaryExposureKeyExport proto file failed to load";
     }
 
     return result;
@@ -491,6 +499,7 @@ ExposureSummary ExposureNotification::getExposureSummary(QString const &token) c
             summationRiskScore += exposure.totalRiskScore();
         }
         day = static_cast<quint32>(mostRecent / (24 * 60 * 60 * 1000));
+        day += 12;
 
         summary.setDaysSinceLastExposure(day);
         summary.setMatchedKeyCount(static_cast<quint32>(exposureInfoList.count()));
@@ -582,4 +591,3 @@ void ExposureNotification::onRpiChanged()
 
     emit beaconSent();
 }
-

@@ -5,6 +5,7 @@
 
 #include "settings.h"
 #include "s3access.h"
+#include "downloadconfig.h"
 
 #include "download.h"
 
@@ -16,21 +17,24 @@ Download::Download(QObject *parent) : QObject(parent)
   , m_filesReceived(0)
   , m_filesTotal(0)
   , m_status(StatusIdle)
+  , m_downloadConfig(new DownloadConfig(this))
 {
     m_s3Access->setId("accessKey1");
     m_s3Access->setSecret("verySecretKey1");
     m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
     m_s3Access->setBucket("cwa");
+
+    m_latest = Settings::getInstance().summaryUpdated().date();
+
+    connect(m_downloadConfig, &DownloadConfig::configChanged, this, &Download::configChanged);
+    connect(m_downloadConfig, &DownloadConfig::downloadComplete, this, &Download::configDownloadComplete);
 }
 
 Q_INVOKABLE void Download::downloadLatest()
 {
     qint64 daysTotal;
-    qDebug() << "Requesting keys";
 
     if (!m_downloading) {
-        m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
-        m_filesReceived = 0;
         if (m_latest.isValid()) {
             daysTotal = m_latest.daysTo(QDate::currentDate());
         }
@@ -40,10 +44,32 @@ Q_INVOKABLE void Download::downloadLatest()
         if (daysTotal > 14) {
             daysTotal = 14;
         }
+        m_filesReceived = 0;
         m_filesTotal = daysTotal * 24;
+        m_downloading = true;
+        setStatus(StatusDownloadingConfig);
+        emit downloadingChanged();
         emit progressChanged();
-        setStatus(StatusDownloading);
+
+        m_downloadConfig->downloadLatest();
+    }
+}
+
+
+void Download::configDownloadComplete(QString const &)
+{
+    switch (m_downloadConfig->error()) {
+    case DownloadConfig::ErrorNone:
+        qDebug() << "Requesting keys";
+        setStatus(StatusDownloadingKeys);
+        m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
         startNextDateDownload();
+        break;
+    default:
+        qDebug() << "Network error while downloading configuration: " << m_downloadConfig->error();
+        finalise();
+        setStatusError(ErrorNetwork);
+        break;
     }
 }
 
@@ -147,7 +173,9 @@ void Download::startNextDateDownload()
     else {
         qDebug() << "All dates downloaded";
         finalise();
+        downloading = m_downloading;
         setStatus(StatusIdle);
+        emit allFilesDownloaded();
     }
 
     if (m_downloading != downloading) {
@@ -167,7 +195,7 @@ void Download::startDateDownload(QDate const &date)
         switch (result->error()) {
         case QNetworkReply::NoError:
             keys = result->keys();
-            if (keys.size() > 0){
+            if (keys.size() > 0) {
                 qDebug() << "Key list completed: " << keys.size();
                 createDateFolder(date);
                 for (QString key : keys) {
@@ -187,7 +215,6 @@ void Download::startDateDownload(QDate const &date)
             setStatusError(ErrorNetwork);
             break;
         }
-
 
         result->deleteLater();
     });
@@ -270,3 +297,39 @@ void Download::setStatusError(ErrorType error)
         emit errorChanged();
     }
 }
+
+ExposureConfiguration const *Download::config() const
+{
+    return m_downloadConfig->config();
+}
+
+QStringList Download::fileList() const
+{
+    QDir root = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/";
+    QStringList result;
+
+    root.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
+    root.setNameFilters(QStringList(QStringLiteral("\?\?\?\?-\?\?-\?\?")));
+    root.setSorting(QDir::Name);
+    QFileInfoList dirs = root.entryInfoList();
+
+    QRegExp dateFormat("\\d{4}-\\d{2}-\\d{2}");
+    QRegExp hourFormat("\\d{1,2}");
+    for (QFileInfo dir : dirs) {
+        if (dateFormat.exactMatch(dir.fileName())) {
+            QDir day(dir.absoluteFilePath());
+            day.setFilter(QDir::Files | QDir::NoDotAndDotDot | QDir::Readable);
+            day.setNameFilters(QStringList(QStringLiteral("\?\?")) << QStringLiteral("\?"));
+            day.setSorting(QDir::Name);
+            QFileInfoList hours = day.entryInfoList();
+            for (QFileInfo hour : hours) {
+                if (hourFormat.exactMatch(hour.fileName())) {
+                    result << hour.absoluteFilePath();
+                }
+            }
+        }
+    }
+
+    return result;
+}
+

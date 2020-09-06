@@ -1,5 +1,7 @@
 #include <QDebug>
 
+#include "../contracd/src/exposuresummary.h"
+
 #include "settings.h"
 
 Settings * Settings::instance = nullptr;
@@ -10,6 +12,8 @@ Settings::Settings(QObject *parent) : QObject(parent),
     m_downloadServer = settings.value(QStringLiteral("servers/downloadServer"), QStringLiteral("127.0.0.1:8003")).toString();
     m_uploadServer = settings.value(QStringLiteral("servers/uploadServer"), QStringLiteral("127.0.0.1:8000")).toString();
     m_verificationServer = settings.value(QStringLiteral("servers/verificationServer"), QStringLiteral("127.0.0.1:8004")).toString();
+    m_latestSummary = settings.value(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(ExposureSummary())).value<ExposureSummary>();
+    m_summaryUpdated = settings.value(QStringLiteral("update/date"), QDateTime()).toDateTime();
 
     qDebug() << "Settings created: " << settings.fileName();
 }
@@ -19,6 +23,8 @@ Settings::~Settings()
     settings.setValue(QStringLiteral("servers/downloadServer"), m_downloadServer);
     settings.setValue(QStringLiteral("servers/uploadServer"), m_uploadServer);
     settings.setValue(QStringLiteral("servers/verificationServer"), m_verificationServer);
+    settings.setValue(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(m_latestSummary));
+    settings.setValue(QStringLiteral("update/date"), m_summaryUpdated);
 
     qDebug() << "Deleted settings";
 }
@@ -76,5 +82,31 @@ void Settings::setVerificationServer(QString const &verificationServer)
     if (m_verificationServer != verificationServer) {
         m_verificationServer = verificationServer;
         emit verificationServerChanged();
+    }
+}
+
+ExposureSummary *Settings::latestSummary()
+{
+    return &m_latestSummary;
+}
+
+void Settings::setLatestSummary(ExposureSummary const *latestSummary)
+{
+    if (m_latestSummary != *latestSummary) {
+        m_latestSummary = *latestSummary;
+        emit latestSummaryChanged();
+    }
+}
+
+QDateTime Settings::summaryUpdated() const
+{
+    return m_summaryUpdated;
+}
+
+void Settings::setSummaryUpdated(QDateTime summaryUpdated)
+{
+    if (m_summaryUpdated != summaryUpdated) {
+        m_summaryUpdated = summaryUpdated;
+        emit summaryUpdatedChanged();
     }
 }

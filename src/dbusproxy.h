@@ -67,6 +67,9 @@ signals:
     void sentCountChanged();
     void isBusyChanged();
 
+    // Async responses
+    void provideDiagnosisKeysResult(Status status, QString const &token);
+
 public slots:
 
 private:

@@ -5,7 +5,10 @@
 #include <QDate>
 #include <QMap>
 
+#include "../contracd/src/exposureconfiguration.h"
+
 class S3Access;
+class DownloadConfig;
 
 class Download : public QObject
 {
@@ -17,12 +20,14 @@ class Download : public QObject
     Q_PROPERTY(float progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(ErrorType error READ error NOTIFY errorChanged)
+    Q_PROPERTY(ExposureConfiguration config READ config NOTIFY configChanged)
 
 public:
     enum Status
     {
         StatusIdle,
-        StatusDownloading,
+        StatusDownloadingConfig,
+        StatusDownloadingKeys,
         StatusError
     };
     enum ErrorType
@@ -33,12 +38,14 @@ public:
     explicit Download(QObject *parent = nullptr);
 
     Q_INVOKABLE void downloadLatest();
+    Q_INVOKABLE QStringList fileList() const;
 
     QDate latest() const;
     bool downloading() const;
     float progress() const;
     Status status() const;
     ErrorType error() const;
+    ExposureConfiguration const *config() const;
 
 signals:
     void latestChanged();
@@ -47,9 +54,12 @@ signals:
     void progressChanged();
     void statusChanged();
     void errorChanged();
+    void configChanged();
+    void allFilesDownloaded();
 
 private slots:
     void setStatus(Status status);
+    void configDownloadComplete(QString const &filename);
 
 private:
     void addToFileQueue(QDate const &date, QStringList const& download);
@@ -71,6 +81,7 @@ private:
     qint64 m_filesTotal;
     Status m_status;
     ErrorType m_error;
+    DownloadConfig * m_downloadConfig;
 };
 
 #endif // DOWNLOAD_H

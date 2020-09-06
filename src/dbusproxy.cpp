@@ -3,6 +3,7 @@
 #include <QDBusPendingReply>
 #include <QDBusReply>
 #include <QDBusMetaType>
+#include <QDBusPendingCallWatcher>
 
 #include "dbusproxy.h"
 
@@ -161,11 +162,28 @@ QList<TemporaryExposureKey> DBusProxy::getTemporaryExposureKeyHistory()
 
 void DBusProxy::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token)
 {
-    qDebug() << "Callling provideDiagnosisKeys";
+    qDebug() << "Calling provideDiagnosisKeys";
     QVariant configurationVariant;
     configurationVariant.setValue(configuration);
-    QDBusMessage result = m_interface->call("provideDiagnosisKeys", keyFiles, configurationVariant, token);
-    qDebug() << "Result: " << result.errorMessage();
+
+    QList<QVariant> args;
+    args << keyFiles << configurationVariant << token;
+
+    QDBusPendingCall async = m_interface->asyncCall("provideDiagnosisKeys", keyFiles, configurationVariant, token);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, token](QDBusPendingCallWatcher *call){
+        QDBusPendingReply<> reply = *call;
+        if (reply.isError()) {
+            qDebug() << "D-Bus returned failure:" << reply.error().message();
+            emit provideDiagnosisKeysResult(FailedInternal, token);
+        }
+        else {
+            qDebug() << "D-Bus returned success:" << reply.error().message();
+            emit provideDiagnosisKeysResult(Success, token);
+        }
+
+        call->deleteLater();
+    });
 }
 
 QList<ExposureInformation> *DBusProxy::getExposureInformation(QString const &token) const
@@ -175,3 +193,4 @@ QList<ExposureInformation> *DBusProxy::getExposureInformation(QString const &tok
 
     return result;
 }
+

@@ -335,10 +335,10 @@ void Test_Tracing::testMatchAggregation()
 
     // Set up the configuration
     configuration.setMinimumRiskScore(0);
-    configuration.setAttenuationScores(QList<quint32>({0, 1, 2, 3, 4, 5, 6, 7}));
-    configuration.setDaysSinceLastExposureScores(QList<quint32>({0, 1, 2, 3, 4, 5, 6, 7}));
-    configuration.setDurationScores(QList<quint32>({0, 1, 2, 3, 4, 5, 6, 7}));
-    configuration.setTransmissionRiskScores(QList<quint32>({0, 1, 2, 3, 4, 5, 6, 7}));
+    configuration.setAttenuationScores(QList<qint32>({0, 1, 2, 3, 4, 5, 6, 7}));
+    configuration.setDaysSinceLastExposureScores(QList<qint32>({0, 1, 2, 3, 4, 5, 6, 7}));
+    configuration.setDurationScores(QList<qint32>({0, 1, 2, 3, 4, 5, 6, 7}));
+    configuration.setTransmissionRiskScores(QList<qint32>({0, 1, 2, 3, 4, 5, 6, 7}));
     configuration.setAttenuationWeight(1.0);
     configuration.setDaysSinceLastExposureWeight(1.0);
     configuration.setDurationWeight(1.0);
