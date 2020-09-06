@@ -12,6 +12,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Sep 6 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.5.1-1
+- Diagnosis key files are now tested directly after download.
+- The risk status is shown in the UI, along with other useful info.
+
 * Tue Sep 1 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.4.1-1
 - Adds encrypted beacon metadata send/receive.
 - Refines the data aggregation algorithm to give improved results.
