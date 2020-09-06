@@ -499,6 +499,7 @@ ExposureSummary ExposureNotification::getExposureSummary(QString const &token) c
             summationRiskScore += exposure.totalRiskScore();
         }
         day = static_cast<quint32>(mostRecent / (24 * 60 * 60 * 1000));
+        day += 12;
 
         summary.setDaysSinceLastExposure(day);
         summary.setMatchedKeyCount(static_cast<quint32>(exposureInfoList.count()));
@@ -590,4 +591,3 @@ void ExposureNotification::onRpiChanged()
 
     emit beaconSent();
 }
-

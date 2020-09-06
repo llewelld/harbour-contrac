@@ -55,6 +55,7 @@ signals:
     void statusChanged();
     void errorChanged();
     void configChanged();
+    void allFilesDownloaded();
 
 private slots:
     void setStatus(Status status);

@@ -52,6 +52,10 @@ int main(int argc, char *argv[])
 
     qmlRegisterSingletonType<Settings>("uk.co.flypig.contrac", 1, 0, "Settings", Settings::provider);
 
+    // Needed for Settings save/load
+    qRegisterMetaType<ExposureSummary>();
+    qRegisterMetaTypeStreamOperators<ExposureSummary>("ExposureSummary");
+
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));
     QQmlContext *ctxt = view->rootContext();

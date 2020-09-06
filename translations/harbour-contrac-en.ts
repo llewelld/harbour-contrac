@@ -55,10 +55,6 @@
         <source>BLE Contact Tracing</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-main_contact_beacons">
-        <source>Contact beacons</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="contrac-main_scan">
         <source>Scan and send active</source>
         <translation type="unfinished"></translation>
@@ -168,18 +164,6 @@
         <source>Network error</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-main_diagnosis_keys">
-        <source>Diagnosis keys</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message id="contrac-main_la_latest-upload">
-        <source>Latest upload: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message id="contrac-main_la_latest-download">
-        <source>Latest download: </source>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="contrac-main_la_status-uploading">
         <source>Uploading</source>
         <translation type="unfinished"></translation>
@@ -192,20 +176,8 @@
         <source>Error uploading</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-main_la_status-download_err0r">
-        <source>Error downloading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message id="contrac-main_la_status-no_ssues">
-        <source>No issues</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="contrac-main_bu_enter-teletan">
         <source>Enter TeleTAN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message id="contrac-main_bu_download-keys">
-        <source>Download latest keys</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-upload_error_no-diagnosis-keys">
@@ -214,6 +186,79 @@
     </message>
     <message id="contrac-upload_error_unknown">
         <source>Unkown error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_last-update">
+        <source>Latest update</source>
+        <oldsource>Latest update:</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-download_error">
+        <source>Error downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-updating">
+        <source>Updating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_risk-status">
+        <source>Risk status</source>
+        <oldsource>Risk status:</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_days-since-last-exposure">
+        <source>Days since last exposure</source>
+        <oldsource>Days since last exposure:</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_matched-keys">
+        <source>Number of matched keys</source>
+        <oldsource>Number of matched keys: </oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-busy">
+        <source>Busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-active">
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-disabled">
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_bt_actions">
+        <source>Control</source>
+        <oldsource>Actions</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-at-rsk">
+        <source>At risk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_bu_daily-update">
+        <source>Perform daily update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_he_status">
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-download_la_completed">
+        <source>Completed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_risk-status-unknown">
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_latest-update-never">
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_days-since-last-exposure-none">
+        <source>None recorded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

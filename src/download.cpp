@@ -24,6 +24,8 @@ Download::Download(QObject *parent) : QObject(parent)
     m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
     m_s3Access->setBucket("cwa");
 
+    m_latest = Settings::getInstance().summaryUpdated().date();
+
     connect(m_downloadConfig, &DownloadConfig::configChanged, this, &Download::configChanged);
     connect(m_downloadConfig, &DownloadConfig::downloadComplete, this, &Download::configDownloadComplete);
 }
@@ -171,7 +173,9 @@ void Download::startNextDateDownload()
     else {
         qDebug() << "All dates downloaded";
         finalise();
+        downloading = m_downloading;
         setStatus(StatusIdle);
+        emit allFilesDownloaded();
     }
 
     if (m_downloading != downloading) {

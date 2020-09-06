@@ -47,6 +47,7 @@ Page {
                     left: parent.left
                     right: parent.right
                 }
+                color: Theme.highlightColor
             }
 
             ProgressCircle {
@@ -79,7 +80,8 @@ Page {
                         if (download.status === Download.StatusError) {
                             return errorString()
                         } else if (download.status === Download.StatusIdle) {
-                            return "Completed"
+                            //% "Completed"
+                            return qsTrId("contrac-download_la_completed")
                         }
                     }
                     return Math.round(downloadProgress.value * 100.0) + "%"
@@ -93,6 +95,7 @@ Page {
                     left: parent.left
                     right: parent.right
                 }
+                color: Theme.highlightColor
             }
         }
     }
@@ -101,6 +104,6 @@ Page {
         interval: 5 * 1000
         repeat: false
         onTriggered: pageStack.pop()
-        running: download.status === Download.StatusIdle
+        running: downloadProgress.value >= 1.0
     }
 }
