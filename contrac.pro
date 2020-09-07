@@ -117,12 +117,13 @@ PKGCONFIG += \
     libxml-2.0 \
     libcurl \
     keepalive \
-    protobuf-lite \
-    quazip
+    protobuf-lite
 
 DEFINES += LINUX
 
 QT += dbus
+
+LIBS += -lquazip
 
 OTHER_FILES += \
     src/submissionpayload.proto \

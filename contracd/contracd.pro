@@ -80,10 +80,11 @@ DISTFILES += \
 
 PKGCONFIG += \
     openssl \
-    protobuf-lite \
-    quazip
+    protobuf-lite
 
 QT += dbus
+
+LIBS += -lquazip
 
 OTHER_FILES += \
     src/contrac.proto
