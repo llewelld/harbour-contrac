@@ -12,6 +12,8 @@ DBusInterface::DBusInterface(QObject *parent)
 
     qDebug() << "CONTRAC: Initialising the dbus interface";
 
+    Settings &settings = Settings::getInstance();
+
     qDBusRegisterMetaType<TemporaryExposureKey>();
     qDBusRegisterMetaType<ExposureInformation>();
     qDBusRegisterMetaType<ExposureSummary>();
@@ -24,6 +26,9 @@ DBusInterface::DBusInterface(QObject *parent)
     connect(&m_exposureNotification, &ExposureNotification::beaconSent, this, &DBusInterface::incrementSentCount);
     connect(&m_exposureNotification, &ExposureNotification::beaconReceived, this, &DBusInterface::incrementReceiveCount);
     connect(&m_exposureNotification, &ExposureNotification::isBusyChanged, this, &DBusInterface::isBusyChanged);
+
+    connect(&settings, &Settings::txPowerChanged, this, &DBusInterface::txPowerChanged);
+    connect(&settings, &Settings::rssiCorrectionChanged, this, &DBusInterface::rssiCorrectionChanged);
 
     result = m_connection.registerService(QStringLiteral(SERVICE_NAME));
     qDebug() << "CONTRAC: service registration: " << result;
@@ -39,7 +44,6 @@ DBusInterface::DBusInterface(QObject *parent)
         qDebug() << "CONTRAC: Error initialising dbus interface";
     }
 
-    Settings &settings = Settings::getInstance();
     if (settings.enabled()) {
         qDebug() << "Starting automatically";
         m_exposureNotification.start();
@@ -55,6 +59,10 @@ DBusInterface::~DBusInterface()
     disconnect(&m_exposureNotification, &ExposureNotification::beaconSent, this, &DBusInterface::incrementSentCount);
     disconnect(&m_exposureNotification, &ExposureNotification::beaconReceived, this, &DBusInterface::incrementReceiveCount);
     disconnect(&m_exposureNotification, &ExposureNotification::isBusyChanged, this, &DBusInterface::isBusyChanged);
+
+    Settings &settings = Settings::getInstance();
+    disconnect(&settings, &Settings::txPowerChanged, this, &DBusInterface::txPowerChanged);
+    disconnect(&settings, &Settings::rssiCorrectionChanged, this, &DBusInterface::rssiCorrectionChanged);
 
     m_connection.unregisterObject(SERVICE_PATH);
     result = m_connection.unregisterService(QStringLiteral(SERVICE_NAME));
@@ -166,4 +174,25 @@ void DBusInterface::incrementSentCount()
     emit sentCountChanged();
 }
 
+qint32 DBusInterface::txPower() const
+{
+    return qint32(Settings::getInstance().txPower());
+}
+
+void DBusInterface::setTxPower(qint32 txPower)
+{
+    txPower = qBound(INT8_MIN, txPower, INT8_MAX);
+    Settings::getInstance().setTxPower(qint8(txPower));
+}
+
+qint32 DBusInterface::rssiCorrection() const
+{
+    return qint16(Settings::getInstance().rssiCorrection());
+}
+
+void DBusInterface::setRssiCorrection(qint32 rssiCorrection)
+{
+    rssiCorrection = qBound(INT8_MIN, rssiCorrection, INT8_MAX);
+    Settings::getInstance().setRssiCorrection(qint8(rssiCorrection));
+}
 

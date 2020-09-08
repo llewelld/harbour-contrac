@@ -261,5 +261,30 @@
         <source>None recorded</source>
         <translation type="unfinished"></translation>
     </message>
+    <message id="contrac-settings_tf_transmit-power">
+        <source>Transmit power</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_tf_rssi-correction">
+        <source>RSSI correction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_he_settings">
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_he_attentuation-values">
+        <source>Attenuation calibration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_la_attenuation_info">
+        <source>Download the calibration spreadsheet to check the attenuation values for your device.</source>
+        <oldsource>Download the spreadsheet to check the attenuation calibration values for your device</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_bu_download_attenuation_spreadsheet">
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
