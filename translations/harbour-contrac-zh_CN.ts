@@ -71,197 +71,197 @@
     </message>
     <message id="contrac-settings_he_servers">
         <source>Servers</source>
-        <translation type="unfinished"></translation>
+        <translation>服务器</translation>
     </message>
     <message id="contrac-settings_tf_download_server">
         <source>Download server</source>
-        <translation type="unfinished"></translation>
+        <translation>下载服务器</translation>
     </message>
     <message id="contrac-main_settings">
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>设置</translation>
     </message>
     <message id="contrac-settings_tf_upload_server">
         <source>Upload server</source>
-        <translation type="unfinished"></translation>
+        <translation>上传服务器</translation>
     </message>
     <message id="contrac-settings_tf_verification_server">
         <source>Verification server</source>
-        <translation type="unfinished"></translation>
+        <translation>验证服务器</translation>
     </message>
     <message id="contrac-main_info">
         <source>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing.</source>
         <oldsource>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing</oldsource>
-        <translation type="unfinished">使用谷歌及苹果的API. 使用 Corona Warn 软件服务.</translation>
+        <translation>使用谷歌和苹果的 API 及 Corona Warn 软件服务。上传及下载功能仅供测试。</translation>
     </message>
     <message id="contrac-teletan_he_tan_entry">
         <source>TAN entry</source>
-        <translation type="unfinished"></translation>
+        <translation>TAN 项目</translation>
     </message>
     <message id="contrac-teletan_instructions">
         <source>Please enter the 10-digit TAN that you were given.</source>
-        <translation type="unfinished"></translation>
+        <translation>请输入10位指定的 TAN 码。</translation>
     </message>
     <message id="contrac-upload_he_uploading">
         <source>Uploading</source>
-        <translation type="unfinished"></translation>
+        <translation>正在上传</translation>
     </message>
     <message id="contrac-upload_instructions">
         <source>Please wait while your keys are uploaded.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message id="contrac-upload_error_invalid-tan">
         <source>Error: Invalid TAN</source>
-        <translation type="unfinished"></translation>
+        <translation>错误： TAN 码无效</translation>
     </message>
     <message id="contrac-upload_error_invalid-reg-token">
         <source>Error: Invalid registration token</source>
-        <translation type="unfinished"></translation>
+        <translation>错误：注册凭证无效</translation>
     </message>
     <message id="contrac-upload_error_invalid-diagnosis-keys">
         <source>Error: Invalid diagnosis keys</source>
-        <translation type="unfinished"></translation>
+        <translation>错误：诊断密钥无效</translation>
     </message>
     <message id="contrac-upload_error_parsing">
         <source>Error parsing reply from server</source>
-        <translation type="unfinished"></translation>
+        <translation>来自服务器的配对回复出错</translation>
     </message>
     <message id="contrac-upload_error_internal-state">
         <source>Internal state error</source>
-        <translation type="unfinished"></translation>
+        <translation>内部状态错误</translation>
     </message>
     <message id="contrac-upload_error_none">
         <source>No error</source>
-        <translation type="unfinished"></translation>
+        <translation>无错误</translation>
     </message>
     <message id="contrac-teletan_invalid-character">
         <source>Invald entry. Please check your entry.</source>
-        <translation type="unfinished"></translation>
+        <translation>无效项目。请核对你的项目。</translation>
     </message>
     <message id="contrac-teletan_invalid-tan">
         <source>Invald TAN, please check your entry.</source>
-        <translation type="unfinished"></translation>
+        <translation>TAN 码无效，请核对你的项目。</translation>
     </message>
     <message id="contrac-teletan_describe-valid-tans">
         <source>The only TANs the test server accepts are R3ZNUEV9JA and CG4Z5A9CY9.</source>
-        <translation type="unfinished"></translation>
+        <translation>测试服务器唯一接受的 TAN 码为 R3ZNUEV9JA 和 CG4Z5A9CY9 。 </translation>
     </message>
     <message id="contrac-download_error_network-error">
         <source>Network error</source>
-        <translation type="unfinished"></translation>
+        <translation>网络连接错误</translation>
     </message>
     <message id="contrac-download_error_none">
         <source>No error</source>
-        <translation type="unfinished"></translation>
+        <translation>无错误</translation>
     </message>
     <message id="contrac-download_he_downloading">
         <source>Downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>正在下载</translation>
     </message>
     <message id="contrac-download_instructions">
         <source>Please wait while keys are downloaded.</source>
-        <translation type="unfinished"></translation>
+        <translation>正在下载密钥，请稍候。</translation>
     </message>
     <message id="contrac-upload_error_network-error">
         <source>Network error</source>
-        <translation type="unfinished"></translation>
+        <translation>网络连接错误</translation>
     </message>
     <message id="contrac-main_la_status-uploading">
         <source>Uploading</source>
-        <translation type="unfinished"></translation>
+        <translation>正在上传</translation>
     </message>
     <message id="contrac-main_la_status-downloading">
         <source>Downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>正在下载</translation>
     </message>
     <message id="contrac-main_la_status-upload_error">
         <source>Error uploading</source>
-        <translation type="unfinished"></translation>
+        <translation>上传错误</translation>
     </message>
     <message id="contrac-main_bu_enter-teletan">
         <source>Enter TeleTAN</source>
-        <translation type="unfinished"></translation>
+        <translation>请输入 TeleTAN</translation>
     </message>
     <message id="contrac-upload_error_no-diagnosis-keys">
         <source>Error: No diagnosis keys to upload</source>
-        <translation type="unfinished"></translation>
+        <translation>错误：没有等候上传的诊断密钥</translation>
     </message>
     <message id="contrac-upload_error_unknown">
         <source>Unkown error</source>
-        <translation type="unfinished"></translation>
+        <translation>未知错误</translation>
     </message>
     <message id="contrac-main_la_last-update">
         <source>Latest update</source>
         <oldsource>Latest update:</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>最近更新</translation>
     </message>
     <message id="contrac-main_la_status-download_error">
         <source>Error downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>下载错误</translation>
     </message>
     <message id="contrac-main_la_status-updating">
         <source>Updating</source>
-        <translation type="unfinished"></translation>
+        <translation>更新</translation>
     </message>
     <message id="contrac-main_la_risk-status">
         <source>Risk status</source>
         <oldsource>Risk status:</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>风险状态</translation>
     </message>
     <message id="contrac-main_la_days-since-last-exposure">
         <source>Days since last exposure</source>
         <oldsource>Days since last exposure:</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>距离上次暴露的天数</translation>
     </message>
     <message id="contrac-main_la_matched-keys">
         <source>Number of matched keys</source>
         <oldsource>Number of matched keys: </oldsource>
-        <translation type="unfinished"></translation>
+        <translation>配对密钥位数</translation>
     </message>
     <message id="contrac-main_la_status-busy">
         <source>Busy</source>
-        <translation type="unfinished"></translation>
+        <translation>忙碌</translation>
     </message>
     <message id="contrac-main_la_status-active">
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>活动</translation>
     </message>
     <message id="contrac-main_la_status-disabled">
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>已禁用</translation>
     </message>
     <message id="contrac-main_bt_actions">
         <source>Control</source>
         <oldsource>Actions</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>控制</translation>
     </message>
     <message id="contrac-main_la_status-at-rsk">
         <source>At risk</source>
-        <translation type="unfinished"></translation>
+        <translation>处于风险之中</translation>
     </message>
     <message id="contrac-main_bu_daily-update">
         <source>Perform daily update</source>
-        <translation type="unfinished"></translation>
+        <translation>执行每日更新</translation>
     </message>
     <message id="contrac-main_he_status">
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>状态</translation>
     </message>
     <message id="contrac-download_la_completed">
         <source>Completed</source>
-        <translation type="unfinished"></translation>
+        <translation>已完成</translation>
     </message>
     <message id="contrac-main_la_risk-status-unknown">
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>未知</translation>
     </message>
     <message id="contrac-main_la_latest-update-never">
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>绝不</translation>
     </message>
     <message id="contrac-main_la_days-since-last-exposure-none">
         <source>None recorded</source>
-        <translation type="unfinished"></translation>
+        <translation>暂无记录</translation>
     </message>
 </context>
 </TS>
