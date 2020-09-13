@@ -21,15 +21,25 @@ Page {
             spacing: Theme.paddingLarge
 
             PageHeader {
-                //% "About Contact Tracer"
+                //% "About Contrac"
                 title: qsTrId("contrac-about_title")
             }
 
+            Image {
+                anchors.topMargin: Theme.paddingLarge
+                anchors.horizontalCenter: parent.horizontalCenter
+                source  : Qt.resolvedUrl("image://contrac/contrac-title")
+                width: parent.width - (2 * Theme.horizontalPageMargin)
+                height: Theme.iconSizeExtraLarge
+                fillMode: Image.PreserveAspectFit
+            }
+
             Label {
-                //% "Demonstration of the Apple/Google Contract Tracing API"
+                //% "Corona-Warn-App compatible contact Tracing using the Apple/Google Exposure Notification API"
                 text: qsTrId("contrac-about_description")
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
+                color: Theme.highlightColor
                 anchors {
                     leftMargin: Theme.horizontalPageMargin
                     rightMargin: Theme.horizontalPageMargin
@@ -50,16 +60,6 @@ Page {
             }
 
             InfoRow {
-                //% "App author"
-                label: qsTrId("contrac-about_app_author")
-                //% "David Llewellyn-Jones"
-                value: qsTrId("contrac-about_app_author_name")
-                midlineRatio: 0.4
-                midlineMin: Theme.fontSizeSmall * 5
-                midlineMax: Theme.fontSizeSmall * 10
-            }
-
-            InfoRow {
                 //% "Licence"
                 label: qsTrId("contrac-about_licence")
                 //% "GPLv2"
@@ -67,6 +67,25 @@ Page {
                 midlineRatio: 0.4
                 midlineMin: Theme.fontSizeSmall * 5
                 midlineMax: Theme.fontSizeSmall * 10
+            }
+
+            SectionHeader {
+                //% "Contributors"
+                text: qsTrId("contrac-about_he_contributors")
+            }
+
+            Label {
+                //% "ApostolosB, dashinfantry, flypig, smdesai, Thaodan"
+                text: qsTrId("contrac-about_la_contributors")
+                wrapMode: Text.WordWrap
+                font.pixelSize: Theme.fontSizeSmall
+                color: Theme.highlightColor
+                anchors {
+                    leftMargin: Theme.horizontalPageMargin
+                    rightMargin: Theme.horizontalPageMargin
+                    left: parent.left
+                    right: parent.right
+                }
             }
 
             SectionHeader {

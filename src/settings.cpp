@@ -1,4 +1,6 @@
 #include <QDebug>
+#include <mlite5/MGConfItem>
+#include <sailfishapp.h>
 
 #include "../contracd/src/exposuresummary.h"
 
@@ -14,6 +16,24 @@ Settings::Settings(QObject *parent) : QObject(parent),
     m_verificationServer = settings.value(QStringLiteral("servers/verificationServer"), QStringLiteral("127.0.0.1:8004")).toString();
     m_latestSummary = settings.value(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(ExposureSummary())).value<ExposureSummary>();
     m_summaryUpdated = settings.value(QStringLiteral("update/date"), QDateTime()).toDateTime();
+
+    // Figure out where we're going to find our images
+    QScopedPointer<MGConfItem> ratioItem(new MGConfItem("/desktop/sailfish/silica/theme_pixel_ratio"));
+    double pixelRatio = ratioItem->value(1.0).toDouble();
+
+    double const threshold[] = {1.75, 1.5, 1.25, 1.0};
+    QString const dir[] = {"2.0", "1.75", "1.5", "1.25", "1.0"};
+
+    Q_ASSERT((sizeof(dir) / sizeof(QString)) == ((sizeof(threshold) / sizeof(double)) + 1));
+
+    qDebug() << "Pixel ration: " << pixelRatio;
+    size_t pos;
+    for (pos = 0; pos < (sizeof(threshold) - 1) && pixelRatio <= threshold[pos]; ++pos) {
+        // Just carry on looping
+    }
+
+    m_imageDir = SailfishApp::pathTo("qml/images/z" + dir[pos]).toString(QUrl::RemoveScheme) + "/";
+    qDebug() << "Image folder: " << m_imageDir;
 
     qDebug() << "Settings created: " << settings.fileName();
 }
@@ -110,3 +130,12 @@ void Settings::setSummaryUpdated(QDateTime summaryUpdated)
         emit summaryUpdatedChanged();
     }
 }
+
+QString Settings::getImageDir() const {
+    return m_imageDir;
+}
+
+QString Settings::getImageUrl(QString const &id) const {
+    return m_imageDir + id + ".png";
+}
+

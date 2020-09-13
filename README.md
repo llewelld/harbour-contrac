@@ -23,17 +23,19 @@ More info: https://www.flypig.co.uk/contrac
 13. Update to latest GApple protocol - DONE
 14. Persistent settings - DONE
 15. User teleTAN input - DONE
-16. Risk config download
-17. Test against official servers
+16. Risk config download - DONE
+17. Scrub up the UI - DONE
 18. Test against official apps - PARTIAL
-19. Scrub up the UI
+19. Test against official servers - PARTIAL
 
 ## Contact Tracing Apps
 
-Relevant Google/Apple or DP-3T protocol apps.
+Relevant Google/Apple, DP-3T protocol or other apps.
 
 1. SwissCovid (DP-3T): https://github.com/DP-3T/dp3t-app-android-ch
 2. Covid-Warn-App (GA): https://github.com/corona-warn-app
 3. Immuni (GA): https://github.com/immuni-app
 4. eRouška (bespoke): https://github.com/covid19cz/erouska-android
 5. Koronavilkku (GA): https://github.com/THLfi/koronavilkku-android
+6. HOIA (DP-3T): https://koodivaramu.eesti.ee/tehik/hoia
+6. NHS COVID-19 app (GA): https://github.com/nhsx/covid-19-app-android-ag-public

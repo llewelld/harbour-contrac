@@ -3,28 +3,18 @@
 <TS version="2.1">
 <context>
     <name></name>
-    <message id="contrac-cover_title">
-        <source>Contrac</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="contrac-about_title">
-        <source>About Contact Tracer</source>
+        <source>About Contrac</source>
+        <oldsource>About Contact Tracer</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-about_description">
-        <source>Demonstration of the Apple/Google Contract Tracing API</source>
+        <source>Corona-Warn-App compatible contact Tracing using the Apple/Google Exposure Notification API</source>
+        <oldsource>Demonstration of the Apple/Google Contract Tracing API</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-about_verion">
         <source>Version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message id="contrac-about_app_author">
-        <source>App author</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message id="contrac-about_app_author_name">
-        <source>David Llewellyn-Jones</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-about_licence">
@@ -52,7 +42,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_title">
-        <source>BLE Contact Tracing</source>
+        <source>Contrac Exposure Notification</source>
+        <oldsource>BLE Contact Tracing</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_scan">
@@ -233,10 +224,6 @@
         <oldsource>Actions</oldsource>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-main_la_status-at-rsk">
-        <source>At risk</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="contrac-main_bu_daily-update">
         <source>Perform daily update</source>
         <translation type="unfinished"></translation>
@@ -284,6 +271,35 @@
     </message>
     <message id="contrac-settings_bu_download_attenuation_spreadsheet">
         <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-about_he_contributors">
+        <source>Contributors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-about_la_contributors">
+        <source>ApostolosB, dashinfantry, flypig, smdesai, Thaodan</source>
+        <oldsource>Contributors: ApostolosB, dashinfantry, flypig, smdesai, Thaodan</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-cover_la_title">
+        <source>Contrac</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-cover_current-status-line1">
+        <source>Current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-cover_current-status-line2">
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-daily-update-required">
+        <source>At risk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-at-risk">
+        <source>Daily update required</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

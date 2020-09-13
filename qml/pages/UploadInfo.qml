@@ -7,7 +7,6 @@ Page {
     id: uploadPage
 
     allowedOrientations: Orientation.All
-    property Upload upload
 
     function errorString() {
         switch (upload.error) {

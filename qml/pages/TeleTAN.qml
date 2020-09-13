@@ -8,7 +8,6 @@ Dialog {
 
     property alias teletan: teletanInput.text
     property bool validTan: upload.validateTeleTAN(teletan)
-    property Upload upload
 
     allowedOrientations: Orientation.All
     canAccept: validTan
@@ -25,7 +24,7 @@ Dialog {
     onAccepted: {
         console.log("Uploading with tan: " + teletan)
         upload.upload(teletan)
-        pageStack.replace(Qt.resolvedUrl("UploadInfo.qml"), {upload: teletanPage.upload})
+        pageStack.replace(Qt.resolvedUrl("UploadInfo.qml"))
     }
 
     SilicaFlickable {

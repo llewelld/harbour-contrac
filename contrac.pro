@@ -48,6 +48,7 @@ HEADERS += \
     src/contactmodel.h \
     src/download.h \
     src/downloadconfig.h \
+    src/imageprovider.h \
     src/s3access.h \
     src/s3/s3.h \
     src/s3/s3internal.h \
@@ -68,6 +69,7 @@ SOURCES += \
     src/dbusproxy.cpp \
     src/contactmodel.cpp \
     src/download.cpp \
+    src/imageprovider.cpp \
     src/s3access.cpp \
     src/s3/s3bucket.c \
     src/s3/s3digest.c \
@@ -94,6 +96,7 @@ DISTFILES += \
     qml/components/Dash.qml \
     qml/components/InfoRow.qml \
     qml/components/TanChar.qml \
+    qml/images/* \
     src/applicationConfiguration.proto \
     translations/*.ts
 
@@ -114,6 +117,7 @@ TRANSLATIONS += translations/harbour-contrac-en.ts
 TRANSLATIONS += translations/harbour-contrac-zh_CN.ts
 
 PKGCONFIG += \
+    mlite5 \
     openssl \
     libxml-2.0 \
     libcurl \

@@ -7,7 +7,6 @@ Page {
     id: downloadPage
 
     allowedOrientations: Orientation.All
-    property Download download
 
     function errorString() {
         switch (download.error) {

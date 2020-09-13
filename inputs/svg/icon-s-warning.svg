@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   style="enable-background:new 0 0 32 32;"
+   xml:space="preserve"
+   sodipodi:docname="icon-s-high-risk.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"><metadata
+   id="metadata21"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs19">
+				
+			</defs><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1798"
+   inkscape:window-height="1690"
+   id="namedview17"
+   showgrid="false"
+   inkscape:pagecheckerboard="true"
+   inkscape:zoom="20.85965"
+   inkscape:cx="28.709182"
+   inkscape:cy="1.455135"
+   inkscape:window-x="2473"
+   inkscape:window-y="303"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="g11" />
+<g
+   id="icon-s-warning">
+	<g
+   id="icon-s-warning_1_">
+		<rect
+   id="icon-lock-warning"
+   x="3.036"
+   y="2.871"
+   style="opacity:0;fill:#FFFFFF;"
+   width="25.424"
+   height="25.424" />
+		<g
+   id="g11">
+			<path
+   inkscape:connector-curvature="0"
+   id="path3"
+   d="M 27.063,27.429 H 4.433 C 3.548,27.429 2.836,27.074 2.479,26.455 2.122,25.836 2.171,25.043 2.614,24.277 L 13.928,4.679 c 0.442,-0.766 1.105,-1.206 1.819,-1.206 0.714,0 1.377,0.439 1.82,1.206 l 11.315,19.598 c 0.441,0.766 0.491,1.56 0.134,2.178 -0.356,0.618 -1.069,0.974 -1.953,0.974 z"
+   style="opacity:0.47999998;fill:#ffffff"
+   sodipodi:nodetypes="sssccscccs" />
+			<path
+   style="fill:#FFFFFF;"
+   d="M17.445,22.669c0,0.489-0.162,0.895-0.485,1.219c-0.326,0.323-0.729,0.487-1.212,0.487     c-0.483,0-0.887-0.164-1.211-0.487c-0.325-0.324-0.486-0.73-0.486-1.219c0-0.478,0.161-0.878,0.486-1.202     c0.324-0.326,0.728-0.487,1.211-0.487c0.484,0,0.887,0.161,1.212,0.487C17.283,21.791,17.445,22.191,17.445,22.669z"
+   id="path7" />
+			<path
+   style="fill:#FFFFFF;"
+   d="M14.394,13.981c-0.038-0.555-0.086-1.464-0.107-2.02l-0.027-0.72     c-0.021-0.556,0.417-1.011,0.974-1.011h1.028c0.557,0,0.995,0.455,0.974,1.011l-0.027,0.72c-0.021,0.556-0.069,1.465-0.107,2.02     l-0.295,4.293c-0.038,0.555-0.514,1.009-1.059,1.009c-0.544,0-1.021-0.454-1.059-1.009L14.394,13.981z"
+   id="path9" />
+		</g>
+	</g>
+	<rect
+   id="icon-s-warning_2_"
+   style="opacity:0;fill:#FFFFFF;"
+   width="31.495"
+   height="31.167" />
+</g>
+</svg>

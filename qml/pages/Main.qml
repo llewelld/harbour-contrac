@@ -1,36 +1,13 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import org.nemomobile.time 1.0
 import uk.co.flypig.contrac 1.0
 
 Page {
     id: page
     property string token: "abcdef"
-    property alias dbusproxy: dbusproxy
-    property alias upload: upload
-    property alias download: download
-    property bool updating
     property bool updatePending
 
     allowedOrientations: Orientation.All
-
-    WallClock {
-        id: wallclock
-        updateFrequency: WallClock.Day
-    }
-
-    function moreThanADayAgo(latest) {
-        var result = true
-        if (!isNaN(latest)) {
-            var today = wallclock.time
-            today.setSeconds(0)
-            today.setMinutes(0)
-            today.setHours(0)
-            today.setMilliseconds(0)
-            result = ((today - latest) > (24 * 60 * 60 * 1000))
-        }
-        return result
-    }
 
     function translateRiskScore(risk) {
         if (risk < 15) {
@@ -48,9 +25,9 @@ Page {
         dbusproxy.provideDiagnosisKeys(filelist, download.config, token)
     }
 
-    Download {
-        id: download
-        property bool available: moreThanADayAgo(latest)
+    Connections {
+        target: download
+
         onAllFilesDownloaded: {
             // The download just finished
             if (page.status === PageStatus.Active) {
@@ -68,13 +45,8 @@ Page {
         }
     }
 
-    Upload {
-        id: upload
-        property bool available: moreThanADayAgo(latest)
-    }
-
-    DBusProxy {
-        id: dbusproxy
+    Connections {
+        target: dbusproxy
 
         onProvideDiagnosisKeysResult: {
             var summary
@@ -109,7 +81,7 @@ Page {
             MenuItem {
                 //% "Settings"
                 text: qsTrId("contrac-main_settings")
-                onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml"), {dbusproxy: page.dbusproxy})
+                onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml"))
             }
         }
 
@@ -119,7 +91,7 @@ Page {
             width: page.width
             spacing: Theme.paddingLarge
             PageHeader {
-                //% "BLE Contact Tracing"
+                //% "Contrac Exposure Notification"
                 title: qsTrId("contrac-main_title")
             }
 
@@ -145,15 +117,31 @@ Page {
                 BusyIndicator {
                     id: progress
                     anchors.verticalCenter: parent.verticalCenter
-                    running: true
+                    running: visible
                     size: BusyIndicatorSize.Small
-                    visible: upload.uploaindg || download.downloading || updating || dbusproxy.isBusy
+                    visible: busy
                 }
 
                 Image {
                     anchors.fill: progress
                     visible: !progress.visible
-                    source: (upload.status === Upload.StatusError) || (download.status === Download.StatusError) || (!dbusproxy.isEnabled) || (Settings.latestSummary.summationRiskScore >= 15)? "image://theme/icon-s-warning" : "image://theme/icon-s-installed"
+                    source: {
+                        if (upload.status === Upload.StatusError) {
+                            return Qt.resolvedUrl("image://contrac/icon-s-warning")
+                        } else if (upload.status === Upload.StatusError) {
+                            return Qt.resolvedUrl("image://contrac/icon-s-warning")
+                        } else if (download.status === Download.StatusError) {
+                            return Qt.resolvedUrl("image://contrac/icon-s-warning")
+                        } else if (Settings.latestSummary.summationRiskScore >= 15) {
+                            return Qt.resolvedUrl("image://contrac/icon-s-warning")
+                        } else if (downloadAvailable) {
+                            return Qt.resolvedUrl("image://contrac/icon-s-unknown")
+                        } else if (!dbusproxy.isEnabled) {
+                            return Qt.resolvedUrl("image://contrac/icon-s-inactive")
+                        } else {
+                            return Qt.resolvedUrl("image://contrac/icon-s-active")
+                        }
+                    }
                 }
 
                 Label {
@@ -186,7 +174,10 @@ Page {
                             return qsTrId("contrac-main_la_status-busy")
                         } else if (Settings.latestSummary.summationRiskScore >= 15) {
                             //% "At risk"
-                            return qsTrId("contrac-main_la_status-at-rsk")
+                            return qsTrId("contrac-main_la_status-daily-update-required")
+                        } else if (downloadAvailable) {
+                            //% "Daily update required"
+                            return qsTrId("contrac-main_la_status-at-risk")
                         } else if (dbusproxy.isEnabled) {
                             //% "Active"
                             return qsTrId("contrac-main_la_status-active")
@@ -272,16 +263,7 @@ Page {
                 checked: dbusproxy.isEnabled
                 busy: dbusproxy.isBusy
                 automaticCheck: false
-                onClicked: {
-                    if (!checked) {
-                        console.log("Clicked to start")
-                        dbusproxy.start();
-                    }
-                    else {
-                        console.log("Clicked to stop")
-                        dbusproxy.stop();
-                    }
-                }
+                onClicked: triggerEnabled()
             }
 
             Button {
@@ -292,7 +274,7 @@ Page {
                 text: qsTrId("contrac-main_bu_enter-teletan")
                 enabled: !upload.uploading
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("TeleTAN.qml"), {upload: page.upload})
+                    pageStack.push(Qt.resolvedUrl("TeleTAN.qml"))
                 }
             }
 
@@ -300,12 +282,12 @@ Page {
                 id: downloadButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: Math.max(tanButton.implicitWidth, downloadButton.implicitWidth)
-                enabled: !download.downloading && download.available
+                enabled: !download.downloading && downloadAvailable
                 //% "Perform daily update"
                 text: qsTrId("contrac-main_bu_daily-update")
                 onClicked: {
                     download.downloadLatest()
-                    pageStack.push(Qt.resolvedUrl("DownloadInfo.qml"), {download: page.download})
+                    pageStack.push(Qt.resolvedUrl("DownloadInfo.qml"))
                 }
             }
         }

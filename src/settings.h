@@ -32,6 +32,8 @@ public:
     Q_INVOKABLE QString verificationServer() const;
     Q_INVOKABLE ExposureSummary *latestSummary();
     Q_INVOKABLE QDateTime summaryUpdated() const;
+    Q_INVOKABLE QString getImageDir() const;
+    Q_INVOKABLE QString getImageUrl(QString const &id) const;
 
 signals:
     void downloadServerChanged();
@@ -56,6 +58,8 @@ private:
     QString m_verificationServer;
     ExposureSummary m_latestSummary;
     QDateTime m_summaryUpdated;
+    QString m_imageDir;
+
 };
 
 #endif // SETTINGS_H

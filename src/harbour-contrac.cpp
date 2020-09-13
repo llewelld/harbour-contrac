@@ -14,6 +14,7 @@
 #include "downloadconfig.h"
 #include "upload.h"
 #include "settings.h"
+#include "imageprovider.h"
 
 #include <sailfishapp.h>
 
@@ -57,6 +58,8 @@ int main(int argc, char *argv[])
     qRegisterMetaTypeStreamOperators<ExposureSummary>("ExposureSummary");
 
     QQuickView *view = SailfishApp::createView();
+    // The engine takes ownership of the ImageProvider
+    view->engine()->addImageProvider(QLatin1String("contrac"), new ImageProvider(Settings::getInstance()));
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));
     QQmlContext *ctxt = view->rootContext();
     ctxt->setContextProperty("version", VERSION);
