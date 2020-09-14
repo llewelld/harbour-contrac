@@ -12,6 +12,13 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Mon Sep 14 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.6.1-1
+- Adds new Chinese translations.
+- Adds an improved cover page with status and actions.
+- Improves the About page, which now includes contributors.
+- Adds support for configuring the device attenuation values.
+- The risk configuration is downloaded from the Corona Warn App servers.
+
 * Sun Sep 6 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.5.1-1
 - Diagnosis key files are now tested directly after download.
 - The risk status is shown in the UI, along with other useful info.
