@@ -18,6 +18,7 @@ Item {
     property alias labelTextBold: labelText.font.bold
     property alias valueTextBold: valueText.font.bold
     property alias horizontalAlignment: valueText.horizontalAlignment
+    property alias color: labelText.color
 
     Text {
         id: labelText
@@ -30,7 +31,7 @@ Item {
             leftMargin: detailItem.leftMargin
         }
         horizontalAlignment: Text.AlignLeft
-        color: Theme.primaryColor
+        color: Theme.highlightColor
         font.pixelSize: pixelSize
         textFormat: Text.PlainText
         wrapMode: Text.Wrap
@@ -47,7 +48,7 @@ Item {
             rightMargin: detailItem.rightMargin
         }
         horizontalAlignment: Text.AlignLeft
-        color: Theme.primaryColor
+        color: labelText.color
         font.pixelSize: pixelSize
         textFormat: Text.PlainText
         wrapMode: Text.Wrap

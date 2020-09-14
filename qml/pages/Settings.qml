@@ -5,7 +5,6 @@ import uk.co.flypig.contrac 1.0
 
 Page {
     id: settingsPage
-    property DBusProxy dbusproxy
 
     Binding { target: Settings; property: "downloadServer"; value: downloadServerEntry.text }
     Binding { target: Settings; property: "uploadServer"; value: uploadServerEntry.text }
