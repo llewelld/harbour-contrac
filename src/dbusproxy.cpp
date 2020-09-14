@@ -42,6 +42,12 @@ DBusProxy::DBusProxy(QObject *parent)
 
     result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "isBusyChanged", argumentMatch, signature, this, SIGNAL(isBusyChanged()));
     qDebug() << "Connection isBusyChanged result: " << result;
+
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "txPowerChanged", argumentMatch, signature, this, SIGNAL(txPowerChanged()));
+    qDebug() << "Connection txPowerChanged result: " << result;
+
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "rssiCorrectionChanged", argumentMatch, signature, this, SIGNAL(rssiCorrectionChanged()));
+    qDebug() << "Connection rssiCorrectionChanged result: " << result;
 }
 
 DBusProxy::~DBusProxy()
@@ -194,3 +200,30 @@ QList<ExposureInformation> *DBusProxy::getExposureInformation(QString const &tok
     return result;
 }
 
+qint32 DBusProxy::txPower() const
+{
+    QDBusReply<qint32> reply = m_interface->call("txPower");
+    return reply;
+}
+
+void DBusProxy::setTxPower(qint32 txPower)
+{
+    QDBusMessage reply = m_interface->call("setTxPower", txPower);
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        qDebug() << "DBus error setting txPower: " << reply.errorMessage();
+    }
+}
+
+qint32 DBusProxy::rssiCorrection() const
+{
+    QDBusReply<qint32> reply = m_interface->call("rssiCorrection");
+    return reply;
+}
+
+void DBusProxy::setRssiCorrection(qint32 rssiCorrection)
+{
+    QDBusMessage reply = m_interface->call("setRssiCorrection", rssiCorrection);
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        qDebug() << "DBus error setting rssiCorrection: " << reply.errorMessage();
+    }
+}

@@ -6,6 +6,7 @@ import uk.co.flypig.contrac 1.0
 Page {
     id: page
     property string token: "abcdef"
+    property alias dbusproxy: dbusproxy
     property alias upload: upload
     property alias download: download
     property bool updating
@@ -108,7 +109,7 @@ Page {
             MenuItem {
                 //% "Settings"
                 text: qsTrId("contrac-main_settings")
-                onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml"))
+                onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml"), {dbusproxy: page.dbusproxy})
             }
         }
 

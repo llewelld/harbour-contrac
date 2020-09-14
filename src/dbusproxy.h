@@ -26,6 +26,9 @@ class DBusProxy : public QObject
     Q_PROPERTY(quint32 receivedCount READ receivedCount NOTIFY receivedCountChanged)
     Q_PROPERTY(quint32 sentCount READ sentCount NOTIFY sentCountChanged)
     Q_PROPERTY(bool isBusy READ isBusy NOTIFY isBusyChanged)
+    Q_PROPERTY(qint32 txPower READ txPower WRITE setTxPower NOTIFY txPowerChanged)
+    Q_PROPERTY(qint32 rssiCorrection READ rssiCorrection WRITE setRssiCorrection NOTIFY rssiCorrectionChanged)
+
 public:
     explicit DBusProxy(QObject *parent = nullptr);
     ~DBusProxy();
@@ -57,6 +60,10 @@ public:
     quint32 receivedCount() const;
     quint32 sentCount() const;
     bool isBusy() const;
+    qint32 txPower() const;
+    qint32 rssiCorrection() const;
+    void setTxPower(qint32 txPower);
+    void setRssiCorrection(qint32 rssiCorrection);
 
 signals:
     void statusChanged();
@@ -66,6 +73,8 @@ signals:
     void receivedCountChanged();
     void sentCountChanged();
     void isBusyChanged();
+    void txPowerChanged();
+    void rssiCorrectionChanged();
 
     // Async responses
     void provideDiagnosisKeysResult(Status status, QString const &token);

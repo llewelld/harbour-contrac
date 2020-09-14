@@ -22,6 +22,8 @@ class DBusInterface : public QObject
     Q_PROPERTY(quint32 receivedCount READ receivedCount NOTIFY receivedCountChanged)
     Q_PROPERTY(quint32 sentCount READ sentCount NOTIFY sentCountChanged)
     Q_PROPERTY(bool isBusy READ isBusy NOTIFY isBusyChanged)
+    Q_PROPERTY(qint32 txPower READ txPower WRITE setTxPower NOTIFY txPowerChanged)
+    Q_PROPERTY(qint32 rssiCorrection READ rssiCorrection WRITE setRssiCorrection NOTIFY rssiCorrectionChanged)
 
 public:
     explicit DBusInterface(QObject *parent = nullptr);
@@ -44,6 +46,10 @@ public:
     Q_INVOKABLE quint32 receivedCount() const;
     Q_INVOKABLE quint32 sentCount() const;
     Q_INVOKABLE bool isBusy() const;
+    Q_INVOKABLE qint32 txPower() const;
+    Q_INVOKABLE qint32 rssiCorrection() const;
+    Q_INVOKABLE void setTxPower(qint32 txPower);
+    Q_INVOKABLE void setRssiCorrection(qint32 rssiCorrection);
 
 signals:
     void statusChanged();
@@ -53,6 +59,8 @@ signals:
     void receivedCountChanged();
     void sentCountChanged();
     void isBusyChanged();
+    void txPowerChanged();
+    void rssiCorrectionChanged();
 
 public slots:
 
