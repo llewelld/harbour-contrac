@@ -6,12 +6,12 @@
     <message id="contrac-about_title">
         <source>About Contrac</source>
         <oldsource>About Contact Tracer</oldsource>
-        <translation type="unfinished">关于接触追踪器</translation>
+        <translation>关于接触追踪器</translation>
     </message>
     <message id="contrac-about_description">
         <source>Corona-Warn-App compatible contact Tracing using the Apple/Google Exposure Notification API</source>
         <oldsource>Demonstration of the Apple/Google Contract Tracing API</oldsource>
-        <translation type="unfinished">苹果及谷歌的示例接触追踪API</translation>
+        <translation>苹果及谷歌的示例接触追踪API</translation>
     </message>
     <message id="contrac-about_verion">
         <source>Version</source>
@@ -44,7 +44,7 @@
     <message id="contrac-main_title">
         <source>Contrac Exposure Notification</source>
         <oldsource>BLE Contact Tracing</oldsource>
-        <translation type="unfinished">BLE接触追踪</translation>
+        <translation>BLE接触追踪</translation>
     </message>
     <message id="contrac-main_scan">
         <source>Scan and send active</source>
@@ -99,7 +99,7 @@
     </message>
     <message id="contrac-upload_instructions">
         <source>Please wait while your keys are uploaded.</source>
-        <translation></translation>
+        <translation>你的密钥正在上传，请稍候。</translation>
     </message>
     <message id="contrac-upload_error_invalid-tan">
         <source>Error: Invalid TAN</source>
@@ -252,57 +252,57 @@
     </message>
     <message id="contrac-settings_tf_transmit-power">
         <source>Transmit power</source>
-        <translation type="unfinished"></translation>
+        <translation>传输功率</translation>
     </message>
     <message id="contrac-settings_tf_rssi-correction">
         <source>RSSI correction</source>
-        <translation type="unfinished"></translation>
+        <translation>RSSI 校正</translation>
     </message>
     <message id="contrac-settings_he_settings">
         <source>Settings</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
     </message>
     <message id="contrac-settings_he_attentuation-values">
-        <source>Attenuation calibration</source>
-        <translation type="unfinished"></translation>
+        <source>Attenuation calibration入</source>
+        <translation>衰减校准</translation>
     </message>
     <message id="contrac-settings_la_attenuation_info">
         <source>Download the calibration spreadsheet to check the attenuation values for your device.</source>
         <oldsource>Download the spreadsheet to check the attenuation calibration values for your device</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>下载电子表格以检查设备的衰减校准值</translation>
     </message>
     <message id="contrac-settings_bu_download_attenuation_spreadsheet">
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation>下载</translation>
     </message>
     <message id="contrac-about_he_contributors">
         <source>Contributors</source>
-        <translation type="unfinished"></translation>
+        <translation>贡献者</translation>
     </message>
     <message id="contrac-about_la_contributors">
         <source>ApostolosB, dashinfantry, flypig, smdesai, Thaodan</source>
         <oldsource>Contributors: ApostolosB, dashinfantry, flypig, smdesai, Thaodan</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>贡献者：ApostolosB, dashinfantry, flypig, smdesai, Thaodan</translation>
     </message>
     <message id="contrac-cover_la_title">
         <source>Contrac</source>
-        <translation type="unfinished">Contrac</translation>
+        <translation>Contrac</translation>
     </message>
     <message id="contrac-cover_current-status-line1">
         <source>Current</source>
-        <translation type="unfinished"></translation>
+        <translation当前></translation>
     </message>
     <message id="contrac-cover_current-status-line2">
         <source>Status</source>
-        <translation type="unfinished">状态</translation>
+        <translation>状态</translation>
     </message>
     <message id="contrac-main_la_status-daily-update-required">
         <source>At risk</source>
-        <translation type="unfinished">处于风险之中</translation>
+        <translation>处于风险之中</translation>
     </message>
     <message id="contrac-main_la_status-at-risk">
         <source>Daily update required</source>
-        <translation type="unfinished"></translation>
+        <translation>需要每日更新</translation>
     </message>
 </context>
 </TS>
