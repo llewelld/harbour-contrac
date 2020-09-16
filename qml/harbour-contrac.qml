@@ -6,8 +6,7 @@ import "pages"
 
 ApplicationWindow
 {
-    readonly property bool downloadAvailable: moreThanADayAgo(download.latest)
-    readonly property bool uploadAvailable: moreThanADayAgo(upload.latest)
+    readonly property bool downloadAvailable: moreThanADayAgo(Settings.summaryUpdated)
     property bool updating
     readonly property bool busy: upload.uploaindg || download.downloading || updating || dbusproxy.isBusy
 
@@ -40,7 +39,7 @@ ApplicationWindow
             latest.setMinutes(0)
             latest.setHours(0)
             latest.setMilliseconds(0)
-            result = ((today - latest) > (24 * 60 * 60 * 1000))
+            result = ((today - latest) >= (24 * 60 * 60 * 1000))
         }
         return result
     }
