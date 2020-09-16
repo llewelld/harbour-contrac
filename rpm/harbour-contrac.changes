@@ -12,6 +12,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Wed Sep 16 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.6.2-1
+- Updates the Chinese translations.
+- Fixes a timing bug so that an update can now be performed every day.
+
 * Mon Sep 14 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.6.1-1
 - Adds new Chinese translations.
 - Adds an improved cover page with status and actions.
