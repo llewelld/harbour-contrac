@@ -6,6 +6,9 @@ extern "C" {
 
 #include "s3access.h"
 
+// Needed for performOp
+#include <openssl/hmac.h>
+
 S3Result::S3Result(QNetworkReply *reply, QObject *parent) : QObject(parent)
   , m_reply(reply)
 {
@@ -36,33 +39,18 @@ QNetworkReply::NetworkError S3Result::error() const
 }
 
 S3Access::S3Access(QObject *parent) : QObject(parent)
-  , m_s3(nullptr)
   , m_manager(new QNetworkAccessManager(this))
 {
 }
 
 S3Access::~S3Access()
 {
-    if (m_s3) {
-        s3_free(m_s3);
-        m_s3 = nullptr;
-    }
-}
-
-void S3Access::initialise()
-{
-    if (m_s3) {
-        s3_free(m_s3);
-        m_s3 = nullptr;
-    }
-    m_s3 = s3_init(m_id.toLatin1().data(), m_baseUrl.toLatin1().data(), m_baseUrl.toLatin1().data());
 }
 
 void S3Access::setId(QString const &id)
 {
     if (m_id != id) {
         m_id = id;
-        initialise();
         emit idChanged();
     }
 }
@@ -71,7 +59,6 @@ void S3Access::setSecret(QString const &secret)
 {
     if (m_secret != secret) {
         m_secret = secret;
-        initialise();
         emit secretChanged();
     }
 }
@@ -80,7 +67,6 @@ void S3Access::setBaseUrl(QString const &baseUrl)
 {
     if (m_baseUrl != baseUrl) {
         m_baseUrl = baseUrl;
-        initialise();
         emit baseUrlChanged();
     }
 }
@@ -115,37 +101,59 @@ QString S3Access::bucket() const
 
 S3ListResult *S3Access::list(QString const &prefix)
 {
-    char *date;
     QString signData;
     QString url;
+
     QNetworkReply *reply;
     S3ListResult *result;
 
-    date = s3_make_date();
-    signData = "GET\n\n\n" + QString(date) + "\n/" + m_bucket + "/";
     url = "http://" + m_baseUrl + "/" + m_bucket + "/?delimiter=/";
     if (!prefix.isEmpty()) {
         url += "&prefix=" + prefix;
     }
 
-    reply = performOp(GET, url, signData, date, nullptr, nullptr, nullptr);
+    reply = performOp(GET, url, nullptr, nullptr, nullptr);
     result = new S3ListResult(reply, this);
-    free(date);
 
     return result;
 }
 
-QNetworkReply *S3Access::performOp(Method method, QString const &url, QString const &sign_data, const char *date, QIODevice *in, const char *content_md5, const char *content_type)
+QNetworkReply *S3Access::performOp(Method method, QString const &url, QIODevice *in, const char *content_md5, const char *content_type, QString signDataKey)
 {
     QNetworkRequest request;
-    char *digest;
+    unsigned char digest[EVP_MAX_MD_SIZE];
+    QByteArray digest_base64;
+    unsigned int out_length = 0;
+    QString methodStr;
+    QString date = QDateTime::currentDateTimeUtc().toString(Qt::RFC2822Date);
     QNetworkReply *reply;
 
-    request.setUrl(QUrl(QString(url)));
-    digest = s3_hmac_sign(m_secret.toLatin1().data(), sign_data.toLatin1().data(), sign_data.toLatin1().size());
+    switch (method) {
+    case DELETE:
+        methodStr = "DELETE";
+        qDebug() << "DELETE request";
+        break;
+    case PUT:
+        methodStr = "PUT";
+        qDebug() << "PUT request";
+        break;
+    default: // GET
+        methodStr = "GET";
+        qDebug() << "GET request";
+        break;
+    }
 
-    request.setRawHeader("Date", date);
-    request.setRawHeader("Authorization", QString(QStringLiteral("AWS %1:%2")).arg(m_id).arg(digest).toLocal8Bit());
+    QString signData = methodStr + "\n\n\n" + date  + "\n/" + m_bucket + "/";
+
+    if (signDataKey != nullptr) {
+        signData+=signDataKey;
+    }
+    request.setUrl(QUrl(QString(url)));
+    HMAC(EVP_sha1(), m_secret.toLatin1().data(), m_secret.toLatin1().size(), (unsigned char*)signData.toLatin1().data(), signData.toLatin1().size(), digest, &out_length);
+    digest_base64 = QByteArray((const char*)digest, out_length).toBase64();
+
+    request.setRawHeader("Date", date.toLocal8Bit());
+    request.setRawHeader("Authorization", QString(QStringLiteral("AWS %1:%2")).arg(m_id).arg(digest_base64.data()).toLocal8Bit());
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
     qDebug() << "Request to: " << url;
@@ -173,7 +181,6 @@ QNetworkReply *S3Access::performOp(Method method, QString const &url, QString co
         break;
     }
 
-    free(digest);
 
     return reply;
 }
@@ -225,19 +232,15 @@ QByteArray S3GetResult::data() const
 
 S3GetFileResult *S3Access::getFile(QString const &key, QString const &filename)
 {
-    char *date;
     QString signData;
     QString url;
     QNetworkReply *reply;
     S3GetFileResult *result;
 
-    date = s3_make_date();
-    signData = "GET\n\n\n" + QString(date) + "\n/" + m_bucket + "/" + key;
     url = "http://" + m_baseUrl + "/" + m_bucket + "/" + key;
 
-    reply = performOp(GET, url, signData, date, nullptr, nullptr, nullptr);
+    reply = performOp(GET, url, nullptr, nullptr, nullptr, key);
     result = new S3GetFileResult(reply, filename, this);
-    free(date);
 
     return result;
 }

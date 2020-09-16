@@ -127,7 +127,7 @@ private:
         DELETE
     };
     void initialise();
-    QNetworkReply *performOp(Method method, QString const &url, QString const &sign_data, const char *date, QIODevice *in, const char *content_md5, const char *content_type);
+    QNetworkReply *performOp(Method method, QString const &url, QIODevice *in, const char *content_md5, const char *content_type, QString signDatakey = nullptr);
 
 private:
     QString m_id;
@@ -135,7 +135,6 @@ private:
     QString m_baseUrl;
     QString m_bucket;
 
-    struct S3 *m_s3;
     QNetworkAccessManager *m_manager;
 };
 
