@@ -75,10 +75,6 @@
         <source>Verification server</source>
         <translation>验证服务器</translation>
     </message>
-    <message id="contrac-main_info">
-        <source>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing.</source>
-        <translation>使用谷歌和苹果的 API 及 Corona Warn 软件服务。上传及下载功能仅供测试。</translation>
-    </message>
     <message id="contrac-teletan_he_tan_entry">
         <source>TAN entry</source>
         <translation>TAN 项目</translation>

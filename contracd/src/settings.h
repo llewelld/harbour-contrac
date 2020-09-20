@@ -47,8 +47,11 @@ public slots:
     void setRssiCorrection(qint8 rssiCorrection);
 
 private:
+    bool upgrade();
+
+private:
     static Settings * instance;
-    QSettings settings;
+    QSettings m_settings;
 
     QByteArray m_tracingKey;
     bool m_enabled;

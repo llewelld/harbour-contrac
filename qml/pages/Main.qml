@@ -95,15 +95,6 @@ Page {
                 title: qsTrId("contrac-main_title")
             }
 
-            Label {
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                x: Theme.horizontalPageMargin
-                //% "Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing."
-                text: qsTrId("contrac-main_info")
-                color: Theme.highlightColor
-                wrapMode: Text.Wrap
-            }
-
             SectionHeader {
                 //% "Status"
                 text: qsTrId("contrac-main_he_status")
@@ -187,6 +178,14 @@ Page {
                         }
                     }
                     color: Theme.highlightColor
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            download.clearError()
+                            upload.clearError()
+                        }
+                    }
                 }
             }
 

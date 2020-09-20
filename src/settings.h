@@ -50,8 +50,12 @@ public slots:
     void setSummaryUpdated(QDateTime summaryUpdated);
 
 private:
+    bool upgrade();
+    bool upgradeToVersion1();
+
+private:
     static Settings * instance;
-    QSettings settings;
+    QSettings m_settings;
 
     QString m_downloadServer;
     QString m_uploadServer;

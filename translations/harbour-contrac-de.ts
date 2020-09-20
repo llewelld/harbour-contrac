@@ -75,10 +75,6 @@
         <source>Verification server</source>
         <translation>Verifizierungs-Server</translation>
     </message>
-    <message id="contrac-main_info">
-        <source>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing.</source>
-        <translation>Nutzung der Google/Apple-API und eines Corona-Warn-App-Testservers. Uploads/Downloads sind nur zum Testen.</translation>
-    </message>
     <message id="contrac-teletan_he_tan_entry">
         <source>TAN entry</source>
         <translation>TAN-Eingabe</translation>

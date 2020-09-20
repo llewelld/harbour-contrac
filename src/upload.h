@@ -49,6 +49,7 @@ public:
     QDate latest() const;
     Status status() const;
     ErrorType error() const;
+    Q_INVOKABLE void clearError();
 
 signals:
     void uploadComplete();

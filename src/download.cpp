@@ -4,13 +4,13 @@
 #include <QStandardPaths>
 
 #include "settings.h"
-#include "s3access.h"
+#include "serveraccess.h"
 #include "downloadconfig.h"
 
 #include "download.h"
 
 Download::Download(QObject *parent) : QObject(parent)
-  , m_s3Access(new S3Access(this))
+  , m_serverAccess(new ServerAccess(this))
   , m_fileQueue()
   , m_latest()
   , m_downloading(false)
@@ -19,10 +19,10 @@ Download::Download(QObject *parent) : QObject(parent)
   , m_status(StatusIdle)
   , m_downloadConfig(new DownloadConfig(this))
 {
-    m_s3Access->setId("accessKey1");
-    m_s3Access->setSecret("verySecretKey1");
-    m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
-    m_s3Access->setBucket("cwa");
+    m_serverAccess->setId("accessKey1");
+    m_serverAccess->setSecret("verySecretKey1");
+    m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
+    m_serverAccess->setBucket("cwa");
 
     m_latest = Settings::getInstance().summaryUpdated().date();
 
@@ -55,14 +55,13 @@ Q_INVOKABLE void Download::downloadLatest()
     }
 }
 
-
 void Download::configDownloadComplete(QString const &)
 {
     switch (m_downloadConfig->error()) {
     case DownloadConfig::ErrorNone:
         qDebug() << "Requesting keys";
         setStatus(StatusDownloadingKeys);
-        m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
+        m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
         startNextDateDownload();
         break;
     default:
@@ -133,8 +132,8 @@ void Download::startNextFileDownload() {
 
         QString filename = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/" + file;
         qDebug() << "Saving to:" << filename;
-        S3GetFileResult *result = m_s3Access->getFile(key, filename);
-        connect(result, &S3Result::finished, this, [this, result, date, filename]() {
+        ServerGetFileResult *result = m_serverAccess->getFile(key, filename);
+        connect(result, &ServerResult::finished, this, [this, result, date, filename]() {
             qDebug() << "Finished downloading:" << m_fileQueue[date].first();
 
             ++m_filesReceived;
@@ -187,9 +186,9 @@ void Download::startDateDownload(QDate const &date)
 {
     qDebug() << "Starting date download:" << date;
 
-    QString url = "version/v1/diagnosis-keys/country/DE/date/" + date.toString("yyyy-MM-dd") + "/hour/";
-    S3ListResult *result = m_s3Access->list(url);
-    connect(result, &S3ListResult::finished, this, [this, result, date]() {
+    QString url = "version/v1/diagnosis-keys/country/DE/date/" + date.toString("yyyy-MM-dd") + "/hour";
+    ServerListResult *result = m_serverAccess->list(url);
+    connect(result, &ServerListResult::finished, this, [this, result, date]() {
         QStringList keys;
 
         switch (result->error()) {
@@ -333,3 +332,16 @@ QStringList Download::fileList() const
     return result;
 }
 
+Q_INVOKABLE void Download::clearError()
+{
+    if (m_error != ErrorNone) {
+        qDebug() << "Clearing download error status";
+        m_error = ErrorNone;
+
+        if (m_status == StatusError) {
+            m_status = StatusIdle;
+            emit statusChanged();
+        }
+        emit errorChanged();
+    }
+}

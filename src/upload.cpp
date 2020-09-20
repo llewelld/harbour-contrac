@@ -46,7 +46,7 @@ void Upload::submitTeleTAN(QString const &teleTAN)
     if ((m_status == StatusSubmitTeleTAN) && (m_reply == nullptr)) {
         QNetworkRequest request;
 
-        request.setUrl(QUrl("http://" + Settings::getInstance().verificationServer() + "/version/v1/registrationToken"));
+        request.setUrl(QUrl(Settings::getInstance().verificationServer() + "/version/v1/registrationToken"));
         request.setRawHeader("accept", "*/*");
         request.setRawHeader("Content-Type", "application/json");
         request.setRawHeader("cwa-fake", "0");
@@ -114,7 +114,7 @@ void Upload::submitRegToken(QString const &regToken)
     if ((m_status == StatusSubmitRegToken) && (m_reply == nullptr)) {
         QNetworkRequest request;
 
-        request.setUrl(QUrl("http://" + Settings::getInstance().verificationServer() + "/version/v1/tan"));
+        request.setUrl(QUrl(Settings::getInstance().verificationServer() + "/version/v1/tan"));
         request.setRawHeader("accept", "*/*");
         request.setRawHeader("Content-Type", "application/json");
         request.setRawHeader("cwa-fake", "0");
@@ -212,7 +212,7 @@ void Upload::submitDiagnosisKeys(QString const &tan)
             QByteArray data = QByteArray::fromStdString(payload.SerializeAsString());
             qDebug() << "Upload size: " << data.length();
 
-            request.setUrl(QUrl("http://" + Settings::getInstance().uploadServer() + "/version/v1/diagnosis-keys"));
+            request.setUrl(QUrl(Settings::getInstance().uploadServer() + "/version/v1/diagnosis-keys"));
             request.setRawHeader("accept", "*/*");
             request.setRawHeader("Content-Type", "application/x-protobuf");
             request.setRawHeader("cwa-authorization", tan.toLatin1());
@@ -402,4 +402,18 @@ bool Upload::validateTeleTANCharacters(QString const &teleTAN) const
     }
 
     return result;
+}
+
+Q_INVOKABLE void Upload::clearError()
+{
+    if (m_error != ErrorNone) {
+        qDebug() << "Clearing upload error status";
+        m_error = ErrorNone;
+
+        if (m_status == StatusError) {
+            m_status = StatusIdle;
+            emit statusChanged();
+        }
+        emit errorChanged();
+    }
 }

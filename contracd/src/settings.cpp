@@ -2,29 +2,33 @@
 
 #include "settings.h"
 
+#define SETTINGS_MAX_VERSION (0)
+
 Settings * Settings::instance = nullptr;
 
 Settings::Settings(QObject *parent) : QObject(parent),
-    settings(this)
+    m_settings(this)
 {
-    m_tracingKey = settings.value(QStringLiteral("keys/tracingKey"), QVariant(QByteArray())).toByteArray();
-    m_enabled = settings.value(QStringLiteral("state/enabled"), false).toBool();
-    m_sent = settings.value(QStringLiteral("state/sent"), 0).toUInt();
-    m_received = settings.value(QStringLiteral("state/received"), 0).toUInt();
-    m_txPower = static_cast<qint8>(settings.value(QStringLiteral("configuration/txPower"), -30).toInt());
-    m_rssiCorrection = static_cast<qint8>(settings.value(QStringLiteral("configuration/rssiCorretion"), 5).toInt());
+    m_tracingKey = m_settings.value(QStringLiteral("keys/tracingKey"), QVariant(QByteArray())).toByteArray();
+    m_enabled = m_settings.value(QStringLiteral("state/enabled"), false).toBool();
+    m_sent = m_settings.value(QStringLiteral("state/sent"), 0).toUInt();
+    m_received = m_settings.value(QStringLiteral("state/received"), 0).toUInt();
+    m_txPower = static_cast<qint8>(m_settings.value(QStringLiteral("configuration/txPower"), -30).toInt());
+    m_rssiCorrection = static_cast<qint8>(m_settings.value(QStringLiteral("configuration/rssiCorretion"), 5).toInt());
 
-    qDebug() << "Settings created: " << settings.fileName();
+    qDebug() << "Settings created: " << m_settings.fileName();
+
+    upgrade();
 }
 
 Settings::~Settings()
 {
-    settings.setValue(QStringLiteral("keys/tracingKey"), m_tracingKey);
-    settings.setValue(QStringLiteral("state/enabled"), m_enabled);
-    settings.setValue(QStringLiteral("state/sent"), m_sent);
-    settings.setValue(QStringLiteral("state/received"), m_received);
-    settings.setValue(QStringLiteral("configuration/txPower"), m_txPower);
-    settings.setValue(QStringLiteral("configuration/rssiCorrection"), m_rssiCorrection);
+    m_settings.setValue(QStringLiteral("keys/tracingKey"), m_tracingKey);
+    m_settings.setValue(QStringLiteral("state/enabled"), m_enabled);
+    m_settings.setValue(QStringLiteral("state/sent"), m_sent);
+    m_settings.setValue(QStringLiteral("state/received"), m_received);
+    m_settings.setValue(QStringLiteral("configuration/txPower"), m_txPower);
+    m_settings.setValue(QStringLiteral("configuration/rssiCorrection"), m_rssiCorrection);
 
     instance = nullptr;
     qDebug() << "Deleted settings";
@@ -129,3 +133,34 @@ void Settings::setRssiCorrection(qint8 rssiCorrection)
         emit rssiCorrectionChanged();
     }
 }
+
+bool Settings::upgrade()
+{
+    quint32 version;
+    bool success = true;
+
+    if (m_settings.allKeys().size() == 0) {
+        version = SETTINGS_MAX_VERSION;
+        qDebug() << "Creating new settings file with version: " << SETTINGS_MAX_VERSION;
+    }
+    else {
+        version = m_settings.value(QStringLiteral("application/settingsVersion"), 0).toUInt();
+        qDebug() << "Existing settings file version: " << version;
+    }
+
+    switch (version) {
+    default:
+    case SETTINGS_MAX_VERSION:
+        // File upgraded
+        // Do nothing
+        break;
+    }
+
+    if (success) {
+        m_settings.setValue(QStringLiteral("application/version"), VERSION);
+        m_settings.setValue(QStringLiteral("application/settingsVersion"), SETTINGS_MAX_VERSION);
+    }
+
+    return success;
+}
+
