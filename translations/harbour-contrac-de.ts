@@ -283,9 +283,9 @@
         <translation>Mitwirkende</translation>
     </message>
     <message id="contrac-about_la_contributors">
-        <source>ApostolosB, dashinfantry, flypig, smdesai, Thaodan</source>
+        <source>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</source>
         <oldsource>Contributors: ApostolosB, dashinfantry, flypig, smdesai, Thaodan</oldsource>
-        <translation>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</translation>
+        <translation>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, spodermenpls, Thaodan</translation>
     </message>
     <message id="contrac-cover_la_title">
         <source>Contrac</source>

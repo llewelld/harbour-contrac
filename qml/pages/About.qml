@@ -75,7 +75,7 @@ Page {
             }
 
             Label {
-                //% "ApostolosB, dashinfantry, flypig, smdesai, Thaodan"
+                //% "ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan"
                 text: qsTrId("contrac-about_la_contributors")
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall

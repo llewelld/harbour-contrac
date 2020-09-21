@@ -281,7 +281,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-about_la_contributors">
-        <source>ApostolosB, dashinfantry, flypig, smdesai, Thaodan</source>
+        <source>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</source>
         <oldsource>Contributors: ApostolosB, dashinfantry, flypig, smdesai, Thaodan</oldsource>
         <translation type="unfinished"></translation>
     </message>
