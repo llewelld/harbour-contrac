@@ -127,11 +127,13 @@
     </message>
     <message id="contrac-teletan_invalid-character">
         <source>Invalid entry. Please check your entry.</source>
-        <translation>Ungültiger Eintrag, bitte überprüfen Sie diesen.</translation>
+        <oldsource>Invald entry. Please check your entry.</oldsource>
+        <translation type="unfinished">Ungültiger Eintrag, bitte überprüfen Sie diesen.</translation>
     </message>
     <message id="contrac-teletan_invalid-tan">
         <source>Invalid TAN, please check your entry.</source>
-        <translation>Ungültige TAN, bitte überprüfen Sie diese.</translation>
+        <oldsource>Invald TAN, please check your entry.</oldsource>
+        <translation type="unfinished">Ungültige TAN, bitte überprüfen Sie diese.</translation>
     </message>
     <message id="contrac-teletan_describe-valid-tans">
         <source>The only TANs the test server accepts are R3ZNUEV9JA and CG4Z5A9CY9.</source>
@@ -179,7 +181,8 @@
     </message>
     <message id="contrac-upload_error_unknown">
         <source>Unknown error</source>
-        <translation>Unbekannter Fehler</translation>
+        <oldsource>Unkown error</oldsource>
+        <translation type="unfinished">Unbekannter Fehler</translation>
     </message>
     <message id="contrac-main_la_last-update">
         <source>Latest update</source>

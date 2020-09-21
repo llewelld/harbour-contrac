@@ -35,7 +35,7 @@ Page {
             //% "Internal state error"
             return qsTrId("contrac-upload_error_internal-state")
         }
-        //% "Unkown error"
+        //% "Unknown error"
         return qsTrId("contrac-upload_error_unknown")
     }
 

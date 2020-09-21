@@ -126,12 +126,14 @@
         <translation>无错误</translation>
     </message>
     <message id="contrac-teletan_invalid-character">
-        <source>Invald entry. Please check your entry.</source>
-        <translation>无效项目。请核对你的项目。</translation>
+        <source>Invalid entry. Please check your entry.</source>
+        <oldsource>Invald entry. Please check your entry.</oldsource>
+        <translation type="unfinished">无效项目。请核对你的项目。</translation>
     </message>
     <message id="contrac-teletan_invalid-tan">
-        <source>Invald TAN, please check your entry.</source>
-        <translation>TAN 码无效，请核对你的项目。</translation>
+        <source>Invalid TAN, please check your entry.</source>
+        <oldsource>Invald TAN, please check your entry.</oldsource>
+        <translation type="unfinished">TAN 码无效，请核对你的项目。</translation>
     </message>
     <message id="contrac-teletan_describe-valid-tans">
         <source>The only TANs the test server accepts are R3ZNUEV9JA and CG4Z5A9CY9.</source>
@@ -178,8 +180,9 @@
         <translation>错误：没有等候上传的诊断密钥</translation>
     </message>
     <message id="contrac-upload_error_unknown">
-        <source>Unkown error</source>
-        <translation>未知错误</translation>
+        <source>Unknown error</source>
+        <oldsource>Unkown error</oldsource>
+        <translation type="unfinished">未知错误</translation>
     </message>
     <message id="contrac-main_la_last-update">
         <source>Latest update</source>
@@ -263,7 +266,7 @@
         <translation>设置</translation>
     </message>
     <message id="contrac-settings_he_attentuation-values">
-        <source>Attenuation calibration入</source>
+        <source>Attenuation calibration</source>
         <translation>衰减校准</translation>
     </message>
     <message id="contrac-settings_la_attenuation_info">
@@ -290,7 +293,7 @@
     </message>
     <message id="contrac-cover_current-status-line1">
         <source>Current</source>
-        <translation当前></translation>
+        <translation>当前</translation>
     </message>
     <message id="contrac-cover_current-status-line2">
         <source>Status</source>

@@ -124,11 +124,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-teletan_invalid-character">
-        <source>Invald entry. Please check your entry.</source>
+        <source>Invalid entry. Please check your entry.</source>
+        <oldsource>Invald entry. Please check your entry.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-teletan_invalid-tan">
-        <source>Invald TAN, please check your entry.</source>
+        <source>Invalid TAN, please check your entry.</source>
+        <oldsource>Invald TAN, please check your entry.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-teletan_describe-valid-tans">
@@ -176,7 +178,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-upload_error_unknown">
-        <source>Unkown error</source>
+        <source>Unknown error</source>
+        <oldsource>Unkown error</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_la_last-update">
