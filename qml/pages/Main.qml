@@ -40,8 +40,14 @@ Page {
     }
 
     onStatusChanged: {
-        if (status === PageStatus.Active && updatePending) {
-            performUpdate()
+        if (status === PageStatus.Active) {
+            if (Settings.infoViewed === 0) {
+                pageStack.push(Qt.resolvedUrl("Info.qml"));
+                Settings.infoViewed = 1;
+            }
+            if (updatePending) {
+                performUpdate()
+            }
         }
     }
 

@@ -18,6 +18,7 @@ Settings::Settings(QObject *parent) : QObject(parent),
     m_verificationServer = m_settings.value(QStringLiteral("servers/verificationServer"), QStringLiteral("https://verification.coronawarn.app")).toString();
     m_latestSummary = m_settings.value(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(ExposureSummary())).value<ExposureSummary>();
     m_summaryUpdated = m_settings.value(QStringLiteral("update/date"), QDateTime()).toDateTime();
+    m_infoViewed = m_settings.value(QStringLiteral("application/infoViewed"), 0).toUInt();
 
     // Figure out where we're going to find our images
     QScopedPointer<MGConfItem> ratioItem(new MGConfItem("/desktop/sailfish/silica/theme_pixel_ratio"));
@@ -49,6 +50,7 @@ Settings::~Settings()
     m_settings.setValue(QStringLiteral("servers/verificationServer"), m_verificationServer);
     m_settings.setValue(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(m_latestSummary));
     m_settings.setValue(QStringLiteral("update/date"), m_summaryUpdated);
+    m_settings.setValue(QStringLiteral("application/infoViewed"), m_infoViewed);
 
     qDebug() << "Deleted settings";
 }
@@ -132,6 +134,19 @@ void Settings::setSummaryUpdated(QDateTime summaryUpdated)
     if (m_summaryUpdated != summaryUpdated) {
         m_summaryUpdated = summaryUpdated;
         emit summaryUpdatedChanged();
+    }
+}
+
+quint32 Settings::infoViewed() const
+{
+    return m_infoViewed;
+}
+
+void Settings::setInfoViewed(quint32 infoViewed)
+{
+    if (m_infoViewed != infoViewed) {
+        m_infoViewed = infoViewed;
+        emit infoViewedChanged();
     }
 }
 
