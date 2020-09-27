@@ -184,19 +184,6 @@ Dialog {
 
                 visible: !invalidChar.visible && teletan.length === 10 && !validTan
             }
-
-            Label {
-                //% "The only TANs the test server accepts are R3ZNUEV9JA and CG4Z5A9CY9."
-                text: qsTrId("contrac-teletan_describe-valid-tans")
-                color: Theme.highlightColor
-                wrapMode: Text.WordWrap
-                anchors {
-                    leftMargin: Theme.horizontalPageMargin
-                    rightMargin: Theme.horizontalPageMargin
-                    left: parent.left
-                    right: parent.right
-                }
-            }
         }
     }
 }

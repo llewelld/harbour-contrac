@@ -123,10 +123,6 @@
         <source>Invalid TAN, please check your entry.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-teletan_describe-valid-tans">
-        <source>The only TANs the test server accepts are R3ZNUEV9JA and CG4Z5A9CY9.</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="contrac-download_error_network-error">
         <source>Network error</source>
         <translation type="unfinished"></translation>

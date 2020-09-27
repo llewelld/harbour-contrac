@@ -9,6 +9,95 @@
 
 #include "download.h"
 
+#define DAYS_START_OFFSET (-15)
+#define DAYS_TO_DOWNLOAD (14)
+
+namespace {
+
+void cleanUpDownloads()
+{
+    QDir root = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/";
+
+    root.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
+    root.setNameFilters(QStringList(QStringLiteral("\?\?\?\?-\?\?-\?\?")));
+    root.setSorting(QDir::Name);
+    QFileInfoList const &dirs = root.entryInfoList();
+    QDate const earliest = QDate::currentDate().addDays(DAYS_START_OFFSET);
+
+    if (earliest.isValid()) {
+        QRegExp dateFormat("(\\d{4})-(\\d{2})-(\\d{2})");
+        for (QFileInfo const &dir : dirs) {
+            if (dateFormat.exactMatch(dir.fileName()) && (dateFormat.captureCount() == 3)) {
+                // Valid download folder
+
+                QStringList const elements = dateFormat.capturedTexts();
+                int year = elements[1].toInt();
+                int month = elements[2].toInt();
+                int day = elements[3].toInt();
+
+                if ((year != 0) && (month != 0) && (day != 0)) {
+                    QDate const date(year, month, day);
+
+                    if (date < earliest) {
+                        // Delete the directory
+                        QDir directory(dir.absoluteFilePath());
+                        qDebug() << "Deleting old directory: " << directory.path();
+                        directory.removeRecursively();
+                    }
+                }
+                else {
+                    qDebug() << "Incorrect date";
+                }
+            }
+        }
+    }
+    else {
+        qDebug() << "Earliest date could not be determined";
+    }
+}
+
+QDate latestDownloaded()
+{
+    QDir root = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/";
+    QDate latest;
+
+    root.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
+    root.setNameFilters(QStringList(QStringLiteral("\?\?\?\?-\?\?-\?\?")));
+    root.setSorting(QDir::Name);
+    QFileInfoList const &dirs = root.entryInfoList();
+    QDate const today = QDate::currentDate();
+
+    QRegExp dateFormat("(\\d{4})-(\\d{2})-(\\d{2})");
+    for (QFileInfo const &dir : dirs) {
+        if (dateFormat.exactMatch(dir.fileName()) && (dateFormat.captureCount() == 3)) {
+            // Valid download folder
+
+            QStringList const elements = dateFormat.capturedTexts();
+            int year = elements[1].toInt();
+            int month = elements[2].toInt();
+            int day = elements[3].toInt();
+
+            if ((year != 0) && (month != 0) && (day != 0)) {
+                QDate const date(year, month, day);
+
+                // Don't include dates from today and onwards
+                // Since a download on the day may not be complete
+                if ((date < today) && (!latest.isValid() || (date > latest))) {
+                    latest = date;
+                }
+            }
+            else {
+                qDebug() << "Incorrect date";
+            }
+        }
+    }
+
+    qDebug() << "Latest download directory date: " << latest;
+    return latest;
+}
+
+} // Anonymous namespace
+
 Download::Download(QObject *parent) : QObject(parent)
   , m_serverAccess(new ServerAccess(this))
   , m_fileQueue()
@@ -24,7 +113,8 @@ Download::Download(QObject *parent) : QObject(parent)
     m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
     m_serverAccess->setBucket("cwa");
 
-    m_latest = Settings::getInstance().summaryUpdated().date();
+    // Read from the filesystem
+    m_latest = latestDownloaded();
 
     connect(m_downloadConfig, &DownloadConfig::configChanged, this, &Download::configChanged);
     connect(m_downloadConfig, &DownloadConfig::downloadComplete, this, &Download::configDownloadComplete);
@@ -35,14 +125,17 @@ Q_INVOKABLE void Download::downloadLatest()
     qint64 daysTotal;
 
     if (!m_downloading) {
+        // Clean up the old folders
+        cleanUpDownloads();
+
         if (m_latest.isValid()) {
             daysTotal = m_latest.daysTo(QDate::currentDate());
         }
         else{
-            daysTotal = 14;
+            daysTotal = DAYS_TO_DOWNLOAD;
         }
-        if (daysTotal > 14) {
-            daysTotal = 14;
+        if (daysTotal > DAYS_TO_DOWNLOAD) {
+            daysTotal = DAYS_TO_DOWNLOAD;
         }
         m_filesReceived = 0;
         m_filesTotal = daysTotal * 24;
@@ -75,7 +168,7 @@ void Download::configDownloadComplete(QString const &)
 QDate Download::nextDownloadDay() const
 {
     QDate today = QDate::currentDate();
-    QDate date = today.addDays(-14);
+    QDate date = today.addDays(DAYS_START_OFFSET);
     QDate next = m_latest.addDays(1);
     if (next > date) {
         date = next;
