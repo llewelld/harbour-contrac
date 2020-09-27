@@ -75,10 +75,6 @@
         <source>Verification server</source>
         <translation>Verifizierungs-Server</translation>
     </message>
-    <message id="contrac-main_info">
-        <source>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing.</source>
-        <translation>Nutzung der Google/Apple-API und eines Corona-Warn-App-Testservers. Uploads/Downloads sind nur zum Testen.</translation>
-    </message>
     <message id="contrac-teletan_he_tan_entry">
         <source>TAN entry</source>
         <translation>TAN-Eingabe</translation>
@@ -126,10 +122,6 @@
     <message id="contrac-teletan_invalid-tan">
         <source>Invalid TAN, please check your entry.</source>
         <translation>Ungültige TAN, bitte überprüfen Sie diese.</translation>
-    </message>
-    <message id="contrac-teletan_describe-valid-tans">
-        <source>The only TANs the test server accepts are R3ZNUEV9JA and CG4Z5A9CY9.</source>
-        <translation>Die einzigen TANs, die der Test-Server akzeptiert, sind R3ZNUEV9JA und CG4Z5A9CY9.</translation>
     </message>
     <message id="contrac-download_error_network-error">
         <source>Network error</source>
@@ -290,6 +282,32 @@
     <message id="contrac-main_la_status-at-risk">
         <source>Daily update required</source>
         <translation>Tägliche Aktualisierung benötigt</translation>
+    </message>
+    <message id="contrac-about_header_info">
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-about_info-page">
+        <source>Info page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-info_title">
+        <source>Important information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-info_main-text">
+        <source>Contrac is now using Germany&apos;s official Corona-Warn-App servers for both downloading diagnosis keys from other users and uploading your diagnosis keys using a TeleTAN if your test results return positive.&lt;br/&gt;&lt;br/&gt;Sailfish OS users who downloaded the previous versions of the app have been testing it against the test servers made available by the Corona-Warn-App project. This doesn&apos;t guarantee the functionality will work correctly using the real servers and unfortunately there&apos;s no way to fully test this except to use the app.&lt;br/&gt;&lt;br/&gt;The Corona-Warn-App team can only support their official iOS and Android apps, so it&apos;s important to understand that if you use Contrac there is no guarantee it&apos;ll work as expected.&lt;br/&gt;&lt;br/&gt;If you do experience issues, or even if things work as expected, please do share your experiences.&lt;br/&gt;&lt;br/&gt;Thank you for trying the app!</source>
+        <oldsource>Contrac is now using Germany&apos;s official Corona-Warn-App servers for both downloading diagnosis keys from other users and uploading your diagnosis keys using a TeleTAN if your test results return positive.&lt;br/&gt;&lt;br/&gt;The functionality has been tested by the Sailfish OS users who downloaded previous versions against the test servers made available by the Corona-Warn-App project. This doesn&apos;t guarantee that the functionality will work using the real servers and unfortunately there is no way to properly test this except to use the app.&lt;br/&gt;&lt;br/&gt;The Corona-Warn-App team don&apos;t support anything other than the official iOS and Android apps, so it&apos;s important to understand that if you use this app, there is no guarantee that it will work as expected.&lt;br/&gt;&lt;br/&gt;If you do experience any issues, or even if things work as expected, please do share your experiences.&lt;br/&gt;&lt;br/&gt;Thank you for trying the app!</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-info_configure-attenuation-calibration-values">
+        <source>You should configure the Bluetooth attenuation calibration values before using this app. Please visit the Settings page to do this.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-info_view-again">
+        <source>You can view this page again by visiting the About page.</source>
+        <oldsource>You can view this page again by visiting the About page</oldsource>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

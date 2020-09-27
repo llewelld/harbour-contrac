@@ -40,8 +40,14 @@ Page {
     }
 
     onStatusChanged: {
-        if (status === PageStatus.Active && updatePending) {
-            performUpdate()
+        if (status === PageStatus.Active) {
+            if (Settings.infoViewed === 0) {
+                pageStack.push(Qt.resolvedUrl("Info.qml"));
+                Settings.infoViewed = 1;
+            }
+            if (updatePending) {
+                performUpdate()
+            }
         }
     }
 
@@ -93,15 +99,6 @@ Page {
             PageHeader {
                 //% "Contrac Exposure Notification"
                 title: qsTrId("contrac-main_title")
-            }
-
-            Label {
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                x: Theme.horizontalPageMargin
-                //% "Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing."
-                text: qsTrId("contrac-main_info")
-                color: Theme.highlightColor
-                wrapMode: Text.Wrap
             }
 
             SectionHeader {
@@ -187,6 +184,14 @@ Page {
                         }
                     }
                     color: Theme.highlightColor
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            download.clearError()
+                            upload.clearError()
+                        }
+                    }
                 }
             }
 

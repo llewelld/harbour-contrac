@@ -1,26 +1,28 @@
 #include <QStandardPaths>
+#include <QDir>
 
 #include "../contracd/src/exposureconfiguration.h"
 #include "../contracd/src/zipistreambuffer.h"
 
 #include "settings.h"
-#include "s3access.h"
+#include "serveraccess.h"
 #include "proto/applicationConfiguration.pb.h"
 
 #include "downloadconfig.h"
 
-#define CONFIG_FILENAME QStringLiteral("/download/file.config")
+#define CONFIG_DIRECTORY QStringLiteral("/download/")
+#define CONFIG_LEAFNAME QStringLiteral("file.config")
 
 DownloadConfig::DownloadConfig(QObject *parent) : QObject(parent)
-  , m_s3Access(new S3Access(this))
+  , m_serverAccess(new ServerAccess(this))
   , m_downloading(false)
   , m_status(StatusIdle)
   , m_configuration(new ExposureConfiguration(this))
 {
-    m_s3Access->setId("accessKey1");
-    m_s3Access->setSecret("verySecretKey1");
-    m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
-    m_s3Access->setBucket("cwa");
+    m_serverAccess->setId("accessKey1");
+    m_serverAccess->setSecret("verySecretKey1");
+    m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
+    m_serverAccess->setBucket("cwa");
 
     connect(m_configuration, &ExposureConfiguration::minimumRiskScoreChanged, this, &DownloadConfig::configChanged);
     connect(m_configuration, &ExposureConfiguration::attenuationScoresChanged, this, &DownloadConfig::configChanged);
@@ -41,14 +43,19 @@ Q_INVOKABLE void DownloadConfig::downloadLatest()
     qDebug() << "Requesting configuration";
 
     if (!m_downloading) {
-        m_s3Access->setBaseUrl(Settings::getInstance().downloadServer());
+        m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
         setStatus(StatusDownloading);
 
         QString key = "version/v1/configuration/country/DE/app_config";
-        QString filename = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + CONFIG_FILENAME;
+        QString filename = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + CONFIG_DIRECTORY;
+        QDir dir;
+        qDebug() << "Creating directory:" << filename;
+        dir.mkpath(filename);
+        filename += CONFIG_LEAFNAME;
         qDebug() << "Saving to:" << filename;
-        S3GetFileResult *result = m_s3Access->getFile(key, filename);
-        connect(result, &S3Result::finished, this, [this, result, filename]() {
+
+        ServerGetFileResult *result = m_serverAccess->getFile(key, filename);
+        connect(result, &ServerResult::finished, this, [this, result, filename]() {
             qDebug() << "Finished downloading configuration";
             finalise();
             switch (result->error()) {
@@ -127,7 +134,7 @@ bool DownloadConfig::downloading() const
 
 bool DownloadConfig::loadConfig()
 {
-    QString filename = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + CONFIG_FILENAME;
+    QString filename = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + CONFIG_DIRECTORY + CONFIG_LEAFNAME;
 
     QuaZip quazip(filename);
     bool result = true;

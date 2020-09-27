@@ -111,6 +111,23 @@ Page {
                     onClicked: Qt.openUrlExternally("mailto:david@flypig.co.uk")
                 }
             }
+
+            SectionHeader {
+                //% "Information"
+                text: qsTrId("contrac-about_header_info")
+            }
+
+            Row {
+                spacing: Theme.paddingLarge
+                anchors.horizontalCenter: parent.horizontalCenter
+                Button {
+                    id: infoPage
+                    //% "Info page"
+                    text: qsTrId("contrac-about_info-page")
+                    enabled: true
+                    onClicked: pageStack.push(Qt.resolvedUrl("Info.qml"))
+                }
+            }
         }
     }
 }

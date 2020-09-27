@@ -49,15 +49,12 @@ HEADERS += \
     src/download.h \
     src/downloadconfig.h \
     src/imageprovider.h \
-    src/s3access.h \
-    src/s3/s3.h \
-    src/s3/s3internal.h \
-    src/s3/s3xml.h \
     contracd/src/exposuresummary.h \
     contracd/src/exposureinformation.h \
     contracd/src/temporaryexposurekey.h \
     contracd/src/exposureconfiguration.h \
     contracd/src/zipistreambuffer.h \
+    src/serveraccess.h \
     src/settings.h \
     src/upload.h
 
@@ -70,17 +67,12 @@ SOURCES += \
     src/contactmodel.cpp \
     src/download.cpp \
     src/imageprovider.cpp \
-    src/s3access.cpp \
-    src/s3/s3bucket.c \
-    src/s3/s3digest.c \
-    src/s3/s3ops.c \
-    src/s3/s3string.c \
-    src/s3/s3xml.c \
     contracd/src/exposuresummary.cpp \
     contracd/src/exposureinformation.cpp \
     contracd/src/temporaryexposurekey.cpp \
     contracd/src/exposureconfiguration.cpp \
     contracd/src/zipistreambuffer.cpp \
+    src/serveraccess.cpp \
     src/settings.cpp \
     src/upload.cpp
 

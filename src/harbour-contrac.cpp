@@ -40,6 +40,10 @@ int main(int argc, char *argv[])
     qDebug() << "VERSION_MINOR:" << VERSION_MINOR;
     qDebug() << "VERSION_BUILD:" << VERSION_BUILD;
 
+    // Needed for Settings save/load
+    qRegisterMetaType<ExposureSummary>();
+    qRegisterMetaTypeStreamOperators<ExposureSummary>("ExposureSummary");
+
     Settings::instantiate(app);
 
     qmlRegisterType<DBusProxy>("uk.co.flypig.contrac", 1, 0, "DBusProxy");
@@ -52,10 +56,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<DownloadConfig>("uk.co.flypig.contrac", 1, 0, "DownloadConfig");
 
     qmlRegisterSingletonType<Settings>("uk.co.flypig.contrac", 1, 0, "Settings", Settings::provider);
-
-    // Needed for Settings save/load
-    qRegisterMetaType<ExposureSummary>();
-    qRegisterMetaTypeStreamOperators<ExposureSummary>("ExposureSummary");
 
     QQuickView *view = SailfishApp::createView();
     // The engine takes ownership of the ImageProvider

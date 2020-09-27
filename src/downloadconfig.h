@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class S3Access;
+class ServerAccess;
 class ExposureConfiguration;
 
 namespace diagnosis {
@@ -56,7 +56,7 @@ private:
     void applyConfiguration(diagnosis::ApplicationConfiguration const &appConfig);
 
 private:
-    S3Access *m_s3Access;
+    ServerAccess *m_serverAccess;
     bool m_downloading;
     Status m_status;
     ErrorType m_error;

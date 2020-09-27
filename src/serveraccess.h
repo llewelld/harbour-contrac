@@ -1,20 +1,16 @@
-#ifndef S3ACCESS_H
-#define S3ACCESS_H
+#ifndef SERVERACCESS_H
+#define SERVERACCESS_H
 
 #include <QObject>
 #include <QNetworkReply>
 
-extern "C" {
-#include "s3/s3.h"
-}
-
-class S3Result : public QObject
+class ServerResult : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit S3Result(QNetworkReply *reply, QObject *parent = nullptr);
-    ~S3Result();
+    explicit ServerResult(QNetworkReply *reply, QObject *parent = nullptr);
+    ~ServerResult();
 
     virtual QNetworkReply::NetworkError error() const;
 
@@ -28,13 +24,13 @@ protected:
     QNetworkReply *m_reply;
 };
 
-class S3ListResult : public S3Result
+class ServerListResult : public ServerResult
 {
     Q_OBJECT
     Q_PROPERTY(QStringList keys READ keys NOTIFY keysChanged)
 
 public:
-    explicit S3ListResult(QNetworkReply *reply, QObject *parent = nullptr);
+    explicit ServerListResult(QNetworkReply *reply, QString const &prefix, QObject *parent = nullptr);
 
     QStringList keys() const;
 
@@ -45,16 +41,17 @@ private slots:
     virtual void onFinished();
 
 private:
+    QString m_prefix;
     QStringList m_keys;
 };
 
-class S3GetResult : public S3Result
+class ServerGetResult : public ServerResult
 {
     Q_OBJECT
     Q_PROPERTY(QByteArray data READ data NOTIFY dataChanged)
 
 public:
-    explicit S3GetResult(QNetworkReply *reply, QObject *parent = nullptr);
+    explicit ServerGetResult(QNetworkReply *reply, QObject *parent = nullptr);
 
     QByteArray data() const;
 
@@ -68,12 +65,12 @@ private:
     QByteArray m_data;
 };
 
-class S3GetFileResult : public S3Result
+class ServerGetFileResult : public ServerResult
 {
     Q_OBJECT
 
 public:
-    explicit S3GetFileResult(QNetworkReply *reply, QString const &filename, QObject *parent = nullptr);
+    explicit ServerGetFileResult(QNetworkReply *reply, QString const &filename, QObject *parent = nullptr);
 
 private slots:
     virtual void onFinished();
@@ -82,7 +79,7 @@ private:
     QString m_filename;
 };
 
-class S3Access : public QObject
+class ServerAccess : public QObject
 {
     Q_OBJECT
 
@@ -92,15 +89,15 @@ class S3Access : public QObject
     Q_PROPERTY(QString bucket READ bucket WRITE setBucket NOTIFY bucketChanged)
 
 public:
-    explicit S3Access(QObject *parent = nullptr);
-    ~S3Access();
+    explicit ServerAccess(QObject *parent = nullptr);
+    ~ServerAccess();
 
-    S3ListResult *list(QString const &prefix);
-    S3GetResult *get(QString const &key);
-    S3GetFileResult *getFile(QString const &key, QString const &filename);
-    S3Result *put(QString const &key, QString const &contentType, QByteArray const &data);
-    S3Result *putFile(QString const &key, QString const &contentType, QString const &filename);
-    S3Result *remove(QString const &key);
+    ServerListResult *list(QString const &prefix);
+    ServerGetResult *get(QString const &key);
+    ServerGetFileResult *getFile(QString const &key, QString const &filename);
+    ServerResult *put(QString const &key, QString const &contentType, QByteArray const &data);
+    ServerResult *putFile(QString const &key, QString const &contentType, QString const &filename);
+    ServerResult *remove(QString const &key);
 
     QString id() const;
     QString secret() const;
@@ -127,7 +124,7 @@ private:
         DELETE
     };
     void initialise();
-    QNetworkReply *performOp(Method method, QString const &url, QString const &sign_data, const char *date, QIODevice *in, const char *content_md5, const char *content_type);
+    QNetworkReply *performOp(Method method, QString const &url, QIODevice *in, const char *content_type);
 
 private:
     QString m_id;
@@ -135,8 +132,7 @@ private:
     QString m_baseUrl;
     QString m_bucket;
 
-    struct S3 *m_s3;
     QNetworkAccessManager *m_manager;
 };
 
-#endif // S3ACCESS_H
+#endif // SERVERACCESS_H

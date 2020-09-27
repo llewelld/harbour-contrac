@@ -6,16 +6,19 @@
 
 #include "settings.h"
 
+#define SETTINGS_MAX_VERSION (1)
+
 Settings * Settings::instance = nullptr;
 
 Settings::Settings(QObject *parent) : QObject(parent),
-    settings(this)
+    m_settings(this)
 {
-    m_downloadServer = settings.value(QStringLiteral("servers/downloadServer"), QStringLiteral("127.0.0.1:8003")).toString();
-    m_uploadServer = settings.value(QStringLiteral("servers/uploadServer"), QStringLiteral("127.0.0.1:8000")).toString();
-    m_verificationServer = settings.value(QStringLiteral("servers/verificationServer"), QStringLiteral("127.0.0.1:8004")).toString();
-    m_latestSummary = settings.value(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(ExposureSummary())).value<ExposureSummary>();
-    m_summaryUpdated = settings.value(QStringLiteral("update/date"), QDateTime()).toDateTime();
+    m_downloadServer = m_settings.value(QStringLiteral("servers/downloadServer"), QStringLiteral("https://svc90.main.px.t-online.de")).toString();
+    m_uploadServer = m_settings.value(QStringLiteral("servers/uploadServer"), QStringLiteral("https://submission.coronawarn.app")).toString();
+    m_verificationServer = m_settings.value(QStringLiteral("servers/verificationServer"), QStringLiteral("https://verification.coronawarn.app")).toString();
+    m_latestSummary = m_settings.value(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(ExposureSummary())).value<ExposureSummary>();
+    m_summaryUpdated = m_settings.value(QStringLiteral("update/date"), QDateTime()).toDateTime();
+    m_infoViewed = m_settings.value(QStringLiteral("application/infoViewed"), 0).toUInt();
 
     // Figure out where we're going to find our images
     QScopedPointer<MGConfItem> ratioItem(new MGConfItem("/desktop/sailfish/silica/theme_pixel_ratio"));
@@ -35,16 +38,19 @@ Settings::Settings(QObject *parent) : QObject(parent),
     m_imageDir = SailfishApp::pathTo("qml/images/z" + dir[pos]).toString(QUrl::RemoveScheme) + "/";
     qDebug() << "Image folder: " << m_imageDir;
 
-    qDebug() << "Settings created: " << settings.fileName();
+    qDebug() << "Settings created: " << m_settings.fileName();
+
+    upgrade();
 }
 
 Settings::~Settings()
 {
-    settings.setValue(QStringLiteral("servers/downloadServer"), m_downloadServer);
-    settings.setValue(QStringLiteral("servers/uploadServer"), m_uploadServer);
-    settings.setValue(QStringLiteral("servers/verificationServer"), m_verificationServer);
-    settings.setValue(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(m_latestSummary));
-    settings.setValue(QStringLiteral("update/date"), m_summaryUpdated);
+    m_settings.setValue(QStringLiteral("servers/downloadServer"), m_downloadServer);
+    m_settings.setValue(QStringLiteral("servers/uploadServer"), m_uploadServer);
+    m_settings.setValue(QStringLiteral("servers/verificationServer"), m_verificationServer);
+    m_settings.setValue(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(m_latestSummary));
+    m_settings.setValue(QStringLiteral("update/date"), m_summaryUpdated);
+    m_settings.setValue(QStringLiteral("application/infoViewed"), m_infoViewed);
 
     qDebug() << "Deleted settings";
 }
@@ -131,6 +137,19 @@ void Settings::setSummaryUpdated(QDateTime summaryUpdated)
     }
 }
 
+quint32 Settings::infoViewed() const
+{
+    return m_infoViewed;
+}
+
+void Settings::setInfoViewed(quint32 infoViewed)
+{
+    if (m_infoViewed != infoViewed) {
+        m_infoViewed = infoViewed;
+        emit infoViewedChanged();
+    }
+}
+
 QString Settings::getImageDir() const {
     return m_imageDir;
 }
@@ -139,3 +158,59 @@ QString Settings::getImageUrl(QString const &id) const {
     return m_imageDir + id + ".png";
 }
 
+bool Settings::upgrade()
+{
+    quint32 version;
+    bool success = true;
+
+    if (m_settings.allKeys().size() == 0) {
+        version = SETTINGS_MAX_VERSION;
+        qDebug() << "Creating new settings file with version: " << SETTINGS_MAX_VERSION;
+    }
+    else {
+        version = m_settings.value(QStringLiteral("application/settingsVersion"), 0).toUInt();
+        qDebug() << "Existing settings file version: " << version;
+    }
+
+    switch (version) {
+    case 0:
+        if (success) {
+            success = upgradeToVersion1();
+        }
+        // Fallthrough
+        [[clang::fallthrough]];
+    default:
+    case SETTINGS_MAX_VERSION:
+        // File upgraded
+        // Do nothing
+        break;
+    }
+
+    if (success) {
+        m_settings.setValue(QStringLiteral("application/version"), VERSION);
+        m_settings.setValue(QStringLiteral("application/settingsVersion"), SETTINGS_MAX_VERSION);
+    }
+
+    return success;
+}
+
+bool Settings::upgradeToVersion1()
+{
+    bool success = true;
+
+    qDebug() << "Upgrading settings to version 1";
+
+    // Update from the test servers to the real Corona-Warn-App servers
+    m_downloadServer = QStringLiteral("https://svc90.main.px.t-online.de");
+    m_uploadServer = QStringLiteral("https://submission.coronawarn.app");
+    m_verificationServer = QStringLiteral("https://verification.coronawarn.app");
+
+    m_settings.setValue(QStringLiteral("servers/downloadServer"), m_downloadServer);
+    m_settings.setValue(QStringLiteral("servers/uploadServer"), m_uploadServer);
+    m_settings.setValue(QStringLiteral("servers/verificationServer"), m_verificationServer);
+
+    m_settings.sync();
+    success = (m_settings.status() == QSettings::NoError);
+
+    return success;
+}

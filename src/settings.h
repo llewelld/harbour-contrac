@@ -18,6 +18,7 @@ class Settings : public QObject
     Q_PROPERTY(QString verificationServer READ verificationServer WRITE setVerificationServer NOTIFY verificationServerChanged)
     Q_PROPERTY(ExposureSummary *latestSummary READ latestSummary WRITE setLatestSummary NOTIFY latestSummaryChanged)
     Q_PROPERTY(QDateTime summaryUpdated READ summaryUpdated WRITE setSummaryUpdated NOTIFY summaryUpdatedChanged)
+    Q_PROPERTY(quint32 infoViewed READ infoViewed WRITE setInfoViewed NOTIFY infoViewedChanged)
 
 public:
     explicit Settings(QObject *parent = nullptr);
@@ -32,6 +33,8 @@ public:
     Q_INVOKABLE QString verificationServer() const;
     Q_INVOKABLE ExposureSummary *latestSummary();
     Q_INVOKABLE QDateTime summaryUpdated() const;
+    Q_INVOKABLE quint32 infoViewed() const;
+
     Q_INVOKABLE QString getImageDir() const;
     Q_INVOKABLE QString getImageUrl(QString const &id) const;
 
@@ -41,6 +44,7 @@ signals:
     void verificationServerChanged();
     void latestSummaryChanged();
     void summaryUpdatedChanged();
+    void infoViewedChanged();
 
 public slots:
     void setDownloadServer(QString const &downloadServer);
@@ -48,18 +52,23 @@ public slots:
     void setVerificationServer(QString const &verificationServer);
     void setLatestSummary(ExposureSummary const *latestSummary);
     void setSummaryUpdated(QDateTime summaryUpdated);
+    void setInfoViewed(quint32 infoViewed);
+
+private:
+    bool upgrade();
+    bool upgradeToVersion1();
 
 private:
     static Settings * instance;
-    QSettings settings;
+    QSettings m_settings;
 
     QString m_downloadServer;
     QString m_uploadServer;
     QString m_verificationServer;
     ExposureSummary m_latestSummary;
     QDateTime m_summaryUpdated;
+    quint32 m_infoViewed;
     QString m_imageDir;
-
 };
 
 #endif // SETTINGS_H

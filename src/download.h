@@ -7,7 +7,7 @@
 
 #include "../contracd/src/exposureconfiguration.h"
 
-class S3Access;
+class ServerAccess;
 class DownloadConfig;
 
 class Download : public QObject
@@ -45,6 +45,7 @@ public:
     float progress() const;
     Status status() const;
     ErrorType error() const;
+    Q_INVOKABLE void clearError();
     ExposureConfiguration const *config() const;
 
 signals:
@@ -73,7 +74,7 @@ private:
     void setStatusError(ErrorType error);
 
 private:
-    S3Access *m_s3Access;
+    ServerAccess *m_serverAccess;
     QMap<QDate, QStringList> m_fileQueue;
     QDate m_latest;
     bool m_downloading;
