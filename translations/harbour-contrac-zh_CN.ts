@@ -5,12 +5,10 @@
     <name></name>
     <message id="contrac-about_title">
         <source>About Contrac</source>
-        <oldsource>About Contact Tracer</oldsource>
         <translation>关于接触追踪器</translation>
     </message>
     <message id="contrac-about_description">
         <source>Corona-Warn-App compatible contact Tracing using the Apple/Google Exposure Notification API</source>
-        <oldsource>Demonstration of the Apple/Google Contract Tracing API</oldsource>
         <translation>苹果及谷歌的示例接触追踪API</translation>
     </message>
     <message id="contrac-about_verion">
@@ -43,12 +41,10 @@
     </message>
     <message id="contrac-main_title">
         <source>Contrac Exposure Notification</source>
-        <oldsource>BLE Contact Tracing</oldsource>
         <translation>BLE接触追踪</translation>
     </message>
     <message id="contrac-main_scan">
         <source>Scan and send active</source>
-        <oldsource>Scan and transmit</oldsource>
         <translation>扫描及发送活动</translation>
     </message>
     <message id="contrac-main_sent">
@@ -57,7 +53,6 @@
     </message>
     <message id="contrac-main_received">
         <source>Received</source>
-        <oldsource>Beacons received</oldsource>
         <translation>接收</translation>
     </message>
     <message id="contrac-settings_he_servers">
@@ -82,7 +77,6 @@
     </message>
     <message id="contrac-main_info">
         <source>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing.</source>
-        <oldsource>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing</oldsource>
         <translation>使用谷歌和苹果的 API 及 Corona Warn 软件服务。上传及下载功能仅供测试。</translation>
     </message>
     <message id="contrac-teletan_he_tan_entry">
@@ -126,11 +120,11 @@
         <translation>无错误</translation>
     </message>
     <message id="contrac-teletan_invalid-character">
-        <source>Invald entry. Please check your entry.</source>
+        <source>Invalid entry. Please check your entry.</source>
         <translation>无效项目。请核对你的项目。</translation>
     </message>
     <message id="contrac-teletan_invalid-tan">
-        <source>Invald TAN, please check your entry.</source>
+        <source>Invalid TAN, please check your entry.</source>
         <translation>TAN 码无效，请核对你的项目。</translation>
     </message>
     <message id="contrac-teletan_describe-valid-tans">
@@ -178,12 +172,11 @@
         <translation>错误：没有等候上传的诊断密钥</translation>
     </message>
     <message id="contrac-upload_error_unknown">
-        <source>Unkown error</source>
+        <source>Unknown error</source>
         <translation>未知错误</translation>
     </message>
     <message id="contrac-main_la_last-update">
         <source>Latest update</source>
-        <oldsource>Latest update:</oldsource>
         <translation>最近更新</translation>
     </message>
     <message id="contrac-main_la_status-download_error">
@@ -196,17 +189,14 @@
     </message>
     <message id="contrac-main_la_risk-status">
         <source>Risk status</source>
-        <oldsource>Risk status:</oldsource>
         <translation>风险状态</translation>
     </message>
     <message id="contrac-main_la_days-since-last-exposure">
         <source>Days since last exposure</source>
-        <oldsource>Days since last exposure:</oldsource>
         <translation>距离上次暴露的天数</translation>
     </message>
     <message id="contrac-main_la_matched-keys">
         <source>Number of matched keys</source>
-        <oldsource>Number of matched keys: </oldsource>
         <translation>配对密钥位数</translation>
     </message>
     <message id="contrac-main_la_status-busy">
@@ -223,7 +213,6 @@
     </message>
     <message id="contrac-main_bt_actions">
         <source>Control</source>
-        <oldsource>Actions</oldsource>
         <translation>控制</translation>
     </message>
     <message id="contrac-main_bu_daily-update">
@@ -263,12 +252,11 @@
         <translation>设置</translation>
     </message>
     <message id="contrac-settings_he_attentuation-values">
-        <source>Attenuation calibration入</source>
+        <source>Attenuation calibration</source>
         <translation>衰减校准</translation>
     </message>
     <message id="contrac-settings_la_attenuation_info">
         <source>Download the calibration spreadsheet to check the attenuation values for your device.</source>
-        <oldsource>Download the spreadsheet to check the attenuation calibration values for your device</oldsource>
         <translation>下载电子表格以检查设备的衰减校准值</translation>
     </message>
     <message id="contrac-settings_bu_download_attenuation_spreadsheet">
@@ -280,9 +268,8 @@
         <translation>贡献者</translation>
     </message>
     <message id="contrac-about_la_contributors">
-        <source>ApostolosB, dashinfantry, flypig, smdesai, Thaodan</source>
-        <oldsource>Contributors: ApostolosB, dashinfantry, flypig, smdesai, Thaodan</oldsource>
-        <translation>贡献者：ApostolosB, dashinfantry, flypig, smdesai, Thaodan</translation>
+        <source>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</source>
+        <translation>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</translation>
     </message>
     <message id="contrac-cover_la_title">
         <source>Contrac</source>
@@ -290,7 +277,7 @@
     </message>
     <message id="contrac-cover_current-status-line1">
         <source>Current</source>
-        <translation当前></translation>
+        <translation>当前</translation>
     </message>
     <message id="contrac-cover_current-status-line2">
         <source>Status</source>

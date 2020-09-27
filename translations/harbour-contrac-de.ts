@@ -5,12 +5,10 @@
     <name></name>
     <message id="contrac-about_title">
         <source>About Contrac</source>
-        <oldsource>About Contact Tracer</oldsource>
         <translation>Über Contrac</translation>
     </message>
     <message id="contrac-about_description">
         <source>Corona-Warn-App compatible contact Tracing using the Apple/Google Exposure Notification API</source>
-        <oldsource>Demonstration of the Apple/Google Contract Tracing API</oldsource>
         <translation>Corona-Warn-App-kompatible Kontaktverfolgung unter Nutzung der Apple/Google Exposure Notification-API</translation>
     </message>
     <message id="contrac-about_verion">
@@ -43,12 +41,10 @@
     </message>
     <message id="contrac-main_title">
         <source>Contrac Exposure Notification</source>
-        <oldsource>BLE Contact Tracing</oldsource>
         <translation>Contrac Kontakt-Benachrichtigung</translation>
     </message>
     <message id="contrac-main_scan">
         <source>Scan and send active</source>
-        <oldsource>Scan and transmit</oldsource>
         <translation>Scannen und Senden aktiv</translation>
     </message>
     <message id="contrac-main_sent">
@@ -57,7 +53,6 @@
     </message>
     <message id="contrac-main_received">
         <source>Received</source>
-        <oldsource>Beacons received</oldsource>
         <translation>Empfangen</translation>
     </message>
     <message id="contrac-settings_he_servers">
@@ -82,7 +77,6 @@
     </message>
     <message id="contrac-main_info">
         <source>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing.</source>
-        <oldsource>Using the Google/Apple API and a Corona Warn App test server. Uploads/downloads are only for testing</oldsource>
         <translation>Nutzung der Google/Apple-API und eines Corona-Warn-App-Testservers. Uploads/Downloads sind nur zum Testen.</translation>
     </message>
     <message id="contrac-teletan_he_tan_entry">
@@ -183,7 +177,6 @@
     </message>
     <message id="contrac-main_la_last-update">
         <source>Latest update</source>
-        <oldsource>Latest update:</oldsource>
         <translation>Letzte Aktualisierung</translation>
     </message>
     <message id="contrac-main_la_status-download_error">
@@ -196,17 +189,14 @@
     </message>
     <message id="contrac-main_la_risk-status">
         <source>Risk status</source>
-        <oldsource>Risk status:</oldsource>
         <translation>Risiko-Status</translation>
     </message>
     <message id="contrac-main_la_days-since-last-exposure">
         <source>Days since last exposure</source>
-        <oldsource>Days since last exposure:</oldsource>
         <translation>Tage seit dem letzten Kontakt</translation>
     </message>
     <message id="contrac-main_la_matched-keys">
         <source>Number of matched keys</source>
-        <oldsource>Number of matched keys: </oldsource>
         <translation>Zahl der gematchten Schlüssel</translation>
     </message>
     <message id="contrac-main_la_status-busy">
@@ -223,7 +213,6 @@
     </message>
     <message id="contrac-main_bt_actions">
         <source>Control</source>
-        <oldsource>Actions</oldsource>
         <translation>Steuerung</translation>
     </message>
     <message id="contrac-main_bu_daily-update">
@@ -268,7 +257,6 @@
     </message>
     <message id="contrac-settings_la_attenuation_info">
         <source>Download the calibration spreadsheet to check the attenuation values for your device.</source>
-        <oldsource>Download the spreadsheet to check the attenuation calibration values for your device</oldsource>
         <translation>Laden Sie die Kalibrierungstabelle herunter, um die Dämpfungs-Kalibrierungsvariablen für Ihr Gerät zu prüfen.</translation>
     </message>
     <message id="contrac-settings_bu_download_attenuation_spreadsheet">
@@ -280,8 +268,7 @@
         <translation>Mitwirkende</translation>
     </message>
     <message id="contrac-about_la_contributors">
-        <source>ApostolosB, dashinfantry, flypig, smdesai, Thaodan</source>
-        <oldsource>Contributors: ApostolosB, dashinfantry, flypig, smdesai, Thaodan</oldsource>
+        <source>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</source>
         <translation>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</translation>
     </message>
     <message id="contrac-cover_la_title">

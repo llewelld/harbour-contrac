@@ -156,7 +156,7 @@ Dialog {
 
             Label {
                 id: invalidChar
-                //% "Invald entry. Please check your entry."
+                //% "Invalid entry. Please check your entry."
                 text: qsTrId("contrac-teletan_invalid-character")
                 color: Theme.errorColor
                 wrapMode: Text.WordWrap
@@ -171,7 +171,7 @@ Dialog {
             }
 
             Label {
-                //% "Invald TAN, please check your entry."
+                //% "Invalid TAN, please check your entry."
                 text: qsTrId("contrac-teletan_invalid-tan")
                 color: Theme.errorColor
                 wrapMode: Text.WordWrap

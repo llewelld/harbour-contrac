@@ -115,6 +115,7 @@ CONFIG += sailfishapp_i18n_unfinished
 TRANSLATIONS += translations/harbour-contrac.ts
 TRANSLATIONS += translations/harbour-contrac-en.ts
 TRANSLATIONS += translations/harbour-contrac-zh_CN.ts
+TRANSLATIONS += translations/harbour-contrac-de.ts
 
 PKGCONFIG += \
     mlite5 \
