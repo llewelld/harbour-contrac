@@ -285,29 +285,29 @@
     </message>
     <message id="contrac-about_header_info">
         <source>Information</source>
-        <translation type="unfinished"></translation>
+        <translation>信息</translation>
     </message>
     <message id="contrac-about_info-page">
         <source>Info page</source>
-        <translation type="unfinished"></translation>
+        <translation>信息页</translation>
     </message>
     <message id="contrac-info_title">
         <source>Important information</source>
-        <translation type="unfinished"></translation>
+        <translation>重要信息</translation>
     </message>
     <message id="contrac-info_main-text">
         <source>Contrac is now using Germany&apos;s official Corona-Warn-App servers for both downloading diagnosis keys from other users and uploading your diagnosis keys using a TeleTAN if your test results return positive.&lt;br/&gt;&lt;br/&gt;Sailfish OS users who downloaded the previous versions of the app have been testing it against the test servers made available by the Corona-Warn-App project. This doesn&apos;t guarantee the functionality will work correctly using the real servers and unfortunately there&apos;s no way to fully test this except to use the app.&lt;br/&gt;&lt;br/&gt;The Corona-Warn-App team can only support their official iOS and Android apps, so it&apos;s important to understand that if you use Contrac there is no guarantee it&apos;ll work as expected.&lt;br/&gt;&lt;br/&gt;If you do experience issues, or even if things work as expected, please do share your experiences.&lt;br/&gt;&lt;br/&gt;Thank you for trying the app!</source>
         <oldsource>Contrac is now using Germany&apos;s official Corona-Warn-App servers for both downloading diagnosis keys from other users and uploading your diagnosis keys using a TeleTAN if your test results return positive.&lt;br/&gt;&lt;br/&gt;The functionality has been tested by the Sailfish OS users who downloaded previous versions against the test servers made available by the Corona-Warn-App project. This doesn&apos;t guarantee that the functionality will work using the real servers and unfortunately there is no way to properly test this except to use the app.&lt;br/&gt;&lt;br/&gt;The Corona-Warn-App team don&apos;t support anything other than the official iOS and Android apps, so it&apos;s important to understand that if you use this app, there is no guarantee that it will work as expected.&lt;br/&gt;&lt;br/&gt;If you do experience any issues, or even if things work as expected, please do share your experiences.&lt;br/&gt;&lt;br/&gt;Thank you for trying the app!</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Contrac 现在使用德国的官方新冠肺炎警报软件服务器，既可以从其他用户处下载诊断密钥，也可以在测试结果呈阳性时使 TeleTAN 上传您的诊断密钥 。下载了之前版本软件的旗鱼系统用户已经对新冠肺炎警报软件项目提供的测试服务器进行了测试。 这并不能保证使用真实服务器的功能会正确工作。而且不幸的是，除了使用该软件外，没有其他方法可以完全测试。新冠肺炎警报软件团队只支持他们的官方 iOS 和 Android 软件。所以请知悉：如果你使用 Contrac ，并不能保证它能按预期工作。无论软件是否按预期工作，都希望你能分享你的体验。感谢你试用该软件!</translation>
     </message>
     <message id="contrac-info_configure-attenuation-calibration-values">
         <source>You should configure the Bluetooth attenuation calibration values before using this app. Please visit the Settings page to do this.</source>
-        <translation type="unfinished"></translation>
+        <translation>在使用本软件之前，你应该配置蓝牙衰减校准值。请访问设置页面进行此操作。</translation>
     </message>
     <message id="contrac-info_view-again">
         <source>You can view this page again by visiting the About page.</source>
         <oldsource>You can view this page again by visiting the About page</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>你可以通过关于页再次查看此页面。</translation>
     </message>
 </context>
 </TS>
