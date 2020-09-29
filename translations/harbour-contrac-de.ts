@@ -285,29 +285,27 @@
     </message>
     <message id="contrac-about_header_info">
         <source>Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informationen</translation>
     </message>
     <message id="contrac-about_info-page">
         <source>Info page</source>
-        <translation type="unfinished"></translation>
+        <translation>Info-Seite</translation>
     </message>
     <message id="contrac-info_title">
         <source>Important information</source>
-        <translation type="unfinished"></translation>
+        <translation>Wichtige Informationen</translation>
     </message>
     <message id="contrac-info_main-text">
         <source>Contrac is now using Germany&apos;s official Corona-Warn-App servers for both downloading diagnosis keys from other users and uploading your diagnosis keys using a TeleTAN if your test results return positive.&lt;br/&gt;&lt;br/&gt;Sailfish OS users who downloaded the previous versions of the app have been testing it against the test servers made available by the Corona-Warn-App project. This doesn&apos;t guarantee the functionality will work correctly using the real servers and unfortunately there&apos;s no way to fully test this except to use the app.&lt;br/&gt;&lt;br/&gt;The Corona-Warn-App team can only support their official iOS and Android apps, so it&apos;s important to understand that if you use Contrac there is no guarantee it&apos;ll work as expected.&lt;br/&gt;&lt;br/&gt;If you do experience issues, or even if things work as expected, please do share your experiences.&lt;br/&gt;&lt;br/&gt;Thank you for trying the app!</source>
-        <oldsource>Contrac is now using Germany&apos;s official Corona-Warn-App servers for both downloading diagnosis keys from other users and uploading your diagnosis keys using a TeleTAN if your test results return positive.&lt;br/&gt;&lt;br/&gt;The functionality has been tested by the Sailfish OS users who downloaded previous versions against the test servers made available by the Corona-Warn-App project. This doesn&apos;t guarantee that the functionality will work using the real servers and unfortunately there is no way to properly test this except to use the app.&lt;br/&gt;&lt;br/&gt;The Corona-Warn-App team don&apos;t support anything other than the official iOS and Android apps, so it&apos;s important to understand that if you use this app, there is no guarantee that it will work as expected.&lt;br/&gt;&lt;br/&gt;If you do experience any issues, or even if things work as expected, please do share your experiences.&lt;br/&gt;&lt;br/&gt;Thank you for trying the app!</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Contrac nutzt nun Deutschlands offizielle Corona-Warn-App-Server, sowohl zum Herunterladen von Diagnose-Schlüsseln anderer Nutzer, als auch zum Hochladen Ihrer Diagnose-Schlüssel unter Nutzung einer TeleTAN, falls Sie positive Testergebnisse erhalten haben.&lt;br/&gt;&lt;br/&gt;Sailfish OS-Nutzer, die vorherige Versionen der App genutzt haben, haben diese gegenüber Test-Servern ausprobiert, die vom Corona-Warn-App-Projekt zur Verfügung gestellt wurden. Dies garantiert nicht, dass die Funktionen unter Nutzung der offiziellen Server korrekt arbeiten werden, leider gibt es keinen anderen Weg dies vollständig zu überprüfen, als die App zu benutzen.&lt;br/&gt;&lt;br/&gt;Das Corona-Warn-App-Team kann nur ihre offiziellen iOS- und Android-Apps unterstützen, es ist daher wichtig nachzuvollziehen, dass es bei Nutzung von Contrac keine Garantie gibt, dass sie wie erwartet funktioniert.&lt;br/&gt;&lt;br/&gt;Falls Sie Probleme bemerken, oder auch wenn alles problemlos funktioniert, teilen Sie bitte Ihre Erfahrungen mit.&lt;br/&gt;&lt;br/&gt;Vielen Dank fürs Ausprobieren der App!</translation>
     </message>
     <message id="contrac-info_configure-attenuation-calibration-values">
         <source>You should configure the Bluetooth attenuation calibration values before using this app. Please visit the Settings page to do this.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevor Sie diese App benutzen, sollten Sie die Bluetooth-spezifischen Dämpfungs-Kalibrierungsvariablen konfigurieren. Bitte besuchen Sie die &ldquo;Einstellungen&rdquo;-Seite, um dies vorzunehmen.</translation>
     </message>
     <message id="contrac-info_view-again">
         <source>You can view this page again by visiting the About page.</source>
-        <oldsource>You can view this page again by visiting the About page</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Sie können diese Seite erneut aufrufen, indem Sie die &ldquo;Über&rdquo;-Seite besuchen.</translation>
     </message>
 </context>
 </TS>
