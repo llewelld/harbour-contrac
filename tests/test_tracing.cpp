@@ -9,6 +9,7 @@
 #include "../contracd/src/exposurenotification_p.h"
 #include "../contracd/src/exposureconfiguration.h"
 #include "../contracd/proto/contrac.pb.h"
+#include "../src/downloadconfig.h"
 
 #include "test_tracing.h"
 
@@ -728,6 +729,10 @@ void Test_Tracing::testDiagnosis()
     diagnosis::TemporaryExposureKeyExport keyExport;
     result = ExposureNotificationPrivate::loadDiagnosisKeys("/usr/share/harbour-contrac-tests/sample_diagnosis_key_file.zip", &keyExport);
     QVERIFY(result);
+}
+
+void Test_Tracing::testDownloadConfig()
+{
 }
 
 QTEST_APPLESS_MAIN(Test_Tracing)

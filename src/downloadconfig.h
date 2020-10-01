@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include "riskscoreclass.h"
+
 class ServerAccess;
 class ExposureConfiguration;
 
@@ -45,6 +47,7 @@ signals:
     void statusChanged();
     void errorChanged();
     void configChanged();
+    void attenuationDurationConfigChanged();
 
 private slots:
     void setStatus(Status status);

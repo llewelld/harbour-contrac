@@ -27,6 +27,10 @@ ApplicationWindow
         updateFrequency: WallClock.Day
     }
 
+    RiskStatus {
+        id: riskStatus
+    }
+
     function moreThanADayAgo(latest) {
         var result = true
         if (!isNaN(latest)) {

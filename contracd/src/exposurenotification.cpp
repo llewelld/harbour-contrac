@@ -474,7 +474,7 @@ ExposureSummary ExposureNotification::getExposureSummary(QString const &token) c
     QList<ExposureInformation> exposureInfoList;
     ExposureSummary summary;
     quint64 mostRecent;
-    quint32 day;
+    quint32 daysAgo;
     qint32 maxRiskScore;
     qint32 summationRiskScore;
     QList<qint32> attenuationDurations = QList<qint32>({0, 0, 0});
@@ -498,10 +498,16 @@ ExposureSummary ExposureNotification::getExposureSummary(QString const &token) c
 
             summationRiskScore += exposure.totalRiskScore();
         }
-        day = static_cast<quint32>(mostRecent / (24 * 60 * 60 * 1000));
-        day += 12;
 
-        summary.setDaysSinceLastExposure(day);
+        if (mostRecent == 0) {
+            daysAgo = 0;
+        }
+        else {
+            qint64 daysDelta = (QDateTime::currentMSecsSinceEpoch() - qint64(mostRecent)) / (24 * 60 * 60 * 1000);
+            daysAgo = quint32(daysDelta);
+        }
+
+        summary.setDaysSinceLastExposure(daysAgo);
         summary.setMatchedKeyCount(static_cast<quint32>(exposureInfoList.count()));
         summary.setMaximumRiskScore(maxRiskScore);
         summary.setAttenuationDurations(attenuationDurations);

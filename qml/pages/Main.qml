@@ -9,14 +9,6 @@ Page {
 
     allowedOrientations: Orientation.All
 
-    function translateRiskScore(risk) {
-        if (risk < 15) {
-            return "Low"
-        } else {
-            return "Ligh"
-        }
-    }
-
     function performUpdate() {
         updatePending = false
         var filelist = download.fileList()
@@ -169,7 +161,7 @@ Page {
                         } else if (dbusproxy.isBusy) {
                             //% "Busy"
                             return qsTrId("contrac-main_la_status-busy")
-                        } else if (Settings.latestSummary.summationRiskScore >= 15) {
+                        } else if (riskStatus.riskClassIndex > 0) {
                             //% "At risk"
                             return qsTrId("contrac-main_la_status-daily-update-required")
                         } else if (downloadAvailable) {
@@ -200,7 +192,7 @@ Page {
                 x: Theme.horizontalPageMargin
                 //% "Risk status"
                 text: qsTrId("contrac-main_la_risk-status") + " : " + (!isNaN(Settings.summaryUpdated)
-                                                                       ? translateRiskScore(Settings.latestSummary.summationRiskScore)
+                                                                       ? riskStatus.riskClassLabel
                                                                          //% "Unknown"
                                                                        : qsTrId("contrac-main_la_risk-status-unknown"))
                 color: Theme.highlightColor

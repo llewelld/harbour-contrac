@@ -54,6 +54,8 @@ HEADERS += \
     contracd/src/temporaryexposurekey.h \
     contracd/src/exposureconfiguration.h \
     contracd/src/zipistreambuffer.h \
+    src/riskscoreclass.h \
+    src/riskstatus.h \
     src/serveraccess.h \
     src/settings.h \
     src/upload.h
@@ -72,6 +74,8 @@ SOURCES += \
     contracd/src/temporaryexposurekey.cpp \
     contracd/src/exposureconfiguration.cpp \
     contracd/src/zipistreambuffer.cpp \
+    src/riskscoreclass.cpp \
+    src/riskstatus.cpp \
     src/serveraccess.cpp \
     src/settings.cpp \
     src/upload.cpp

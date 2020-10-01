@@ -15,6 +15,7 @@
 #include "upload.h"
 #include "settings.h"
 #include "imageprovider.h"
+#include "riskstatus.h"
 
 #include <sailfishapp.h>
 
@@ -42,7 +43,9 @@ int main(int argc, char *argv[])
 
     // Needed for Settings save/load
     qRegisterMetaType<ExposureSummary>();
+    qRegisterMetaType<RiskScoreClass>();
     qRegisterMetaTypeStreamOperators<ExposureSummary>("ExposureSummary");
+    qRegisterMetaTypeStreamOperators<RiskScoreClass>("RiskScoreClass");
 
     Settings::instantiate(app);
 
@@ -54,6 +57,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Download>("uk.co.flypig.contrac", 1, 0, "Download");
     qmlRegisterType<Upload>("uk.co.flypig.contrac", 1, 0, "Upload");
     qmlRegisterType<DownloadConfig>("uk.co.flypig.contrac", 1, 0, "DownloadConfig");
+    qmlRegisterType<RiskStatus>("uk.co.flypig.contrac", 1, 0, "RiskStatus");
 
     qmlRegisterSingletonType<Settings>("uk.co.flypig.contrac", 1, 0, "Settings", Settings::provider);
 

@@ -6,7 +6,7 @@
 
 #include "settings.h"
 #include "serveraccess.h"
-#include "proto/applicationConfiguration.pb.h"
+#include "applicationConfiguration.pb.h"
 
 #include "downloadconfig.h"
 
@@ -175,8 +175,11 @@ bool DownloadConfig::loadConfig()
 
 void DownloadConfig::applyConfiguration(diagnosis::ApplicationConfiguration const &appConfig)
 {
+    bool sendAttenuationDurationConfigChanged = false;
+
     m_configuration->setMinimumRiskScore(appConfig.minriskscore());
     qDebug() << "Config min risk score: " << appConfig.minriskscore();
+    Settings &settings = Settings::getInstance();
 
     if (appConfig.has_exposureconfig()) {
         const ::diagnosis::RiskScoreParameters& params = appConfig.exposureconfig();
@@ -247,18 +250,61 @@ void DownloadConfig::applyConfiguration(diagnosis::ApplicationConfiguration cons
         m_configuration->setAttenuationWeight(params.attenuationweight());
         qDebug() << "Config attenuation weight:" << params.attenuationweight();
     }
+
     if (appConfig.has_attenuationduration()) {
-        const ::diagnosis::AttenuationDuration& attenuation = appConfig.attenuationduration();
+        const ::diagnosis::AttenuationDuration &attenuation = appConfig.attenuationduration();
         QList<qint32> thresholds;
         thresholds.append(attenuation.thresholds().lower());
         thresholds.append(attenuation.thresholds().upper());
         m_configuration->setDurationAtAttenuationThresholds(thresholds);
         qDebug() << "Config attentuation duration thresholds:" << thresholds;
+
+        if (attenuation.has_weights()) {
+
+            QList<double> riskWeights;
+            riskWeights.append(attenuation.weights().low());
+            riskWeights.append(attenuation.weights().mid());
+            riskWeights.append(attenuation.weights().high());
+
+            if (settings.riskWeights() != riskWeights) {
+                settings.setRiskWeights(riskWeights);
+                sendAttenuationDurationConfigChanged = true;
+            }
+
+            qDebug() << "Config attentuation duration risk weights:" << settings.riskWeights();
+        }
+        if (settings.defaultBuckeOffset() != attenuation.defaultbucketoffset()) {
+            settings.setDefaultBuckeOffset(attenuation.defaultbucketoffset());
+            sendAttenuationDurationConfigChanged = true;
+        }
+        if (settings.normalizationDivisor() != attenuation.riskscorenormalizationdivisor()) {
+            settings.setNormalizationDivisor(attenuation.riskscorenormalizationdivisor());
+            sendAttenuationDurationConfigChanged = true;
+        }
     }
+
+    if (appConfig.has_riskscoreclasses()) {
+        QList<RiskScoreClass> riskScoreClasses;
+        const ::diagnosis::RiskScoreClassification &riskScores = appConfig.riskscoreclasses();
+
+        for (int pos = 0; pos < riskScores.risk_classes_size(); ++pos) {
+            RiskScoreClass riskScoreClass(riskScores.risk_classes(pos));
+            riskScoreClasses.append(riskScoreClass);
+        }
+
+        if (settings.riskScoreClasses() != riskScoreClasses) {
+            settings.setRiskScoreClasses(riskScoreClasses);
+            sendAttenuationDurationConfigChanged = true;
+        }
+    }
+
+    if (sendAttenuationDurationConfigChanged) {
+        emit attenuationDurationConfigChanged();
+    }
+
 }
 
 ExposureConfiguration const *DownloadConfig::config() const
 {
     return m_configuration;
 }
-

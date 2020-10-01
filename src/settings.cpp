@@ -20,6 +20,23 @@ Settings::Settings(QObject *parent) : QObject(parent),
     m_summaryUpdated = m_settings.value(QStringLiteral("update/date"), QDateTime()).toDateTime();
     m_infoViewed = m_settings.value(QStringLiteral("application/infoViewed"), 0).toUInt();
 
+    // Set
+    m_riskWeights.append(m_settings.value(QStringLiteral("combinedRisk/riskWeightLow"), 1.0).toDouble());
+    m_riskWeights.append(m_settings.value(QStringLiteral("combinedRisk/riskWeightMid"), 1.0).toDouble());
+    m_riskWeights.append(m_settings.value(QStringLiteral("combinedRisk/riskWeightHigh"), 1.0).toDouble());
+
+    m_defaultBuckeOffset = m_settings.value(QStringLiteral("combinedRisk/defaultBuckeOffset"), 0.0).toInt();
+    m_normalizationDivisor = m_settings.value(QStringLiteral("combinedRisk/normalizationDivisor"), 1.0).toInt();
+
+    m_riskScoreClasses.clear();
+    int size = m_settings.beginReadArray(QStringLiteral("combinedRisk/riskScoreClasses"));
+    for (int pos = 0; pos < size; ++pos) {
+        m_settings.setArrayIndex(pos);
+        RiskScoreClass riskScoreClass = m_settings.value(QStringLiteral("class")).value<RiskScoreClass>();
+        m_riskScoreClasses.append(riskScoreClass);
+    }
+    m_settings.endArray();
+
     // Figure out where we're going to find our images
     QScopedPointer<MGConfItem> ratioItem(new MGConfItem("/desktop/sailfish/silica/theme_pixel_ratio"));
     double pixelRatio = ratioItem->value(1.0).toDouble();
@@ -51,6 +68,23 @@ Settings::~Settings()
     m_settings.setValue(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(m_latestSummary));
     m_settings.setValue(QStringLiteral("update/date"), m_summaryUpdated);
     m_settings.setValue(QStringLiteral("application/infoViewed"), m_infoViewed);
+
+    // Store
+    while (m_riskWeights.size() < 3) {
+        m_riskWeights.append(1.0);
+    }
+    m_settings.setValue(QStringLiteral("combinedRisk/riskWeightLow"), m_riskWeights[0]);
+    m_settings.setValue(QStringLiteral("combinedRisk/riskWeightMid"), m_riskWeights[1]);
+    m_settings.setValue(QStringLiteral("combinedRisk/riskWeightHigh"), m_riskWeights[2]);
+    m_settings.setValue(QStringLiteral("combinedRisk/defaultBuckeOffset"), m_defaultBuckeOffset);
+    m_settings.setValue(QStringLiteral("combinedRisk/normalizationDivisor"), m_normalizationDivisor);
+
+    m_settings.beginWriteArray(QStringLiteral("combinedRisk/riskScoreClasses"), m_riskScoreClasses.size());
+    for (int pos = 0; pos < m_riskScoreClasses.size(); ++pos) {
+        m_settings.setArrayIndex(pos);
+        m_settings.setValue(QStringLiteral("class"), QVariant::fromValue<RiskScoreClass>(m_riskScoreClasses[pos]));
+    }
+    m_settings.endArray();
 
     qDebug() << "Deleted settings";
 }
@@ -213,4 +247,61 @@ bool Settings::upgradeToVersion1()
     success = (m_settings.status() == QSettings::NoError);
 
     return success;
+}
+
+QList<double> Settings::riskWeights() const
+{
+    return m_riskWeights;
+}
+
+void Settings::setRiskWeights(QList<double> riskWeights)
+{
+    if (riskWeights.length() == 3) {
+        if (m_riskWeights != riskWeights) {
+            m_riskWeights = riskWeights;
+            emit riskWeightsChanged();
+        }
+    }
+    else {
+        qDebug() << "Risk weights must come in threes, but there are only " << riskWeights.length();
+    }
+}
+
+qint32 Settings::defaultBuckeOffset() const
+{
+    return m_defaultBuckeOffset;
+}
+
+void Settings::setDefaultBuckeOffset(qint32 defaultBuckeOffset)
+{
+    if (m_defaultBuckeOffset != defaultBuckeOffset) {
+        m_defaultBuckeOffset = defaultBuckeOffset;
+        emit defaultBuckeOffsetChanged();
+    }
+}
+
+qint32 Settings::normalizationDivisor() const
+{
+    return m_normalizationDivisor;
+}
+
+void Settings::setNormalizationDivisor(qint32 normalizationDivisor)
+{
+    if (m_normalizationDivisor != normalizationDivisor) {
+        m_normalizationDivisor = normalizationDivisor;
+        emit normalizationDivisorChanged();
+    }
+}
+
+QList<RiskScoreClass> Settings::riskScoreClasses() const
+{
+    return m_riskScoreClasses;
+}
+
+void Settings::setRiskScoreClasses(QList<RiskScoreClass> riskScoreClasses)
+{
+    if (m_riskScoreClasses != riskScoreClasses) {
+        m_riskScoreClasses = riskScoreClasses;
+        emit riskScoreClassesChanged();
+    }
 }

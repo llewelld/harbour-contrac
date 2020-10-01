@@ -6,7 +6,7 @@
 
 #include <openssl/evp.h>
 
-#include "proto/submissionpayload.pb.h"
+#include "submissionpayload.pb.h"
 #include "settings.h"
 
 #include "upload.h"
