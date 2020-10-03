@@ -114,12 +114,13 @@ PKGCONFIG += \
     openssl \
     libxml-2.0 \
     libcurl \
-    protobuf-lite \
-    quazip
+    protobuf-lite
 
 DEFINES += LINUX
 
 QT += dbus
+
+LIBS += -lquazip
 
 OTHER_FILES += \
     version.pri \

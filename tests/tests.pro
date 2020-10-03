@@ -29,8 +29,9 @@ INCLUDEPATH += ../src/
 
 PKGCONFIG += \
     openssl \
-    protobuf-lite \
-    quazip
+    protobuf-lite
+
+LIBS += -lquazip
 
 SOURCES += \
     test_tracing.cpp
