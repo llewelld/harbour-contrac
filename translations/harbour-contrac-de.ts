@@ -301,11 +301,11 @@
     </message>
     <message id="contrac-info_configure-attenuation-calibration-values">
         <source>You should configure the Bluetooth attenuation calibration values before using this app. Please visit the Settings page to do this.</source>
-        <translation>Bevor Sie diese App benutzen, sollten Sie die Bluetooth-spezifischen Dämpfungs-Kalibrierungsvariablen konfigurieren. Bitte besuchen Sie die &ldquo;Einstellungen&rdquo;-Seite, um dies vorzunehmen.</translation>
+        <translation>Bevor Sie diese App benutzen, sollten Sie die Bluetooth-spezifischen Dämpfungs-Kalibrierungsvariablen konfigurieren. Bitte besuchen Sie die “Einstellungen”-Seite, um dies vorzunehmen.</translation>
     </message>
     <message id="contrac-info_view-again">
         <source>You can view this page again by visiting the About page.</source>
-        <translation>Sie können diese Seite erneut aufrufen, indem Sie die &ldquo;Über&rdquo;-Seite besuchen.</translation>
+        <translation>Sie können diese Seite erneut aufrufen, indem Sie die “Über”-Seite besuchen.</translation>
     </message>
 </context>
 </TS>
