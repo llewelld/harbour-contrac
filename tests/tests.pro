@@ -98,7 +98,7 @@ SOURCES += \
     ../contracd/src/zipistreambuffer.cpp \
     ../contracd/src/metadata.cpp
 
-INCLUDEPATH += $$OUT_PWD/../contracd/proto
+INCLUDEPATH += $$OUT_PWD/../contracd/proto $$OUT_PWD/../proto
 
 data.files = sample_diagnosis_key_file.zip
 data.path = /usr/share/$${PACKAGENAME}-tests
