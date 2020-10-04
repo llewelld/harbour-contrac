@@ -6,8 +6,8 @@
 
 #include <openssl/evp.h>
 
-#include "proto/submissionpayload.pb.h"
-#include "settings.h"
+#include "submissionpayload.pb.h"
+#include "appsettings.h"
 
 #include "upload.h"
 
@@ -46,7 +46,7 @@ void Upload::submitTeleTAN(QString const &teleTAN)
     if ((m_status == StatusSubmitTeleTAN) && (m_reply == nullptr)) {
         QNetworkRequest request;
 
-        request.setUrl(QUrl(Settings::getInstance().verificationServer() + "/version/v1/registrationToken"));
+        request.setUrl(QUrl(AppSettings::getInstance().verificationServer() + "/version/v1/registrationToken"));
         request.setRawHeader("accept", "*/*");
         request.setRawHeader("Content-Type", "application/json");
         request.setRawHeader("cwa-fake", "0");
@@ -114,7 +114,7 @@ void Upload::submitRegToken(QString const &regToken)
     if ((m_status == StatusSubmitRegToken) && (m_reply == nullptr)) {
         QNetworkRequest request;
 
-        request.setUrl(QUrl(Settings::getInstance().verificationServer() + "/version/v1/tan"));
+        request.setUrl(QUrl(AppSettings::getInstance().verificationServer() + "/version/v1/tan"));
         request.setRawHeader("accept", "*/*");
         request.setRawHeader("Content-Type", "application/json");
         request.setRawHeader("cwa-fake", "0");
@@ -212,7 +212,7 @@ void Upload::submitDiagnosisKeys(QString const &tan)
             QByteArray data = QByteArray::fromStdString(payload.SerializeAsString());
             qDebug() << "Upload size: " << data.length();
 
-            request.setUrl(QUrl(Settings::getInstance().uploadServer() + "/version/v1/diagnosis-keys"));
+            request.setUrl(QUrl(AppSettings::getInstance().uploadServer() + "/version/v1/diagnosis-keys"));
             request.setRawHeader("accept", "*/*");
             request.setRawHeader("Content-Type", "application/x-protobuf");
             request.setRawHeader("cwa-authorization", tan.toLatin1());

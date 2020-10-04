@@ -47,7 +47,7 @@ CoverBackground {
                 return Qt.resolvedUrl("image://contrac/cover-warning")
             } else if (download.status === Download.StatusError) {
                 return Qt.resolvedUrl("image://contrac/cover-warning")
-            } else if (Settings.latestSummary.summationRiskScore >= 15) {
+            } else if (riskStatus.riskClassIndex > 0) {
                 return Qt.resolvedUrl("image://contrac/cover-warning")
             } else if (downloadAvailable) {
                 return Qt.resolvedUrl("image://contrac/cover-unknown")
@@ -102,7 +102,7 @@ CoverBackground {
         enabled: downloadAvailable && !busy
 
         CoverAction {
-            iconSource: dbusproxy.isEnabled ? Settings.getImageUrl("cover-action-active") : Settings.getImageUrl("cover-action-inactive")
+            iconSource: dbusproxy.isEnabled ? AppSettings.getImageUrl("cover-action-active") : AppSettings.getImageUrl("cover-action-inactive")
             onTriggered: triggerEnabled()
         }
 
@@ -117,7 +117,7 @@ CoverBackground {
         enabled: !coverActionWithDownload.enabled
 
         CoverAction {
-            iconSource: dbusproxy.isEnabled ? Settings.getImageUrl("cover-action-active") : Settings.getImageUrl("cover-action-inactive")
+            iconSource: dbusproxy.isEnabled ? AppSettings.getImageUrl("cover-action-active") : AppSettings.getImageUrl("cover-action-inactive")
             onTriggered: triggerEnabled()
         }
     }

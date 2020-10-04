@@ -3,11 +3,11 @@
 
 #include <QQuickImageProvider>
 
-class Settings;
+class AppSettings;
 
 class ImageProvider : public QQuickImageProvider {
 public:
-    explicit ImageProvider(Settings const &settings);
+    explicit ImageProvider(AppSettings const &settings);
 
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
 private:

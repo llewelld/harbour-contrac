@@ -11,7 +11,6 @@ ExposureConfiguration::ExposureConfiguration(QObject *parent)
     , m_daysSinceLastExposureWeight(1.0)
     , m_durationWeight(1.0)
     , m_transmissionRiskWeight(1.0)
-    , m_durationAtAttenuationThresholds({8, 64})
 {
 }
 

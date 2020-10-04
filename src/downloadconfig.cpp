@@ -4,9 +4,9 @@
 #include "../contracd/src/exposureconfiguration.h"
 #include "../contracd/src/zipistreambuffer.h"
 
-#include "settings.h"
+#include "appsettings.h"
 #include "serveraccess.h"
-#include "proto/applicationConfiguration.pb.h"
+#include "applicationConfiguration.pb.h"
 
 #include "downloadconfig.h"
 
@@ -21,7 +21,7 @@ DownloadConfig::DownloadConfig(QObject *parent) : QObject(parent)
 {
     m_serverAccess->setId("accessKey1");
     m_serverAccess->setSecret("verySecretKey1");
-    m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
+    m_serverAccess->setBaseUrl(AppSettings::getInstance().downloadServer());
     m_serverAccess->setBucket("cwa");
 
     connect(m_configuration, &ExposureConfiguration::minimumRiskScoreChanged, this, &DownloadConfig::configChanged);
@@ -43,7 +43,7 @@ Q_INVOKABLE void DownloadConfig::downloadLatest()
     qDebug() << "Requesting configuration";
 
     if (!m_downloading) {
-        m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
+        m_serverAccess->setBaseUrl(AppSettings::getInstance().downloadServer());
         setStatus(StatusDownloading);
 
         QString key = "version/v1/configuration/country/DE/app_config";
@@ -175,8 +175,11 @@ bool DownloadConfig::loadConfig()
 
 void DownloadConfig::applyConfiguration(diagnosis::ApplicationConfiguration const &appConfig)
 {
+    bool sendAttenuationDurationConfigChanged = false;
+
     m_configuration->setMinimumRiskScore(appConfig.minriskscore());
     qDebug() << "Config min risk score: " << appConfig.minriskscore();
+    AppSettings &settings = AppSettings::getInstance();
 
     if (appConfig.has_exposureconfig()) {
         const ::diagnosis::RiskScoreParameters& params = appConfig.exposureconfig();
@@ -247,18 +250,61 @@ void DownloadConfig::applyConfiguration(diagnosis::ApplicationConfiguration cons
         m_configuration->setAttenuationWeight(params.attenuationweight());
         qDebug() << "Config attenuation weight:" << params.attenuationweight();
     }
+
     if (appConfig.has_attenuationduration()) {
-        const ::diagnosis::AttenuationDuration& attenuation = appConfig.attenuationduration();
+        const ::diagnosis::AttenuationDuration &attenuation = appConfig.attenuationduration();
         QList<qint32> thresholds;
         thresholds.append(attenuation.thresholds().lower());
         thresholds.append(attenuation.thresholds().upper());
         m_configuration->setDurationAtAttenuationThresholds(thresholds);
         qDebug() << "Config attentuation duration thresholds:" << thresholds;
+
+        if (attenuation.has_weights()) {
+
+            QList<double> riskWeights;
+            riskWeights.append(attenuation.weights().low());
+            riskWeights.append(attenuation.weights().mid());
+            riskWeights.append(attenuation.weights().high());
+
+            if (settings.riskWeights() != riskWeights) {
+                settings.setRiskWeights(riskWeights);
+                sendAttenuationDurationConfigChanged = true;
+            }
+
+            qDebug() << "Config attentuation duration risk weights:" << settings.riskWeights();
+        }
+        if (settings.defaultBuckeOffset() != attenuation.defaultbucketoffset()) {
+            settings.setDefaultBuckeOffset(attenuation.defaultbucketoffset());
+            sendAttenuationDurationConfigChanged = true;
+        }
+        if (settings.normalizationDivisor() != attenuation.riskscorenormalizationdivisor()) {
+            settings.setNormalizationDivisor(attenuation.riskscorenormalizationdivisor());
+            sendAttenuationDurationConfigChanged = true;
+        }
     }
+
+    if (appConfig.has_riskscoreclasses()) {
+        QList<RiskScoreClass> riskScoreClasses;
+        const ::diagnosis::RiskScoreClassification &riskScores = appConfig.riskscoreclasses();
+
+        for (int pos = 0; pos < riskScores.risk_classes_size(); ++pos) {
+            RiskScoreClass riskScoreClass(riskScores.risk_classes(pos));
+            riskScoreClasses.append(riskScoreClass);
+        }
+
+        if (settings.riskScoreClasses() != riskScoreClasses) {
+            settings.setRiskScoreClasses(riskScoreClasses);
+            sendAttenuationDurationConfigChanged = true;
+        }
+    }
+
+    if (sendAttenuationDurationConfigChanged) {
+        emit attenuationDurationConfigChanged();
+    }
+
 }
 
 ExposureConfiguration const *DownloadConfig::config() const
 {
     return m_configuration;
 }
-

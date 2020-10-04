@@ -12,6 +12,7 @@ class ExposureSummary : public QObject
     Q_PROPERTY(qint32 maximumRiskScore READ maximumRiskScore WRITE setMaximumRiskScore NOTIFY maximumRiskScoreChanged)
     Q_PROPERTY(QList<qint32> attenuationDurations READ attenuationDurations WRITE setAttenuationDurations NOTIFY attenuationDurationsChanged)
     Q_PROPERTY(qint32 summationRiskScore READ summationRiskScore WRITE setSummationRiskScore NOTIFY summationRiskScoreChanged)
+
 public:
     explicit ExposureSummary(QObject *parent = nullptr);
     ExposureSummary(ExposureSummary const &exposureSummary);

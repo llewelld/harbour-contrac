@@ -3,7 +3,7 @@
 #include <QDir>
 #include <QStandardPaths>
 
-#include "settings.h"
+#include "appsettings.h"
 #include "serveraccess.h"
 #include "downloadconfig.h"
 
@@ -110,7 +110,7 @@ Download::Download(QObject *parent) : QObject(parent)
 {
     m_serverAccess->setId("accessKey1");
     m_serverAccess->setSecret("verySecretKey1");
-    m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
+    m_serverAccess->setBaseUrl(AppSettings::getInstance().downloadServer());
     m_serverAccess->setBucket("cwa");
 
     // Read from the filesystem
@@ -154,7 +154,7 @@ void Download::configDownloadComplete(QString const &)
     case DownloadConfig::ErrorNone:
         qDebug() << "Requesting keys";
         setStatus(StatusDownloadingKeys);
-        m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
+        m_serverAccess->setBaseUrl(AppSettings::getInstance().downloadServer());
         startNextDateDownload();
         break;
     default:

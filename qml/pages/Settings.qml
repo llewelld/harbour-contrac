@@ -6,9 +6,9 @@ import uk.co.flypig.contrac 1.0
 Page {
     id: settingsPage
 
-    Binding { target: Settings; property: "downloadServer"; value: downloadServerEntry.text }
-    Binding { target: Settings; property: "uploadServer"; value: uploadServerEntry.text }
-    Binding { target: Settings; property: "verificationServer"; value: verificationServerEntry.text }
+    Binding { target: AppSettings; property: "downloadServer"; value: downloadServerEntry.text }
+    Binding { target: AppSettings; property: "uploadServer"; value: uploadServerEntry.text }
+    Binding { target: AppSettings; property: "verificationServer"; value: verificationServerEntry.text }
     Binding { target: dbusproxy; property: "txPower"; value: txPowerEntry.text }
     Binding { target: dbusproxy; property: "rssiCorrection"; value: rssiCorrectionEntry.text }
 
@@ -42,7 +42,7 @@ Page {
                 label: qsTrId("contrac-settings_tf_download_server")
                 placeholderText: label
                 width: parent.width
-                text: Settings.downloadServer
+                text: AppSettings.downloadServer
                 inputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
                 EnterKey.onClicked: uploadServerEntry.focus = true
@@ -54,7 +54,7 @@ Page {
                 label: qsTrId("contrac-settings_tf_upload_server")
                 placeholderText: label
                 width: parent.width
-                text: Settings.uploadServer
+                text: AppSettings.uploadServer
                 inputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
                 EnterKey.onClicked: verificationServerEntry.focus = true
@@ -66,7 +66,7 @@ Page {
                 label: qsTrId("contrac-settings_tf_verification_server")
                 placeholderText: label
                 width: parent.width
-                text: Settings.verificationServer
+                text: AppSettings.verificationServer
                 inputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
                 EnterKey.onClicked: txPowerEntry.focus = true

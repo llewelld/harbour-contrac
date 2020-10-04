@@ -9,6 +9,8 @@
 #include "../contracd/src/exposurenotification_p.h"
 #include "../contracd/src/exposureconfiguration.h"
 #include "../contracd/proto/contrac.pb.h"
+#include "../src/appsettings.h"
+#include "../src/riskstatus.h"
 
 #include "test_tracing.h"
 
@@ -66,11 +68,18 @@ Test_Tracing::Test_Tracing(QObject *parent) : QObject(parent)
     QCoreApplication::setOrganizationDomain("www.flypig.co.uk");
     QCoreApplication::setOrganizationName("harbour-contrac");
     QCoreApplication::setApplicationName("harbour-contrac-tests");
+
+    // Needed for Settings save/load
+    qRegisterMetaType<ExposureSummary>();
+    qRegisterMetaType<RiskScoreClass>();
+    qRegisterMetaTypeStreamOperators<ExposureSummary>("ExposureSummary");
+    qRegisterMetaTypeStreamOperators<RiskScoreClass>("RiskScoreClass");
 }
 
 void Test_Tracing::init()
 {
     Settings::instantiate(this);
+    AppSettings::instantiate(this);
 }
 
 void Test_Tracing::cleanup()
@@ -79,6 +88,8 @@ void Test_Tracing::cleanup()
 
     Settings &settings = Settings::getInstance();
     delete &settings;
+    AppSettings &appSettings = AppSettings::getInstance();
+    delete &appSettings;
     QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
     qDebug() << "Removing folder" << folder;
     QDir dir(folder);
@@ -728,6 +739,120 @@ void Test_Tracing::testDiagnosis()
     diagnosis::TemporaryExposureKeyExport keyExport;
     result = ExposureNotificationPrivate::loadDiagnosisKeys("/usr/share/harbour-contrac-tests/sample_diagnosis_key_file.zip", &keyExport);
     QVERIFY(result);
+}
+
+void Test_Tracing::testCombinedRiskScore()
+{
+    RiskStatus riskStatus;
+    AppSettings &settings = AppSettings::getInstance();
+
+    QList<double> riskWeights;
+    QList<RiskScoreClass> riskScoreClasses;
+    RiskScoreClass riskScoreClass;
+    ExposureSummary exposureSummary;
+    QList<qint32> attenuationDurations;
+
+    // For the calculation see
+    // https://github.com/corona-warn-app/cwa-documentation/blob/master/solution_architecture.md#user-content-risk-score-calculation
+
+    // Default values, no exposure events
+    // ((0 * 1.0) + (0 * 0.5) + (0 * 0.0) + 0) * (25 / 25) = 0
+    // Index 0 (Low) since 0 \in [0, 15), 0 \not\in [15, 72)
+    riskWeights.clear();
+    riskWeights.append(1.0);
+    riskWeights.append(0.5);
+    riskWeights.append(0.0);
+    settings.setRiskWeights(riskWeights);
+    settings.setDefaultBuckeOffset(0.0);
+    settings.setNormalizationDivisor(25);
+    riskScoreClasses.clear();
+    riskScoreClass.setLabel("LOW");
+    riskScoreClass.setMin(0);
+    riskScoreClass.setMax(15);
+    riskScoreClasses.append(riskScoreClass);
+    riskScoreClass.setLabel("HIGH");
+    riskScoreClass.setMin(15);
+    riskScoreClass.setMax(72);
+    riskScoreClasses.append(riskScoreClass);
+    settings.setRiskScoreClasses(riskScoreClasses);
+
+    exposureSummary.setMaximumRiskScore(25);
+    attenuationDurations.clear();
+    attenuationDurations.append(0);
+    attenuationDurations.append(0);
+    attenuationDurations.append(0);
+    exposureSummary.setAttenuationDurations(attenuationDurations);
+    settings.setLatestSummary(&exposureSummary);
+
+    QCOMPARE(riskStatus.combinedRiskScore(), 0.0);
+    QCOMPARE(riskStatus.riskClassIndex(), 0);
+    QCOMPARE(riskStatus.riskClassLabel(), QStringLiteral("Low"));
+
+    // Default values, some plausible exposure events
+    // ((20 * 1.0) + (50 * 0.5) + (10 * 0.0) + 0) * (10 / 25) = 18
+    // Index 1 (High) since 18 \not\in [0, 15), 18 \in [15, 72)
+    riskWeights.clear();
+    riskWeights.append(1.0);
+    riskWeights.append(0.5);
+    riskWeights.append(0.0);
+    settings.setRiskWeights(riskWeights);
+    settings.setDefaultBuckeOffset(0.0);
+    settings.setNormalizationDivisor(25);
+    riskScoreClasses.clear();
+    riskScoreClass.setLabel("LOW");
+    riskScoreClass.setMin(0);
+    riskScoreClass.setMax(15);
+    riskScoreClasses.append(riskScoreClass);
+    riskScoreClass.setLabel("HIGH");
+    riskScoreClass.setMin(15);
+    riskScoreClass.setMax(72);
+    riskScoreClasses.append(riskScoreClass);
+    settings.setRiskScoreClasses(riskScoreClasses);
+
+    exposureSummary.setMaximumRiskScore(10);
+    attenuationDurations.clear();
+    attenuationDurations.append(20);
+    attenuationDurations.append(50);
+    attenuationDurations.append(10);
+    exposureSummary.setAttenuationDurations(attenuationDurations);
+    settings.setLatestSummary(&exposureSummary);
+
+    QCOMPARE(riskStatus.combinedRiskScore(), 18.0);
+    QCOMPARE(riskStatus.riskClassIndex(), 1);
+    QCOMPARE(riskStatus.riskClassLabel(), QStringLiteral("High"));
+
+    // Arbitrary values, some arbitrary exposure events
+    // ((5 * 7.0) + (11 * 3.0) + (13 * 2.0) + 5) * (2 / 18) = 11
+    // Index 1 (High) since 11 \not\in [0, 10), 11 \in [10, 20)
+    riskWeights.clear();
+    riskWeights.append(7.0);
+    riskWeights.append(3.0);
+    riskWeights.append(2.0);
+    settings.setRiskWeights(riskWeights);
+    settings.setDefaultBuckeOffset(5.0);
+    settings.setNormalizationDivisor(18);
+    riskScoreClasses.clear();
+    riskScoreClass.setLabel("LOW");
+    riskScoreClass.setMin(0);
+    riskScoreClass.setMax(10);
+    riskScoreClasses.append(riskScoreClass);
+    riskScoreClass.setLabel("HIGH");
+    riskScoreClass.setMin(10);
+    riskScoreClass.setMax(20);
+    riskScoreClasses.append(riskScoreClass);
+    settings.setRiskScoreClasses(riskScoreClasses);
+
+    exposureSummary.setMaximumRiskScore(2);
+    attenuationDurations.clear();
+    attenuationDurations.append(5);
+    attenuationDurations.append(11);
+    attenuationDurations.append(13);
+    exposureSummary.setAttenuationDurations(attenuationDurations);
+    settings.setLatestSummary(&exposureSummary);
+
+    QCOMPARE(riskStatus.combinedRiskScore(), 11.0);
+    QCOMPARE(riskStatus.riskClassIndex(), 1);
+    QCOMPARE(riskStatus.riskClassLabel(), QStringLiteral("High"));
 }
 
 QTEST_APPLESS_MAIN(Test_Tracing)

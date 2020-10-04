@@ -4,11 +4,11 @@
 #include <QColor>
 #include <QDebug>
 
-#include "settings.h"
+#include "appsettings.h"
 
 #include "imageprovider.h"
 
-ImageProvider::ImageProvider(Settings const &settings)
+ImageProvider::ImageProvider(AppSettings const &settings)
     : QQuickImageProvider(QQuickImageProvider::Pixmap)
     , m_imageDir(settings.getImageDir())
 {

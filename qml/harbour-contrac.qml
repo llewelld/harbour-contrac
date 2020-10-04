@@ -6,7 +6,7 @@ import "pages"
 
 ApplicationWindow
 {
-    readonly property bool downloadAvailable: moreThanADayAgo(Settings.summaryUpdated)
+    readonly property bool downloadAvailable: moreThanADayAgo(AppSettings.summaryUpdated)
     property bool updating
     readonly property bool busy: upload.uploaindg || download.downloading || updating || dbusproxy.isBusy
 
@@ -25,6 +25,10 @@ ApplicationWindow
     WallClock {
         id: wallclock
         updateFrequency: WallClock.Day
+    }
+
+    RiskStatus {
+        id: riskStatus
     }
 
     function moreThanADayAgo(latest) {
