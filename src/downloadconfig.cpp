@@ -4,7 +4,7 @@
 #include "../contracd/src/exposureconfiguration.h"
 #include "../contracd/src/zipistreambuffer.h"
 
-#include "settings.h"
+#include "appsettings.h"
 #include "serveraccess.h"
 #include "applicationConfiguration.pb.h"
 
@@ -21,7 +21,7 @@ DownloadConfig::DownloadConfig(QObject *parent) : QObject(parent)
 {
     m_serverAccess->setId("accessKey1");
     m_serverAccess->setSecret("verySecretKey1");
-    m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
+    m_serverAccess->setBaseUrl(AppSettings::getInstance().downloadServer());
     m_serverAccess->setBucket("cwa");
 
     connect(m_configuration, &ExposureConfiguration::minimumRiskScoreChanged, this, &DownloadConfig::configChanged);
@@ -43,7 +43,7 @@ Q_INVOKABLE void DownloadConfig::downloadLatest()
     qDebug() << "Requesting configuration";
 
     if (!m_downloading) {
-        m_serverAccess->setBaseUrl(Settings::getInstance().downloadServer());
+        m_serverAccess->setBaseUrl(AppSettings::getInstance().downloadServer());
         setStatus(StatusDownloading);
 
         QString key = "version/v1/configuration/country/DE/app_config";
@@ -179,7 +179,7 @@ void DownloadConfig::applyConfiguration(diagnosis::ApplicationConfiguration cons
 
     m_configuration->setMinimumRiskScore(appConfig.minriskscore());
     qDebug() << "Config min risk score: " << appConfig.minriskscore();
-    Settings &settings = Settings::getInstance();
+    AppSettings &settings = AppSettings::getInstance();
 
     if (appConfig.has_exposureconfig()) {
         const ::diagnosis::RiskScoreParameters& params = appConfig.exposureconfig();

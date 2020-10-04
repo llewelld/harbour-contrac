@@ -25,9 +25,10 @@ QMAKE_EXTRA_TARGETS = check
 check.depends = $$TARGET
 check.commands = LD_LIBRARY_PATH=../../lib ./$$TARGET
 
-INCLUDEPATH += ../src/
+INCLUDEPATH += ../src/ ./mock/
 
 PKGCONFIG += \
+    mlite5 \
     openssl \
     protobuf-lite \
     quazip
@@ -38,7 +39,11 @@ HEADERS += \
     test_tracing.h
 
 HEADERS += \
+    mock/sailfishapp.h \
     ../src/contactmodel.h \
+    ../src/appsettings.h \
+    ../src/riskstatus.h \
+    ../src/riskscoreclass.h \
     ../contracd/proto/contrac.pb.h \
     ../contracd/src/bleadvertisement.h \
     ../contracd/src/bleadvertisementmanager.h \
@@ -66,6 +71,9 @@ HEADERS += \
 
 SOURCES += \
     ../src/contactmodel.cpp \
+    ../src/appsettings.cpp \
+    ../src/riskstatus.cpp \
+    ../src/riskscoreclass.cpp \
     ../contracd/proto/contrac.pb.cc \
     ../contracd/src/bleadvertisement.cpp \
     ../contracd/src/bleadvertisementmanager.cpp \

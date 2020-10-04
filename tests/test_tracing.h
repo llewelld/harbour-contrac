@@ -21,7 +21,7 @@ private slots:
     void testStorage();
     void testMatch();
     void testDiagnosis();
-    void testDownloadConfig();
+    void testCombinedRiskScore();
 };
 
 #endif // TEST_STORAGE_H

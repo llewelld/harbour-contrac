@@ -13,7 +13,7 @@
 #include "download.h"
 #include "downloadconfig.h"
 #include "upload.h"
-#include "settings.h"
+#include "appsettings.h"
 #include "imageprovider.h"
 #include "riskstatus.h"
 
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     qRegisterMetaTypeStreamOperators<ExposureSummary>("ExposureSummary");
     qRegisterMetaTypeStreamOperators<RiskScoreClass>("RiskScoreClass");
 
-    Settings::instantiate(app);
+    AppSettings::instantiate(app);
 
     qmlRegisterType<DBusProxy>("uk.co.flypig.contrac", 1, 0, "DBusProxy");
     qmlRegisterType<TemporaryExposureKey>("uk.co.flypig.contrac", 1, 0, "TemporaryExposureKey");
@@ -59,11 +59,11 @@ int main(int argc, char *argv[])
     qmlRegisterType<DownloadConfig>("uk.co.flypig.contrac", 1, 0, "DownloadConfig");
     qmlRegisterType<RiskStatus>("uk.co.flypig.contrac", 1, 0, "RiskStatus");
 
-    qmlRegisterSingletonType<Settings>("uk.co.flypig.contrac", 1, 0, "Settings", Settings::provider);
+    qmlRegisterSingletonType<AppSettings>("uk.co.flypig.contrac", 1, 0, "AppSettings", AppSettings::provider);
 
     QQuickView *view = SailfishApp::createView();
     // The engine takes ownership of the ImageProvider
-    view->engine()->addImageProvider(QLatin1String("contrac"), new ImageProvider(Settings::getInstance()));
+    view->engine()->addImageProvider(QLatin1String("contrac"), new ImageProvider(AppSettings::getInstance()));
     view->setSource(SailfishApp::pathTo("qml/harbour-contrac.qml"));
     QQmlContext *ctxt = view->rootContext();
     ctxt->setContextProperty("version", VERSION);

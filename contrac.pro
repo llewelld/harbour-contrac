@@ -44,6 +44,7 @@ CONFIG += sailfishapp
 HEADERS += \
     proto/submissionpayload.pb.h \
     proto/applicationConfiguration.pb.h \
+    src/appsettings.h \
     src/dbusproxy.h \
     src/contactmodel.h \
     src/download.h \
@@ -57,12 +58,12 @@ HEADERS += \
     src/riskscoreclass.h \
     src/riskstatus.h \
     src/serveraccess.h \
-    src/settings.h \
     src/upload.h
 
 SOURCES += \
     proto/submissionpayload.pb.cc \
     proto/applicationConfiguration.pb.cc \
+    src/appsettings.cpp \
     src/downloadconfig.cpp \
     src/harbour-contrac.cpp \
     src/dbusproxy.cpp \
@@ -77,7 +78,6 @@ SOURCES += \
     src/riskscoreclass.cpp \
     src/riskstatus.cpp \
     src/serveraccess.cpp \
-    src/settings.cpp \
     src/upload.cpp
 
 DISTFILES += \

@@ -33,9 +33,9 @@ Page {
 
     onStatusChanged: {
         if (status === PageStatus.Active) {
-            if (Settings.infoViewed === 0) {
+            if (AppSettings.infoViewed === 0) {
                 pageStack.push(Qt.resolvedUrl("Info.qml"));
-                Settings.infoViewed = 1;
+                AppSettings.infoViewed = 1;
             }
             if (updatePending) {
                 performUpdate()
@@ -59,8 +59,8 @@ Page {
                     console.log("Matched key count: " + summary.matchedKeyCount)
                     console.log("Maximum risk score: " + summary.maximumRiskScore)
                     console.log("Summation risk score: " + summary.summationRiskScore)
-                    Settings.summaryUpdated = new Date()
-                    Settings.latestSummary = summary
+                    AppSettings.summaryUpdated = new Date()
+                    AppSettings.latestSummary = summary
                 }
             }
         }
@@ -121,7 +121,7 @@ Page {
                             return Qt.resolvedUrl("image://contrac/icon-s-warning")
                         } else if (download.status === Download.StatusError) {
                             return Qt.resolvedUrl("image://contrac/icon-s-warning")
-                        } else if (Settings.latestSummary.summationRiskScore >= 15) {
+                        } else if (AppSettings.latestSummary.summationRiskScore >= 15) {
                             return Qt.resolvedUrl("image://contrac/icon-s-warning")
                         } else if (downloadAvailable) {
                             return Qt.resolvedUrl("image://contrac/icon-s-unknown")
@@ -191,7 +191,7 @@ Page {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
                 //% "Risk status"
-                text: qsTrId("contrac-main_la_risk-status") + " : " + (!isNaN(Settings.summaryUpdated)
+                text: qsTrId("contrac-main_la_risk-status") + " : " + (!isNaN(AppSettings.summaryUpdated)
                                                                        ? riskStatus.riskClassLabel
                                                                          //% "Unknown"
                                                                        : qsTrId("contrac-main_la_risk-status-unknown"))
@@ -203,8 +203,8 @@ Page {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
                 //% "Latest update"
-                text: qsTrId("contrac-main_la_last-update") + " : " + (!isNaN(Settings.summaryUpdated)
-                                                                       ? Qt.formatDateTime(Settings.summaryUpdated, "d MMM yyyy, hh:mm")
+                text: qsTrId("contrac-main_la_last-update") + " : " + (!isNaN(AppSettings.summaryUpdated)
+                                                                       ? Qt.formatDateTime(AppSettings.summaryUpdated, "d MMM yyyy, hh:mm")
                                                                          //% "Never"
                                                                        : qsTrId("contrac-main_la_latest-update-never"))
                 color: Theme.highlightColor
@@ -215,8 +215,8 @@ Page {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
                 //% "Days since last exposure"
-                text: qsTrId("contrac-main_la_days-since-last-exposure") + " : " + (Settings.latestSummary.matchedKeyCount > 0
-                                                                                    ? Settings.latestSummary.daysSinceLastExposure
+                text: qsTrId("contrac-main_la_days-since-last-exposure") + " : " + (AppSettings.latestSummary.matchedKeyCount > 0
+                                                                                    ? AppSettings.latestSummary.daysSinceLastExposure
                                                                                       //% "None recorded"
                                                                                     : qsTrId("contrac-main_la_days-since-last-exposure-none"))
                 color: Theme.highlightColor
@@ -227,7 +227,7 @@ Page {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
                 //% "Number of matched keys"
-                text: qsTrId("contrac-main_la_matched-keys") + " : " + Settings.latestSummary.matchedKeyCount
+                text: qsTrId("contrac-main_la_matched-keys") + " : " + AppSettings.latestSummary.matchedKeyCount
                 color: Theme.highlightColor
                 wrapMode: Text.Wrap
             }

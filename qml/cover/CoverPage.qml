@@ -102,7 +102,7 @@ CoverBackground {
         enabled: downloadAvailable && !busy
 
         CoverAction {
-            iconSource: dbusproxy.isEnabled ? Settings.getImageUrl("cover-action-active") : Settings.getImageUrl("cover-action-inactive")
+            iconSource: dbusproxy.isEnabled ? AppSettings.getImageUrl("cover-action-active") : AppSettings.getImageUrl("cover-action-inactive")
             onTriggered: triggerEnabled()
         }
 
@@ -117,7 +117,7 @@ CoverBackground {
         enabled: !coverActionWithDownload.enabled
 
         CoverAction {
-            iconSource: dbusproxy.isEnabled ? Settings.getImageUrl("cover-action-active") : Settings.getImageUrl("cover-action-inactive")
+            iconSource: dbusproxy.isEnabled ? AppSettings.getImageUrl("cover-action-active") : AppSettings.getImageUrl("cover-action-inactive")
             onTriggered: triggerEnabled()
         }
     }

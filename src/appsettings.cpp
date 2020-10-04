@@ -4,13 +4,13 @@
 
 #include "../contracd/src/exposuresummary.h"
 
-#include "settings.h"
+#include "appsettings.h"
 
 #define SETTINGS_MAX_VERSION (1)
 
-Settings * Settings::instance = nullptr;
+AppSettings * AppSettings::instance = nullptr;
 
-Settings::Settings(QObject *parent) : QObject(parent),
+AppSettings::AppSettings(QObject *parent) : QObject(parent),
     m_settings(this)
 {
     m_downloadServer = m_settings.value(QStringLiteral("servers/downloadServer"), QStringLiteral("https://svc90.main.px.t-online.de")).toString();
@@ -60,7 +60,7 @@ Settings::Settings(QObject *parent) : QObject(parent),
     upgrade();
 }
 
-Settings::~Settings()
+AppSettings::~AppSettings()
 {
     m_settings.setValue(QStringLiteral("servers/downloadServer"), m_downloadServer);
     m_settings.setValue(QStringLiteral("servers/uploadServer"), m_uploadServer);
@@ -86,32 +86,33 @@ Settings::~Settings()
     }
     m_settings.endArray();
 
+    instance = nullptr;
     qDebug() << "Deleted settings";
 }
 
-void Settings::instantiate(QObject *parent) {
+void AppSettings::instantiate(QObject *parent) {
     if (instance == nullptr) {
-        instance = new Settings(parent);
+        instance = new AppSettings(parent);
     }
 }
 
-Settings & Settings::getInstance() {
+AppSettings & AppSettings::getInstance() {
     return *instance;
 }
 
-QObject * Settings::provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
+QObject * AppSettings::provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
 
     return instance;
 }
 
-QString Settings::downloadServer() const
+QString AppSettings::downloadServer() const
 {
     return m_downloadServer;
 }
 
-void Settings::setDownloadServer(QString const &downloadServer)
+void AppSettings::setDownloadServer(QString const &downloadServer)
 {
     if (m_downloadServer != downloadServer) {
         m_downloadServer = downloadServer;
@@ -119,12 +120,12 @@ void Settings::setDownloadServer(QString const &downloadServer)
     }
 }
 
-QString Settings::uploadServer() const
+QString AppSettings::uploadServer() const
 {
     return m_uploadServer;
 }
 
-void Settings::setUploadServer(QString const &uploadServer)
+void AppSettings::setUploadServer(QString const &uploadServer)
 {
     if (m_uploadServer != uploadServer) {
         m_uploadServer = uploadServer;
@@ -132,12 +133,12 @@ void Settings::setUploadServer(QString const &uploadServer)
     }
 }
 
-QString Settings::verificationServer() const
+QString AppSettings::verificationServer() const
 {
     return m_verificationServer;
 }
 
-void Settings::setVerificationServer(QString const &verificationServer)
+void AppSettings::setVerificationServer(QString const &verificationServer)
 {
     if (m_verificationServer != verificationServer) {
         m_verificationServer = verificationServer;
@@ -145,12 +146,12 @@ void Settings::setVerificationServer(QString const &verificationServer)
     }
 }
 
-ExposureSummary *Settings::latestSummary()
+ExposureSummary *AppSettings::latestSummary()
 {
     return &m_latestSummary;
 }
 
-void Settings::setLatestSummary(ExposureSummary const *latestSummary)
+void AppSettings::setLatestSummary(ExposureSummary const *latestSummary)
 {
     if (m_latestSummary != *latestSummary) {
         m_latestSummary = *latestSummary;
@@ -158,12 +159,12 @@ void Settings::setLatestSummary(ExposureSummary const *latestSummary)
     }
 }
 
-QDateTime Settings::summaryUpdated() const
+QDateTime AppSettings::summaryUpdated() const
 {
     return m_summaryUpdated;
 }
 
-void Settings::setSummaryUpdated(QDateTime summaryUpdated)
+void AppSettings::setSummaryUpdated(QDateTime summaryUpdated)
 {
     if (m_summaryUpdated != summaryUpdated) {
         m_summaryUpdated = summaryUpdated;
@@ -171,12 +172,12 @@ void Settings::setSummaryUpdated(QDateTime summaryUpdated)
     }
 }
 
-quint32 Settings::infoViewed() const
+quint32 AppSettings::infoViewed() const
 {
     return m_infoViewed;
 }
 
-void Settings::setInfoViewed(quint32 infoViewed)
+void AppSettings::setInfoViewed(quint32 infoViewed)
 {
     if (m_infoViewed != infoViewed) {
         m_infoViewed = infoViewed;
@@ -184,15 +185,15 @@ void Settings::setInfoViewed(quint32 infoViewed)
     }
 }
 
-QString Settings::getImageDir() const {
+QString AppSettings::getImageDir() const {
     return m_imageDir;
 }
 
-QString Settings::getImageUrl(QString const &id) const {
+QString AppSettings::getImageUrl(QString const &id) const {
     return m_imageDir + id + ".png";
 }
 
-bool Settings::upgrade()
+bool AppSettings::upgrade()
 {
     quint32 version;
     bool success = true;
@@ -228,7 +229,7 @@ bool Settings::upgrade()
     return success;
 }
 
-bool Settings::upgradeToVersion1()
+bool AppSettings::upgradeToVersion1()
 {
     bool success = true;
 
@@ -249,12 +250,12 @@ bool Settings::upgradeToVersion1()
     return success;
 }
 
-QList<double> Settings::riskWeights() const
+QList<double> AppSettings::riskWeights() const
 {
     return m_riskWeights;
 }
 
-void Settings::setRiskWeights(QList<double> riskWeights)
+void AppSettings::setRiskWeights(QList<double> riskWeights)
 {
     if (riskWeights.length() == 3) {
         if (m_riskWeights != riskWeights) {
@@ -267,12 +268,12 @@ void Settings::setRiskWeights(QList<double> riskWeights)
     }
 }
 
-qint32 Settings::defaultBuckeOffset() const
+qint32 AppSettings::defaultBuckeOffset() const
 {
     return m_defaultBuckeOffset;
 }
 
-void Settings::setDefaultBuckeOffset(qint32 defaultBuckeOffset)
+void AppSettings::setDefaultBuckeOffset(qint32 defaultBuckeOffset)
 {
     if (m_defaultBuckeOffset != defaultBuckeOffset) {
         m_defaultBuckeOffset = defaultBuckeOffset;
@@ -280,12 +281,12 @@ void Settings::setDefaultBuckeOffset(qint32 defaultBuckeOffset)
     }
 }
 
-qint32 Settings::normalizationDivisor() const
+qint32 AppSettings::normalizationDivisor() const
 {
     return m_normalizationDivisor;
 }
 
-void Settings::setNormalizationDivisor(qint32 normalizationDivisor)
+void AppSettings::setNormalizationDivisor(qint32 normalizationDivisor)
 {
     if (m_normalizationDivisor != normalizationDivisor) {
         m_normalizationDivisor = normalizationDivisor;
@@ -293,12 +294,12 @@ void Settings::setNormalizationDivisor(qint32 normalizationDivisor)
     }
 }
 
-QList<RiskScoreClass> Settings::riskScoreClasses() const
+QList<RiskScoreClass> AppSettings::riskScoreClasses() const
 {
     return m_riskScoreClasses;
 }
 
-void Settings::setRiskScoreClasses(QList<RiskScoreClass> riskScoreClasses)
+void AppSettings::setRiskScoreClasses(QList<RiskScoreClass> riskScoreClasses)
 {
     if (m_riskScoreClasses != riskScoreClasses) {
         m_riskScoreClasses = riskScoreClasses;

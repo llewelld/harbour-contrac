@@ -1,5 +1,5 @@
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef APPSETTINGS_H
+#define APPSETTINGS_H
 
 #include <QObject>
 #include <QSettings>
@@ -11,7 +11,7 @@
 class QQmlEngine;
 class QJSEngine;
 
-class Settings : public QObject
+class AppSettings : public QObject
 {
     Q_OBJECT
 
@@ -30,11 +30,11 @@ class Settings : public QObject
     Q_PROPERTY(QList<RiskScoreClass> riskScoreClasses READ riskScoreClasses WRITE setRiskScoreClasses NOTIFY riskScoreClassesChanged)
 
 public:
-    explicit Settings(QObject *parent = nullptr);
-    ~Settings();
+    explicit AppSettings(QObject *parent = nullptr);
+    ~AppSettings();
 
     static void instantiate(QObject *parent = nullptr);
-    static Settings & getInstance();
+    static AppSettings & getInstance();
     static QObject * provider(QQmlEngine *engine, QJSEngine *scriptEngine);
 
     Q_INVOKABLE QString downloadServer() const;
@@ -81,7 +81,7 @@ private:
     bool upgradeToVersion1();
 
 private:
-    static Settings * instance;
+    static AppSettings * instance;
     QSettings m_settings;
 
     QString m_downloadServer;
@@ -97,4 +97,4 @@ private:
     QList<RiskScoreClass> m_riskScoreClasses;
 };
 
-#endif // SETTINGS_H
+#endif // APPSETTINGS_H
