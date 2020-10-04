@@ -12,6 +12,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Oct 4 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.7.2-1
+- Attempt to download data only from last 14 days (to avoid an error from day 15).
+
 * Sun Oct 4 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.7.1-1
 - Updates the Chinese translations, thanks to dashinfantry.
 - Updates the German translations, thanks to spodermenpls.
