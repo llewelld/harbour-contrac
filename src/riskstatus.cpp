@@ -16,6 +16,10 @@ RiskStatus::RiskStatus(QObject *parent)
     connect(&settings, &AppSettings::normalizationDivisorChanged, this, &RiskStatus::recalculate);
     connect(&settings, &AppSettings::riskScoreClassesChanged, this, &RiskStatus::recalculate);
     connect(&settings, &AppSettings::latestSummaryChanged, this, &RiskStatus::updateExposureSummary);
+
+    m_maximumRiskScore = settings.latestSummary()->maximumRiskScore();
+    m_attenuationDurations = settings.latestSummary()->attenuationDurations();
+    m_combinedRiskScore = calculateRisk(m_maximumRiskScore, m_attenuationDurations);
 }
 
 void RiskStatus::recalculate()
