@@ -211,6 +211,7 @@ void ServerListResult::onFinished()
     }
     else {
         qDebug() << "Error: " << m_reply->error();
+        result = false;
     }
 
     if (result) {

@@ -9,8 +9,8 @@
 
 #include "download.h"
 
-#define DAYS_START_OFFSET (-15)
-#define DAYS_TO_DOWNLOAD (14)
+#define DAYS_START_OFFSET (-14)
+#define DAYS_TO_DOWNLOAD (13)
 
 namespace {
 
