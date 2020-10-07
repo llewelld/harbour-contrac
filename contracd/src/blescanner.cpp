@@ -168,12 +168,12 @@ void BleScanner::startDiscovery()
 
 void BleScanner::removeDiscoveryFilter()
 {
-    if (m_filteringSupported) {
-        qDebug() << "Removing discovery filter";
+    qDebug() << "Removing discovery filter";
+    m_scanState = RemovingFilter;
 
+    if (m_filteringSupported) {
         QDBusPendingCall async = m_adapterInterface->asyncCall("SetDiscoveryFilter", QVariantMap());
 
-        m_scanState = RemovingFilter;
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
 
         connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher* call) {
