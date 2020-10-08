@@ -93,15 +93,16 @@ void BleScanner::applyDiscoveryFilter()
 {
     QVariantMap filter;
 
+    qDebug() << "Setting up discovery filter";
+    m_scanState = ApplyingFilter;
+
     if (m_filteringSupported) {
-        qDebug() << "Setting up discovery filter";
 
         filter.insert("UUIDs", QStringList("0000fd6f-0000-1000-8000-00805f9b34fb"));
         filter.insert("Transport", "le");
 
         QDBusPendingCall async = m_adapterInterface->asyncCall("SetDiscoveryFilter", filter);
 
-        m_scanState = ApplyingFilter;
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
 
         connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher* call) {
