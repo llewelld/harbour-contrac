@@ -12,6 +12,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Thu Oct 8 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.7.3-1
+- Fix BLE state machine to allow graceful shutdown when filtering isn't supported.
+
 * Sun Oct 4 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.7.2-1
 - Attempt to download data only from last 14 days (to avoid an error from day 15).
 
