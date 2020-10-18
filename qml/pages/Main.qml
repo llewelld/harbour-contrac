@@ -287,6 +287,11 @@ Page {
                     pageStack.push(Qt.resolvedUrl("DownloadInfo.qml"))
                 }
             }
+
+            Item {
+                height: Theme.paddingLarge
+                width: 1
+            }
         }
     }
 }
