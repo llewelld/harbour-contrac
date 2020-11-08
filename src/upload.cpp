@@ -355,13 +355,21 @@ bool Upload::validateTeleTAN(QString const &teleTAN) const
         char hash[EVP_MAX_MD_SIZE];
         unsigned int hashLength;
 
+#ifdef OPENSSL_GE_1_1_1
+        context = EVP_MD_CTX_new();
+#else // OPENSSL_GE_1_1_1
         context = EVP_MD_CTX_create();
+#endif // OPENSSL_GE_1_1_1
         EVP_DigestInit_ex(context, EVP_sha256(), nullptr);
         data = teleTAN.left(length - 1).toLatin1();
         EVP_DigestUpdate(context, data.data(), static_cast<unsigned int>(data.length()));
 
         EVP_DigestFinal_ex(context, reinterpret_cast<unsigned char *>(hash), &hashLength);
+#ifdef OPENSSL_GE_1_1_1
+        EVP_MD_CTX_free(context);
+#else // OPENSSL_GE_1_1_1
         EVP_MD_CTX_destroy(context);
+#endif // OPENSSL_GE_1_1_1
 
         result = hashLength > 0;
 

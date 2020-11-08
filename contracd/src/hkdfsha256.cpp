@@ -19,11 +19,53 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
 #include <assert.h>
 
+#ifdef OPENSSL_GE_1_1_1
+#include <openssl/kdf.h>
+#else // OPENSSL_GE_1_1_1
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 #include <openssl/err.h>
+#endif // OPENSSL_GE_1_1_1
 
 #include "hkdfsha256.h"
+
+#ifdef OPENSSL_GE_1_1_1
+int HKDF(uint8_t *out_key, size_t out_len, const EVP_MD *digest,
+         const uint8_t *secret, size_t secret_len, const uint8_t *salt,
+         size_t salt_len, const uint8_t *info, size_t info_len) {
+    EVP_PKEY_CTX *context;
+    int result;
+
+    context = EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, nullptr);
+
+    result = EVP_PKEY_derive_init(context);
+
+    if (result == 1) {
+        result = EVP_PKEY_CTX_set_hkdf_md(context, digest);
+    }
+    if (result == 1) {
+        result = EVP_PKEY_CTX_set1_hkdf_salt(context, salt, salt_len);
+    }
+    if (result == 1) {
+        result = EVP_PKEY_CTX_set1_hkdf_key(context, secret, secret_len);
+    }
+    if (result == 1) {
+        result = EVP_PKEY_CTX_add1_hkdf_info(context, info, info_len);
+    }
+    if (result == 1) {
+        result = EVP_PKEY_derive(context, out_key, &out_len);
+    }
+
+    return result;
+}
+#else // OPENSSL_GE_1_1_1
+int HKDF_extract(uint8_t *out_key, size_t *out_len, const EVP_MD *digest,
+                 const uint8_t *secret, size_t secret_len, const uint8_t *salt,
+                 size_t salt_len);
+
+int HKDF_expand(uint8_t *out_key, size_t out_len, const EVP_MD *digest,
+                const uint8_t *prk, size_t prk_len, const uint8_t *info,
+                size_t info_len);
 
 int HKDF(uint8_t *out_key, size_t out_len, const EVP_MD *digest,
          const uint8_t *secret, size_t secret_len, const uint8_t *salt,
@@ -38,6 +80,7 @@ int HKDF(uint8_t *out_key, size_t out_len, const EVP_MD *digest,
   }
   return 1;
 }
+
 int HKDF_extract(uint8_t *out_key, size_t *out_len, const EVP_MD *digest,
                  const uint8_t *secret, size_t secret_len, const uint8_t *salt,
                  size_t salt_len) {
@@ -53,6 +96,7 @@ int HKDF_extract(uint8_t *out_key, size_t *out_len, const EVP_MD *digest,
   assert(*out_len == (size_t)EVP_MD_size(digest));
   return 1;
 }
+
 int HKDF_expand(uint8_t *out_key, size_t out_len, const EVP_MD *digest,
                 const uint8_t *prk, size_t prk_len, const uint8_t *info,
                 size_t info_len) {
@@ -100,3 +144,5 @@ out:
   }
   return ret;
 }
+
+#endif // OPENSSL_GE_1_1_1
