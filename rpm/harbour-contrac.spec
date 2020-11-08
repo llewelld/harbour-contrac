@@ -10,7 +10,7 @@ Name:       harbour-contrac
 
 Summary:    Contrac
 Version:    0.7.4
-Release:    1
+Release:    2
 Group:      Qt/Qt
 License:    LICENSE
 URL:        https://www.flypig.co.uk/contrac
