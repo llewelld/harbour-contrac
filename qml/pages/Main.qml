@@ -14,6 +14,7 @@ Page {
         var filelist = download.fileList()
         console.log("Files to check: " + filelist.length)
         updating = true
+
         dbusproxy.provideDiagnosisKeys(filelist, download.config, token)
     }
 
@@ -46,22 +47,20 @@ Page {
     Connections {
         target: dbusproxy
 
-        onProvideDiagnosisKeysResult: {
+        onActionExposureStateUpdated: {
             var summary
             if (token == page.token) {
                 updating = false;
 
-                if (status == DBusProxy.Success) {
-                    console.log("Exposure summary")
-                    summary = dbusproxy.getExposureSummary(token);
-                    console.log("Attenuation durations: " + summary.attenuationDurations)
-                    console.log("Days since last exposure: " + summary.daysSinceLastExposure)
-                    console.log("Matched key count: " + summary.matchedKeyCount)
-                    console.log("Maximum risk score: " + summary.maximumRiskScore)
-                    console.log("Summation risk score: " + summary.summationRiskScore)
-                    AppSettings.summaryUpdated = new Date()
-                    AppSettings.latestSummary = summary
-                }
+                console.log("Exposure summary")
+                summary = dbusproxy.getExposureSummary(token);
+                console.log("Attenuation durations: " + summary.attenuationDurations)
+                console.log("Days since last exposure: " + summary.daysSinceLastExposure)
+                console.log("Matched key count: " + summary.matchedKeyCount)
+                console.log("Maximum risk score: " + summary.maximumRiskScore)
+                console.log("Summation risk score: " + summary.summationRiskScore)
+                AppSettings.summaryUpdated = new Date()
+                AppSettings.latestSummary = summary
             }
         }
     }

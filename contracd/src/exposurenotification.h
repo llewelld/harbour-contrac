@@ -51,8 +51,8 @@ public:
     Q_INVOKABLE void stop();
     Q_INVOKABLE QList<TemporaryExposureKey> getTemporaryExposureKeyHistory();
     Q_INVOKABLE void provideDiagnosisKeys(QVector<QString> const &keyFiles, ExposureConfiguration const &configuration, QString token);
-    Q_INVOKABLE ExposureSummary getExposureSummary(QString const &token) const;
-    Q_INVOKABLE QList<ExposureInformation> getExposureInformation(QString const &token) const;
+    Q_INVOKABLE ExposureSummary getExposureSummary(QString const &token);
+    Q_INVOKABLE QList<ExposureInformation> getExposureInformation(QString const &token);
     Q_INVOKABLE quint32 getMaxDiagnosisKeys() const;
     Q_INVOKABLE void resetAllData();
 
@@ -63,6 +63,8 @@ signals:
 
     void beaconSent();
     void beaconReceived();
+
+    void actionExposureStateUpdated(QString token);
 
 public slots:
     void beaconDiscovered(const QString &address, const QByteArray &data, qint16 rssi);

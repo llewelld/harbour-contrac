@@ -63,11 +63,12 @@ HEADERS += \
     ../contracd/src/exposuresummary.h \
     ../contracd/src/fnv.h \
     ../contracd/src/hkdfsha256.h \
+    ../contracd/src/metadata.h \
+    ../contracd/src/providediagnostickeys.h \
     ../contracd/src/rpidataitem.h \
     ../contracd/src/settings.h \
     ../contracd/src/temporaryexposurekey.h \
-    ../contracd/src/zipistreambuffer.h \
-    ../contracd/src/metadata.h
+    ../contracd/src/zipistreambuffer.h
 
 SOURCES += \
     ../src/contactmodel.cpp \
@@ -92,11 +93,12 @@ SOURCES += \
     ../contracd/src/exposuresummary.cpp \
     ../contracd/src/fnv.cpp \
     ../contracd/src/hkdfsha256.cpp \
+    ../contracd/src/metadata.cpp \
+    ../contracd/src/providediagnostickeys.cpp \
     ../contracd/src/rpidataitem.cpp \
     ../contracd/src/settings.cpp \
     ../contracd/src/temporaryexposurekey.cpp \
-    ../contracd/src/zipistreambuffer.cpp \
-    ../contracd/src/metadata.cpp
+    ../contracd/src/zipistreambuffer.cpp
 
 INCLUDEPATH += $$OUT_PWD/../contracd/proto $$OUT_PWD/../proto
 

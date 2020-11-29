@@ -8,7 +8,7 @@
 #include "diagnosiskey.h"
 
 // Amount of data to store
-#define DAYS_TO_STORE (14u)
+#define DAYS_TO_STORE (15)
 
 class Contrac;
 class DayStorage;

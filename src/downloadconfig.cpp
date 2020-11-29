@@ -304,7 +304,7 @@ void DownloadConfig::applyConfiguration(diagnosis::ApplicationConfiguration cons
 
 }
 
-ExposureConfiguration const *DownloadConfig::config() const
+ExposureConfiguration *DownloadConfig::config() const
 {
     return m_configuration;
 }

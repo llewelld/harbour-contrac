@@ -39,7 +39,7 @@ public:
     bool downloading() const;
     Status status() const;
     ErrorType error() const;
-    ExposureConfiguration const *config() const;
+    ExposureConfiguration *config() const;
 
 signals:
     void downloadingChanged();

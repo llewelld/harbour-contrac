@@ -11,6 +11,7 @@
 #include "../contracd/proto/contrac.pb.h"
 #include "../src/appsettings.h"
 #include "../src/riskstatus.h"
+#include "../contracd/src/providediagnostickeys.h"
 
 #include "test_tracing.h"
 
@@ -468,7 +469,10 @@ void Test_Tracing::testMatchAggregation()
             }
         }
 
-        exposureInfoList = ExposureNotificationPrivate::aggregateExposureData(diagnosis.second, configuration, matches, 0);
+        QString token;
+        ProvideDiagnosticKeys provideDiagnosticKeys(nullptr, QVector<QString>(), ExposureConfiguration(), token, 5);
+
+        exposureInfoList = provideDiagnosticKeys.aggregateExposureData(diagnosis.second, configuration, matches, 0);
         for (ExposureInformation exposureInfo : exposureInfoList) {
             bool match = false;
             int checkPos;
@@ -614,16 +618,16 @@ void Test_Tracing::testStorage()
 
     // Files will be harvested down to the last DAYS_TO_STORE (which should be at least 14)
     QVERIFY(DAYS_TO_STORE >= 14u);
-    QCOMPARE(countDataFiles(), DAYS_TO_STORE);
-    QCOMPARE(countBloomFiles(), DAYS_TO_STORE);
+    QCOMPARE(countDataFiles(), quint32(DAYS_TO_STORE));
+    QCOMPARE(countBloomFiles(), quint32(DAYS_TO_STORE));
 
     storage = new ContactStorage(contrac);
     QVERIFY(storage != nullptr);
 
     storage->harvestOldData();
 
-    QCOMPARE(countDataFiles(), DAYS_TO_STORE);
-    QCOMPARE(countBloomFiles(), DAYS_TO_STORE);
+    QCOMPARE(countDataFiles(), quint32(DAYS_TO_STORE));
+    QCOMPARE(countBloomFiles(), quint32(DAYS_TO_STORE));
 
     // Clean up
     delete storage;

@@ -20,7 +20,7 @@ class Download : public QObject
     Q_PROPERTY(float progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(ErrorType error READ error NOTIFY errorChanged)
-    Q_PROPERTY(ExposureConfiguration config READ config NOTIFY configChanged)
+    Q_PROPERTY(ExposureConfiguration *config READ config NOTIFY configChanged)
 
 public:
     enum Status
@@ -46,7 +46,7 @@ public:
     Status status() const;
     ErrorType error() const;
     Q_INVOKABLE void clearError();
-    ExposureConfiguration const *config() const;
+    ExposureConfiguration *config() const;
 
 signals:
     void latestChanged();
