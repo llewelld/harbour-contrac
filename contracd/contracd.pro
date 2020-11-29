@@ -99,5 +99,4 @@ privilege.path = /usr/share/mapplauncherd/privileges.d/
 INSTALLS += \
     target \
     service \
-    privilege \
-
+    privilege
