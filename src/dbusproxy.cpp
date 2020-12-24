@@ -58,6 +58,9 @@ DBusProxy::DBusProxy(QObject *parent)
     signature = QStringLiteral("s");
     result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "actionExposureStateUpdated", this, SIGNAL(actionExposureStateUpdated(QString)));
     qDebug() << "Connection actionExposureStateUpdated result: " << result;
+
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "exposureStateChanged", this, SIGNAL(exposureStateChanged(QString)));
+    qDebug() << "Connection exposureStateChanged result: " << result;
 }
 
 DBusProxy::~DBusProxy()
@@ -130,8 +133,8 @@ quint32 DBusProxy::sentCount() const
 
 DBusProxy::Status DBusProxy::status() const
 {
-    QDBusReply<DBusProxy::Status> reply = m_interface->call("status");
-    return reply;
+    QDBusReply<qint32> reply = m_interface->call("status");
+    return DBusProxy::Status(reply.value());
 }
 
 bool DBusProxy::isEnabled() const
@@ -229,4 +232,10 @@ void DBusProxy::setRssiCorrection(qint32 rssiCorrection)
     if (reply.type() == QDBusMessage::ErrorMessage) {
         qDebug() << "DBus error setting rssiCorrection: " << reply.errorMessage();
     }
+}
+
+DBusProxy::ExposureState DBusProxy::exposureState(QString const &token)
+{
+    QDBusReply<qint32> reply = m_interface->call("exposureState", token);
+    return DBusProxy::ExposureState(reply.value());
 }

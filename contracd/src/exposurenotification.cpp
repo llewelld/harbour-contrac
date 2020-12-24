@@ -174,10 +174,30 @@ void ExposureNotification::provideDiagnosisKeys(QVector<QString> const &keyFiles
     // The actionExposureStateUpdated signal is sent out to the app when the process completes
     // The task is deleted automatically when the QRunnable completes
     ProvideDiagnosticKeys * task = new ProvideDiagnosticKeys(d, keyFiles, configuration, token, rssiCorrection);
+    connect(task, &ProvideDiagnosticKeys::terminating, d, &ExposureNotificationPrivate::taskTerminating);
     connect(task, &ProvideDiagnosticKeys::actionExposureStateUpdated, this, &ExposureNotification::actionExposureStateUpdated);
     connect(d, &ExposureNotificationPrivate::terminating, task, &ProvideDiagnosticKeys::requestTerminate, Qt::DirectConnection);
+    d->m_runningTasks.insert(token, task);
+    emit exposureStateChanged(token);
 
     QThreadPool::globalInstance()->start(task);
+}
+
+void ExposureNotificationPrivate::taskTerminating(QString const token)
+{
+    Q_Q(ExposureNotification);
+
+    m_runningTasks.remove(token);
+    emit q->exposureStateChanged(token);
+}
+
+ExposureNotification::ExposureState ExposureNotification::exposureState(QString const &token)
+{
+    Q_D(ExposureNotification);
+
+    qDebug() << "Running task check for " << token << ": " << d->m_runningTasks.contains(token);
+
+    return d->m_runningTasks.contains(token) ? Working : Idle;
 }
 
 bool ExposureNotificationPrivate::loadDiagnosisKeys(QString const &keyFile, diagnosis::TemporaryExposureKeyExport *keyExport)

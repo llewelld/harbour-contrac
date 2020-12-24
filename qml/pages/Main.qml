@@ -4,7 +4,6 @@ import uk.co.flypig.contrac 1.0
 
 Page {
     id: page
-    property string token: "abcdef"
     property bool updatePending
 
     allowedOrientations: Orientation.All
@@ -13,7 +12,6 @@ Page {
         updatePending = false
         var filelist = download.fileList()
         console.log("Files to check: " + filelist.length)
-        updating = true
 
         dbusproxy.provideDiagnosisKeys(filelist, download.config, token)
     }
@@ -47,13 +45,20 @@ Page {
     Connections {
         target: dbusproxy
 
-        onActionExposureStateUpdated: {
-            var summary
-            if (token == page.token) {
-                updating = false;
+        onExposureStateChanged: {
+            console.log("onExposureStateChanged token: " + token)
+            if (token === root.token) {
+                console.log("exposureState: " + dbusproxy.exposureState(token))
+                updating = (dbusproxy.exposureState(token) === DBusProxy.Working)
+                console.log("Updating: " + updating)
+            }
+        }
 
+        onActionExposureStateUpdated: {
+            console.log("onActionExposureStateUpdated token: " + token)
+            if (token === root.token) {
                 console.log("Exposure summary")
-                summary = dbusproxy.getExposureSummary(token);
+                var summary = dbusproxy.getExposureSummary(token)
                 console.log("Attenuation durations: " + summary.attenuationDurations)
                 console.log("Days since last exposure: " + summary.daysSinceLastExposure)
                 console.log("Matched key count: " + summary.matchedKeyCount)

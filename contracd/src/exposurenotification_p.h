@@ -14,6 +14,8 @@ namespace diagnosis {
 class TemporaryExposureKeyExport;
 } // namespace diagnosis
 
+class ProvideDiagnosticKeys;
+
 class ExposureNotificationPrivate : public QObject
 {
     Q_OBJECT
@@ -30,6 +32,7 @@ private:
 
 public slots:
     void scanChanged();
+    void taskTerminating(QString const token);
 
 signals:
     void terminating();
@@ -44,6 +47,7 @@ public:
     Metadata m_metadata;
     QTimer m_intervalUpdate;
     QMutex m_exposureMutex;
+    QMap<QString, ProvideDiagnosticKeys *> m_runningTasks;
 };
 
 #endif // EXPOSURENOTIFICATION_P_H

@@ -22,7 +22,6 @@ class ExposureNotificationPrivate;
 class ExposureNotification : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(Status)
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(bool isEnabled READ isEnabled NOTIFY isEnabledChanged)
     Q_PROPERTY(bool isBusy READ isBusy NOTIFY isBusyChanged)
@@ -41,6 +40,14 @@ public:
         FailedInsufficientStorage,
         FailedInternal
     };
+    Q_ENUM(Status)
+
+    enum ExposureState
+    {
+        Idle = 0,
+        Working
+    };
+    Q_ENUM(ExposureState)
 
     Status status() const;
     bool isEnabled() const;
@@ -55,6 +62,7 @@ public:
     Q_INVOKABLE QList<ExposureInformation> getExposureInformation(QString const &token);
     Q_INVOKABLE quint32 getMaxDiagnosisKeys() const;
     Q_INVOKABLE void resetAllData();
+    Q_INVOKABLE ExposureState exposureState(QString const &token);
 
 signals:
     void statusChanged();
@@ -64,7 +72,8 @@ signals:
     void beaconSent();
     void beaconReceived();
 
-    void actionExposureStateUpdated(QString token);
+    void actionExposureStateUpdated(QString const &token);
+    void exposureStateChanged(QString const &token);
 
 public slots:
     void beaconDiscovered(const QString &address, const QByteArray &data, qint16 rssi);

@@ -16,7 +16,6 @@ class QDBusInterface;
 class DBusProxy : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(Status)
 
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(bool isEnabled READ isEnabled NOTIFY isEnabledChanged)
@@ -43,6 +42,14 @@ public:
         FailedInsufficientStorage,
         FailedInternal
     };
+    Q_ENUM(Status)
+
+    enum ExposureState
+    {
+        Idle = 0,
+        Working
+    };
+    Q_ENUM(ExposureState)
 
     Status status() const;
     bool isEnabled() const;
@@ -57,6 +64,7 @@ public:
     Q_INVOKABLE void resetAllData();
 
     // Non-standard additions
+    Q_INVOKABLE ExposureState exposureState(QString const &token);
     quint32 receivedCount() const;
     quint32 sentCount() const;
     bool isBusy() const;
@@ -75,6 +83,7 @@ signals:
     void isBusyChanged();
     void txPowerChanged();
     void rssiCorrectionChanged();
+    void exposureStateChanged(QString const &token);
 
     // Async responses
     void actionExposureStateUpdated(QString token);

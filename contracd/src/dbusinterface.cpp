@@ -27,6 +27,7 @@ DBusInterface::DBusInterface(QObject *parent)
     connect(&m_exposureNotification, &ExposureNotification::beaconReceived, this, &DBusInterface::incrementReceiveCount);
     connect(&m_exposureNotification, &ExposureNotification::isBusyChanged, this, &DBusInterface::isBusyChanged);
     connect(&m_exposureNotification, &ExposureNotification::actionExposureStateUpdated, this, &DBusInterface::actionExposureStateUpdated);
+    connect(&m_exposureNotification, &ExposureNotification::exposureStateChanged, this, &DBusInterface::exposureStateChanged);
 
     connect(&settings, &Settings::txPowerChanged, this, &DBusInterface::txPowerChanged);
     connect(&settings, &Settings::rssiCorrectionChanged, this, &DBusInterface::rssiCorrectionChanged);
@@ -87,10 +88,10 @@ void DBusInterface::stop()
     m_exposureNotification.stop();
 }
 
-ExposureNotification::Status DBusInterface::status() const
+qint32 DBusInterface::status() const
 {
     qDebug() << "CONTRAC: statis()";
-    return m_exposureNotification.status();
+    return qint32(m_exposureNotification.status());
 }
 
 bool DBusInterface::isEnabled() const
@@ -209,5 +210,10 @@ void DBusInterface::setRssiCorrection(qint32 rssiCorrection)
 {
     rssiCorrection = qBound(INT8_MIN, rssiCorrection, INT8_MAX);
     Settings::getInstance().setRssiCorrection(qint8(rssiCorrection));
+}
+
+qint32 DBusInterface::exposureState(QString const token)
+{
+    return qint32(m_exposureNotification.exposureState(token));
 }
 

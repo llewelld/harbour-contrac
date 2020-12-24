@@ -6,9 +6,11 @@ import "pages"
 
 ApplicationWindow
 {
+    id: root
     readonly property bool downloadAvailable: moreThanADayAgo(AppSettings.summaryUpdated)
     property bool updating
-    readonly property bool busy: upload.uploaindg || download.downloading || updating || dbusproxy.isBusy
+    readonly property bool busy: upload.uploading || download.downloading || updating || dbusproxy.isBusy
+    readonly property string token: "abcdef"
 
     DBusProxy {
         id: dbusproxy
@@ -30,6 +32,8 @@ ApplicationWindow
     RiskStatus {
         id: riskStatus
     }
+
+    Component.onCompleted: updating = (dbusproxy.exposureState(token) === DBusProxy.Working)
 
     function moreThanADayAgo(latest) {
         var result = true

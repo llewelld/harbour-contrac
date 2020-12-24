@@ -28,7 +28,8 @@ public slots:
     void requestTerminate();
 
 signals:
-    void actionExposureStateUpdated(QString token);
+    void actionExposureStateUpdated(QString const token);
+    void terminating(QString const token);
 
 private:
     ExposureNotificationPrivate * m_d;

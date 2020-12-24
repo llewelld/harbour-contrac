@@ -287,6 +287,8 @@ void ProvideDiagnosticKeys::run()
         terminate = shouldTerminate();
     }
 
+    emit terminating(m_token);
+
     if (!terminate) {
         // Replace the previous values with the accumulated total
         m_d->m_exposureMutex.lock();
