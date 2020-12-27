@@ -216,6 +216,7 @@ ProvideDiagnosticKeys::ProvideDiagnosticKeys(ExposureNotificationPrivate * expos
     , m_terminate(false)
 {
     m_currentDayNumber = m_d->m_contrac->dayNumber();
+    m_startTime = QDateTime::currentDateTime();
 }
 
 void ProvideDiagnosticKeys::run()
@@ -223,16 +224,7 @@ void ProvideDiagnosticKeys::run()
     bool result;
     int pos;
     QList<DiagnosisKey> diagnosisKeys[DAYS_TO_STORE];
-    QList<ExposureInformation> exposureInfoList;
     bool terminate = false;
-
-    // Values will accumulate
-    // We assume the same keyFiles won't be provided more than once
-    m_d->m_exposureMutex.lock();
-    if (m_d->m_exposures.contains(m_token)) {
-        exposureInfoList = m_d->m_exposures.value(m_token);
-    }
-    m_d->m_exposureMutex.unlock();
 
     for (QVector<QString>::const_iterator iter = m_keyFiles.begin(); (iter != m_keyFiles.end()) && !terminate; ++iter) {
         QString const &file = *iter;
@@ -281,26 +273,13 @@ void ProvideDiagnosticKeys::run()
             terminate = shouldTerminate();
             if (!terminate) {
                 qDebug() << "Calling aggregateExposureData with" << matches.count() << "matches";
-                exposureInfoList.append(aggregateExposureData(dayNumber, m_configuration, matches, day));
+                m_exposureInfoList.append(aggregateExposureData(dayNumber, m_configuration, matches, day));
             }
         }
         terminate = shouldTerminate();
     }
 
-    emit terminating(m_token);
-
-    if (!terminate) {
-        // Replace the previous values with the accumulated total
-        m_d->m_exposureMutex.lock();
-        m_d->m_exposures.insert(m_token, exposureInfoList);
-        m_d->m_exposureMutex.unlock();
-
-        qDebug() << "Sending actionExposureStateUpdated signal";
-        emit actionExposureStateUpdated(m_token);
-    }
-    else {
-        qDebug() << "ProvideDiagnosticKeys calculation terminated early";
-    }
+    emit taskFinished(m_token);
 }
 
 bool ProvideDiagnosticKeys::shouldTerminate()
@@ -317,4 +296,14 @@ void ProvideDiagnosticKeys::requestTerminate()
     QMutexLocker locker(&m_terminateMutex);
 
     m_terminate = true;
+}
+
+QDateTime const ProvideDiagnosticKeys::startTime() const
+{
+    return m_startTime;
+}
+
+QList<ExposureInformation> const &ProvideDiagnosticKeys::exposureInfoList() const
+{
+    return m_exposureInfoList;
 }

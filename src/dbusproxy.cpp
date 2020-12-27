@@ -234,8 +234,15 @@ void DBusProxy::setRssiCorrection(qint32 rssiCorrection)
     }
 }
 
-DBusProxy::ExposureState DBusProxy::exposureState(QString const &token)
+DBusProxy::ExposureState DBusProxy::exposureState(QString const &token) const
 {
     QDBusReply<qint32> reply = m_interface->call("exposureState", token);
     return DBusProxy::ExposureState(reply.value());
 }
+
+QDateTime DBusProxy::lastProcessTime(QString const token) const
+{
+    QDBusReply<QDateTime> reply = m_interface->call("lastProcessTime", token);
+    return reply;
+}
+

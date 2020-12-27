@@ -33,7 +33,45 @@ ApplicationWindow
         id: riskStatus
     }
 
-    Component.onCompleted: updating = (dbusproxy.exposureState(token) === DBusProxy.Working)
+    function updateSummary() {
+        console.log("Exposure summary")
+        var summary = dbusproxy.getExposureSummary(token)
+        console.log("Attenuation durations: " + summary.attenuationDurations)
+        console.log("Days since last exposure: " + summary.daysSinceLastExposure)
+        console.log("Matched key count: " + summary.matchedKeyCount)
+        console.log("Maximum risk score: " + summary.maximumRiskScore)
+        console.log("Summation risk score: " + summary.summationRiskScore)
+        AppSettings.summaryUpdated = dbusproxy.lastProcessTime(token)
+        AppSettings.latestSummary = summary
+    }
+
+    Component.onCompleted: {
+        var exposureState = dbusproxy.exposureState(token)
+        updating = (exposureState === DBusProxy.Processing)
+        if (exposureState === DBusProxy.Available) {
+            if (dbusproxy.lastProcessTime(token) > AppSettings.summaryUpdated) {
+                // Summary data was processed while the app was closed
+                updateSummary()
+            }
+        }
+    }
+
+    Connections {
+        target: dbusproxy
+
+        onExposureStateChanged: {
+            if (token === root.token) {
+                updating = (dbusproxy.exposureState(token) === DBusProxy.Processing)
+            }
+        }
+
+        onActionExposureStateUpdated: {
+            if (token === root.token) {
+                // Summary data has been processed
+                updateSummary()
+            }
+        }
+    }
 
     function moreThanADayAgo(latest) {
         var result = true

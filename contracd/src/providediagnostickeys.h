@@ -5,6 +5,7 @@
 #include <QRunnable>
 #include <QVector>
 #include <QMutex>
+#include <QDateTime>
 
 #include "exposureinformation.h"
 #include "contactmatch.h"
@@ -23,13 +24,15 @@ public:
 
     bool shouldTerminate();
     QList<ExposureInformation> aggregateExposureData(quint32 dayNumber, ExposureConfiguration const &configuration, QList<ContactMatch> matches, qint32 const days_ago) const;
+    QDateTime const startTime() const;
+    QList<ExposureInformation> const &exposureInfoList() const;
 
 public slots:
     void requestTerminate();
 
 signals:
     void actionExposureStateUpdated(QString const token);
-    void terminating(QString const token);
+    void taskFinished(QString const token);
 
 private:
     ExposureNotificationPrivate * m_d;
@@ -40,6 +43,8 @@ private:
     qint8 m_rssiCorrection;
     QMutex m_terminateMutex;
     bool m_terminate;
+    QDateTime m_startTime;
+    QList<ExposureInformation> m_exposureInfoList;
 };
 
 #endif // PROVIDEDIAGNOSTICKEYS_H

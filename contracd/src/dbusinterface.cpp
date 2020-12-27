@@ -212,8 +212,12 @@ void DBusInterface::setRssiCorrection(qint32 rssiCorrection)
     Settings::getInstance().setRssiCorrection(qint8(rssiCorrection));
 }
 
-qint32 DBusInterface::exposureState(QString const token)
+qint32 DBusInterface::exposureState(QString const token) const
 {
     return qint32(m_exposureNotification.exposureState(token));
 }
 
+QDateTime DBusInterface::lastProcessTime(QString const token) const
+{
+    return m_exposureNotification.lastProcessTime(token);
+}

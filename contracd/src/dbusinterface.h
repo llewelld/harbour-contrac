@@ -43,7 +43,7 @@ public:
     Q_INVOKABLE void resetAllData();
 
     // Non-standard additions
-    Q_INVOKABLE qint32 exposureState(QString const token);
+    Q_INVOKABLE qint32 exposureState(QString const token) const;
     Q_INVOKABLE quint32 receivedCount() const;
     Q_INVOKABLE quint32 sentCount() const;
     Q_INVOKABLE bool isBusy() const;
@@ -51,6 +51,7 @@ public:
     Q_INVOKABLE qint32 rssiCorrection() const;
     Q_INVOKABLE void setTxPower(qint32 txPower);
     Q_INVOKABLE void setRssiCorrection(qint32 rssiCorrection);
+    Q_INVOKABLE QDateTime lastProcessTime(QString const token) const;
 
 signals:
     void statusChanged();

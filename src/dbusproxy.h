@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QDBusPendingCall>
+#include <QDateTime>
 
 #include "../contracd/src/exposuresummary.h"
 #include "../contracd/src/exposureinformation.h"
@@ -46,8 +47,9 @@ public:
 
     enum ExposureState
     {
-        Idle = 0,
-        Working
+        None = 0,
+        Processing,
+        Available
     };
     Q_ENUM(ExposureState)
 
@@ -64,7 +66,7 @@ public:
     Q_INVOKABLE void resetAllData();
 
     // Non-standard additions
-    Q_INVOKABLE ExposureState exposureState(QString const &token);
+    Q_INVOKABLE ExposureState exposureState(QString const &token) const;
     quint32 receivedCount() const;
     quint32 sentCount() const;
     bool isBusy() const;
@@ -72,6 +74,7 @@ public:
     qint32 rssiCorrection() const;
     void setTxPower(qint32 txPower);
     void setRssiCorrection(qint32 rssiCorrection);
+    Q_INVOKABLE QDateTime lastProcessTime(QString const token) const;
 
 signals:
     void statusChanged();

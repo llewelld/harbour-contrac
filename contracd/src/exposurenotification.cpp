@@ -170,11 +170,12 @@ void ExposureNotification::provideDiagnosisKeys(QVector<QString> const &keyFiles
     d->m_contrac->updateKeys();
     qint8 rssiCorrection = Settings::getInstance().rssiCorrection();
 
-    // This is a potentiallyl very long-running process, so we execute it in a background thread
+    // This is a potentially very long-running process, so we execute it in a background thread
     // The actionExposureStateUpdated signal is sent out to the app when the process completes
     // The task is deleted automatically when the QRunnable completes
     ProvideDiagnosticKeys * task = new ProvideDiagnosticKeys(d, keyFiles, configuration, token, rssiCorrection);
-    connect(task, &ProvideDiagnosticKeys::terminating, d, &ExposureNotificationPrivate::taskTerminating);
+    task->setAutoDelete(false);
+    connect(task, &ProvideDiagnosticKeys::taskFinished, d, &ExposureNotificationPrivate::taskFinished);
     connect(task, &ProvideDiagnosticKeys::actionExposureStateUpdated, this, &ExposureNotification::actionExposureStateUpdated);
     connect(d, &ExposureNotificationPrivate::terminating, task, &ProvideDiagnosticKeys::requestTerminate, Qt::DirectConnection);
     d->m_runningTasks.insert(token, task);
@@ -183,21 +184,54 @@ void ExposureNotification::provideDiagnosisKeys(QVector<QString> const &keyFiles
     QThreadPool::globalInstance()->start(task);
 }
 
-void ExposureNotificationPrivate::taskTerminating(QString const token)
+void ExposureNotificationPrivate::taskFinished(QString const token)
 {
     Q_Q(ExposureNotification);
 
+    ProvideDiagnosticKeys * task = m_runningTasks.value(token);
     m_runningTasks.remove(token);
+    Q_ASSERT(task);
+    // Update the newly processed data
+    if (!task->shouldTerminate()) {
+        qDebug() << "Diagnosis key processing completed successfully";
+        m_lastProcessTime.insert(token, task->startTime());
+
+        // Values will accumulate
+        // We assume the same keyFiles won't be provided more than once
+        QList<ExposureInformation> exposureInfoList = m_exposures.value(token);
+        exposureInfoList.append(task->exposureInfoList());
+        m_exposures.insert(token, exposureInfoList);
+    }
+    else {
+        qDebug() << "Diagnosis key processing terminated before completion";
+    }
+    // Delete the task
+    delete task;
+
+    qDebug() << "Sending actionExposureStateUpdated signal";
+    emit q->actionExposureStateUpdated(token);
     emit q->exposureStateChanged(token);
 }
 
-ExposureNotification::ExposureState ExposureNotification::exposureState(QString const &token)
+ExposureNotification::ExposureState ExposureNotification::exposureState(QString const &token) const
 {
-    Q_D(ExposureNotification);
+    Q_D(const ExposureNotification);
 
-    qDebug() << "Running task check for " << token << ": " << d->m_runningTasks.contains(token);
+    ExposureState state;
 
-    return d->m_runningTasks.contains(token) ? Working : Idle;
+    if (d->m_runningTasks.contains(token)) {
+        state = Processing;
+    }
+    else {
+        if (d->m_exposures.contains(token)) {
+            state = Available;
+        }
+        else {
+            state = None;
+        }
+    }
+
+    return state;
 }
 
 bool ExposureNotificationPrivate::loadDiagnosisKeys(QString const &keyFile, diagnosis::TemporaryExposureKeyExport *keyExport)
@@ -261,9 +295,9 @@ void ExposureNotificationPrivate::scanChanged()
     emit q->isEnabledChanged();
 }
 
-ExposureSummary ExposureNotification::getExposureSummary(QString const &token)
+ExposureSummary ExposureNotification::getExposureSummary(QString const &token) const
 {
-    Q_D(ExposureNotification);
+    Q_D(const ExposureNotification);
 
     QList<ExposureInformation> exposureInfoList;
     ExposureSummary summary;
@@ -273,7 +307,6 @@ ExposureSummary ExposureNotification::getExposureSummary(QString const &token)
     qint32 summationRiskScore;
     QList<qint32> attenuationDurations = QList<qint32>({0, 0, 0});
 
-    d->m_exposureMutex.lock();
     if (d->m_exposures.contains(token)) {
         exposureInfoList = d->m_exposures.value(token);
 
@@ -308,15 +341,13 @@ ExposureSummary ExposureNotification::getExposureSummary(QString const &token)
         summary.setAttenuationDurations(attenuationDurations);
         summary.setSummationRiskScore(summationRiskScore);
     }
-    d->m_exposureMutex.unlock();
 
     return summary;
 }
 
-QList<ExposureInformation> ExposureNotification::getExposureInformation(QString const &token)
+QList<ExposureInformation> ExposureNotification::getExposureInformation(QString const &token) const
 {
-    Q_D(ExposureNotification);
-    QMutexLocker locker(&(d->m_exposureMutex));
+    Q_D(const ExposureNotification);
 
     return d->m_exposures.value(token, QList<ExposureInformation>());
 }
@@ -393,4 +424,12 @@ void ExposureNotification::onRpiChanged()
     d->m_controller->setAdvertData(rpi, metadata);
 
     emit beaconSent();
+}
+
+QDateTime ExposureNotification::lastProcessTime(QString const &token) const
+{
+    Q_D(const ExposureNotification);
+
+    // Will be an invalid QDateTime if it doesn't exist in the map
+    return d->m_lastProcessTime.value(token);
 }

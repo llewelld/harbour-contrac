@@ -42,34 +42,6 @@ Page {
         }
     }
 
-    Connections {
-        target: dbusproxy
-
-        onExposureStateChanged: {
-            console.log("onExposureStateChanged token: " + token)
-            if (token === root.token) {
-                console.log("exposureState: " + dbusproxy.exposureState(token))
-                updating = (dbusproxy.exposureState(token) === DBusProxy.Working)
-                console.log("Updating: " + updating)
-            }
-        }
-
-        onActionExposureStateUpdated: {
-            console.log("onActionExposureStateUpdated token: " + token)
-            if (token === root.token) {
-                console.log("Exposure summary")
-                var summary = dbusproxy.getExposureSummary(token)
-                console.log("Attenuation durations: " + summary.attenuationDurations)
-                console.log("Days since last exposure: " + summary.daysSinceLastExposure)
-                console.log("Matched key count: " + summary.matchedKeyCount)
-                console.log("Maximum risk score: " + summary.maximumRiskScore)
-                console.log("Summation risk score: " + summary.summationRiskScore)
-                AppSettings.summaryUpdated = new Date()
-                AppSettings.latestSummary = summary
-            }
-        }
-    }
-
     SilicaListView {
         anchors.fill: parent
         VerticalScrollDecorator {}

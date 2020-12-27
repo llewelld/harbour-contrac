@@ -32,7 +32,7 @@ private:
 
 public slots:
     void scanChanged();
-    void taskTerminating(QString const token);
+    void taskFinished(QString const token);
 
 signals:
     void terminating();
@@ -46,8 +46,8 @@ public:
     ContactStorage *m_contacts;
     Metadata m_metadata;
     QTimer m_intervalUpdate;
-    QMutex m_exposureMutex;
     QMap<QString, ProvideDiagnosticKeys *> m_runningTasks;
+    QMap<QString, QDateTime> m_lastProcessTime;
 };
 
 #endif // EXPOSURENOTIFICATION_P_H
