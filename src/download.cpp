@@ -390,8 +390,15 @@ void Download::setStatusError(ErrorType error)
     }
 }
 
-ExposureConfiguration const *Download::config() const
+ExposureConfiguration *Download::config() const
 {
+    qDebug() << "Minimum risk score set to: " << m_downloadConfig->config()->minimumRiskScore();
+    qDebug() << "Attenuation scores set to: " << m_downloadConfig->config()->attenuationScores();
+    qDebug() << "Days Since Last Exposure scores set to: " << m_downloadConfig->config()->daysSinceLastExposureScores();
+    qDebug() << "Duration scores set to: " << m_downloadConfig->config()->durationScores();
+    qDebug() << "Transmission Risk scores set to: " << m_downloadConfig->config()->transmissionRiskScores();
+    qDebug() << "Duration At Attenuation Thresholds set to: " << m_downloadConfig->config()->durationAtAttenuationThresholds();
+
     return m_downloadConfig->config();
 }
 

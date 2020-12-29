@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QDBusPendingCall>
+#include <QDateTime>
 
 #include "../contracd/src/exposuresummary.h"
 #include "../contracd/src/exposureinformation.h"
@@ -16,7 +17,6 @@ class QDBusInterface;
 class DBusProxy : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(Status)
 
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(bool isEnabled READ isEnabled NOTIFY isEnabledChanged)
@@ -43,6 +43,15 @@ public:
         FailedInsufficientStorage,
         FailedInternal
     };
+    Q_ENUM(Status)
+
+    enum ExposureState
+    {
+        None = 0,
+        Processing,
+        Available
+    };
+    Q_ENUM(ExposureState)
 
     Status status() const;
     bool isEnabled() const;
@@ -51,12 +60,13 @@ public:
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
     Q_INVOKABLE QList<TemporaryExposureKey> getTemporaryExposureKeyHistory();
-    Q_INVOKABLE void provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token);
+    Q_INVOKABLE void provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration *configuration, QString token);
     Q_INVOKABLE ExposureSummary *getExposureSummary(QString const &token) const;
     Q_INVOKABLE QList<ExposureInformation> *getExposureInformation(QString const &token) const;
     Q_INVOKABLE void resetAllData();
 
     // Non-standard additions
+    Q_INVOKABLE ExposureState exposureState(QString const &token) const;
     quint32 receivedCount() const;
     quint32 sentCount() const;
     bool isBusy() const;
@@ -64,6 +74,7 @@ public:
     qint32 rssiCorrection() const;
     void setTxPower(qint32 txPower);
     void setRssiCorrection(qint32 rssiCorrection);
+    Q_INVOKABLE QDateTime lastProcessTime(QString const token) const;
 
 signals:
     void statusChanged();
@@ -75,9 +86,10 @@ signals:
     void isBusyChanged();
     void txPowerChanged();
     void rssiCorrectionChanged();
+    void exposureStateChanged(QString const &token);
 
     // Async responses
-    void provideDiagnosisKeysResult(Status status, QString const &token);
+    void actionExposureStateUpdated(QString token);
 
 public slots:
 

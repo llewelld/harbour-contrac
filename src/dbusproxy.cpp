@@ -7,6 +7,10 @@
 
 #include "dbusproxy.h"
 
+// D-bus timeout in milliseconds
+// Some of the calls such as provideDiagnosisKeys() are potentially very long running
+#define DBUS_PROXY_TIMEOUT (10 * 60 * 1000)
+
 DBusProxy::DBusProxy(QObject *parent)
     : QObject(parent)
     , m_receivedCount(0)
@@ -22,6 +26,7 @@ DBusProxy::DBusProxy(QObject *parent)
     qDBusRegisterMetaType<QList<ExposureInformation>>();
 
     m_interface = new QDBusInterface(QStringLiteral(SERVICE_NAME), QStringLiteral("/"), QString(), QDBusConnection::sessionBus(), this);
+    m_interface->setTimeout(DBUS_PROXY_TIMEOUT);
 
     QStringList argumentMatch;
     //argumentMatch.append("uk.co.flypig.contrac");
@@ -48,6 +53,14 @@ DBusProxy::DBusProxy(QObject *parent)
 
     result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "rssiCorrectionChanged", argumentMatch, signature, this, SIGNAL(rssiCorrectionChanged()));
     qDebug() << "Connection rssiCorrectionChanged result: " << result;
+
+    argumentMatch.append(QStringLiteral("s"));
+    signature = QStringLiteral("s");
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "actionExposureStateUpdated", this, SIGNAL(actionExposureStateUpdated(QString)));
+    qDebug() << "Connection actionExposureStateUpdated result: " << result;
+
+    result = QDBusConnection::sessionBus().connect("uk.co.flypig.contrac", "/", "uk.co.flypig.contrac", "exposureStateChanged", this, SIGNAL(exposureStateChanged(QString)));
+    qDebug() << "Connection exposureStateChanged result: " << result;
 }
 
 DBusProxy::~DBusProxy()
@@ -120,8 +133,8 @@ quint32 DBusProxy::sentCount() const
 
 DBusProxy::Status DBusProxy::status() const
 {
-    QDBusReply<DBusProxy::Status> reply = m_interface->call("status");
-    return reply;
+    QDBusReply<qint32> reply = m_interface->call("status");
+    return DBusProxy::Status(reply.value());
 }
 
 bool DBusProxy::isEnabled() const
@@ -166,30 +179,23 @@ QList<TemporaryExposureKey> DBusProxy::getTemporaryExposureKeyHistory()
     return result;
 }
 
-void DBusProxy::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token)
+void DBusProxy::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration *configuration, QString token)
 {
     qDebug() << "Calling provideDiagnosisKeys";
     QVariant configurationVariant;
-    configurationVariant.setValue(configuration);
+    configurationVariant.setValue(*configuration);
 
-    QList<QVariant> args;
-    args << keyFiles << configurationVariant << token;
+    qDebug() << "Minimum risk score set to: " << configuration->minimumRiskScore();
+    qDebug() << "Attenuation scores set to: " << configuration->attenuationScores();
+    qDebug() << "Days Since Last Exposure scores set to: " << configuration->daysSinceLastExposureScores();
+    qDebug() << "Duration scores set to: " << configuration->durationScores();
+    qDebug() << "Transmission Risk scores set to: " << configuration->transmissionRiskScores();
+    qDebug() << "Duration At Attenuation Thresholds set to: " << configuration->durationAtAttenuationThresholds();
 
-    QDBusPendingCall async = m_interface->asyncCall("provideDiagnosisKeys", keyFiles, configurationVariant, token);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, token](QDBusPendingCallWatcher *call){
-        QDBusPendingReply<> reply = *call;
-        if (reply.isError()) {
-            qDebug() << "D-Bus returned failure:" << reply.error().message();
-            emit provideDiagnosisKeysResult(FailedInternal, token);
-        }
-        else {
-            qDebug() << "D-Bus returned success:" << reply.error().message();
-            emit provideDiagnosisKeysResult(Success, token);
-        }
-
-        call->deleteLater();
-    });
+    QDBusMessage reply = m_interface->call("provideDiagnosisKeys", keyFiles, configurationVariant, token);
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        qDebug() << "DBus error providing diagnosis keys: " << reply.errorMessage();
+    }
 }
 
 QList<ExposureInformation> *DBusProxy::getExposureInformation(QString const &token) const
@@ -227,3 +233,16 @@ void DBusProxy::setRssiCorrection(qint32 rssiCorrection)
         qDebug() << "DBus error setting rssiCorrection: " << reply.errorMessage();
     }
 }
+
+DBusProxy::ExposureState DBusProxy::exposureState(QString const &token) const
+{
+    QDBusReply<qint32> reply = m_interface->call("exposureState", token);
+    return DBusProxy::ExposureState(reply.value());
+}
+
+QDateTime DBusProxy::lastProcessTime(QString const token) const
+{
+    QDBusReply<QDateTime> reply = m_interface->call("lastProcessTime", token);
+    return reply;
+}
+

@@ -4,7 +4,6 @@ import uk.co.flypig.contrac 1.0
 
 Page {
     id: page
-    property string token: "abcdef"
     property bool updatePending
 
     allowedOrientations: Orientation.All
@@ -13,7 +12,7 @@ Page {
         updatePending = false
         var filelist = download.fileList()
         console.log("Files to check: " + filelist.length)
-        updating = true
+
         dbusproxy.provideDiagnosisKeys(filelist, download.config, token)
     }
 
@@ -39,29 +38,6 @@ Page {
             }
             if (updatePending) {
                 performUpdate()
-            }
-        }
-    }
-
-    Connections {
-        target: dbusproxy
-
-        onProvideDiagnosisKeysResult: {
-            var summary
-            if (token == page.token) {
-                updating = false;
-
-                if (status == DBusProxy.Success) {
-                    console.log("Exposure summary")
-                    summary = dbusproxy.getExposureSummary(token);
-                    console.log("Attenuation durations: " + summary.attenuationDurations)
-                    console.log("Days since last exposure: " + summary.daysSinceLastExposure)
-                    console.log("Matched key count: " + summary.matchedKeyCount)
-                    console.log("Maximum risk score: " + summary.maximumRiskScore)
-                    console.log("Summation risk score: " + summary.summationRiskScore)
-                    AppSettings.summaryUpdated = new Date()
-                    AppSettings.latestSummary = summary
-                }
             }
         }
     }

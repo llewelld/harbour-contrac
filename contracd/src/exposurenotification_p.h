@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QMutex>
 
 #include "exposureinformation.h"
 #include "contrac.h"
@@ -13,6 +14,8 @@ namespace diagnosis {
 class TemporaryExposureKeyExport;
 } // namespace diagnosis
 
+class ProvideDiagnosticKeys;
+
 class ExposureNotificationPrivate : public QObject
 {
     Q_OBJECT
@@ -21,8 +24,6 @@ public:
     ~ExposureNotificationPrivate();
 
     static bool loadDiagnosisKeys(QString const &keyFile, diagnosis::TemporaryExposureKeyExport * keyExport);
-    static QList<ExposureInformation> aggregateExposureData(quint32 dayNumber, ExposureConfiguration const &configuration, QList<ContactMatch> matches, qint32 const days_ago);
-    static qint32 calculateRiskScore(ExposureConfiguration const &configuration, qint32 transmissionRisk, qint32 duration, qint32 days_ago, qint32 attenuationValue);
 
 private:
     ExposureNotification *q_ptr;
@@ -31,6 +32,10 @@ private:
 
 public slots:
     void scanChanged();
+    void taskFinished(QString const token);
+
+signals:
+    void terminating();
 
 public:
     QMap<QString, QList<ExposureInformation>> m_exposures;
@@ -41,6 +46,8 @@ public:
     ContactStorage *m_contacts;
     Metadata m_metadata;
     QTimer m_intervalUpdate;
+    QMap<QString, ProvideDiagnosticKeys *> m_runningTasks;
+    QMap<QString, QDateTime> m_lastProcessTime;
 };
 
 #endif // EXPOSURENOTIFICATION_P_H

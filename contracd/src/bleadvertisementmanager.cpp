@@ -15,6 +15,10 @@
 #include "bleadvertisement.h"
 #include "bleadvertisementmanager.h"
 
+// D-bus timeout in milliseconds
+// When bluez is busy, it can take a while to get a response from RegisterAdvertisement
+#define DBUS_PROXY_TIMEOUT (10 * 60 * 1000)
+
 BleAdvertisementManager::BleAdvertisementManager(QObject *parent)
     : QObject(parent)
     , m_interface(nullptr)
@@ -27,6 +31,7 @@ void BleAdvertisementManager::connectDBus()
 
     qDebug() << "Registering interface";
     m_interface = new QDBusInterface("org.bluez", path, "org.bluez.LEAdvertisingManager1", QDBusConnection::systemBus(), this);
+    m_interface->setTimeout(DBUS_PROXY_TIMEOUT);
 
     QStringList argumentMatch;
     argumentMatch.append("org.bluez.LEAdvertisingManager1");

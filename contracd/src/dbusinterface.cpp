@@ -26,6 +26,8 @@ DBusInterface::DBusInterface(QObject *parent)
     connect(&m_exposureNotification, &ExposureNotification::beaconSent, this, &DBusInterface::incrementSentCount);
     connect(&m_exposureNotification, &ExposureNotification::beaconReceived, this, &DBusInterface::incrementReceiveCount);
     connect(&m_exposureNotification, &ExposureNotification::isBusyChanged, this, &DBusInterface::isBusyChanged);
+    connect(&m_exposureNotification, &ExposureNotification::actionExposureStateUpdated, this, &DBusInterface::actionExposureStateUpdated);
+    connect(&m_exposureNotification, &ExposureNotification::exposureStateChanged, this, &DBusInterface::exposureStateChanged);
 
     connect(&settings, &Settings::txPowerChanged, this, &DBusInterface::txPowerChanged);
     connect(&settings, &Settings::rssiCorrectionChanged, this, &DBusInterface::rssiCorrectionChanged);
@@ -59,6 +61,7 @@ DBusInterface::~DBusInterface()
     disconnect(&m_exposureNotification, &ExposureNotification::beaconSent, this, &DBusInterface::incrementSentCount);
     disconnect(&m_exposureNotification, &ExposureNotification::beaconReceived, this, &DBusInterface::incrementReceiveCount);
     disconnect(&m_exposureNotification, &ExposureNotification::isBusyChanged, this, &DBusInterface::isBusyChanged);
+    disconnect(&m_exposureNotification, &ExposureNotification::actionExposureStateUpdated, this, &DBusInterface::actionExposureStateUpdated);
 
     Settings &settings = Settings::getInstance();
     disconnect(&settings, &Settings::txPowerChanged, this, &DBusInterface::txPowerChanged);
@@ -85,10 +88,10 @@ void DBusInterface::stop()
     m_exposureNotification.stop();
 }
 
-ExposureNotification::Status DBusInterface::status() const
+qint32 DBusInterface::status() const
 {
     qDebug() << "CONTRAC: statis()";
-    return m_exposureNotification.status();
+    return qint32(m_exposureNotification.status());
 }
 
 bool DBusInterface::isEnabled() const
@@ -118,19 +121,32 @@ QList<TemporaryExposureKey> DBusInterface::getTemporaryExposureKeyHistory()
     return keys;
 }
 
+// This is potentially very long-running. According to the D-bus docs, the method
+// should still return the result in the normal way, with the client waiting for
+// the result asynchronously. However, to better match the GAEN API, we signal
+// that the result is available on completion using the actionExposureStateUpdated()
+// signal instead.
 void DBusInterface::provideDiagnosisKeys(QStringList const &keyFiles, ExposureConfiguration const &configuration, QString token)
 {
     qDebug() << "CONTRAC: provideDiagnosisKeys()";
+
+    qDebug() << "Minimum risk score set to: " << configuration.minimumRiskScore();
+    qDebug() << "Attenuation scores set to: " << configuration.attenuationScores();
+    qDebug() << "Days Since Last Exposure scores set to: " << configuration.daysSinceLastExposureScores();
+    qDebug() << "Duration scores set to: " << configuration.durationScores();
+    qDebug() << "Transmission Risk scores set to: " << configuration.transmissionRiskScores();
+    qDebug() << "Duration At Attenuation Thresholds set to: " << configuration.durationAtAttenuationThresholds();
+
     m_exposureNotification.provideDiagnosisKeys(keyFiles.toVector(), configuration, token);
 }
 
-ExposureSummary DBusInterface::getExposureSummary(QString const &token) const
+ExposureSummary DBusInterface::getExposureSummary(QString const &token)
 {
     qDebug() << "CONTRAC: getExposureSummary()";
     return m_exposureNotification.getExposureSummary(token);
 }
 
-QList<ExposureInformation> DBusInterface::getExposureInformation(QString const &token) const
+QList<ExposureInformation> DBusInterface::getExposureInformation(QString const &token)
 {
     qDebug() << "CONTRAC: getExposureInformation()";
     return m_exposureNotification.getExposureInformation(token);
@@ -196,3 +212,12 @@ void DBusInterface::setRssiCorrection(qint32 rssiCorrection)
     Settings::getInstance().setRssiCorrection(qint8(rssiCorrection));
 }
 
+qint32 DBusInterface::exposureState(QString const token) const
+{
+    return qint32(m_exposureNotification.exposureState(token));
+}
+
+QDateTime DBusInterface::lastProcessTime(QString const token) const
+{
+    return m_exposureNotification.lastProcessTime(token);
+}

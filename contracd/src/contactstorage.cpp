@@ -27,6 +27,10 @@ ContactStorage::ContactStorage(Contrac *parent)
 
 ContactStorage::~ContactStorage()
 {
+    if (m_other) {
+        delete m_other;
+        m_other = nullptr;
+    }
 }
 
 void ContactStorage::onTimeChanged()
@@ -76,10 +80,10 @@ DayStorage * ContactStorage::getStorage(quint32 day) {
     }
     else {
         if (!m_other || (day != m_other->dayNumber())) {
-                if (m_other) {
+            if (m_other) {
                 delete m_other;
             }
-            m_other = new DayStorage(day, this);
+            m_other = new DayStorage(day);
         }
         storage = m_other;
     }

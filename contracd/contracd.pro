@@ -44,6 +44,7 @@ HEADERS += \
     src/fnv.h \
     src/hkdfsha256.h \
     src/metadata.h \
+    src/providediagnostickeys.h \
     src/rpidataitem.h \
     src/settings.h \
     src/temporaryexposurekey.h \
@@ -71,6 +72,7 @@ SOURCES += \
     src/fnv.cpp \
     src/hkdfsha256.cpp \
     src/metadata.cpp \
+    src/providediagnostickeys.cpp \
     src/rpidataitem.cpp \
     src/settings.cpp \
     src/temporaryexposurekey.cpp \
