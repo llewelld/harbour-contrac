@@ -12,6 +12,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Fri Jan 1 2021 David Llewellyn-Jones <david@flypig.co.uk> 0.7.5-1
+- Move risk calculation to a separate thread.
+- Fix calculation to improve accuracy.
+- Decouple calculation update from user interface app.
+- Note the calculation now takes considerably longer.
+
 * Thu Oct 8 2020 David Llewellyn-Jones <david@flypig.co.uk> 0.7.4-1
 - Fix BLE state machine to allow graceful restart when filtering isn't supported.
 
