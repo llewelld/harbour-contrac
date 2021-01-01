@@ -35,6 +35,10 @@ ApplicationWindow
         updateFrequency: WallClock.Day
     }
 
+    TestResult {
+        id: testResult
+    }
+
     RiskStatus {
         id: riskStatus
     }

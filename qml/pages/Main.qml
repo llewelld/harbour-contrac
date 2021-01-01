@@ -17,6 +17,20 @@ Page {
     }
 
     Connections {
+        target: upload
+
+        onTestResultRetrieved: {
+            testResult.testResultDownloaded(result)
+        }
+        onRegTokenStored: {
+            testResult.regTokenWasReceived()
+        }
+        onDiagnosisKeysSubmittedSuccessfully: {
+            testResult.startCheck()
+        }
+    }
+
+    Connections {
         target: download
 
         onAllFilesDownloaded: {
@@ -41,6 +55,18 @@ Page {
             }
         }
     }
+
+    Connections {
+        target: testResult
+
+        onTestResultRequested: {
+            if (!upload.uploading) {
+                upload.checkForTestResult(regToken)
+            }
+        }
+    }
+
+    Component.onCompleted: testResult.startCheck()
 
     SilicaListView {
         anchors.fill: parent
@@ -166,6 +192,19 @@ Page {
             Label {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
+                //% "Test result"
+                text: qsTrId("contrac-main_la_test-result") + " : " + (testResult.possiblyAvailable
+                                                                       ? testResult.testClassLabel
+                                                                         //% "Unknown"
+                                                                       : qsTrId("contrac-main_la_test-result-unknown"))
+                color: Theme.highlightColor
+                wrapMode: Text.Wrap
+                visible: testResult.possiblyAvailable
+            }
+
+            Label {
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                x: Theme.horizontalPageMargin
                 //% "Risk status"
                 text: qsTrId("contrac-main_la_risk-status") + " : " + (!isNaN(AppSettings.summaryUpdated)
                                                                        ? riskStatus.riskClassLabel
@@ -240,27 +279,54 @@ Page {
             }
 
             Button {
-                id: tanButton
+                id: submitKeysButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.max(tanButton.implicitWidth, downloadButton.implicitWidth)
-                //% "Enter TeleTAN"
-                text: qsTrId("contrac-main_bu_enter-teletan")
+                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, guidButton.implicitWidth, tanButton.implicitWidth)
                 enabled: !upload.uploading
+                visible: testResult.currentResult === TestResult.Positive
+                //% "Submit keys"
+                text: qsTrId("contrac-main_bu_submit_keys")
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("TeleTAN.qml"))
+                    upload.submitKeysAfterPositiveResult()
+                    pageStack.push(Qt.resolvedUrl("UploadInfo.qml"))
                 }
             }
 
             Button {
                 id: downloadButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.max(tanButton.implicitWidth, downloadButton.implicitWidth)
+                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, guidButton.implicitWidth, tanButton.implicitWidth)
                 enabled: !download.downloading && downloadAvailable
                 //% "Perform daily update"
                 text: qsTrId("contrac-main_bu_daily-update")
                 onClicked: {
                     download.downloadLatest()
                     pageStack.push(Qt.resolvedUrl("DownloadInfo.qml"))
+                }
+            }
+
+            Button {
+                id: guidButton
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, guidButton.implicitWidth, tanButton.implicitWidth)
+                //% "Enter GUID"
+                text: qsTrId("contrac-main_bu_enter-guid")
+                enabled: !upload.uploading
+                visible: !testResult.possiblyAvailable
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("GUID.qml"))
+                }
+            }
+
+            Button {
+                id: tanButton
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, guidButton.implicitWidth, tanButton.implicitWidth)
+                //% "Enter TeleTAN"
+                text: qsTrId("contrac-main_bu_enter-teletan")
+                enabled: !upload.uploading
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("TeleTAN.qml"))
                 }
             }
 

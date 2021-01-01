@@ -23,6 +23,8 @@ public:
     {
         StatusIdle,
         StatusSubmitTeleTAN,
+        StatusSubmitGUID,
+        CheckForTestResult,
         StatusSubmitRegToken,
         SubmitDiagnosisKeys,
         StatusError
@@ -30,8 +32,10 @@ public:
     enum ErrorType
     {
         ErrorNone,
-        ErrorInvalidTAN,
+        ErrorInvalidteleTAN,
+        ErrorInvalidGUID,
         ErrorInvalidRegToken,
+        ErrorInvalidTestResult,
         ErrorInvalidDiagnosisKeys,
         ErrorNoDiagnosisKeys,
         ErrorNetwork,
@@ -44,6 +48,12 @@ public:
     Q_INVOKABLE bool validateTeleTAN(QString const &teleTAN) const;
     Q_INVOKABLE bool validateTeleTANCharacter(QChar const &character) const;
     Q_INVOKABLE bool validateTeleTANCharacters(QString const &teleTAN) const;
+    Q_INVOKABLE void uploadGUID(QString const &guid);
+    Q_INVOKABLE bool validateGUID(QString const &guid) const;
+    Q_INVOKABLE bool validateGUIDCharacter(QChar const &character) const;
+    Q_INVOKABLE bool validateGUIDCharacters(QString const &guid) const;
+    Q_INVOKABLE void checkForTestResult(QString const &regToken);
+    Q_INVOKABLE void submitKeysAfterPositiveResult();
     float progress() const;
     bool uploading() const;
     QDate latest() const;
@@ -58,16 +68,22 @@ signals:
     void latestChanged();
     void statusChanged();
     void errorChanged();
+    void regTokenStored(const QDate &date);
+    void testResultRetrieved(int result);
+    void diagnosisKeysSubmittedSuccessfully();
 
 private slots:
     void setStatus(Status status);
     void onTeleTANFinished();
+    void onGUIDFinished();
+    void onCheckForTestResultFinished();
     void onRegTokenFinished();
     void onDiagnosisKeysFinished();
     void onProgress(qint64 bytesSent, qint64 bytesTotal);
 
 private:
     void submitTeleTAN(QString const &teleTAN);
+    void submitGUID(QString guid);
     void submitRegToken(QString const &regToken);
     void submitDiagnosisKeys(QString const &tan);
     void setStatusError(ErrorType error);

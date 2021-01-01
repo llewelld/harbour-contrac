@@ -21,6 +21,7 @@ AppSettings::AppSettings(QObject *parent)
     m_verificationServer = m_settings.value(QStringLiteral("servers/verificationServer"), QStringLiteral("https://verification.coronawarn.app")).toString();
     m_latestSummary = m_settings.value(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(ExposureSummary())).value<ExposureSummary>();
     m_summaryUpdated = m_settings.value(QStringLiteral("update/date"), QDateTime()).toDateTime();
+    m_regTokenReceived = m_settings.value(QStringLiteral("update/regTokenReceived"), QDate()).toDate();
     m_infoViewed = m_settings.value(QStringLiteral("application/infoViewed"), 0).toUInt();
     m_countryCode = m_settings.value(QStringLiteral("update/countryCode"), QStringLiteral("DE")).toString();
     m_autoUpdate = m_settings.value(QStringLiteral("update/autoUpdate"), false).toBool();
@@ -73,6 +74,7 @@ AppSettings::~AppSettings()
     m_settings.setValue(QStringLiteral("servers/verificationServer"), m_verificationServer);
     m_settings.setValue(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(m_latestSummary));
     m_settings.setValue(QStringLiteral("update/date"), m_summaryUpdated);
+    m_settings.setValue(QStringLiteral("update/regTokenReceived"), m_regTokenReceived);
     m_settings.setValue(QStringLiteral("application/infoViewed"), m_infoViewed);
     m_settings.setValue(QStringLiteral("update/countryCode"), m_countryCode);
     m_settings.setValue(QStringLiteral("update/autoUpdate"), m_autoUpdate);
@@ -93,6 +95,7 @@ AppSettings::~AppSettings()
         m_settings.setArrayIndex(pos);
         m_settings.setValue(QStringLiteral("class"), QVariant::fromValue<RiskScoreClass>(m_riskScoreClasses[pos]));
     }
+
     m_settings.endArray();
 
     instance = nullptr;
@@ -358,5 +361,18 @@ void AppSettings::setRiskScoreClasses(QList<RiskScoreClass> riskScoreClasses)
     if (m_riskScoreClasses != riskScoreClasses) {
         m_riskScoreClasses = riskScoreClasses;
         emit riskScoreClassesChanged();
+    }
+}
+
+QDate AppSettings::regTokenReceived() const
+{
+    return m_regTokenReceived;
+}
+
+void AppSettings::setRegTokenReceived(const QDate &receivedDate)
+{
+    if (m_regTokenReceived != receivedDate) {
+        m_regTokenReceived = receivedDate;
+        emit regTokenReceivedChanged();
     }
 }
