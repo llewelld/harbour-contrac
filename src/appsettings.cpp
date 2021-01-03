@@ -8,6 +8,7 @@
 #include "appsettings.h"
 
 #define SETTINGS_MAX_VERSION (1)
+#define DEFAULT_AUTO_UPDATE_TIME (60 * 60 * 4)
 
 AppSettings *AppSettings::instance = nullptr;
 
@@ -22,6 +23,8 @@ AppSettings::AppSettings(QObject *parent)
     m_summaryUpdated = m_settings.value(QStringLiteral("update/date"), QDateTime()).toDateTime();
     m_infoViewed = m_settings.value(QStringLiteral("application/infoViewed"), 0).toUInt();
     m_countryCode = m_settings.value(QStringLiteral("update/countryCode"), QStringLiteral("DE")).toString();
+    m_autoUpdate = m_settings.value(QStringLiteral("update/autoUpdate"), false).toBool();
+    m_autoUpdateTime = m_settings.value(QStringLiteral("update/autoUpdateTime"), DEFAULT_AUTO_UPDATE_TIME).toInt() % (60 * 60 * 24);
 
     // Set
     m_riskWeights.append(m_settings.value(QStringLiteral("combinedRisk/riskWeightLow"), 1.0).toDouble());
@@ -72,6 +75,8 @@ AppSettings::~AppSettings()
     m_settings.setValue(QStringLiteral("update/date"), m_summaryUpdated);
     m_settings.setValue(QStringLiteral("application/infoViewed"), m_infoViewed);
     m_settings.setValue(QStringLiteral("update/countryCode"), m_countryCode);
+    m_settings.setValue(QStringLiteral("update/autoUpdate"), m_autoUpdate);
+    m_settings.setValue(QStringLiteral("update/autoUpdateTime"), m_autoUpdateTime);
 
     // Store
     while (m_riskWeights.size() < 3) {
@@ -202,6 +207,33 @@ void AppSettings::setCountryCode(QString countryCode)
     if (m_countryCode != countryCode) {
         m_countryCode = countryCode;
         emit countryCodeChanged();
+    }
+}
+
+bool AppSettings::autoUpdate() const
+{
+    return m_autoUpdate;
+}
+
+void AppSettings::setAutoUpdate(bool autoUpdate)
+{
+    if (m_autoUpdate != autoUpdate) {
+        m_autoUpdate = autoUpdate;
+        emit autoUpdateChanged();
+    }
+}
+
+qint32 AppSettings::autoUpdateTime() const
+{
+    return m_autoUpdateTime % (60 * 60 * 24);
+}
+
+void AppSettings::setAutoUpdateTime(qint32 autoUpdateTime)
+{
+    autoUpdateTime = autoUpdateTime % (60 * 60 * 24);
+    if (m_autoUpdateTime != autoUpdateTime) {
+        m_autoUpdateTime = autoUpdateTime;
+        emit autoUpdateTimeChanged();
     }
 }
 

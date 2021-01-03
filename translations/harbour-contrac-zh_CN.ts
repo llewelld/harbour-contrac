@@ -313,5 +313,21 @@
         <source>Download coverage</source>
         <translation type="unfinished"></translation>
     </message>
+    <message id="contrac-settings_he_daily-update">
+        <source>Daily update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_ts_perform-daily-update">
+        <source>Perform daily update</source>
+        <translation type="unfinished">执行每日更新</translation>
+    </message>
+    <message id="contrac-settings_vb_approx_update-time">
+        <source>Approximate update time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_vb_approx_update-time-description">
+        <source>The app must be running for the update to trigger</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

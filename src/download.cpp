@@ -50,7 +50,7 @@ QDate latestDownloaded()
         }
     }
 
-    qDebug() << "Latest download directory date: " << latest;
+    qDebug() << "Latest download directory date: " << latest.toString();
     return latest;
 }
 

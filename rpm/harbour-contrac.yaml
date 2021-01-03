@@ -29,6 +29,7 @@ PkgConfigBR:
   - libcurl
   - libxml-2.0
   - quazip
+  - keepalive
 
 # Build dependencies without a pkgconfig setup can be listed here
 PkgBR:
@@ -36,10 +37,9 @@ PkgBR:
 
 # Runtime dependencies which are not automatically detected
 Requires:
-  - sailfishsilica-qt5 >= 0.10.9 
+  - sailfishsilica-qt5 >= 0.10.9
   - openssl
   - protobuf-lite
-  - nemo-qml-plugin-time-qt5
 
 # All installed files
 Files:

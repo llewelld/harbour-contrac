@@ -7,6 +7,8 @@
 
 #include "dbusproxy.h"
 
+#define SERVICE_NAME "uk.co.flypig.contrac"
+
 // D-bus timeout in milliseconds
 // Some of the calls such as provideDiagnosisKeys() are potentially very long running
 #define DBUS_PROXY_TIMEOUT (10 * 60 * 1000)
