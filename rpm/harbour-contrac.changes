@@ -12,6 +12,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Jan 31 2021 David Llewellyn-Jones <david@flypig.co.uk> 0.7.6-1
+- Download daily, rather than hourly, diagnosis key archives.
+- Allow selection of key region for downloads (DE or EUR).
+- Improve download progress precision.
+
 * Fri Jan 1 2021 David Llewellyn-Jones <david@flypig.co.uk> 0.7.5-1
 - Move risk calculation to a separate thread.
 - Fix calculation to improve accuracy.
