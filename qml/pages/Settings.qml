@@ -32,8 +32,8 @@ Page {
             }
 
             SectionHeader {
-                //% "Servers"
-                text: qsTrId("contrac-settings_he_servers")
+                //% "Server details"
+                text: qsTrId("contrac-settings_he_server_details")
             }
 
             TextField {
@@ -71,6 +71,28 @@ Page {
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
                 EnterKey.onClicked: txPowerEntry.focus = true
             }
+
+            ComboBox {
+                id: countryCode
+                //% "Download coverage"
+                label: qsTrId("contrac-settings_co_download-coverage")
+                Component.onCompleted: {
+                    var codes = ["DE", "EUR"]
+                    currentIndex = codes.indexOf(AppSettings.countryCode)
+                    console.log("Changing country code to:" + currentIndex)
+                }
+                menu: ContextMenu {
+                    MenuItem {
+                        text: "Germany"
+                        onClicked: AppSettings.countryCode = "DE"
+                    }
+                    MenuItem {
+                        text: "Europe"
+                        onClicked: AppSettings.countryCode = "EUR"
+                    }
+                }
+            }
+
 
             SectionHeader {
                 //% "Attenuation calibration"

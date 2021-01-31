@@ -19,6 +19,7 @@ AppSettings::AppSettings(QObject *parent) : QObject(parent),
     m_latestSummary = m_settings.value(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(ExposureSummary())).value<ExposureSummary>();
     m_summaryUpdated = m_settings.value(QStringLiteral("update/date"), QDateTime()).toDateTime();
     m_infoViewed = m_settings.value(QStringLiteral("application/infoViewed"), 0).toUInt();
+    m_countryCode = m_settings.value(QStringLiteral("update/countryCode"), QStringLiteral("DE")).toString();
 
     // Set
     m_riskWeights.append(m_settings.value(QStringLiteral("combinedRisk/riskWeightLow"), 1.0).toDouble());
@@ -68,6 +69,7 @@ AppSettings::~AppSettings()
     m_settings.setValue(QStringLiteral("update/latestSummary"), QVariant::fromValue<ExposureSummary>(m_latestSummary));
     m_settings.setValue(QStringLiteral("update/date"), m_summaryUpdated);
     m_settings.setValue(QStringLiteral("application/infoViewed"), m_infoViewed);
+    m_settings.setValue(QStringLiteral("update/countryCode"), m_countryCode);
 
     // Store
     while (m_riskWeights.size() < 3) {
@@ -182,6 +184,19 @@ void AppSettings::setInfoViewed(quint32 infoViewed)
     if (m_infoViewed != infoViewed) {
         m_infoViewed = infoViewed;
         emit infoViewedChanged();
+    }
+}
+
+QString AppSettings::countryCode() const
+{
+    return m_countryCode;
+}
+
+void AppSettings::setCountryCode(QString countryCode)
+{
+    if (m_countryCode != countryCode) {
+        m_countryCode = countryCode;
+        emit countryCodeChanged();
     }
 }
 

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QDate>
 #include <QMap>
+#include <QSet>
 
 #include "../contracd/src/exposureconfiguration.h"
 
@@ -63,19 +64,17 @@ private slots:
     void configDownloadComplete(QString const &filename);
 
 private:
-    void addToFileQueue(QDate const &date, QStringList const& download);
+    void downloadDateList();
+    void addToFileQueue(QString const& download);
     void startNextFileDownload();
-    void startNextDateDownload();
-    void startDateDownload(QDate const &date);
-    QDate nextDownloadDay() const;
-    QDate oldestDateInQueue();
     void createDateFolder(QDate const &date) const;
     void finalise();
     void setStatusError(ErrorType error);
+    void cleanUpDownloads();
 
 private:
     ServerAccess *m_serverAccess;
-    QMap<QDate, QStringList> m_fileQueue;
+    QStringList m_fileQueue;
     QDate m_latest;
     bool m_downloading;
     qint64 m_filesReceived;
@@ -83,6 +82,8 @@ private:
     Status m_status;
     ErrorType m_error;
     DownloadConfig * m_downloadConfig;
+    QString m_countryCode;
+    QSet<QDate> m_downloadedPreviously;
 };
 
 #endif // DOWNLOAD_H

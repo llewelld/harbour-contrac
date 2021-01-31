@@ -244,7 +244,7 @@ void ServerListResult::onFinished()
                 break;
             }
             if (!converted.isEmpty()) {
-                m_keys.append(m_prefix + "/" + converted);
+                m_keys.append(converted);
             }
         }
         emit keysChanged();

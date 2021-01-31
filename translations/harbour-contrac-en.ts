@@ -55,10 +55,6 @@
         <source>Received</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-settings_he_servers">
-        <source>Servers</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="contrac-settings_tf_download_server">
         <source>Download server</source>
         <translation type="unfinished"></translation>
@@ -307,6 +303,14 @@
     <message id="contrac-info_view-again">
         <source>You can view this page again by visiting the About page.</source>
         <oldsource>You can view this page again by visiting the About page</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_he_server_details">
+        <source>Server details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_co_download-coverage">
+        <source>Download coverage</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

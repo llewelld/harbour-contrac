@@ -14,48 +14,6 @@
 
 namespace {
 
-void cleanUpDownloads()
-{
-    QDir root = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/";
-
-    root.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
-    root.setNameFilters(QStringList(QStringLiteral("\?\?\?\?-\?\?-\?\?")));
-    root.setSorting(QDir::Name);
-    QFileInfoList const &dirs = root.entryInfoList();
-    QDate const earliest = QDate::currentDate().addDays(DAYS_START_OFFSET);
-
-    if (earliest.isValid()) {
-        QRegExp dateFormat("(\\d{4})-(\\d{2})-(\\d{2})");
-        for (QFileInfo const &dir : dirs) {
-            if (dateFormat.exactMatch(dir.fileName()) && (dateFormat.captureCount() == 3)) {
-                // Valid download folder
-
-                QStringList const elements = dateFormat.capturedTexts();
-                int year = elements[1].toInt();
-                int month = elements[2].toInt();
-                int day = elements[3].toInt();
-
-                if ((year != 0) && (month != 0) && (day != 0)) {
-                    QDate const date(year, month, day);
-
-                    if (date < earliest) {
-                        // Delete the directory
-                        QDir directory(dir.absoluteFilePath());
-                        qDebug() << "Deleting old directory: " << directory.path();
-                        directory.removeRecursively();
-                    }
-                }
-                else {
-                    qDebug() << "Incorrect date";
-                }
-            }
-        }
-    }
-    else {
-        qDebug() << "Earliest date could not be determined";
-    }
-}
-
 QDate latestDownloaded()
 {
     QDir root = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/";
@@ -107,6 +65,8 @@ Download::Download(QObject *parent) : QObject(parent)
   , m_filesTotal(0)
   , m_status(StatusIdle)
   , m_downloadConfig(new DownloadConfig(this))
+  , m_countryCode()
+  , m_downloadedPreviously()
 {
     m_serverAccess->setId("accessKey1");
     m_serverAccess->setSecret("verySecretKey1");
@@ -120,31 +80,62 @@ Download::Download(QObject *parent) : QObject(parent)
     connect(m_downloadConfig, &DownloadConfig::downloadComplete, this, &Download::configDownloadComplete);
 }
 
-Q_INVOKABLE void Download::downloadLatest()
+void Download::cleanUpDownloads()
 {
-    qint64 daysTotal;
+    QDir root = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/";
 
+    root.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
+    root.setNameFilters(QStringList(QStringLiteral("\?\?\?\?-\?\?-\?\?")));
+    root.setSorting(QDir::Name);
+    QFileInfoList const &dirs = root.entryInfoList();
+    QDate const earliest = QDate::currentDate().addDays(DAYS_START_OFFSET);
+
+    if (earliest.isValid()) {
+        for (QFileInfo const &dir : dirs) {
+            QDate const date = QDate::fromString(dir.fileName(), "yyyy-MM-dd");
+            if (date.isValid()) {
+                // Valid download folder
+                if (date < earliest) {
+                    // Delete the directory
+                    QDir directory(dir.absoluteFilePath());
+                    qDebug() << "Deleting old directory:" << directory.path();
+                    directory.removeRecursively();
+                }
+                else {
+                    qDebug() << "Keys downloaded previously:" << date.toString();
+                    m_downloadedPreviously += date;
+                }
+            }
+            else {
+                qDebug() << "Incorrect date:" << dir.fileName();
+            }
+        }
+    }
+    else {
+        qDebug() << "Earliest date could not be determined";
+    }
+}
+
+void Download::downloadLatest()
+{
     if (!m_downloading) {
         // Clean up the old folders
         cleanUpDownloads();
 
-        if (m_latest.isValid()) {
-            daysTotal = m_latest.daysTo(QDate::currentDate());
-        }
-        else{
-            daysTotal = DAYS_TO_DOWNLOAD;
-        }
-        if (daysTotal > DAYS_TO_DOWNLOAD) {
-            daysTotal = DAYS_TO_DOWNLOAD;
-        }
+        // Copy the country code to prevent changes mid-download
+        m_countryCode = AppSettings::getInstance().countryCode();
+
         m_filesReceived = 0;
-        m_filesTotal = daysTotal * 24;
+        m_filesTotal = DAYS_TO_DOWNLOAD - m_downloadedPreviously.size();
         m_downloading = true;
         setStatus(StatusDownloadingConfig);
         emit downloadingChanged();
         emit progressChanged();
 
         m_downloadConfig->downloadLatest();
+    }
+    else {
+        qDebug() << "Download ongoing; skipping download request";
     }
 }
 
@@ -155,7 +146,7 @@ void Download::configDownloadComplete(QString const &)
         qDebug() << "Requesting keys";
         setStatus(StatusDownloadingKeys);
         m_serverAccess->setBaseUrl(AppSettings::getInstance().downloadServer());
-        startNextDateDownload();
+        downloadDateList();
         break;
     default:
         qDebug() << "Network error while downloading configuration: " << m_downloadConfig->error();
@@ -165,144 +156,45 @@ void Download::configDownloadComplete(QString const &)
     }
 }
 
-QDate Download::nextDownloadDay() const
+void Download::downloadDateList()
 {
-    QDate today = QDate::currentDate();
-    QDate date = today.addDays(DAYS_START_OFFSET);
-    QDate next = m_latest.addDays(1);
-    if (next > date) {
-        date = next;
-    }
-    if (date >= today) {
-        date = QDate();
-    }
+    qDebug() << "Downloading list of available dates";
 
-    return date;
-}
-
-void Download::addToFileQueue(QDate const &date, QStringList const &download)
-{
-    int size = m_fileQueue.size();
-    if (download.size() > 0) {
-        m_fileQueue[date] += download;
-    }
-    if (size == 0) {
-        startNextFileDownload();
-    }
-}
-
-QDate Download::oldestDateInQueue()
-{
-    qDebug() << "Queue size before: " << m_fileQueue.size();
-    QDate oldest;
-    for (QDate const &key : m_fileQueue.keys()) {
-        if (m_fileQueue[key].size() == 0) {
-            m_fileQueue.remove(key);
-        }
-        else {
-            if (!oldest.isValid() || key < oldest) {
-                oldest = key;
-            }
-        }
-    }
-
-    qDebug() << "Queue size after: " << m_fileQueue.size();
-    qDebug() << "Oldest date: " << oldest;
-
-    return oldest;
-}
-
-void Download::startNextFileDownload() {
-    qDebug() << "Starting file download";
-    QDate date = oldestDateInQueue();
-    if (date.isValid()) {
-        QString key = m_fileQueue[date].first();
-
-        // FIXME: Use the actual date rather than the URL to figure out the filename
-        int dateEnd = key.lastIndexOf("/", key.lastIndexOf("/") - 1) - 1;
-        int dateStart = key.lastIndexOf("/", dateEnd) + 1;
-        QString file = key.mid(dateStart, dateEnd - dateStart + 1) + "/" + key.mid(key.lastIndexOf("/") + 1);
-
-        QString filename = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/" + file;
-        qDebug() << "Saving to:" << filename;
-        ServerGetFileResult *result = m_serverAccess->getFile(key, filename);
-        connect(result, &ServerResult::finished, this, [this, result, date, filename]() {
-            qDebug() << "Finished downloading:" << m_fileQueue[date].first();
-
-            ++m_filesReceived;
-            emit downloadComplete(filename);
-            emit progressChanged();
-
-            m_fileQueue[date].removeFirst();
-            if (m_fileQueue[date].size() == 0) {
-                // We've downloaded all the files for this day
-                qDebug() << "All files downloaded for:" << date;
-                m_fileQueue.remove(date);
-                m_latest = date;
-                emit latestChanged();
-            }
-            startNextFileDownload();
-            result->deleteLater();
-        });
-    }
-    else {
-        qDebug() << "File queue empty";
-        if (m_downloading) {
-            startNextDateDownload();
-        }
-    }
-}
-
-void Download::startNextDateDownload()
-{
-    QDate date = nextDownloadDay();
-    bool downloading = m_downloading;
-
-    if (date.isValid()) {
-        m_downloading = true;
-        startDateDownload(date);
-    }
-    else {
-        qDebug() << "All dates downloaded";
-        finalise();
-        downloading = m_downloading;
-        setStatus(StatusIdle);
-        emit allFilesDownloaded();
-    }
-
-    if (m_downloading != downloading) {
-        emit downloadingChanged();
-    }
-}
-
-void Download::startDateDownload(QDate const &date)
-{
-    qDebug() << "Starting date download:" << date;
-
-    QString url = "version/v1/diagnosis-keys/country/DE/date/" + date.toString("yyyy-MM-dd") + "/hour";
+    QString url = "version/v1/diagnosis-keys/country/" + m_countryCode +"/date";
     ServerListResult *result = m_serverAccess->list(url);
-    connect(result, &ServerListResult::finished, this, [this, result, date]() {
-        QStringList keys;
+    connect(result, &ServerListResult::finished, this, [this, result]() {
+        QStringList dates;
 
         switch (result->error()) {
         case QNetworkReply::NoError:
-            keys = result->keys();
-            if (keys.size() > 0) {
-                qDebug() << "Key list completed: " << keys.size();
-                createDateFolder(date);
-                for (QString key : keys) {
-                    qDebug() << "Key: " << key;
+            dates = result->keys();
+            qDebug() << "Dates available: " << dates.size();
+            for (QString date : dates) {
+                QDate dateValue = QDate::fromString(date, "yyyy-MM-dd");
+                QDate const earliest = QDate::currentDate().addDays(DAYS_START_OFFSET);
+                if (m_downloadedPreviously.contains(dateValue)) {
+                    qDebug() << "Skipping as already downloaded: " << date;
                 }
-                addToFileQueue(date, keys);
+                else {
+                    if (dateValue < earliest) {
+                        qDebug() << "Skipping as too old: " << date;
+                    }
+                    else {
+                        createDateFolder(dateValue);
+                        qDebug() << "Adding to download queue: " << date;
+                        addToFileQueue(dateValue.toString("yyyy-MM-dd"));
+                    }
+                }
             }
-            else {
-                m_latest = date;
-                emit latestChanged();
-                startNextDateDownload();
+            m_filesTotal = m_fileQueue.size();
+            if (m_fileQueue.isEmpty()) {
+                finalise();
+                setStatus(StatusIdle);
+                emit allFilesDownloaded();
             }
             break;
         default:
-            qDebug() << "Network error while downloading keys: " << result->error();
+            qDebug() << "Network error while downloading dates list: " << result->error();
             finalise();
             setStatusError(ErrorNetwork);
             break;
@@ -310,6 +202,51 @@ void Download::startDateDownload(QDate const &date)
 
         result->deleteLater();
     });
+}
+
+void Download::addToFileQueue(QString const &download)
+{
+    int size = m_fileQueue.size();
+    if (!download.isEmpty()) {
+        m_fileQueue += download;
+    }
+    if (size == 0) {
+        startNextFileDownload();
+    }
+}
+
+void Download::startNextFileDownload() {
+    if (m_fileQueue.isEmpty()) {
+        // We've downloaded all the files
+        qDebug() << "All files downloaded";
+        finalise();
+        setStatus(StatusIdle);
+        emit allFilesDownloaded();
+    }
+    else {
+        qDebug() << "Starting file download";
+        QString name = m_fileQueue.first();
+        QString filename = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/" + name + "/all.dat";
+        qDebug() << "Downloading" << name << "to:" << filename;
+        QString url = "version/v1/diagnosis-keys/country/" + m_countryCode +"/date/" + name;
+        ServerGetFileResult *result = m_serverAccess->getFile(url, filename);
+        connect(result, &ServerResult::finished, this, [this, result, name, filename]() {
+            qDebug() << "Finished downloading:" << name;
+
+            m_fileQueue.removeFirst();
+            ++m_filesReceived;
+            QDate date = QDate::fromString(name, "yyyy-MM-dd");
+            if (date > m_latest) {
+                m_latest = date;
+                emit latestChanged();
+            }
+            emit downloadComplete(filename);
+            emit progressChanged();
+
+            startNextFileDownload();
+            result->deleteLater();
+        });
+    }
 }
 
 QDate Download::latest() const
@@ -413,17 +350,17 @@ QStringList Download::fileList() const
     QFileInfoList dirs = root.entryInfoList();
 
     QRegExp dateFormat("\\d{4}-\\d{2}-\\d{2}");
-    QRegExp hourFormat("\\d{1,2}");
+    QRegExp fileFormat("all\\.dat");
     for (QFileInfo dir : dirs) {
         if (dateFormat.exactMatch(dir.fileName())) {
             QDir day(dir.absoluteFilePath());
             day.setFilter(QDir::Files | QDir::NoDotAndDotDot | QDir::Readable);
-            day.setNameFilters(QStringList(QStringLiteral("\?\?")) << QStringLiteral("\?"));
+            day.setNameFilters(QStringList(QStringLiteral("all.dat")));
             day.setSorting(QDir::Name);
-            QFileInfoList hours = day.entryInfoList();
-            for (QFileInfo hour : hours) {
-                if (hourFormat.exactMatch(hour.fileName())) {
-                    result << hour.absoluteFilePath();
+            QFileInfoList files = day.entryInfoList();
+            for (QFileInfo file : files) {
+                if (fileFormat.exactMatch(file.fileName())) {
+                    result << file.absoluteFilePath();
                 }
             }
         }
@@ -432,7 +369,7 @@ QStringList Download::fileList() const
     return result;
 }
 
-Q_INVOKABLE void Download::clearError()
+void Download::clearError()
 {
     if (m_error != ErrorNone) {
         qDebug() << "Clearing download error status";
