@@ -22,6 +22,7 @@ class AppSettings : public QObject
     Q_PROPERTY(ExposureSummary *latestSummary READ latestSummary WRITE setLatestSummary NOTIFY latestSummaryChanged)
     Q_PROPERTY(QDateTime summaryUpdated READ summaryUpdated WRITE setSummaryUpdated NOTIFY summaryUpdatedChanged)
     Q_PROPERTY(quint32 infoViewed READ infoViewed WRITE setInfoViewed NOTIFY infoViewedChanged)
+    Q_PROPERTY(QString countryCode READ countryCode WRITE setCountryCode NOTIFY countryCodeChanged)
 
     // Attenuation duration properties
     Q_PROPERTY(QList<double> riskWeights READ riskWeights WRITE setRiskWeights NOTIFY riskWeightsChanged)
@@ -43,6 +44,7 @@ public:
     Q_INVOKABLE ExposureSummary *latestSummary();
     Q_INVOKABLE QDateTime summaryUpdated() const;
     Q_INVOKABLE quint32 infoViewed() const;
+    Q_INVOKABLE QString countryCode() const;
 
     Q_INVOKABLE QList<double> riskWeights() const;
     Q_INVOKABLE qint32 defaultBuckeOffset() const;
@@ -59,6 +61,7 @@ signals:
     void latestSummaryChanged();
     void summaryUpdatedChanged();
     void infoViewedChanged();
+    void countryCodeChanged();
     void riskWeightsChanged();
     void defaultBuckeOffsetChanged();
     void normalizationDivisorChanged();
@@ -71,6 +74,7 @@ public slots:
     void setLatestSummary(ExposureSummary const *latestSummary);
     void setSummaryUpdated(QDateTime summaryUpdated);
     void setInfoViewed(quint32 infoViewed);
+    void setCountryCode(QString countryCode);
     void setRiskWeights(QList<double> riskWeights);
     void setDefaultBuckeOffset(qint32 defaultBuckeOffset);
     void setNormalizationDivisor(qint32 normalizationDivisor);
@@ -90,6 +94,7 @@ private:
     ExposureSummary m_latestSummary;
     QDateTime m_summaryUpdated;
     quint32 m_infoViewed;
+    QString m_countryCode;
     QString m_imageDir;
     QList<double> m_riskWeights;
     qint32 m_defaultBuckeOffset;

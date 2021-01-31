@@ -54,6 +54,7 @@ ServerResult::ServerResult(QNetworkReply *reply, QObject *parent) : QObject(pare
   , m_reply(reply)
 {
     connect(reply, &QNetworkReply::finished, this, &ServerResult::onFinished);
+    connect(reply, &QNetworkReply::downloadProgress, this, &ServerResult::progress);
 }
 
 ServerListResult::ServerListResult(QNetworkReply *reply, QString const &prefix, QObject *parent)
@@ -244,7 +245,7 @@ void ServerListResult::onFinished()
                 break;
             }
             if (!converted.isEmpty()) {
-                m_keys.append(m_prefix + "/" + converted);
+                m_keys.append(converted);
             }
         }
         emit keysChanged();

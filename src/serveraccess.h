@@ -16,6 +16,7 @@ public:
 
 signals:
     void finished();
+    void progress(qint64 bytesReceived, qint64 bytesTotal);
 
 protected slots:
     virtual void onFinished();
