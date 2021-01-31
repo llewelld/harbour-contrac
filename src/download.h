@@ -62,6 +62,7 @@ signals:
 private slots:
     void setStatus(Status status);
     void configDownloadComplete(QString const &filename);
+    void fileProgress(qint64 bytesReceived, qint64 bytesTotal);
 
 private:
     void downloadDateList();
@@ -84,6 +85,7 @@ private:
     DownloadConfig * m_downloadConfig;
     QString m_countryCode;
     QSet<QDate> m_downloadedPreviously;
+    float m_fileProgress;
 };
 
 #endif // DOWNLOAD_H

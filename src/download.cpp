@@ -67,6 +67,7 @@ Download::Download(QObject *parent) : QObject(parent)
   , m_downloadConfig(new DownloadConfig(this))
   , m_countryCode()
   , m_downloadedPreviously()
+  , m_fileProgress(0.0)
 {
     m_serverAccess->setId("accessKey1");
     m_serverAccess->setSecret("verySecretKey1");
@@ -126,6 +127,7 @@ void Download::downloadLatest()
         m_countryCode = AppSettings::getInstance().countryCode();
 
         m_filesReceived = 0;
+        m_fileProgress = 0.0;
         m_filesTotal = DAYS_TO_DOWNLOAD - m_downloadedPreviously.size();
         m_downloading = true;
         setStatus(StatusDownloadingConfig);
@@ -230,11 +232,13 @@ void Download::startNextFileDownload() {
         qDebug() << "Downloading" << name << "to:" << filename;
         QString url = "version/v1/diagnosis-keys/country/" + m_countryCode +"/date/" + name;
         ServerGetFileResult *result = m_serverAccess->getFile(url, filename);
+        connect(result, &ServerResult::progress, this, &Download::fileProgress);
         connect(result, &ServerResult::finished, this, [this, result, name, filename]() {
             qDebug() << "Finished downloading:" << name;
 
             m_fileQueue.removeFirst();
             ++m_filesReceived;
+            m_fileProgress = 0.0;
             QDate date = QDate::fromString(name, "yyyy-MM-dd");
             if (date > m_latest) {
                 m_latest = date;
@@ -272,6 +276,7 @@ float Download::progress() const
     float progress = 0.0f;
     if (m_filesTotal > 0) {
         progress = static_cast<float>(m_filesReceived) / static_cast<float>(m_filesTotal);
+        progress += m_fileProgress / static_cast<float>(m_filesTotal);
     }
 
     return progress;
@@ -380,5 +385,16 @@ void Download::clearError()
             emit statusChanged();
         }
         emit errorChanged();
+    }
+}
+
+void Download::fileProgress(qint64 bytesReceived, qint64 bytesTotal)
+{
+    float previousProgress = progress();
+    if (bytesTotal > 0) {
+        m_fileProgress = (double)bytesReceived / (double)bytesTotal;
+        if (progress() > previousProgress) {
+            emit progressChanged();
+        }
     }
 }

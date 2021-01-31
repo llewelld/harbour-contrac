@@ -54,6 +54,7 @@ ServerResult::ServerResult(QNetworkReply *reply, QObject *parent) : QObject(pare
   , m_reply(reply)
 {
     connect(reply, &QNetworkReply::finished, this, &ServerResult::onFinished);
+    connect(reply, &QNetworkReply::downloadProgress, this, &ServerResult::progress);
 }
 
 ServerListResult::ServerListResult(QNetworkReply *reply, QString const &prefix, QObject *parent)
