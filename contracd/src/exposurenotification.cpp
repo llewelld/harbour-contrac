@@ -399,6 +399,8 @@ void ExposureNotification::intervalUpdate()
 
     qDebug() << "intervalUpdate";
     d->m_contrac->updateKeys();
+    //Keep correct count of received keys
+    Settings::getInstance().writeSettingsToDisk();
 }
 
 void ExposureNotification::onRpiChanged()
