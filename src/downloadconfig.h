@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "riskscoreclass.h"
+#include "appsettings.h"
 
 class ServerAccess;
 class ExposureConfiguration;
@@ -34,7 +35,7 @@ public:
     };
     explicit DownloadConfig(QObject *parent = nullptr);
 
-    Q_INVOKABLE void downloadLatest();
+    Q_INVOKABLE void downloadLatest(const QString countryCode = AppSettings::getInstance().countryCode());
 
     bool downloading() const;
     Status status() const;

@@ -4,7 +4,6 @@
 #include "../contracd/src/exposureconfiguration.h"
 #include "../contracd/src/zipistreambuffer.h"
 
-#include "appsettings.h"
 #include "serveraccess.h"
 #include "applicationConfiguration.pb.h"
 
@@ -38,7 +37,7 @@ DownloadConfig::DownloadConfig(QObject *parent) : QObject(parent)
     qDebug() << "DownloadConfig created";
 }
 
-Q_INVOKABLE void DownloadConfig::downloadLatest()
+Q_INVOKABLE void DownloadConfig::downloadLatest(const QString countryCode)
 {
     qDebug() << "Requesting configuration";
 
@@ -46,7 +45,8 @@ Q_INVOKABLE void DownloadConfig::downloadLatest()
         m_serverAccess->setBaseUrl(AppSettings::getInstance().downloadServer());
         setStatus(StatusDownloading);
 
-        QString key = "version/v1/configuration/country/DE/app_config";
+        QString key = QString("version/v1/configuration/country/%1/app_config").arg(countryCode);
+        qDebug() << "DownloadConfig URL key: " << key;
         QString filename = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + CONFIG_DIRECTORY;
         QDir dir;
         qDebug() << "Creating directory:" << filename;
