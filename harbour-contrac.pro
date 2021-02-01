@@ -12,3 +12,4 @@ DISTFILES += \
 
 OTHER_FILES += \
     README.md \
+    .clang-format
