@@ -4,12 +4,10 @@
 
 #include "dbusinterface.h"
 
-DBusInterface::DBusInterface(QObject *parent)
+DBusInterface::DBusInterface(bool &result, QObject *parent)
     : QObject(parent)
     , m_connection(QDBusConnection::sessionBus())
 {
-    bool result;
-
     qDebug() << "CONTRAC: Initialising the dbus interface";
 
     Settings &settings = Settings::getInstance();

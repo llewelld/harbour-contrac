@@ -26,7 +26,7 @@ class DBusInterface : public QObject
     Q_PROPERTY(qint32 rssiCorrection READ rssiCorrection WRITE setRssiCorrection NOTIFY rssiCorrectionChanged)
 
 public:
-    explicit DBusInterface(QObject *parent = nullptr);
+    explicit DBusInterface(bool &result, QObject *parent = nullptr);
     ~DBusInterface();
 
     Q_INVOKABLE qint32 status() const;
