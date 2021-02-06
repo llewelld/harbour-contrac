@@ -23,13 +23,7 @@ Settings::Settings(QObject *parent) : QObject(parent),
 
 Settings::~Settings()
 {
-    m_settings.setValue(QStringLiteral("keys/tracingKey"), m_tracingKey);
-    m_settings.setValue(QStringLiteral("state/enabled"), m_enabled);
-    m_settings.setValue(QStringLiteral("state/sent"), m_sent);
-    m_settings.setValue(QStringLiteral("state/received"), m_received);
-    m_settings.setValue(QStringLiteral("configuration/txPower"), m_txPower);
-    m_settings.setValue(QStringLiteral("configuration/rssiCorrection"), m_rssiCorrection);
-
+    writeSettingsToDisk();
     instance = nullptr;
     qDebug() << "Deleted settings";
 }
@@ -123,6 +117,16 @@ qint8 Settings::rssiCorrection() const
     // See https://developers.google.com/android/exposure-notifications/ble-attenuation-overview
 
     return m_rssiCorrection;
+}
+
+void Settings::writeSettingsToDisk()
+{
+    m_settings.setValue(QStringLiteral("keys/tracingKey"), m_tracingKey);
+    m_settings.setValue(QStringLiteral("state/enabled"), m_enabled);
+    m_settings.setValue(QStringLiteral("state/sent"), m_sent);
+    m_settings.setValue(QStringLiteral("state/received"), m_received);
+    m_settings.setValue(QStringLiteral("configuration/txPower"), m_txPower);
+    m_settings.setValue(QStringLiteral("configuration/rssiCorrection"), m_rssiCorrection);
 }
 
 void Settings::setRssiCorrection(qint8 rssiCorrection)
