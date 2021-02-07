@@ -47,8 +47,9 @@ int main(int argc, char *argv[])
         setlinebuf(stdout);
         setlinebuf(stderr);
 
-        dbus = new DBusInterface();
-        result = dbus == nullptr ? 0 : 1;
+        bool dbusInterfaceResult;
+        dbus = new DBusInterface(&dbusInterfaceResult);
+        result = !dbusInterfaceResult ? -1 : 0;
     }
     else {
         qDebug() << "No /tmp directory";
