@@ -1,24 +1,25 @@
-#include <iostream>
 #include <fstream>
-#include <qjsonobject.h>
-#include <qjsondocument.h>
+#include <iostream>
 #include <qdebug.h>
+#include <qjsondocument.h>
+#include <qjsonobject.h>
 
 #include <openssl/evp.h>
 
-#include "submissionpayload.pb.h"
 #include "appsettings.h"
+#include "submissionpayload.pb.h"
 
 #include "upload.h"
 
-Upload::Upload(QObject *parent) : QObject(parent)
-  , m_manager(new QNetworkAccessManager(this))
-  , m_reply(nullptr)
-  , m_latest()
-  , m_bytesSent(0)
-  , m_bytesTotal(0)
-  , m_status(StatusIdle)
-  , m_error(ErrorNone)
+Upload::Upload(QObject *parent)
+    : QObject(parent)
+    , m_manager(new QNetworkAccessManager(this))
+    , m_reply(nullptr)
+    , m_latest()
+    , m_bytesSent(0)
+    , m_bytesTotal(0)
+    , m_status(StatusIdle)
+    , m_error(ErrorNone)
 {
 }
 
@@ -193,7 +194,7 @@ void Upload::submitDiagnosisKeys(QString const &tan)
         if (exposureKeys.length() > 0) {
             // Convert the keys into protobuffer format
             for (TemporaryExposureKey const &key : exposureKeys) {
-                diagnosis::TemporaryExposureKey *keys= payload.add_keys();
+                diagnosis::TemporaryExposureKey *keys = payload.add_keys();
                 keys->set_key_data(key.keyData().data(), static_cast<size_t>(key.keyData().length()));
                 keys->set_rolling_start_interval_number(static_cast<qint32>(key.rollingStartNumber()));
                 keys->set_rolling_period(static_cast<qint32>(key.rollingPeriod()));
@@ -357,7 +358,7 @@ bool Upload::validateTeleTAN(QString const &teleTAN) const
 
 #ifdef OPENSSL_GE_1_1_1
         context = EVP_MD_CTX_new();
-#else // OPENSSL_GE_1_1_1
+#else  // OPENSSL_GE_1_1_1
         context = EVP_MD_CTX_create();
 #endif // OPENSSL_GE_1_1_1
         EVP_DigestInit_ex(context, EVP_sha256(), nullptr);
@@ -367,7 +368,7 @@ bool Upload::validateTeleTAN(QString const &teleTAN) const
         EVP_DigestFinal_ex(context, reinterpret_cast<unsigned char *>(hash), &hashLength);
 #ifdef OPENSSL_GE_1_1_1
         EVP_MD_CTX_free(context);
-#else // OPENSSL_GE_1_1_1
+#else  // OPENSSL_GE_1_1_1
         EVP_MD_CTX_destroy(context);
 #endif // OPENSSL_GE_1_1_1
 

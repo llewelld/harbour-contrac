@@ -1,8 +1,8 @@
 #include <sailfishapp.h>
-#include <QQuickImageProvider>
-#include <QPainter>
 #include <QColor>
 #include <QDebug>
+#include <QPainter>
+#include <QQuickImageProvider>
 
 #include "appsettings.h"
 
@@ -14,7 +14,8 @@ ImageProvider::ImageProvider(AppSettings const &settings)
 {
 }
 
-QPixmap ImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) {
+QPixmap ImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+{
     QPixmap image;
     QStringList parts = id.split('?');
     QPixmap sourcePixmap(m_imageDir + parts.at(0) + ".png");

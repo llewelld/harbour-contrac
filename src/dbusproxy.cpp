@@ -1,9 +1,9 @@
-#include <QDebug>
 #include <QDBusInterface>
-#include <QDBusPendingReply>
-#include <QDBusReply>
 #include <QDBusMetaType>
 #include <QDBusPendingCallWatcher>
+#include <QDBusPendingReply>
+#include <QDBusReply>
+#include <QDebug>
 
 #include "dbusproxy.h"
 
@@ -73,13 +73,12 @@ void DBusProxy::start()
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
 
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher* call) {
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher *call) {
         qDebug() << "DBus start returned";
 
         QDBusPendingReply<> reply = *call;
         if (reply.isError()) {
-            if ((reply.error().type() == QDBusError::ErrorType::NotSupported)
-                    || (reply.error().type() == QDBusError::ErrorType::Other)) {
+            if ((reply.error().type() == QDBusError::ErrorType::NotSupported) || (reply.error().type() == QDBusError::ErrorType::Other)) {
                 qDebug() << "Error calling start";
             }
             else {
@@ -99,13 +98,12 @@ void DBusProxy::stop()
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, this);
 
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher* call) {
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher *call) {
         qDebug() << "DBus stop returned";
 
         QDBusPendingReply<> reply = *call;
         if (reply.isError()) {
-            if ((reply.error().type() == QDBusError::ErrorType::NotSupported)
-                    || (reply.error().type() == QDBusError::ErrorType::Other)) {
+            if ((reply.error().type() == QDBusError::ErrorType::NotSupported) || (reply.error().type() == QDBusError::ErrorType::Other)) {
                 qDebug() << "Error calling stop";
             }
             else {
@@ -245,4 +243,3 @@ QDateTime DBusProxy::lastProcessTime(QString const token) const
     QDBusReply<QDateTime> reply = m_interface->call("lastProcessTime", token);
     return reply;
 }
-

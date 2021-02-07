@@ -1,23 +1,24 @@
-#include <QStandardPaths>
 #include <QDir>
+#include <QStandardPaths>
 
 #include "../contracd/src/exposureconfiguration.h"
 #include "../contracd/src/zipistreambuffer.h"
 
+#include "applicationConfiguration.pb.h"
 #include "appsettings.h"
 #include "serveraccess.h"
-#include "applicationConfiguration.pb.h"
 
 #include "downloadconfig.h"
 
 #define CONFIG_DIRECTORY QStringLiteral("/download/")
 #define CONFIG_LEAFNAME QStringLiteral("file.config")
 
-DownloadConfig::DownloadConfig(QObject *parent) : QObject(parent)
-  , m_serverAccess(new ServerAccess(this))
-  , m_downloading(false)
-  , m_status(StatusIdle)
-  , m_configuration(new ExposureConfiguration(this))
+DownloadConfig::DownloadConfig(QObject *parent)
+    : QObject(parent)
+    , m_serverAccess(new ServerAccess(this))
+    , m_downloading(false)
+    , m_status(StatusIdle)
+    , m_configuration(new ExposureConfiguration(this))
 {
     m_serverAccess->setId("accessKey1");
     m_serverAccess->setSecret("verySecretKey1");
@@ -182,7 +183,7 @@ void DownloadConfig::applyConfiguration(diagnosis::ApplicationConfiguration cons
     AppSettings &settings = AppSettings::getInstance();
 
     if (appConfig.has_exposureconfig()) {
-        const ::diagnosis::RiskScoreParameters& params = appConfig.exposureconfig();
+        const ::diagnosis::RiskScoreParameters &params = appConfig.exposureconfig();
         if (params.has_transmission()) {
             QList<qint32> transmissionRiskScores;
             transmissionRiskScores.append(params.transmission().appdefined_1());
@@ -260,7 +261,6 @@ void DownloadConfig::applyConfiguration(diagnosis::ApplicationConfiguration cons
         qDebug() << "Config attentuation duration thresholds:" << thresholds;
 
         if (attenuation.has_weights()) {
-
             QList<double> riskWeights;
             riskWeights.append(attenuation.weights().low());
             riskWeights.append(attenuation.weights().mid());
@@ -301,7 +301,6 @@ void DownloadConfig::applyConfiguration(diagnosis::ApplicationConfiguration cons
     if (sendAttenuationDurationConfigChanged) {
         emit attenuationDurationConfigChanged();
     }
-
 }
 
 ExposureConfiguration *DownloadConfig::config() const

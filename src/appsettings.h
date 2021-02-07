@@ -1,12 +1,12 @@
 #ifndef APPSETTINGS_H
 #define APPSETTINGS_H
 
+#include <QDate>
 #include <QObject>
 #include <QSettings>
-#include <QDate>
 
-#include "riskscoreclass.h"
 #include "../contracd/src/exposuresummary.h"
+#include "riskscoreclass.h"
 
 class QQmlEngine;
 class QJSEngine;
@@ -35,8 +35,8 @@ public:
     ~AppSettings();
 
     static void instantiate(QObject *parent = nullptr);
-    static AppSettings & getInstance();
-    static QObject * provider(QQmlEngine *engine, QJSEngine *scriptEngine);
+    static AppSettings &getInstance();
+    static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine);
 
     Q_INVOKABLE QString downloadServer() const;
     Q_INVOKABLE QString uploadServer() const;
@@ -85,7 +85,7 @@ private:
     bool upgradeToVersion1();
 
 private:
-    static AppSettings * instance;
+    static AppSettings *instance;
     QSettings m_settings;
 
     QString m_downloadServer;

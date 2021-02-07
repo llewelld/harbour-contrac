@@ -1,9 +1,9 @@
 #include <QFile>
 
 #include "serveraccess.h"
-#include <qjsonobject.h>
-#include <qjsondocument.h>
 #include <qjsonarray.h>
+#include <qjsondocument.h>
+#include <qjsonobject.h>
 
 namespace {
 
@@ -48,27 +48,30 @@ QString constructFileUrl(QString const &baseUrl, QString const &bucket, QString 
     return url;
 }
 
-} // Empty namespace
+} // namespace
 
-ServerResult::ServerResult(QNetworkReply *reply, QObject *parent) : QObject(parent)
-  , m_reply(reply)
+ServerResult::ServerResult(QNetworkReply *reply, QObject *parent)
+    : QObject(parent)
+    , m_reply(reply)
 {
     connect(reply, &QNetworkReply::finished, this, &ServerResult::onFinished);
     connect(reply, &QNetworkReply::downloadProgress, this, &ServerResult::progress);
 }
 
 ServerListResult::ServerListResult(QNetworkReply *reply, QString const &prefix, QObject *parent)
-    : ServerResult (reply, parent)
+    : ServerResult(reply, parent)
     , m_prefix(prefix)
 {
 }
 
-ServerGetResult::ServerGetResult(QNetworkReply *reply, QObject *parent) : ServerResult (reply, parent)
+ServerGetResult::ServerGetResult(QNetworkReply *reply, QObject *parent)
+    : ServerResult(reply, parent)
 {
 }
 
-ServerGetFileResult::ServerGetFileResult(QNetworkReply *reply, QString const &filename, QObject *parent) : ServerResult (reply, parent)
-  , m_filename(filename)
+ServerGetFileResult::ServerGetFileResult(QNetworkReply *reply, QString const &filename, QObject *parent)
+    : ServerResult(reply, parent)
+    , m_filename(filename)
 {
 }
 
@@ -82,8 +85,9 @@ QNetworkReply::NetworkError ServerResult::error() const
     return m_reply->error();
 }
 
-ServerAccess::ServerAccess(QObject *parent) : QObject(parent)
-  , m_manager(new QNetworkAccessManager(this))
+ServerAccess::ServerAccess(QObject *parent)
+    : QObject(parent)
+    , m_manager(new QNetworkAccessManager(this))
 {
 }
 

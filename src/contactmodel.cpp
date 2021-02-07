@@ -16,7 +16,8 @@ ContactModel::~ContactModel()
 {
 }
 
-QHash<int, QByteArray> ContactModel::roleNames() const {
+QHash<int, QByteArray> ContactModel::roleNames() const
+{
     return m_roles;
 }
 
@@ -34,12 +35,14 @@ void ContactModel::addContact(const QString &address, const QByteArray &rpi, qin
     endInsertRows();
 }
 
-int ContactModel::rowCount(const QModelIndex & parent) const {
+int ContactModel::rowCount(const QModelIndex &parent) const
+{
     Q_UNUSED(parent)
     return m_contacts.count();
 }
 
-QVariant ContactModel::data(const QModelIndex & index, int role) const {
+QVariant ContactModel::data(const QModelIndex &index, int role) const
+{
     if (index.row() < 0 || index.row() > m_contacts.count())
         return QVariant();
 
