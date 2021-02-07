@@ -4,7 +4,7 @@
 
 #include "dbusinterface.h"
 
-DBusInterface::DBusInterface(QObject *parent, bool *success)
+DBusInterface::DBusInterface(bool *success, QObject *parent)
     : QObject(parent)
     , m_connection(QDBusConnection::sessionBus())
 {
