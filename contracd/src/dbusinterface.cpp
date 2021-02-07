@@ -4,13 +4,15 @@
 
 #include "dbusinterface.h"
 
-DBusInterface::DBusInterface(bool &result, QObject *parent)
+DBusInterface::DBusInterface(QObject *parent, bool *success)
     : QObject(parent)
     , m_connection(QDBusConnection::sessionBus())
 {
     qDebug() << "CONTRAC: Initialising the dbus interface";
 
     Settings &settings = Settings::getInstance();
+
+    bool result;
 
     qDBusRegisterMetaType<TemporaryExposureKey>();
     qDBusRegisterMetaType<ExposureInformation>();
@@ -47,6 +49,11 @@ DBusInterface::DBusInterface(bool &result, QObject *parent)
     if (settings.enabled()) {
         qDebug() << "Starting automatically";
         m_exposureNotification.start();
+    }
+
+    //Make result optionally accessible outside
+    if (success) {
+        *success = result;
     }
 }
 
