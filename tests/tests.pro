@@ -1,11 +1,6 @@
 PACKAGENAME = harbour-contrac
 
-include(../version.pri)
-
-DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR" \
-    "VERSION_MINOR=$$VERSION_MINOR" \
-    "VERSION_BUILD=$$VERSION_BUILD" \
-    "VERSION=\\\"$$VERSION\\\""
+include(../config.pri)
 
 QT += testlib dbus
 QT -= gui

@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "../contracd/src/exposuresummary.h"
+#include "../contracd/src/version.h"
 
 #include "appsettings.h"
 

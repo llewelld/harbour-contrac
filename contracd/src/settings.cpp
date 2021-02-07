@@ -1,13 +1,15 @@
 #include <QDebug>
 
 #include "settings.h"
+#include "version.h"
 
 #define SETTINGS_MAX_VERSION (0)
 
-Settings * Settings::instance = nullptr;
+Settings *Settings::instance = nullptr;
 
-Settings::Settings(QObject *parent) : QObject(parent),
-    m_settings(this)
+Settings::Settings(QObject *parent)
+    : QObject(parent)
+    , m_settings(this)
 {
     m_tracingKey = m_settings.value(QStringLiteral("keys/tracingKey"), QVariant(QByteArray())).toByteArray();
     m_enabled = m_settings.value(QStringLiteral("state/enabled"), false).toBool();
@@ -28,13 +30,15 @@ Settings::~Settings()
     qDebug() << "Deleted settings";
 }
 
-void Settings::instantiate(QObject *parent) {
+void Settings::instantiate(QObject *parent)
+{
     if (instance == nullptr) {
         instance = new Settings(parent);
     }
 }
 
-Settings & Settings::getInstance() {
+Settings &Settings::getInstance()
+{
     return *instance;
 }
 
@@ -167,4 +171,3 @@ bool Settings::upgrade()
 
     return success;
 }
-

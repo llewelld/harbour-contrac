@@ -1,7 +1,11 @@
 Name:       harbour-contrac
 
+%define version_major 0
+%define version_minor 7
+%define version_revis 6
+
 Summary:    Contrac
-Version:    0.7.6
+Version:    %{version_major}.%{version_minor}.%{version_revis}
 Release:    1
 Group:      Qt/Qt
 License:    LICENSE
@@ -11,7 +15,6 @@ Source100:  harbour-contrac.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   openssl
 Requires:   protobuf-lite
-Requires:   nemo-qml-plugin-time-qt5
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -43,7 +46,10 @@ Unit tests for %{name}
 %setup -q -n %{name}-%{version}
 
 %build
-%qmake5 
+%qmake5 DEFINES+='VERSION_MAJOR=%{version_major}' \
+  DEFINES+='VERSION_MINOR=%{version_minor}' \
+  DEFINES+='VERSION_REVIS=%{version_revis}' \
+  DEFINES+='VERSION=\"\\\"\"%{version_major}.%{version_minor}.%{version_revis}\"\\\"\"'
 make %{?_smp_mflags}
 
 %install

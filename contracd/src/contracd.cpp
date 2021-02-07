@@ -6,15 +6,16 @@
  *
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtQuick>
 #include <signal.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <QtCore/QCoreApplication>
+#include <QtQuick>
 
+#include "contracd.h"
 #include "dbusinterface.h"
 #include "settings.h"
-#include "contracd.h"
+#include "version.h"
 
 static void signal_handler(int sig);
 
@@ -28,10 +29,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("contracd");
     QCoreApplication::setApplicationName("contracd");
 
-    qDebug() << "contrac VERSION string:" << VERSION;
-    qDebug() << "VERSION_MAJOR:" << VERSION_MAJOR;
-    qDebug() << "VERSION_MINOR:" << VERSION_MINOR;
-    qDebug() << "VERSION_BUILD:" << VERSION_BUILD;
+    qDebug() << "Contrac version" << VERSION;
 
     Settings::instantiate(app);
 

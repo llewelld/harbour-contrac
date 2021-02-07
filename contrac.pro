@@ -12,12 +12,7 @@
 # The name of your application
 TARGET = harbour-contrac
 
-include(version.pri)
-
-DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR" \
-    "VERSION_MINOR=$$VERSION_MINOR" \
-    "VERSION_BUILD=$$VERSION_BUILD" \
-    "VERSION=\\\"$$VERSION\\\""
+include(config.pri)
 
 #protobuf build step
 PRE_TARGETDEPS += proto/submissionpayload.pb.cc \
@@ -55,6 +50,7 @@ HEADERS += \
     contracd/src/temporaryexposurekey.h \
     contracd/src/exposureconfiguration.h \
     contracd/src/zipistreambuffer.h \
+    contracd/src/version.h \
     src/riskscoreclass.h \
     src/riskstatus.h \
     src/serveraccess.h \
@@ -126,6 +122,5 @@ DEFINES += LINUX
 QT += dbus
 
 OTHER_FILES += \
-    version.pri \
     src/submissionpayload.proto \
     icons/*.svg
