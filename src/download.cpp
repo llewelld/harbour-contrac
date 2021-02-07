@@ -1,11 +1,11 @@
-#include <QStringList>
 #include <QDebug>
 #include <QDir>
 #include <QStandardPaths>
+#include <QStringList>
 
 #include "appsettings.h"
-#include "serveraccess.h"
 #include "downloadconfig.h"
+#include "serveraccess.h"
 
 #include "download.h"
 
@@ -56,18 +56,19 @@ QDate latestDownloaded()
 
 } // Anonymous namespace
 
-Download::Download(QObject *parent) : QObject(parent)
-  , m_serverAccess(new ServerAccess(this))
-  , m_fileQueue()
-  , m_latest()
-  , m_downloading(false)
-  , m_filesReceived(0)
-  , m_filesTotal(0)
-  , m_status(StatusIdle)
-  , m_downloadConfig(new DownloadConfig(this))
-  , m_countryCode()
-  , m_downloadedPreviously()
-  , m_fileProgress(0.0)
+Download::Download(QObject *parent)
+    : QObject(parent)
+    , m_serverAccess(new ServerAccess(this))
+    , m_fileQueue()
+    , m_latest()
+    , m_downloading(false)
+    , m_filesReceived(0)
+    , m_filesTotal(0)
+    , m_status(StatusIdle)
+    , m_downloadConfig(new DownloadConfig(this))
+    , m_countryCode()
+    , m_downloadedPreviously()
+    , m_fileProgress(0.0)
 {
     m_serverAccess->setId("accessKey1");
     m_serverAccess->setSecret("verySecretKey1");
@@ -162,7 +163,7 @@ void Download::downloadDateList()
 {
     qDebug() << "Downloading list of available dates";
 
-    QString url = "version/v1/diagnosis-keys/country/" + m_countryCode +"/date";
+    QString url = "version/v1/diagnosis-keys/country/" + m_countryCode + "/date";
     ServerListResult *result = m_serverAccess->list(url);
     connect(result, &ServerListResult::finished, this, [this, result]() {
         QStringList dates;
@@ -217,7 +218,8 @@ void Download::addToFileQueue(QString const &download)
     }
 }
 
-void Download::startNextFileDownload() {
+void Download::startNextFileDownload()
+{
     if (m_fileQueue.isEmpty()) {
         // We've downloaded all the files
         qDebug() << "All files downloaded";
@@ -230,7 +232,7 @@ void Download::startNextFileDownload() {
         QString name = m_fileQueue.first();
         QString filename = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/download/" + name + "/all.dat";
         qDebug() << "Downloading" << name << "to:" << filename;
-        QString url = "version/v1/diagnosis-keys/country/" + m_countryCode +"/date/" + name;
+        QString url = "version/v1/diagnosis-keys/country/" + m_countryCode + "/date/" + name;
         ServerGetFileResult *result = m_serverAccess->getFile(url, filename);
         connect(result, &ServerResult::progress, this, &Download::fileProgress);
         connect(result, &ServerResult::finished, this, [this, result, name, filename]() {
@@ -392,7 +394,7 @@ void Download::fileProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     float previousProgress = progress();
     if (bytesTotal > 0) {
-        m_fileProgress = (double)bytesReceived / (double)bytesTotal;
+        m_fileProgress = (double) bytesReceived / (double) bytesTotal;
         if (progress() > previousProgress) {
             emit progressChanged();
         }

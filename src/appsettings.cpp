@@ -1,6 +1,6 @@
-#include <QDebug>
 #include <mlite5/MGConfItem>
 #include <sailfishapp.h>
+#include <QDebug>
 
 #include "../contracd/src/exposuresummary.h"
 
@@ -8,10 +8,11 @@
 
 #define SETTINGS_MAX_VERSION (1)
 
-AppSettings * AppSettings::instance = nullptr;
+AppSettings *AppSettings::instance = nullptr;
 
-AppSettings::AppSettings(QObject *parent) : QObject(parent),
-    m_settings(this)
+AppSettings::AppSettings(QObject *parent)
+    : QObject(parent)
+    , m_settings(this)
 {
     m_downloadServer = m_settings.value(QStringLiteral("servers/downloadServer"), QStringLiteral("https://svc90.main.px.t-online.de")).toString();
     m_uploadServer = m_settings.value(QStringLiteral("servers/uploadServer"), QStringLiteral("https://submission.coronawarn.app")).toString();
@@ -92,17 +93,20 @@ AppSettings::~AppSettings()
     qDebug() << "Deleted settings";
 }
 
-void AppSettings::instantiate(QObject *parent) {
+void AppSettings::instantiate(QObject *parent)
+{
     if (instance == nullptr) {
         instance = new AppSettings(parent);
     }
 }
 
-AppSettings & AppSettings::getInstance() {
+AppSettings &AppSettings::getInstance()
+{
     return *instance;
 }
 
-QObject * AppSettings::provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
+QObject *AppSettings::provider(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
 
@@ -200,11 +204,13 @@ void AppSettings::setCountryCode(QString countryCode)
     }
 }
 
-QString AppSettings::getImageDir() const {
+QString AppSettings::getImageDir() const
+{
     return m_imageDir;
 }
 
-QString AppSettings::getImageUrl(QString const &id) const {
+QString AppSettings::getImageUrl(QString const &id) const
+{
     return m_imageDir + id + ".png";
 }
 

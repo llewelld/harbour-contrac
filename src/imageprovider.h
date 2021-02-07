@@ -5,11 +5,13 @@
 
 class AppSettings;
 
-class ImageProvider : public QQuickImageProvider {
+class ImageProvider : public QQuickImageProvider
+{
 public:
     explicit ImageProvider(AppSettings const &settings);
 
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+
 private:
     QString const m_imageDir;
 };

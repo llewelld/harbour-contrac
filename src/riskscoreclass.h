@@ -3,8 +3,7 @@
 
 #include <QObject>
 
-namespace diagnosis
-{
+namespace diagnosis {
 class RiskScoreClass;
 }
 
@@ -21,12 +20,12 @@ public:
     RiskScoreClass(RiskScoreClass const &riskScoreClass);
     RiskScoreClass(::diagnosis::RiskScoreClass const &riskScoreClass, QObject *parent = nullptr);
 
-    RiskScoreClass& operator=( const RiskScoreClass &other);
-    bool operator==( const RiskScoreClass &other) const;
-    bool operator!=( const RiskScoreClass &other) const;
+    RiskScoreClass &operator=(const RiskScoreClass &other);
+    bool operator==(const RiskScoreClass &other) const;
+    bool operator!=(const RiskScoreClass &other) const;
 
-    bool operator==( const ::diagnosis::RiskScoreClass &other) const;
-    bool operator!=( const ::diagnosis::RiskScoreClass &other) const;
+    bool operator==(const ::diagnosis::RiskScoreClass &other) const;
+    bool operator!=(const ::diagnosis::RiskScoreClass &other) const;
 
     Q_INVOKABLE QString label() const;
     Q_INVOKABLE qint32 min() const;

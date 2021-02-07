@@ -6,16 +6,16 @@
  *
  */
 
-#include <QtQuick>
 #include <openssl/rand.h>
+#include <QtQuick>
 
+#include "appsettings.h"
 #include "dbusproxy.h"
 #include "download.h"
 #include "downloadconfig.h"
-#include "upload.h"
-#include "appsettings.h"
 #include "imageprovider.h"
 #include "riskstatus.h"
+#include "upload.h"
 
 #include <sailfishapp.h>
 

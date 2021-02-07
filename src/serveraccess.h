@@ -1,8 +1,8 @@
 #ifndef SERVERACCESS_H
 #define SERVERACCESS_H
 
-#include <QObject>
 #include <QNetworkReply>
+#include <QObject>
 
 class ServerResult : public QObject
 {
@@ -119,7 +119,8 @@ signals:
 public slots:
 
 private:
-    enum Method {
+    enum Method
+    {
         GET,
         PUT,
         DELETE

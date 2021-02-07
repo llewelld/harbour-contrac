@@ -28,7 +28,8 @@ RiskScoreClass::RiskScoreClass(::diagnosis::RiskScoreClass const &riskScoreClass
     m_max = riskScoreClass.max();
 }
 
-RiskScoreClass& RiskScoreClass::operator=( const RiskScoreClass &other) {
+RiskScoreClass &RiskScoreClass::operator=(const RiskScoreClass &other)
+{
     if (this != &other) {
         m_label = other.m_label;
         m_min = other.m_min;
@@ -38,7 +39,7 @@ RiskScoreClass& RiskScoreClass::operator=( const RiskScoreClass &other) {
     return *this;
 }
 
-bool RiskScoreClass::operator==( const RiskScoreClass &other) const
+bool RiskScoreClass::operator==(const RiskScoreClass &other) const
 {
     bool same;
     same = (m_label == other.m_label) && (m_min == other.m_min) && (m_max == other.m_max);
@@ -46,12 +47,12 @@ bool RiskScoreClass::operator==( const RiskScoreClass &other) const
     return same;
 }
 
-bool RiskScoreClass::operator!=( const RiskScoreClass &other) const
+bool RiskScoreClass::operator!=(const RiskScoreClass &other) const
 {
     return !(*this == other);
 }
 
-bool RiskScoreClass::operator==( const ::diagnosis::RiskScoreClass &other) const
+bool RiskScoreClass::operator==(const ::diagnosis::RiskScoreClass &other) const
 {
     bool same;
     same = (m_label == QString::fromStdString(other.label())) && (m_min == other.min()) && (m_max == other.max());
@@ -59,7 +60,7 @@ bool RiskScoreClass::operator==( const ::diagnosis::RiskScoreClass &other) const
     return same;
 }
 
-bool RiskScoreClass::operator!=( const ::diagnosis::RiskScoreClass &other) const
+bool RiskScoreClass::operator!=(const ::diagnosis::RiskScoreClass &other) const
 {
     return !(*this == other);
 }

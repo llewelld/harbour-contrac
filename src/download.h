@@ -1,9 +1,9 @@
 #ifndef DOWNLOAD_H
 #define DOWNLOAD_H
 
-#include <QObject>
 #include <QDate>
 #include <QMap>
+#include <QObject>
 #include <QSet>
 
 #include "../contracd/src/exposureconfiguration.h"
@@ -66,7 +66,7 @@ private slots:
 
 private:
     void downloadDateList();
-    void addToFileQueue(QString const& download);
+    void addToFileQueue(QString const &download);
     void startNextFileDownload();
     void createDateFolder(QDate const &date) const;
     void finalise();
@@ -82,7 +82,7 @@ private:
     qint64 m_filesTotal;
     Status m_status;
     ErrorType m_error;
-    DownloadConfig * m_downloadConfig;
+    DownloadConfig *m_downloadConfig;
     QString m_countryCode;
     QSet<QDate> m_downloadedPreviously;
     float m_fileProgress;

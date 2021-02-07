@@ -1,14 +1,14 @@
 #ifndef DBUSPROXY_H
 #define DBUSPROXY_H
 
-#include <QObject>
 #include <QDBusPendingCall>
 #include <QDateTime>
+#include <QObject>
 
-#include "../contracd/src/exposuresummary.h"
-#include "../contracd/src/exposureinformation.h"
-#include "../contracd/src/temporaryexposurekey.h"
 #include "../contracd/src/exposureconfiguration.h"
+#include "../contracd/src/exposureinformation.h"
+#include "../contracd/src/exposuresummary.h"
+#include "../contracd/src/temporaryexposurekey.h"
 
 class QDBusInterface;
 

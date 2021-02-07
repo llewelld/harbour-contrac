@@ -109,4 +109,3 @@ QString RiskStatus::calculateRiskClassLabel(double combinedRiskScore) const
 
     return label;
 }
-

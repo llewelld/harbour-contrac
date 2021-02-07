@@ -1,11 +1,11 @@
 #ifndef UPLOAD_H
 #define UPLOAD_H
 
-#include <QObject>
 #include <QNetworkReply>
+#include <QObject>
 
-#include "dbusproxy.h"
 #include "contracd/src/temporaryexposurekey.h"
+#include "dbusproxy.h"
 
 class Upload : public QObject
 {
