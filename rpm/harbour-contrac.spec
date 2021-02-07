@@ -70,6 +70,10 @@ rm -rf %{buildroot}
 # << install pre
 %qmake5_install
 
+desktop-file-install --delete-original       \
+  --dir %{buildroot}%{_datadir}/applications             \
+   %{buildroot}%{_datadir}/applications/*.desktop
+
 # >> install post
 %post
 if [ "$1" -ge 1 ]; then
@@ -77,18 +81,16 @@ systemctl-user daemon-reload || true
 systemctl-user restart contracd.service || true
 systemctl-user enable contracd.service || true
 fi
+# << install post
 
+# >> uninstall post
 %postun
 if [ "$1" -eq 0 ]; then
 systemctl-user stop contracd.service || true
 systemctl-user disable contracd.service || true
 systemctl-user daemon-reload || true
 fi
-# << install post
-
-desktop-file-install --delete-original       \
-  --dir %{buildroot}%{_datadir}/applications             \
-   %{buildroot}%{_datadir}/applications/*.desktop
+# << uninstall post
 
 %files
 %defattr(-,root,root,-)
