@@ -1,11 +1,6 @@
 TARGET = contracd
 
-include(../version.pri)
-
-DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR" \
-    "VERSION_MINOR=$$VERSION_MINOR" \
-    "VERSION_BUILD=$$VERSION_BUILD" \
-    "VERSION=\\\"$$VERSION\\\""
+include(../config.pri)
 
 #protobuf build step
 PRE_TARGETDEPS += proto/contrac.pb.cc
@@ -48,6 +43,7 @@ HEADERS += \
     src/rpidataitem.h \
     src/settings.h \
     src/temporaryexposurekey.h \
+    src/version.h \
     src/zipistreambuffer.h
 
 SOURCES += \

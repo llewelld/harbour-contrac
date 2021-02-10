@@ -16,6 +16,7 @@
 #include "imageprovider.h"
 #include "riskstatus.h"
 #include "upload.h"
+#include "../contracd/src/version.h"
 
 #include <sailfishapp.h>
 
@@ -36,10 +37,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("harbour-contrac");
     QCoreApplication::setApplicationName("harbour-contrac");
 
-    qDebug() << "harbour-getiplay VERSION string:" << VERSION;
-    qDebug() << "VERSION_MAJOR:" << VERSION_MAJOR;
-    qDebug() << "VERSION_MINOR:" << VERSION_MINOR;
-    qDebug() << "VERSION_BUILD:" << VERSION_BUILD;
+    qDebug() << "Contrac version" << VERSION;
 
     // Needed for Settings save/load
     qRegisterMetaType<ExposureSummary>();
