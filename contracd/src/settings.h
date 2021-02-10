@@ -30,7 +30,7 @@ public:
     Q_INVOKABLE qint8 txPower() const;
     Q_INVOKABLE qint8 rssiCorrection() const;
 
-    void writeSettingsToDisk();
+    void writeSettingsToDisk(bool force);
 
 signals:
     void tracingKeyChanged();
@@ -54,6 +54,7 @@ private:
 private:
     static Settings * instance;
     QSettings m_settings;
+    bool m_dirty;
 
     QByteArray m_tracingKey;
     bool m_enabled;
