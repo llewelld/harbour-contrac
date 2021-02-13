@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.nemomobile.time 1.0
 import uk.co.flypig.contrac 1.0
+import Nemo.DBus 2.0
 import "pages"
 
 ApplicationWindow
@@ -22,6 +23,11 @@ ApplicationWindow
 
     Download {
         id: download
+        onDownloadingChanged: {
+            if (!downloading) {
+                autoUpdate.updateComplete();
+            }
+        }
     }
 
     WallClock {
@@ -31,6 +37,13 @@ ApplicationWindow
 
     RiskStatus {
         id: riskStatus
+    }
+
+    AutoUpdate {
+        id: autoUpdate
+        onStartUpdate: {
+            download.downloadLatest()
+        }
     }
 
     function updateSummary() {

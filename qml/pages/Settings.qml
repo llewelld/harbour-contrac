@@ -24,11 +24,48 @@ Page {
         Column {
             id: settingsColumn
             width: parent.width
-            spacing: Theme.paddingLarge
 
             PageHeader {
                 //% "Settings"
                 title: qsTrId("contrac-settings_he_settings")
+            }
+
+            SectionHeader {
+                //% "Daily update"
+                text: qsTrId("contrac-settings_he_daily-update")
+            }
+
+            TextSwitch {
+                //% "Perform daily update"
+                text: qsTrId("contrac-settings_ts_perform-daily-update")
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                checked: AppSettings.autoUpdate
+                automaticCheck: false
+                onClicked: AppSettings.autoUpdate = !checked
+            }
+
+            ValueButton {
+                //% "Approximate update time"
+                label: qsTrId("contrac-settings_vb_approx_update-time")
+                //% "The app must be running for the update to trigger"
+                description: qsTrId("contrac-settings_vb_approx_update-time-description")
+                enabled: AppSettings.autoUpdate
+                value: {
+                    var time = new Date()
+                    time.setHours(AppSettings.autoUpdateTime / (60 * 60))
+                    time.setMinutes((AppSettings.autoUpdateTime / 60) % 60)
+                    Format.formatDate(time, Formatter.TimeValue)
+                }
+                onClicked: {
+                    var hours = AppSettings.autoUpdateTime / (60 * 60)
+                    var minutes = (AppSettings.autoUpdateTime / 60) % 60
+                    var obj = pageStack.animatorPush("Sailfish.Silica.TimePickerDialog", {hour: hours, minute: minutes})
+                    obj.pageCompleted.connect(function(page) {
+                        page.accepted.connect(function() {
+                            AppSettings.autoUpdateTime = ((page.hour * 60) + page.minute) * 60
+                        })
+                    })
+                }
             }
 
             SectionHeader {
@@ -79,7 +116,7 @@ Page {
                 Component.onCompleted: {
                     var codes = ["DE", "EUR"]
                     currentIndex = codes.indexOf(AppSettings.countryCode)
-                    console.log("Changing country code to:" + currentIndex)
+                    console.log("Changing country code to: " + currentIndex)
                 }
                 menu: ContextMenu {
                     MenuItem {

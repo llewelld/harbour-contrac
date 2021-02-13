@@ -77,6 +77,4 @@ private:
     ExposureNotification m_exposureNotification;
 };
 
-
-
 #endif // DBUSINTERFACE_H

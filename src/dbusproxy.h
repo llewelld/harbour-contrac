@@ -12,8 +12,6 @@
 
 class QDBusInterface;
 
-#define SERVICE_NAME "uk.co.flypig.contrac"
-
 class DBusProxy : public QObject
 {
     Q_OBJECT

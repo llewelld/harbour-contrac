@@ -23,6 +23,8 @@ class AppSettings : public QObject
     Q_PROPERTY(QDateTime summaryUpdated READ summaryUpdated WRITE setSummaryUpdated NOTIFY summaryUpdatedChanged)
     Q_PROPERTY(quint32 infoViewed READ infoViewed WRITE setInfoViewed NOTIFY infoViewedChanged)
     Q_PROPERTY(QString countryCode READ countryCode WRITE setCountryCode NOTIFY countryCodeChanged)
+    Q_PROPERTY(bool autoUpdate READ autoUpdate WRITE setAutoUpdate NOTIFY autoUpdateChanged)
+    Q_PROPERTY(qint32 autoUpdateTime READ autoUpdateTime WRITE setAutoUpdateTime NOTIFY autoUpdateTimeChanged)
 
     // Attenuation duration properties
     Q_PROPERTY(QList<double> riskWeights READ riskWeights WRITE setRiskWeights NOTIFY riskWeightsChanged)
@@ -38,21 +40,43 @@ public:
     static AppSettings &getInstance();
     static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine);
 
-    Q_INVOKABLE QString downloadServer() const;
-    Q_INVOKABLE QString uploadServer() const;
-    Q_INVOKABLE QString verificationServer() const;
-    Q_INVOKABLE ExposureSummary *latestSummary();
-    Q_INVOKABLE QDateTime summaryUpdated() const;
-    Q_INVOKABLE quint32 infoViewed() const;
-    Q_INVOKABLE QString countryCode() const;
-
-    Q_INVOKABLE QList<double> riskWeights() const;
-    Q_INVOKABLE qint32 defaultBuckeOffset() const;
-    Q_INVOKABLE qint32 normalizationDivisor() const;
-    Q_INVOKABLE QList<RiskScoreClass> riskScoreClasses() const;
-
+    // Constant image properties
     Q_INVOKABLE QString getImageDir() const;
     Q_INVOKABLE QString getImageUrl(QString const &id) const;
+
+    // Get general properties
+    QString downloadServer() const;
+    QString uploadServer() const;
+    QString verificationServer() const;
+    ExposureSummary *latestSummary();
+    QDateTime summaryUpdated() const;
+    quint32 infoViewed() const;
+    QString countryCode() const;
+    bool autoUpdate() const;
+    qint32 autoUpdateTime() const;
+
+    // Get attenuation duration properties
+    QList<double> riskWeights() const;
+    qint32 defaultBuckeOffset() const;
+    qint32 normalizationDivisor() const;
+    QList<RiskScoreClass> riskScoreClasses() const;
+
+    // Set general properties
+    void setDownloadServer(QString const &downloadServer);
+    void setUploadServer(QString const &uploadServer);
+    void setVerificationServer(QString const &verificationServer);
+    void setLatestSummary(ExposureSummary const *latestSummary);
+    void setSummaryUpdated(QDateTime summaryUpdated);
+    void setInfoViewed(quint32 infoViewed);
+    void setCountryCode(QString countryCode);
+    void setAutoUpdate(bool autoUpdate);
+    void setAutoUpdateTime(qint32 autoUpdateTime);
+
+    // Set attenuation duration properties
+    void setRiskWeights(QList<double> riskWeights);
+    void setDefaultBuckeOffset(qint32 defaultBuckeOffset);
+    void setNormalizationDivisor(qint32 normalizationDivisor);
+    void setRiskScoreClasses(QList<RiskScoreClass> riskScoreClasses);
 
 signals:
     void downloadServerChanged();
@@ -66,19 +90,8 @@ signals:
     void defaultBuckeOffsetChanged();
     void normalizationDivisorChanged();
     void riskScoreClassesChanged();
-
-public slots:
-    void setDownloadServer(QString const &downloadServer);
-    void setUploadServer(QString const &uploadServer);
-    void setVerificationServer(QString const &verificationServer);
-    void setLatestSummary(ExposureSummary const *latestSummary);
-    void setSummaryUpdated(QDateTime summaryUpdated);
-    void setInfoViewed(quint32 infoViewed);
-    void setCountryCode(QString countryCode);
-    void setRiskWeights(QList<double> riskWeights);
-    void setDefaultBuckeOffset(qint32 defaultBuckeOffset);
-    void setNormalizationDivisor(qint32 normalizationDivisor);
-    void setRiskScoreClasses(QList<RiskScoreClass> riskScoreClasses);
+    void autoUpdateChanged();
+    void autoUpdateTimeChanged();
 
 private:
     bool upgrade();
@@ -88,6 +101,7 @@ private:
     static AppSettings *instance;
     QSettings m_settings;
 
+    QString m_imageDir;
     QString m_downloadServer;
     QString m_uploadServer;
     QString m_verificationServer;
@@ -95,11 +109,12 @@ private:
     QDateTime m_summaryUpdated;
     quint32 m_infoViewed;
     QString m_countryCode;
-    QString m_imageDir;
     QList<double> m_riskWeights;
     qint32 m_defaultBuckeOffset;
     qint32 m_normalizationDivisor;
     QList<RiskScoreClass> m_riskScoreClasses;
+    bool m_autoUpdate;
+    qint32 m_autoUpdateTime;
 };
 
 #endif // APPSETTINGS_H

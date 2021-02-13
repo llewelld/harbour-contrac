@@ -10,6 +10,7 @@
 #include <QtQuick>
 
 #include "appsettings.h"
+#include "autoupdate.h"
 #include "dbusproxy.h"
 #include "download.h"
 #include "downloadconfig.h"
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Upload>("uk.co.flypig.contrac", 1, 0, "Upload");
     qmlRegisterType<DownloadConfig>("uk.co.flypig.contrac", 1, 0, "DownloadConfig");
     qmlRegisterType<RiskStatus>("uk.co.flypig.contrac", 1, 0, "RiskStatus");
+    qmlRegisterType<AutoUpdate>("uk.co.flypig.contrac", 1, 0, "AutoUpdate");
 
     qmlRegisterSingletonType<AppSettings>("uk.co.flypig.contrac", 1, 0, "AppSettings", AppSettings::provider);
 

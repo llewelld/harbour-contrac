@@ -40,6 +40,7 @@ HEADERS += \
     proto/submissionpayload.pb.h \
     proto/applicationConfiguration.pb.h \
     src/appsettings.h \
+    src/autoupdate.h \
     src/dbusproxy.h \
     src/contactmodel.h \
     src/download.h \
@@ -60,6 +61,7 @@ SOURCES += \
     proto/submissionpayload.pb.cc \
     proto/applicationConfiguration.pb.cc \
     src/appsettings.cpp \
+    src/autoupdate.cpp \
     src/downloadconfig.cpp \
     src/harbour-contrac.cpp \
     src/dbusproxy.cpp \
@@ -114,6 +116,7 @@ PKGCONFIG += \
     openssl \
     libxml-2.0 \
     libcurl \
+    keepalive \
     protobuf-lite \
     quazip
 
