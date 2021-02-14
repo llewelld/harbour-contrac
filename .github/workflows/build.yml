@@ -1,0 +1,62 @@
+name: SailfishOS build
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  clang-format-checking:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: RafikFarhad/clang-format-github-action@v1
+        with:
+          sources: "src/**/*.h,src/**/*.c,test/**/*.c"
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Prepare
+      run: mkdir output
+
+    - name: Build armv7hl
+      id: build_armv7hl
+      uses: coderus/github-sfos-build@master
+      with:
+        release: 4.0.1.48
+
+    - name: Build i486
+      id: build_i486
+      uses: coderus/github-sfos-build@master
+      with:
+        release: 4.0.1.48
+        arch: i486
+
+    - name: Upload build result
+      uses: actions/upload-artifact@v2
+      with:
+        name: rpms
+        path: RPMS
+
+    - name: Create release
+      if: contains(github.ref, 'release')
+      run: |
+        set -x
+        assets=()
+        for asset in RPMS/*.rpm; do
+          assets+=("-a" "$asset")
+        done
+        tag_name="${GITHUB_REF##*/}"
+        hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
