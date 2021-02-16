@@ -26,7 +26,7 @@ Settings::Settings(QObject *parent)
 
 Settings::~Settings()
 {
-    writeSettingsToDisk(true);
+    writeSettingsToDisk();
     instance = nullptr;
     qDebug() << "Deleted settings";
 }

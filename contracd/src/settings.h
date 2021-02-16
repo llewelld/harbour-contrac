@@ -30,7 +30,7 @@ public:
     Q_INVOKABLE qint8 txPower() const;
     Q_INVOKABLE qint8 rssiCorrection() const;
 
-    void writeSettingsToDisk(bool force);
+    void writeSettingsToDisk(bool force = true);
 
 signals:
     void tracingKeyChanged();
