@@ -10,6 +10,7 @@ Settings *Settings::instance = nullptr;
 Settings::Settings(QObject *parent)
     : QObject(parent)
     , m_settings(this)
+    , m_dirty(false)
 {
     m_tracingKey = m_settings.value(QStringLiteral("keys/tracingKey"), QVariant(QByteArray())).toByteArray();
     m_enabled = m_settings.value(QStringLiteral("state/enabled"), false).toBool();
@@ -25,7 +26,7 @@ Settings::Settings(QObject *parent)
 
 Settings::~Settings()
 {
-    writeSettingsToDisk();
+    writeSettingsToDisk(true);
     instance = nullptr;
     qDebug() << "Deleted settings";
 }
@@ -42,7 +43,7 @@ Settings &Settings::getInstance()
     return *instance;
 }
 
-Q_INVOKABLE QByteArray Settings::tracingKey() const
+QByteArray Settings::tracingKey() const
 {
     return m_tracingKey;
 }
@@ -51,12 +52,13 @@ void Settings::setTracingKey(QByteArray const &tracingKey)
 {
     if (m_tracingKey != tracingKey) {
         m_tracingKey = tracingKey;
+        m_dirty = true;
 
         emit tracingKeyChanged();
     }
 }
 
-Q_INVOKABLE bool Settings::enabled() const
+bool Settings::enabled() const
 {
     return m_enabled;
 }
@@ -65,12 +67,13 @@ void Settings::setEnabled(bool enabled)
 {
     if (m_enabled != enabled) {
         m_enabled = enabled;
+        m_dirty = true;
 
         emit enabledChanged();
     }
 }
 
-Q_INVOKABLE quint32 Settings::sent() const
+quint32 Settings::sent() const
 {
     return m_sent;
 }
@@ -79,12 +82,13 @@ void Settings::setSent(quint32 sent)
 {
     if (m_sent != sent) {
         m_sent = sent;
+        m_dirty = true;
 
         emit sentChanged();
     }
 }
 
-Q_INVOKABLE quint32 Settings::received() const
+quint32 Settings::received() const
 {
     return m_received;
 }
@@ -93,6 +97,7 @@ void Settings::setReceived(quint32 received)
 {
     if (m_received != received) {
         m_received = received;
+        m_dirty = true;
 
         emit receivedChanged();
     }
@@ -110,6 +115,7 @@ void Settings::setTxPower(qint8 txPower)
 {
     if (m_txPower != txPower) {
         m_txPower = txPower;
+        m_dirty = true;
 
         emit txPowerChanged();
     }
@@ -123,22 +129,26 @@ qint8 Settings::rssiCorrection() const
     return m_rssiCorrection;
 }
 
-void Settings::writeSettingsToDisk()
-{
-    m_settings.setValue(QStringLiteral("keys/tracingKey"), m_tracingKey);
-    m_settings.setValue(QStringLiteral("state/enabled"), m_enabled);
-    m_settings.setValue(QStringLiteral("state/sent"), m_sent);
-    m_settings.setValue(QStringLiteral("state/received"), m_received);
-    m_settings.setValue(QStringLiteral("configuration/txPower"), m_txPower);
-    m_settings.setValue(QStringLiteral("configuration/rssiCorrection"), m_rssiCorrection);
-}
-
 void Settings::setRssiCorrection(qint8 rssiCorrection)
 {
     if (m_rssiCorrection != rssiCorrection) {
         m_rssiCorrection = rssiCorrection;
+        m_dirty = true;
 
         emit rssiCorrectionChanged();
+    }
+}
+
+void Settings::writeSettingsToDisk(bool force)
+{
+    if (m_dirty || force) {
+        m_settings.setValue(QStringLiteral("keys/tracingKey"), m_tracingKey);
+        m_settings.setValue(QStringLiteral("state/enabled"), m_enabled);
+        m_settings.setValue(QStringLiteral("state/sent"), m_sent);
+        m_settings.setValue(QStringLiteral("state/received"), m_received);
+        m_settings.setValue(QStringLiteral("configuration/txPower"), m_txPower);
+        m_settings.setValue(QStringLiteral("configuration/rssiCorrection"), m_rssiCorrection);
+        m_dirty = false;
     }
 }
 

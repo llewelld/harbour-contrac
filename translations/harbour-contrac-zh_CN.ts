@@ -256,8 +256,9 @@
         <translation>贡献者</translation>
     </message>
     <message id="contrac-about_la_contributors">
-        <source>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</source>
-        <translation>ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</translation>
+        <source>ApostolosB, dashinfantry, flypig, Oskar Roesler (bionade24), smdesai, spodermenpls, Thaodan</source>
+        <oldsource>ApostolosB, bionade24, dashinfantry, flypig, Oskar Roesler (bionade24), smdesai, spodermenpls, Thaodan</oldsource>
+        <translation type="unfinished">ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</translation>
     </message>
     <message id="contrac-cover_la_title">
         <source>Contrac</source>
