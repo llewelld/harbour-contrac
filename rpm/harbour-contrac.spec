@@ -11,7 +11,6 @@ Group:      Qt/Qt
 License:    LICENSE
 URL:        https://www.flypig.co.uk/contrac
 Source0:    %{name}-%{version}.tar.bz2
-Source100:  harbour-contrac.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   openssl
 Requires:   protobuf-lite
