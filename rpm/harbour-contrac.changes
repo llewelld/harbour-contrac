@@ -12,6 +12,15 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Feb 16 2021 David Llewellyn-Jones <david@flypig.co.uk> 0.7.7-1
+- Store settings periodically to avoid data loss on unclean exit
+- Code formatting tidied up with clang-format
+- Improve start up failure handling
+- Fix erroneous desktop-file-uninstall from uninstall process
+- Tidy up build configuration
+- Support automatic daily download of diagnosis keys
+- Added Oskar Roesler (bionade24) as a contributor
+
 * Sun Jan 31 2021 David Llewellyn-Jones <david@flypig.co.uk> 0.7.6-1
 - Download daily, rather than hourly, diagnosis key archives.
 - Allow selection of key region for downloads (DE or EUR).
