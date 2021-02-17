@@ -9,6 +9,7 @@
 #include <openssl/rand.h>
 #include <QtQuick>
 
+#include "../contracd/src/version.h"
 #include "appsettings.h"
 #include "autoupdate.h"
 #include "dbusproxy.h"
@@ -17,7 +18,6 @@
 #include "imageprovider.h"
 #include "riskstatus.h"
 #include "upload.h"
-#include "../contracd/src/version.h"
 
 #include <sailfishapp.h>
 
