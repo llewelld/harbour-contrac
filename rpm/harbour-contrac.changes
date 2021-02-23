@@ -12,7 +12,7 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* Sun Feb 16 2021 David Llewellyn-Jones <david@flypig.co.uk> 0.7.7-1
+* Sun Feb 14 2021 David Llewellyn-Jones <david@flypig.co.uk> 0.7.7-1
 - Store settings periodically to avoid data loss on unclean exit
 - Code formatting tidied up with clang-format
 - Improve start up failure handling
