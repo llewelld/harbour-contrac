@@ -49,7 +49,8 @@ Unit tests for %{name}
 %qmake5 DEFINES+='VERSION_MAJOR=%{version_major}' \
   DEFINES+='VERSION_MINOR=%{version_minor}' \
   DEFINES+='VERSION_REVIS=%{version_revis}' \
-  DEFINES+='VERSION=\"\\\"\"%{version_major}.%{version_minor}.%{version_revis}\"\\\"\"'
+  DEFINES+='VERSION=\"\\\"\"%{version_major}.%{version_minor}.%{version_revis}\"\\\"\"' \
+  %{name}.pro
 make %{?_smp_mflags}
 
 %install
