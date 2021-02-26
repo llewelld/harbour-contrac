@@ -31,8 +31,9 @@ Page {
             }
 
             SectionHeader {
-                //% "Daily update"
-                text: qsTrId("contrac-settings_he_daily-update")
+                //: General settings header
+                //% "General"
+                text: qsTrId("contrac-settings_he_general")
             }
 
             TextSwitch {
@@ -65,6 +66,36 @@ Page {
                             AppSettings.autoUpdateTime = ((page.hour * 60) + page.minute) * 60
                         })
                     })
+                }
+            }
+
+            ComboBox {
+                //: For choosing the level of notification to display
+                //% "Notifications"
+                label: qsTrId("contrac-settings_cb_notifications")
+                currentIndex: AppSettings.notifyLevel
+
+                menu: ContextMenu {
+                    MenuItem {
+                        //% "None"
+                        text: qsTrId("contrac-settings_cb_notifications-none")
+                        onClicked: AppSettings.notifyLevel = Notifications.None
+                    }
+                    MenuItem {
+                        //% "Risk warnings only"
+                        text: qsTrId("contrac-settings_cb_notifications-warnings")
+                        onClicked: AppSettings.notifyLevel = Notifications.Warnings
+                    }
+                    MenuItem {
+                        //% "Warnings and info"
+                        text: qsTrId("contrac-settings_cb_notifications-info")
+                        onClicked: AppSettings.notifyLevel = Notifications.Info
+                    }
+                    MenuItem {
+                        //% "All"
+                        text: qsTrId("contrac-settings_cb_notifications-all")
+                        onClicked: AppSettings.notifyLevel = Notifications.All
+                    }
                 }
             }
 

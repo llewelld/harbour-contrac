@@ -25,6 +25,7 @@ INCLUDEPATH += ../src/ ./mock/
 PKGCONFIG += \
     mlite5 \
     openssl \
+    nemonotifications-qt5 \
     protobuf-lite \
     quazip
 
@@ -39,6 +40,7 @@ HEADERS += \
     ../src/appsettings.h \
     ../src/riskstatus.h \
     ../src/riskscoreclass.h \
+    ../src/notifications.h \
     ../contracd/proto/contrac.pb.h \
     ../contracd/src/bleadvertisement.h \
     ../contracd/src/bleadvertisementmanager.h \
@@ -70,6 +72,7 @@ SOURCES += \
     ../src/appsettings.cpp \
     ../src/riskstatus.cpp \
     ../src/riskscoreclass.cpp \
+    ../src/notifications.cpp \
     ../contracd/proto/contrac.pb.cc \
     ../contracd/src/bleadvertisement.cpp \
     ../contracd/src/bleadvertisementmanager.cpp \

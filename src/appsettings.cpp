@@ -1,5 +1,6 @@
 #include <mlite5/MGConfItem>
 #include <sailfishapp.h>
+#include <QDataStream>
 #include <QDebug>
 
 #include "../contracd/src/exposuresummary.h"
@@ -26,6 +27,11 @@ AppSettings::AppSettings(QObject *parent)
     m_countryCode = m_settings.value(QStringLiteral("update/countryCode"), QStringLiteral("DE")).toString();
     m_autoUpdate = m_settings.value(QStringLiteral("update/autoUpdate"), false).toBool();
     m_autoUpdateTime = m_settings.value(QStringLiteral("update/autoUpdateTime"), DEFAULT_AUTO_UPDATE_TIME).toInt() % (60 * 60 * 24);
+    m_notifyLevel = m_settings.value(QStringLiteral("application/notifyLevel"), Notifications::All).value<Notifications::NotifyLevel>();
+    QVariant notifyIds = m_settings.value(QStringLiteral("application/notifyIds"));
+    if (notifyIds.isValid() && notifyIds.canConvert<QList<quint32>>()) {
+        m_notifyIds = notifyIds.value<QList<quint32>>();
+    }
 
     // Set
     m_riskWeights.append(m_settings.value(QStringLiteral("combinedRisk/riskWeightLow"), 1.0).toDouble());
@@ -79,6 +85,10 @@ AppSettings::~AppSettings()
     m_settings.setValue(QStringLiteral("update/countryCode"), m_countryCode);
     m_settings.setValue(QStringLiteral("update/autoUpdate"), m_autoUpdate);
     m_settings.setValue(QStringLiteral("update/autoUpdateTime"), m_autoUpdateTime);
+    m_settings.setValue(QStringLiteral("application/notifyLevel"), m_notifyLevel);
+    QVariant notifyIds;
+    notifyIds.setValue(m_notifyIds);
+    m_settings.setValue(QStringLiteral("application/notifyIds"), notifyIds);
 
     // Store
     while (m_riskWeights.size() < 3) {
@@ -240,6 +250,32 @@ void AppSettings::setAutoUpdateTime(qint32 autoUpdateTime)
     }
 }
 
+Notifications::NotifyLevel AppSettings::notifyLevel() const
+{
+    return m_notifyLevel;
+}
+
+void AppSettings::setNotifyLevel(Notifications::NotifyLevel notifyLevel)
+{
+    if (m_notifyLevel != notifyLevel) {
+        m_notifyLevel = notifyLevel;
+        emit notifyLevelChanged();
+    }
+}
+
+QList<quint32> AppSettings::notifyIds() const
+{
+    return m_notifyIds;
+}
+
+void AppSettings::setNotifyIds(QList<quint32> notifyIds)
+{
+    if (m_notifyIds != notifyIds) {
+        m_notifyIds = notifyIds;
+        emit notifyIdsChanged();
+    }
+}
+
 QString AppSettings::getImageDir() const
 {
     return m_imageDir;
@@ -375,4 +411,30 @@ void AppSettings::setRegTokenReceived(const QDate &receivedDate)
         m_regTokenReceived = receivedDate;
         emit regTokenReceivedChanged();
     }
+}
+
+QDataStream &operator<<(QDataStream &out, const QList<quint32> &list)
+{
+    quint32 size = list.size();
+
+    out << size;
+    for (quint32 pos = 0; pos < size; ++pos) {
+        out << list[pos];
+    }
+
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, QList<quint32> &list)
+{
+    quint32 size;
+
+    in >> size;
+    for (quint32 pos = 0; pos < size; ++pos) {
+        quint32 value;
+        in >> value;
+        list.append(value);
+    }
+
+    return in;
 }

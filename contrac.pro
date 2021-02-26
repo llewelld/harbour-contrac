@@ -40,6 +40,7 @@ HEADERS += \
     proto/submissionpayload.pb.h \
     proto/applicationConfiguration.pb.h \
     src/appsettings.h \
+    src/appstatus.h \
     src/autoupdate.h \
     src/dbusproxy.h \
     src/contactmodel.h \
@@ -52,6 +53,7 @@ HEADERS += \
     contracd/src/exposureconfiguration.h \
     contracd/src/zipistreambuffer.h \
     contracd/src/version.h \
+    src/notifications.h \
     src/riskscoreclass.h \
     src/riskstatus.h \
     src/serveraccess.h \
@@ -63,6 +65,7 @@ SOURCES += \
     proto/submissionpayload.pb.cc \
     proto/applicationConfiguration.pb.cc \
     src/appsettings.cpp \
+    src/appstatus.cpp \
     src/autoupdate.cpp \
     src/downloadconfig.cpp \
     src/harbour-contrac.cpp \
@@ -75,6 +78,7 @@ SOURCES += \
     contracd/src/temporaryexposurekey.cpp \
     contracd/src/exposureconfiguration.cpp \
     contracd/src/zipistreambuffer.cpp \
+    src/notifications.cpp \
     src/riskscoreclass.cpp \
     src/riskstatus.cpp \
     src/serveraccess.cpp \
@@ -122,6 +126,7 @@ PKGCONFIG += \
     libxml-2.0 \
     libcurl \
     keepalive \
+    nemonotifications-qt5 \
     protobuf-lite \
     quazip \
     sailfishsecrets
