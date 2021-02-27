@@ -115,7 +115,7 @@ ApplicationWindow
             }
         }
         else {
-            consloe.log("Can't start or stop while busy")
+            console.log("Can't start or stop while busy")
         }
     }
 
