@@ -6,6 +6,7 @@
 #include <QSettings>
 
 #include "../contracd/src/exposuresummary.h"
+#include "notifications.h"
 #include "riskscoreclass.h"
 
 class QQmlEngine;
@@ -25,6 +26,8 @@ class AppSettings : public QObject
     Q_PROPERTY(QString countryCode READ countryCode WRITE setCountryCode NOTIFY countryCodeChanged)
     Q_PROPERTY(bool autoUpdate READ autoUpdate WRITE setAutoUpdate NOTIFY autoUpdateChanged)
     Q_PROPERTY(qint32 autoUpdateTime READ autoUpdateTime WRITE setAutoUpdateTime NOTIFY autoUpdateTimeChanged)
+    Q_PROPERTY(Notifications::NotifyLevel notifyLevel READ notifyLevel WRITE setNotifyLevel NOTIFY notifyLevelChanged)
+    Q_PROPERTY(QList<quint32> notifyIds READ notifyIds WRITE setNotifyIds NOTIFY notifyIdsChanged)
 
     // Attenuation duration properties
     Q_PROPERTY(QList<double> riskWeights READ riskWeights WRITE setRiskWeights NOTIFY riskWeightsChanged)
@@ -54,6 +57,8 @@ public:
     QString countryCode() const;
     bool autoUpdate() const;
     qint32 autoUpdateTime() const;
+    Notifications::NotifyLevel notifyLevel() const;
+    QList<quint32> notifyIds() const;
 
     // Get attenuation duration properties
     QList<double> riskWeights() const;
@@ -71,6 +76,8 @@ public:
     void setCountryCode(QString countryCode);
     void setAutoUpdate(bool autoUpdate);
     void setAutoUpdateTime(qint32 autoUpdateTime);
+    void setNotifyLevel(Notifications::NotifyLevel notifyLevel);
+    void setNotifyIds(QList<quint32> notifyIds);
 
     // Set attenuation duration properties
     void setRiskWeights(QList<double> riskWeights);
@@ -79,6 +86,7 @@ public:
     void setRiskScoreClasses(QList<RiskScoreClass> riskScoreClasses);
 
 signals:
+    // General property signals
     void downloadServerChanged();
     void uploadServerChanged();
     void verificationServerChanged();
@@ -86,12 +94,16 @@ signals:
     void summaryUpdatedChanged();
     void infoViewedChanged();
     void countryCodeChanged();
+    void autoUpdateChanged();
+    void autoUpdateTimeChanged();
+    void notifyLevelChanged();
+    void notifyIdsChanged();
+
+    // Attenuation duration property signals
     void riskWeightsChanged();
     void defaultBuckeOffsetChanged();
     void normalizationDivisorChanged();
     void riskScoreClassesChanged();
-    void autoUpdateChanged();
-    void autoUpdateTimeChanged();
 
 private:
     bool upgrade();
@@ -101,6 +113,7 @@ private:
     static AppSettings *instance;
     QSettings m_settings;
 
+    // General properties
     QString m_imageDir;
     QString m_downloadServer;
     QString m_uploadServer;
@@ -109,12 +122,19 @@ private:
     QDateTime m_summaryUpdated;
     quint32 m_infoViewed;
     QString m_countryCode;
+    bool m_autoUpdate;
+    qint32 m_autoUpdateTime;
+    Notifications::NotifyLevel m_notifyLevel;
+    QList<quint32> m_notifyIds;
+
+    // Attenuation duration properties
     QList<double> m_riskWeights;
     qint32 m_defaultBuckeOffset;
     qint32 m_normalizationDivisor;
     QList<RiskScoreClass> m_riskScoreClasses;
-    bool m_autoUpdate;
-    qint32 m_autoUpdateTime;
 };
+
+QDataStream &operator<<(QDataStream &out, const QList<quint32> &list);
+QDataStream &operator>>(QDataStream &in, QList<quint32> &list);
 
 #endif // APPSETTINGS_H
