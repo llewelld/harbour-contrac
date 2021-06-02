@@ -17,6 +17,8 @@
 #include "downloadconfig.h"
 #include "imageprovider.h"
 #include "riskstatus.h"
+#include "sfsecrethelper.h"
+#include "testresult.h"
 #include "upload.h"
 
 #include <sailfishapp.h>
@@ -47,6 +49,7 @@ int main(int argc, char *argv[])
     qRegisterMetaTypeStreamOperators<RiskScoreClass>("RiskScoreClass");
 
     AppSettings::instantiate(app);
+    SFSecretHelper::instantiate("contrac", app);
 
     qmlRegisterType<DBusProxy>("uk.co.flypig.contrac", 1, 0, "DBusProxy");
     qmlRegisterType<TemporaryExposureKey>("uk.co.flypig.contrac", 1, 0, "TemporaryExposureKey");
@@ -58,8 +61,10 @@ int main(int argc, char *argv[])
     qmlRegisterType<DownloadConfig>("uk.co.flypig.contrac", 1, 0, "DownloadConfig");
     qmlRegisterType<RiskStatus>("uk.co.flypig.contrac", 1, 0, "RiskStatus");
     qmlRegisterType<AutoUpdate>("uk.co.flypig.contrac", 1, 0, "AutoUpdate");
+    qmlRegisterType<TestResult>("uk.co.flypig.contrac", 1, 0, "TestResult");
 
     qmlRegisterSingletonType<AppSettings>("uk.co.flypig.contrac", 1, 0, "AppSettings", AppSettings::provider);
+    qmlRegisterSingletonType<SFSecretHelper>("uk.co.flypig.contrac", 1, 0, "SFSecretHelper", SFSecretHelper::provider);
 
     QQuickView *view = SailfishApp::createView();
     // The engine takes ownership of the ImageProvider

@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <qcryptographichash.h>
 #include <qdebug.h>
 #include <qjsondocument.h>
 #include <qjsonobject.h>
@@ -7,9 +8,12 @@
 #include <openssl/evp.h>
 
 #include "appsettings.h"
+#include "sfsecrethelper.h"
 #include "submissionpayload.pb.h"
-
+#include "testresult.h"
 #include "upload.h"
+
+static constexpr uint16_t GUID_LENGTH = 38;
 
 Upload::Upload(QObject *parent)
     : QObject(parent)
@@ -33,7 +37,7 @@ void Upload::upload(QString const &teleTAN)
         }
         else {
             qDebug() << "Invalid teleTAN";
-            setStatusError(ErrorInvalidTAN);
+            setStatusError(ErrorInvalidteleTAN);
         }
     }
     else {
@@ -100,7 +104,7 @@ void Upload::onTeleTANFinished()
         break;
     case QNetworkReply::ProtocolInvalidOperationError:
         qDebug() << "Server reply: invalid teleTAN";
-        setStatusError(ErrorInvalidTAN);
+        setStatusError(ErrorInvalidteleTAN);
         break;
     default:
         qDebug() << "Network error while submitting teleTAN: " << reply->error();
@@ -108,6 +112,198 @@ void Upload::onTeleTANFinished()
         break;
     }
     reply->deleteLater();
+}
+
+void Upload::uploadGUID(QString const &guid)
+{
+    if (((m_status == StatusIdle) || (m_status == StatusError)) && (m_reply == nullptr)) {
+        bool valid = validateGUID(guid);
+        if (valid) {
+            setStatus(StatusSubmitGUID);
+            submitGUID(guid);
+        }
+        else {
+            qDebug() << "Invalid GUID";
+            setStatusError(ErrorInvalidGUID);
+        }
+    }
+    else {
+        // Do nothing until the existing upload completes
+        qDebug() << "Upload already in progress";
+    }
+}
+
+void Upload::submitGUID(QString guid)
+{
+    guid.insert(6, "-");
+    guid.insert(15, "-");
+    guid.insert(20, "-");
+    guid.insert(25, "-");
+    guid.insert(30, "-");
+    qDebug() << "GUID with dashes: " << guid;
+    QCryptographicHash hasher(QCryptographicHash::Sha256);
+    hasher.addData(guid.toLatin1());
+    QString hashedGuid = static_cast<QString>(hasher.result().toHex());
+
+    if ((m_status == StatusSubmitGUID) && (m_reply == nullptr) && (hashedGuid.length() > 0)) {
+        QNetworkRequest request;
+
+        request.setUrl(QUrl(AppSettings::getInstance().verificationServer() + "/version/v1/registrationToken"));
+        request.setRawHeader("accept", "*/*");
+        request.setRawHeader("Content-Type", "application/json");
+        request.setRawHeader("cwa-fake", "0");
+
+        QJsonObject body;
+        body.insert("keyType", "GUID");
+        body.insert("key", hashedGuid);
+        QJsonDocument doc(body);
+        QByteArray data = doc.toJson();
+        m_reply = m_manager->post(request, data);
+
+        connect(m_reply, &QNetworkReply::finished, this, &Upload::onGUIDFinished);
+    }
+    else {
+        qDebug() << "Incorrect state attempting to submit GUID";
+        setStatusError(ErrorInternal);
+    }
+}
+
+void Upload::onGUIDFinished()
+{
+    QNetworkReply *reply;
+    QByteArray data;
+    QJsonParseError error;
+    QJsonDocument doc;
+
+    reply = m_reply;
+    m_reply = nullptr;
+
+    switch (reply->error()) {
+    case QNetworkReply::NoError:
+        data = reply->readAll();
+
+        doc = QJsonDocument::fromJson(data, &error);
+        if (doc.isNull()) {
+            qDebug() << "JSON error: " << error.errorString();
+            setStatusError(ErrorParsing);
+        }
+        else {
+            QString regToken = doc.object().value("registrationToken").toString();
+            if (regToken.isEmpty()) {
+                qDebug() << "Invalid registration token";
+                setStatusError(ErrorInvalidRegToken);
+            }
+            else {
+                if (SFSecretHelper::getInstance().store(REGTOKEN_KEY, regToken.toLatin1()).returncode == 0) {
+                    AppSettings::getInstance().setRegTokenReceived(QDate::currentDate());
+                    emit regTokenStored(QDate::currentDate());
+                    setStatus(StatusIdle);
+                }
+                else {
+                    qDebug() << "SFSecret couldn't store regtoken";
+                    setStatusError(ErrorInternal);
+                }
+            }
+        }
+        break;
+    case QNetworkReply::ProtocolInvalidOperationError:
+        qDebug() << "Server reply: invalid GUID";
+        setStatusError(ErrorInvalidGUID);
+        break;
+    default:
+        qDebug() << "Network error while submitting GUID: " << reply->error();
+        setStatusError(ErrorNetwork);
+        break;
+    }
+    reply->deleteLater();
+}
+
+void Upload::checkForTestResult(QString const &regToken)
+{
+    if ((m_status == StatusIdle) && (m_reply == nullptr)) {
+        m_status = CheckForTestResult;
+
+        qDebug() << "Checking for testresult with regtoken: " << regToken;
+        QNetworkRequest request;
+
+        request.setUrl(QUrl(AppSettings::getInstance().verificationServer() + "/version/v1/testresult"));
+        request.setRawHeader("accept", "*/*");
+        request.setRawHeader("Content-Type", "application/json");
+        request.setRawHeader("cwa-fake", "0");
+
+        QJsonObject body;
+        body.insert("registrationToken", regToken);
+        QJsonDocument doc(body);
+        QByteArray data = doc.toJson();
+        m_reply = m_manager->post(request, data);
+
+        connect(m_reply, &QNetworkReply::finished, this, &Upload::onCheckForTestResultFinished);
+    }
+    else {
+        qDebug() << "Incorrect state attempting to check for test result";
+        setStatusError(ErrorInternal);
+    }
+}
+
+void Upload::onCheckForTestResultFinished()
+{
+    QNetworkReply *reply;
+    QByteArray data;
+    QJsonParseError error;
+    QJsonDocument doc;
+    int result = -1;
+
+    reply = m_reply;
+    m_reply = nullptr;
+
+    switch (reply->error()) {
+    case QNetworkReply::NoError:
+        data = reply->readAll();
+
+        doc = QJsonDocument::fromJson(data, &error);
+        qDebug() << "Testresult JSON response: " << doc;
+        if (doc.isNull()) {
+            qDebug() << "JSON error: " << error.errorString();
+            setStatusError(ErrorParsing);
+        }
+        else {
+            result = doc.object().value("testResult").toInt();
+            if (result == -1) {
+                qDebug() << "Result response is empty: -> Invalid testresult";
+                setStatus(StatusError);
+                setStatusError(ErrorInvalidTestResult);
+            }
+            else {
+                qDebug() << "Retrieved testresult: " << result;
+                emit testResultRetrieved(result);
+                setStatus(StatusIdle);
+            }
+        }
+        break;
+    case QNetworkReply::ProtocolInvalidOperationError:
+        qDebug() << "Server reply: invalid registration token";
+        setStatusError(ErrorInvalidRegToken);
+        break;
+    default:
+        qDebug() << "Network error while submitting registration token: " << reply->error();
+        setStatusError(ErrorNetwork);
+        break;
+    }
+    reply->deleteLater();
+}
+
+void Upload::submitKeysAfterPositiveResult()
+{
+    SFSecretHelper::Response res = SFSecretHelper::getInstance().get(REGTOKEN_KEY);
+    if (res.returncode == 0) {
+        setStatus(StatusSubmitRegToken);
+        this->submitRegToken(QString::fromLatin1(res.data));
+    }
+    else {
+        setStatus(StatusError);
+        setStatusError(ErrorInternal);
+        qWarning() << "Can't submit keys: Couldn't retrieve registry token from Sailfish Secrets.";
+    }
 }
 
 void Upload::submitRegToken(QString const &regToken)
@@ -158,7 +354,7 @@ void Upload::onRegTokenFinished()
             if (tan.isEmpty()) {
                 qDebug() << "Invalid TAN";
                 setStatus(StatusError);
-                setStatusError(ErrorInvalidTAN);
+                setStatusError(ErrorInvalidteleTAN);
             }
             else {
                 setStatus(SubmitDiagnosisKeys);
@@ -248,6 +444,11 @@ void Upload::onDiagnosisKeysFinished()
     switch (reply->error()) {
     case QNetworkReply::NoError:
         qDebug() << "Upload successful";
+        // Same as TestResult::possiblyAvailable()
+        if (AppSettings::getInstance().regTokenReceived().isValid()) {
+            AppSettings::getInstance().setRegTokenReceived(QDate(2000, 1, 1));
+            emit diagnosisKeysSubmittedSuccessfully();
+        }
         setStatus(StatusIdle);
         break;
     case QNetworkReply::ProtocolInvalidOperationError:
@@ -411,6 +612,43 @@ bool Upload::validateTeleTANCharacters(QString const &teleTAN) const
     }
 
     return result;
+}
+
+bool Upload::validateGUID(QString const &guid) const
+{
+    bool result;
+
+    qDebug() << "Validating GUID: " << guid;
+    result = guid.length() == GUID_LENGTH;
+
+    qDebug() << "Valid Length: " << result;
+
+    for (uint16_t pos = 0; pos < GUID_LENGTH && result; ++pos) {
+        result &= validateGUIDCharacter(guid.at(pos));
+        qDebug() << "Validating GUID Character: " << guid.at(pos) << " valid: " << result;
+    }
+    return result;
+}
+
+bool Upload::validateGUIDCharacters(QString const &guid) const
+{
+    int pos;
+    bool result;
+
+    result = true;
+    pos = 0;
+    while (pos < GUID_LENGTH && pos < guid.length() && result) {
+        result &= validateGUIDCharacter(guid.at(pos));
+        ++pos;
+    }
+
+    return result;
+}
+
+bool Upload::validateGUIDCharacter(QChar const &character) const
+{
+    static const QString validChars = "0123456789ABCDEF";
+    return validChars.contains(character, Qt::CaseSensitive);
 }
 
 Q_INVOKABLE void Upload::clearError()

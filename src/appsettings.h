@@ -32,6 +32,8 @@ class AppSettings : public QObject
     Q_PROPERTY(qint32 normalizationDivisor READ normalizationDivisor WRITE setNormalizationDivisor NOTIFY normalizationDivisorChanged)
     Q_PROPERTY(QList<RiskScoreClass> riskScoreClasses READ riskScoreClasses WRITE setRiskScoreClasses NOTIFY riskScoreClassesChanged)
 
+    Q_PROPERTY(QDate regTokenReceived READ regTokenReceived WRITE setRegTokenReceived NOTIFY regTokenReceivedChanged)
+
 public:
     explicit AppSettings(QObject *parent = nullptr);
     ~AppSettings();
@@ -54,6 +56,7 @@ public:
     QString countryCode() const;
     bool autoUpdate() const;
     qint32 autoUpdateTime() const;
+    QDate regTokenReceived() const;
 
     // Get attenuation duration properties
     QList<double> riskWeights() const;
@@ -71,6 +74,7 @@ public:
     void setCountryCode(QString countryCode);
     void setAutoUpdate(bool autoUpdate);
     void setAutoUpdateTime(qint32 autoUpdateTime);
+    void setRegTokenReceived(const QDate &receivedDate);
 
     // Set attenuation duration properties
     void setRiskWeights(QList<double> riskWeights);
@@ -92,6 +96,7 @@ signals:
     void riskScoreClassesChanged();
     void autoUpdateChanged();
     void autoUpdateTimeChanged();
+    void regTokenReceivedChanged();
 
 private:
     bool upgrade();
@@ -115,6 +120,7 @@ private:
     QList<RiskScoreClass> m_riskScoreClasses;
     bool m_autoUpdate;
     qint32 m_autoUpdateTime;
+    QDate m_regTokenReceived;
 };
 
 #endif // APPSETTINGS_H

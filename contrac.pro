@@ -55,6 +55,8 @@ HEADERS += \
     src/riskscoreclass.h \
     src/riskstatus.h \
     src/serveraccess.h \
+    src/sfsecrethelper.h \
+    src/testresult.h \
     src/upload.h
 
 SOURCES += \
@@ -76,6 +78,8 @@ SOURCES += \
     src/riskscoreclass.cpp \
     src/riskstatus.cpp \
     src/serveraccess.cpp \
+    src/sfsecrethelper.cpp \
+    src/testresult.cpp \
     src/upload.cpp
 
 DISTFILES += \
@@ -90,6 +94,7 @@ DISTFILES += \
     qml/components/Dash.qml \
     qml/components/InfoRow.qml \
     qml/components/TanChar.qml \
+    qml/components/GUIDChar.qml \
     qml/images/* \
     src/applicationConfiguration.proto \
     translations/*.ts
@@ -118,7 +123,8 @@ PKGCONFIG += \
     libcurl \
     keepalive \
     protobuf-lite \
-    quazip
+    quazip \
+    sailfishsecrets
 
 DEFINES += LINUX
 
