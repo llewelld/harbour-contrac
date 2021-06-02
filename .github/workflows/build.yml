@@ -34,6 +34,13 @@ jobs:
       with:
         release: 4.2.0.21
 
+    - name: Build aarch64
+      id: build_aarch64
+      uses: bionade24/github-sfos-build@master
+      with:
+        release: 4.2.0.21
+        arch: aarch64
+
     - name: Build i486
       id: build_i486
       uses: bionade24/github-sfos-build@master
