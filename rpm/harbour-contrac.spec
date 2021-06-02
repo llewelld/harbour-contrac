@@ -83,10 +83,10 @@ fi
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %{_datadir}/%{name}/translations
 %{_bindir}/contracd
-%{_libdir}/systemd/user/contracd.service
+%{_userunitdir}/contracd.service
 %{_datadir}/mapplauncherd/privileges.d/contracd.privileges
 
 %files tests
 %defattr(-,root,root,-)
-%{_libdir}/%{name}-tests/%{name}-tests
+/opt/tests/%{name}-tests
 %{_datadir}/%{name}-tests/sample_diagnosis_key_file.zip
