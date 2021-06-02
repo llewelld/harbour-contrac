@@ -8,7 +8,7 @@ QT -= gui
 TEMPLATE = app
 TARGET = $${PACKAGENAME}-tests
 
-target.path = /usr/lib/$${PACKAGENAME}-tests
+target.path = $$[QT_INSTALL_LIBS]/$${PACKAGENAME}-tests
 
 QMAKE_CXXFLAGS += --coverage
 QMAKE_LFLAGS += --coverage
