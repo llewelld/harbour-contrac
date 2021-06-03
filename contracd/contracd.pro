@@ -89,7 +89,7 @@ OTHER_FILES += \
     src/contrac.proto
 
 service.files = $${TARGET}.service
-service.path = /usr/lib/systemd/user/
+service.path = $$[QT_INSTALL_LIBS]/systemd/user/
 
 privilege.files = $${TARGET}.privileges
 privilege.path = /usr/share/mapplauncherd/privileges.d/
