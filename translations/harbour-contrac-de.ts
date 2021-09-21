@@ -256,9 +256,8 @@
         <translation>Mitwirkende</translation>
     </message>
     <message id="contrac-about_la_contributors">
-        <source>ApostolosB, dashinfantry, flypig, Oskar Roesler (bionade24), smdesai, spodermenpls, Thaodan</source>
-        <oldsource>ApostolosB, bionade24, dashinfantry, flypig, Oskar Roesler (bionade24), smdesai, spodermenpls, Thaodan</oldsource>
-        <translation type="unfinished">ApostolosB, dashinfantry, flypig, smdesai, spodermenpls, Thaodan</translation>
+        <source>ApostolosB, dashinfantry, flypig, Oskar Roesler (bionade24), smdesai, spodermenpls (meegouser), Thaodan</source>
+        <translation type="unfinished"></translation>
     </message>
     <message id="contrac-cover_la_title">
         <source>Contrac</source>
@@ -306,60 +305,60 @@
     </message>
     <message id="contrac-settings_he_server_details">
         <source>Server details</source>
-        <translation type="unfinished"></translation>
+        <translation>Server-Details</translation>
     </message>
     <message id="contrac-settings_co_download-coverage">
         <source>Download coverage</source>
-        <translation type="unfinished"></translation>
+        <translation>Download-Abdeckung</translation>
     </message>
     <message id="contrac-settings_he_daily-update">
         <source>Daily update</source>
-        <translation type="unfinished"></translation>
+        <translation>Tägliche Aktualisierung</translation>
     </message>
     <message id="contrac-settings_ts_perform-daily-update">
         <source>Perform daily update</source>
-        <translation type="unfinished">Tägliche Aktualisierung durchführen</translation>
+        <translation>Tägliche Aktualisierung durchführen</translation>
     </message>
     <message id="contrac-settings_vb_approx_update-time">
         <source>Approximate update time</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungefähre Updatezeit</translation>
     </message>
     <message id="contrac-settings_vb_approx_update-time-description">
         <source>The app must be running for the update to trigger</source>
-        <translation type="unfinished"></translation>
+        <translation>Die App muss ausgeführt werden, um die Aktualisierung auslösen zu können</translation>
     </message>
     <message id="contrac-guid_instructions">
         <source>Please enter the 38-digit GUID that you were given.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte geben Sie die 38-stellige GUID ein, die Sie erhalten haben.</translation>
     </message>
     <message id="contrac-guid_invalid-character">
         <source>Invalid entry. Please check your entry.</source>
-        <translation type="unfinished">Ungültiger Eintrag, bitte überprüfen Sie diesen.</translation>
+        <translation>Ungültiger Eintrag, bitte überprüfen Sie diesen.</translation>
     </message>
     <message id="contrac-guid_invalid-guid">
         <source>Invalid GUID, please check your entry.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungültige GUID, bitte überprüfen Sie Ihren Eintrag.</translation>
     </message>
     <message id="contrac-main_bu_enter-guid">
         <source>Enter GUID</source>
-        <translation type="unfinished"></translation>
+        <translation>GUID eingeben</translation>
     </message>
     <message id="contrac-guid_he_guid_entry">
         <source>GUID entry</source>
         <oldsource>TAN entry</oldsource>
-        <translation type="unfinished">TAN-Eingabe</translation>
+        <translation>GUID-Eintrag</translation>
     </message>
     <message id="contrac-main_la_test-result">
         <source>Test result</source>
-        <translation type="unfinished"></translation>
+        <translation>Testergebnis</translation>
     </message>
     <message id="contrac-main_la_test-result-unknown">
         <source>Unknown</source>
-        <translation type="unfinished">Unbekannt</translation>
+        <translation>Unbekannt</translation>
     </message>
     <message id="contrac-main_bu_submit_keys">
         <source>Submit keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlüssel übermitteln</translation>
     </message>
 </context>
 </TS>
