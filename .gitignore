@@ -53,3 +53,6 @@ compile_commands.json
 
 *_qmlcache.qrc
 
+# C/C++ language server
+.ccls-cache/
+
