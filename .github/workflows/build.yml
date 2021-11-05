@@ -32,13 +32,13 @@ jobs:
       id: build_armv7hl
       uses: coderus/github-sfos-build@master
       with:
-        release: 4.0.1.45
+        release: 4.2.0.21
 
     - name: Build i486
       id: build_i486
       uses: coderus/github-sfos-build@master
       with:
-        release: 4.0.1.45
+        release: 4.2.0.21
         arch: i486
 
     - name: Upload build result
