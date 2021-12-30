@@ -13,7 +13,7 @@
 #include "testresult.h"
 #include "upload.h"
 
-static constexpr uint16_t GUID_LENGTH = 38;
+static constexpr uint16_t GUID_LENGTH = 43;
 
 Upload::Upload(QObject *parent)
     : QObject(parent)
@@ -114,11 +114,11 @@ void Upload::onTeleTANFinished()
     reply->deleteLater();
 }
 
-void Upload::uploadGUID(QString const &guid)
+void Upload::uploadGUID(QString guid)
 {
     if (((m_status == StatusIdle) || (m_status == StatusError)) && (m_reply == nullptr)) {
-        bool valid = validateGUID(guid);
-        if (valid) {
+        sanitizeQrCodeURL(guid);
+        if (validateGUID(guid)) {
             setStatus(StatusSubmitGUID);
             submitGUID(guid);
         }
@@ -135,12 +135,6 @@ void Upload::uploadGUID(QString const &guid)
 
 void Upload::submitGUID(QString guid)
 {
-    guid.insert(6, "-");
-    guid.insert(15, "-");
-    guid.insert(20, "-");
-    guid.insert(25, "-");
-    guid.insert(30, "-");
-    qDebug() << "GUID with dashes: " << guid;
     QCryptographicHash hasher(QCryptographicHash::Sha256);
     hasher.addData(guid.toLatin1());
     QString hashedGuid = static_cast<QString>(hasher.result().toHex());
@@ -614,41 +608,26 @@ bool Upload::validateTeleTANCharacters(QString const &teleTAN) const
     return result;
 }
 
-bool Upload::validateGUID(QString const &guid) const
+void Upload::sanitizeQrCodeURL(QString &guid) const
 {
+    guid.remove(QStringLiteral("https://localhost/?"));
+}
+
+bool Upload::validateGUID(QString guid) const
+{
+    sanitizeQrCodeURL(guid);
     bool result;
 
     qDebug() << "Validating GUID: " << guid;
     result = guid.length() == GUID_LENGTH;
 
-    qDebug() << "Valid Length: " << result;
+    qDebug() << "Valid Length: " << result << " Length: " << guid.length();
 
     for (uint16_t pos = 0; pos < GUID_LENGTH && result; ++pos) {
-        result &= validateGUIDCharacter(guid.at(pos));
+        result &= QStringLiteral("-0123456789ABCDEF").contains(guid.at(pos), Qt::CaseSensitive);
         qDebug() << "Validating GUID Character: " << guid.at(pos) << " valid: " << result;
     }
     return result;
-}
-
-bool Upload::validateGUIDCharacters(QString const &guid) const
-{
-    int pos;
-    bool result;
-
-    result = true;
-    pos = 0;
-    while (pos < GUID_LENGTH && pos < guid.length() && result) {
-        result &= validateGUIDCharacter(guid.at(pos));
-        ++pos;
-    }
-
-    return result;
-}
-
-bool Upload::validateGUIDCharacter(QChar const &character) const
-{
-    static const QString validChars = "0123456789ABCDEF";
-    return validChars.contains(character, Qt::CaseSensitive);
 }
 
 Q_INVOKABLE void Upload::clearError()
