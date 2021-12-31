@@ -50,6 +50,23 @@ ApplicationWindow
         }
     }
 
+    AppStatus {
+        id: appStatus
+
+        statusOfDownload: download.status
+        statusOfUpload: upload.status
+        updating: root.updating
+        bluetoothBusy: dbusproxy.isBusy
+        bluetoothEnabled: dbusproxy.isEnabled
+        atRisk: riskStatus.riskClassIndex > 0
+        downloadAvailable: root.downloadAvailable
+
+        onNotifyAtRisk: Notifications.notifyAtRisk(riskStatus.riskClassLabel)
+        onNotifyUpdateSuccessful: Notifications.notifyUpdateSuccessful()
+        onNotifyDownloadError: Notifications.notifyDownloadError()
+        onNotifyUploadError: Notifications.notifyUploadError()
+    }
+
     function updateSummary() {
         console.log("Exposure summary")
         var summary = dbusproxy.getExposureSummary(token)

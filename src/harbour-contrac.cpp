@@ -11,11 +11,13 @@
 
 #include "../contracd/src/version.h"
 #include "appsettings.h"
+#include "appstatus.h"
 #include "autoupdate.h"
 #include "dbusproxy.h"
 #include "download.h"
 #include "downloadconfig.h"
 #include "imageprovider.h"
+#include "notifications.h"
 #include "riskstatus.h"
 #include "sfsecrethelper.h"
 #include "testresult.h"
@@ -47,9 +49,12 @@ int main(int argc, char *argv[])
     qRegisterMetaType<RiskScoreClass>();
     qRegisterMetaTypeStreamOperators<ExposureSummary>("ExposureSummary");
     qRegisterMetaTypeStreamOperators<RiskScoreClass>("RiskScoreClass");
+    qRegisterMetaType<QList<quint32>>();
+    qRegisterMetaTypeStreamOperators<QList<quint32>>("ListUInt");
 
     AppSettings::instantiate(app);
     SFSecretHelper::instantiate("contrac", app);
+    Notifications::instantiate(&AppSettings::getInstance());
 
     qmlRegisterType<DBusProxy>("uk.co.flypig.contrac", 1, 0, "DBusProxy");
     qmlRegisterType<TemporaryExposureKey>("uk.co.flypig.contrac", 1, 0, "TemporaryExposureKey");
@@ -62,9 +67,11 @@ int main(int argc, char *argv[])
     qmlRegisterType<RiskStatus>("uk.co.flypig.contrac", 1, 0, "RiskStatus");
     qmlRegisterType<AutoUpdate>("uk.co.flypig.contrac", 1, 0, "AutoUpdate");
     qmlRegisterType<TestResult>("uk.co.flypig.contrac", 1, 0, "TestResult");
+    qmlRegisterType<AppStatus>("uk.co.flypig.contrac", 1, 0, "AppStatus");
 
     qmlRegisterSingletonType<AppSettings>("uk.co.flypig.contrac", 1, 0, "AppSettings", AppSettings::provider);
     qmlRegisterSingletonType<SFSecretHelper>("uk.co.flypig.contrac", 1, 0, "SFSecretHelper", SFSecretHelper::provider);
+    qmlRegisterSingletonType<Notifications>("uk.co.flypig.contrac", 1, 0, "Notifications", Notifications::provider);
 
     QQuickView *view = SailfishApp::createView();
     // The engine takes ownership of the ImageProvider

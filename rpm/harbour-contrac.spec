@@ -26,6 +26,7 @@ BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(quazip)
 BuildRequires:  pkgconfig(keepalive)
+BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  protobuf-compiler
 BuildRequires:  desktop-file-utils
 

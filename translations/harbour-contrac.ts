@@ -314,10 +314,6 @@
         <source>Download coverage</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-settings_he_daily-update">
-        <source>Daily update</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="contrac-settings_ts_perform-daily-update">
         <source>Perform daily update</source>
         <translation type="unfinished"></translation>
@@ -361,6 +357,90 @@
     </message>
     <message id="contrac-main_bu_submit_keys">
         <source>Submit keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_he_general">
+        <source>General</source>
+        <extracomment>General settings header</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_cb_notifications">
+        <source>Notifications</source>
+        <extracomment>For choosing the level of notification to display</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_cb_notifications-none">
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_cb_notifications-warnings">
+        <source>Risk warnings only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_cb_notifications-info">
+        <source>Warnings and info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-settings_cb_notifications-all">
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-upload-error-summary">
+        <source>Error</source>
+        <extracomment>Upload error notification summary</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-upload-error-body">
+        <source>Diagnosis key upload failed</source>
+        <extracomment>Upload error notification body</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-download-error-summary">
+        <source>Error</source>
+        <extracomment>Download error notification summary</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-download-error-body">
+        <source>Diagnosis key download failed</source>
+        <extracomment>Download error notification body</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-risk-warning-summary">
+        <source>Risk level low</source>
+        <extracomment>Risk alert notification summary</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-risk-warning-body">
+        <source>Update completed successfully</source>
+        <extracomment>Risk alert notification body</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-app-name">
+        <source>Contrac</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-sub-text">
+        <source>Exposure Notification App</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-update-summary">
+        <source>Exposure level updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-update-body">
+        <source>Update completed successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-at-risk-body">
+        <source>Risk level: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_nt_notification-at-risk-summary">
+        <source>Consult your health service for appropriate action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-main_la_status-unknown">
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

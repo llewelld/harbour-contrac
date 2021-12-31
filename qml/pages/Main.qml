@@ -145,36 +145,40 @@ Page {
                     }
 
                     text: {
-                        if (updating) {
+                        switch (appStatus.status) {
+                        case AppStatus.Updating:
                             //% "Updating"
                             return qsTrId("contrac-main_la_status-updating")
-                        } else if (upload.uploading) {
+                        case AppStatus.Uploading:
                             //% "Uploading"
                             return qsTrId("contrac-main_la_status-uploading")
-                        } else if (download.downloading) {
+                        case AppStatus.Downloading:
                             //% "Downloading"
                             return qsTrId("contrac-main_la_status-downloading")
-                        } else if (upload.status === Upload.StatusError) {
+                        case AppStatus.ErrorUploading:
                             //% "Error uploading"
                             return qsTrId("contrac-main_la_status-upload_error")
-                        } else if (download.status === Download.StatusError) {
+                        case AppStatus.ErrorDownloading:
                             //% "Error downloading"
                             return qsTrId("contrac-main_la_status-download_error")
-                        } else if (dbusproxy.isBusy) {
+                        case AppStatus.BluetoothBusy:
                             //% "Busy"
                             return qsTrId("contrac-main_la_status-busy")
-                        } else if (riskStatus.riskClassIndex > 0) {
+                        case AppStatus.AtRisk:
                             //% "At risk"
                             return qsTrId("contrac-main_la_status-daily-update-required")
-                        } else if (downloadAvailable) {
+                        case AppStatus.DailyUpdateRequired:
                             //% "Daily update required"
                             return qsTrId("contrac-main_la_status-at-risk")
-                        } else if (dbusproxy.isEnabled) {
+                        case AppStatus.Active:
                             //% "Active"
                             return qsTrId("contrac-main_la_status-active")
-                        } else {
+                        case AppStatus.Disabled:
                             //% "Disabled"
                             return qsTrId("contrac-main_la_status-disabled")
+                        default:
+                            //% "Unknown"
+                            return qsTrId("contrac-main_la_status-unknown")
                         }
                     }
                     color: Theme.highlightColor
