@@ -266,7 +266,7 @@ void ProvideDiagnosticKeys::run()
                 QList<DiagnosisKey> diagnosticKeyBatch;
                 diagnosticKeyBatch = diagnosisKeys[day].mid(batchPos, MAX_BATCH_SIZE);
                 batchPos += MAX_BATCH_SIZE;
-                matches.append(m_d->m_contacts->findDtkMatches(dayNumber, diagnosisKeys[day]));
+                matches.append(m_d->m_contacts->findDtkMatches(dayNumber, diagnosticKeyBatch));
                 terminate = shouldTerminate();
             }
 
