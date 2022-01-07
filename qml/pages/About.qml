@@ -75,7 +75,7 @@ Page {
             }
 
             Label {
-                //% "ApostolosB, dashinfantry, flypig, Oskar Roesler (bionade24), smdesai, spodermenpls, Thaodan"
+                //% "ApostolosB, cnlpete, dashinfantry, flypig, Oskar Roesler (bionade24), smdesai, spodermenpls, Thaodan"
                 text: qsTrId("contrac-about_la_contributors")
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
