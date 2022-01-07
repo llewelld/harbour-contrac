@@ -271,7 +271,7 @@ void ProvideDiagnosticKeys::run()
             }
 
             terminate = shouldTerminate();
-            if (!terminate) {
+            if (!terminate && !matches.isEmpty()) {
                 qDebug() << "Calling aggregateExposureData with" << matches.count() << "matches";
                 m_exposureInfoList.append(aggregateExposureData(dayNumber, m_configuration, matches, day));
             }
