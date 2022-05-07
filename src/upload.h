@@ -48,10 +48,8 @@ public:
     Q_INVOKABLE bool validateTeleTAN(QString const &teleTAN) const;
     Q_INVOKABLE bool validateTeleTANCharacter(QChar const &character) const;
     Q_INVOKABLE bool validateTeleTANCharacters(QString const &teleTAN) const;
-    Q_INVOKABLE void uploadGUID(QString const &guid);
-    Q_INVOKABLE bool validateGUID(QString const &guid) const;
-    Q_INVOKABLE bool validateGUIDCharacter(QChar const &character) const;
-    Q_INVOKABLE bool validateGUIDCharacters(QString const &guid) const;
+    Q_INVOKABLE void uploadGUID(QString guid);
+    Q_INVOKABLE bool validateGUID(QString guid) const;
     Q_INVOKABLE void checkForTestResult(QString const &regToken);
     Q_INVOKABLE void submitKeysAfterPositiveResult();
     float progress() const;
@@ -82,6 +80,7 @@ private slots:
     void onProgress(qint64 bytesSent, qint64 bytesTotal);
 
 private:
+    void sanitizeQrCodeURL(QString &guid) const;
     void submitTeleTAN(QString const &teleTAN);
     void submitGUID(QString guid);
     void submitRegToken(QString const &regToken);

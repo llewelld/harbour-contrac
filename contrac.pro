@@ -93,12 +93,12 @@ DISTFILES += \
     qml/pages/About.qml \
     qml/pages/Settings.qml \
     qml/pages/TeleTAN.qml \
+    qml/pages/QRScan.qml \
     qml/pages/UploadInfo.qml \
     qml/pages/DownloadInfo.qml \
     qml/components/Dash.qml \
     qml/components/InfoRow.qml \
     qml/components/TanChar.qml \
-    qml/components/GUIDChar.qml \
     qml/images/* \
     src/applicationConfiguration.proto \
     translations/*.ts

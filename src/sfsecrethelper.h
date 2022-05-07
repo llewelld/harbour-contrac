@@ -30,7 +30,7 @@ public:
     bool checkforCollectionExistance();
     bool createCollection();
 
-    Response store(const QString &key, const QByteArray &value, bool rerun=true);
+    Response store(const QString &key, const QByteArray &value, bool rerun = true);
     Response get(const QString &key);
     Response remove(const QString &key);
 

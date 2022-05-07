@@ -326,25 +326,14 @@
         <source>The app must be running for the update to trigger</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="contrac-guid_instructions">
-        <source>Please enter the 38-digit GUID that you were given.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message id="contrac-guid_invalid-character">
-        <source>Invalid entry. Please check your entry.</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="contrac-guid_invalid-guid">
-        <source>Invalid GUID, please check your entry.</source>
+        <source>Invalid QR-Code.</source>
+        <oldsource>Invalid GUID, please check your entry.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_bu_enter-guid">
-        <source>Enter GUID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message id="contrac-guid_he_guid_entry">
-        <source>GUID entry</source>
-        <oldsource>TAN entry</oldsource>
+        <source>Scan QR-Code</source>
+        <oldsource>Enter GUID</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_la_test-result">
@@ -441,6 +430,10 @@
     </message>
     <message id="contrac-main_la_status-unknown">
         <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="contrac-qrscan_scan_qrcode">
+        <source>Scan QR-Code</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

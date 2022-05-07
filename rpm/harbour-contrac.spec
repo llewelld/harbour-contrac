@@ -15,6 +15,7 @@ Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   openssl
 Requires:   protobuf-lite
 Requires:   sailfishsecretsdaemon-secretsplugins-default
+Requires:   qr-filter-qml-plugin
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)

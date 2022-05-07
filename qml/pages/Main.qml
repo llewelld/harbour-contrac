@@ -285,7 +285,7 @@ Page {
             Button {
                 id: submitKeysButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, guidButton.implicitWidth, tanButton.implicitWidth)
+                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, qrButton.implicitWidth, tanButton.implicitWidth)
                 enabled: !upload.uploading
                 visible: testResult.currentResult === TestResult.Positive
                 //% "Submit keys"
@@ -299,7 +299,7 @@ Page {
             Button {
                 id: downloadButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, guidButton.implicitWidth, tanButton.implicitWidth)
+                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, qrButton.implicitWidth, tanButton.implicitWidth)
                 enabled: !download.downloading && downloadAvailable
                 //% "Perform daily update"
                 text: qsTrId("contrac-main_bu_daily-update")
@@ -310,22 +310,22 @@ Page {
             }
 
             Button {
-                id: guidButton
+                id: qrButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, guidButton.implicitWidth, tanButton.implicitWidth)
-                //% "Enter GUID"
+                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, qrButton.implicitWidth, tanButton.implicitWidth)
+                //% "Scan QR-Code"
                 text: qsTrId("contrac-main_bu_enter-guid")
                 enabled: !upload.uploading
                 visible: !testResult.possiblyAvailable
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("GUID.qml"))
+                    pageStack.push(Qt.resolvedUrl("QRScan.qml"))
                 }
             }
 
             Button {
                 id: tanButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, guidButton.implicitWidth, tanButton.implicitWidth)
+                width: Math.max(submitKeysButton.implicitWidth, downloadButton.implicitWidth, qrButton.implicitWidth, tanButton.implicitWidth)
                 //% "Enter TeleTAN"
                 text: qsTrId("contrac-main_bu_enter-teletan")
                 enabled: !upload.uploading
