@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="de_DE">
 <context>
     <name></name>
     <message id="contrac-about_title">
@@ -306,101 +306,101 @@
     </message>
     <message id="contrac-settings_he_server_details">
         <source>Server details</source>
-        <translation type="unfinished"></translation>
+        <translation>Server-Details</translation>
     </message>
     <message id="contrac-settings_co_download-coverage">
         <source>Download coverage</source>
-        <translation type="unfinished"></translation>
+        <translation>Länderbereich</translation>
     </message>
     <message id="contrac-settings_ts_perform-daily-update">
         <source>Perform daily update</source>
-        <translation type="unfinished">Tägliche Aktualisierung durchführen</translation>
+        <translation>Tägliche Aktualisierung durchführen</translation>
     </message>
     <message id="contrac-settings_vb_approx_update-time">
         <source>Approximate update time</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorrausichtliche Dauer des Updates</translation>
     </message>
     <message id="contrac-settings_vb_approx_update-time-description">
         <source>The app must be running for the update to trigger</source>
-        <translation type="unfinished"></translation>
+        <translation>Die App muss für die automatische Durchführung geöffnet sein</translation>
     </message>
     <message id="contrac-guid_invalid-guid">
         <source>Invalid QR-Code.</source>
         <oldsource>Invalid GUID, please check your entry.</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Ungültiger QR-Code</translation>
     </message>
     <message id="contrac-main_bu_enter-guid">
         <source>Scan QR-Code</source>
         <oldsource>Enter GUID</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>QR-Code Scannen</translation>
     </message>
     <message id="contrac-main_la_test-result">
         <source>Test result</source>
-        <translation type="unfinished"></translation>
+        <translation>Testergebnis</translation>
     </message>
     <message id="contrac-main_la_test-result-unknown">
         <source>Unknown</source>
-        <translation type="unfinished">Unbekannt</translation>
+        <translation>Unbekannt</translation>
     </message>
     <message id="contrac-main_bu_submit_keys">
         <source>Submit keys</source>
-        <translation type="unfinished">Unbekannt</translation>
+        <translation>Übermittle Infektionswarnungen</translation>
     </message>
     <message id="contrac-settings_he_general">
         <source>General</source>
         <extracomment>General settings header</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message id="contrac-settings_cb_notifications">
         <source>Notifications</source>
         <extracomment>For choosing the level of notification to display</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungen</translation>
     </message>
     <message id="contrac-settings_cb_notifications-none">
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Nichts</translation>
     </message>
     <message id="contrac-settings_cb_notifications-warnings">
         <source>Risk warnings only</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur Infektionsrisikowarnungen</translation>
     </message>
     <message id="contrac-settings_cb_notifications-info">
         <source>Warnings and info</source>
-        <translation type="unfinished"></translation>
+        <translation>Warnungen &amp; Informationen</translation>
     </message>
     <message id="contrac-settings_cb_notifications-all">
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles</translation>
     </message>
     <message id="contrac-main_nt_notification-upload-error-summary">
         <source>Error</source>
         <extracomment>Upload error notification summary</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message id="contrac-main_nt_notification-upload-error-body">
         <source>Diagnosis key upload failed</source>
         <extracomment>Upload error notification body</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Hochladen de Diagnose-ID fehlgeschlagen</translation>
     </message>
     <message id="contrac-main_nt_notification-download-error-summary">
         <source>Error</source>
         <extracomment>Download error notification summary</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message id="contrac-main_nt_notification-download-error-body">
         <source>Diagnosis key download failed</source>
         <extracomment>Download error notification body</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Herunterladen der Diagnose-ID fehlgeschlagen</translation>
     </message>
     <message id="contrac-main_nt_notification-risk-warning-summary">
         <source>Risk level low</source>
         <extracomment>Risk alert notification summary</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Risikolevel niedrig</translation>
     </message>
     <message id="contrac-main_nt_notification-risk-warning-body">
         <source>Update completed successfully</source>
         <extracomment>Risk alert notification body</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Update erfolgreich</translation>
     </message>
     <message id="contrac-main_nt_notification-app-name">
         <source>Contrac</source>
@@ -408,31 +408,31 @@
     </message>
     <message id="contrac-main_nt_notification-sub-text">
         <source>Exposure Notification App</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kontakt-Verfolgungs-App</translation>
     </message>
     <message id="contrac-main_nt_notification-update-summary">
         <source>Exposure level updated</source>
-        <translation type="unfinished"></translation>
+        <translation>Infektionsrisiko aktualisiert</translation>
     </message>
     <message id="contrac-main_nt_notification-update-body">
         <source>Update completed successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Update erfolgreich</translation>
     </message>
     <message id="contrac-main_nt_notification-at-risk-body">
         <source>Risk level: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Risiko Stufe: %1</translation>
     </message>
     <message id="contrac-main_nt_notification-at-risk-summary">
         <source>Consult your health service for appropriate action</source>
-        <translation type="unfinished"></translation>
+        <translation>Berate dich beim Gesundheitsamt für eine angemessene Reaktion</translation>
     </message>
     <message id="contrac-main_la_status-unknown">
         <source>Unknown</source>
-        <translation type="unfinished">Unbekannt</translation>
+        <translation>Unbekannt</translation>
     </message>
     <message id="contrac-qrscan_scan_qrcode">
         <source>Scan QR-Code</source>
-        <translation type="unfinished"></translation>
+        <translation>QR-Code Scannen</translation>
     </message>
 </context>
 </TS>

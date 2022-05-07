@@ -429,7 +429,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_la_status-unknown">
-	    <source>Unknown</source>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-qrscan_scan_qrcode">
