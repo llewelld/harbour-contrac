@@ -2,7 +2,7 @@ Name:       harbour-contrac
 
 %define version_major 0
 %define version_minor 7
-%define version_revis 7
+%define version_revis 8
 
 Summary:    Contrac
 Version:    %{version_major}.%{version_minor}.%{version_revis}

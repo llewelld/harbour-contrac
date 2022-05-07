@@ -11,6 +11,15 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Sat May 07 2022 Oskar Roesler <oskar@oskar-roesler.de> 0.7.8-1
+- Remove the YAML spectacle file #96
+- Set OpenSSL 1.1.1 as the default build option #97
+- Add notifications for important events #98
+- Scan the QR-code containing the GUID. #105
+- F performance improvements #107
+- Code refactoring DayStorage::findDtkMatches #108
+- Build against 4.4.0.58 #109
+- Disable sailjail sandboxing #110
 
 * Sun Feb 14 2021 David Llewellyn-Jones <david@flypig.co.uk> 0.7.7-1
 - Store settings periodically to avoid data loss on unclean exit
