@@ -5,3 +5,6 @@ Icon=harbour-contrac
 Exec=harbour-contrac
 Name=Contrac
 Name[de]=Contrac
+
+[X-Sailjail]
+Sandboxing=Disabled
