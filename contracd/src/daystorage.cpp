@@ -86,13 +86,26 @@ QList<RpiDataItem> DayStorage::findRpiMatches(QList<QByteArray> const &rpis)
 
 QList<ContactMatch> DayStorage::findDtkMatches(QList<DiagnosisKey> const &dtks)
 {
-    bool result;
-    QFile captures;
-    QString leafname;
+    QList<ContactMatch> actuals;
     QList<ContactMatch> probables;
-    ContactMatch probable;
-    QList<QList<RpiDataItem>> actuals;
 
+    findProbables(dtks, probables);
+    qDebug() << "Probables size: " << probables.size();
+
+    // There's no point opening the captures file unless there are some probables to check
+    if (!probables.isEmpty()) {
+        // Now go through in detail and filter out any errors
+        // Adding in rssi values as we go
+        findActuals(probables, actuals);
+        qDebug() << "Actuals size: " << probables.size();
+    }
+
+    return actuals;
+}
+
+void DayStorage::findProbables(const QList<DiagnosisKey> &dtks, QList<ContactMatch>& probables)
+{
+    ContactMatch probable;
     // Generate all the rpis from the dtks and do a quick pass with the Bloom filter
     for (DiagnosisKey const &dtk : dtks) {
         quint8 startTime = dtk.m_rollingStartIntervalNumber % 144;
@@ -103,10 +116,10 @@ QList<ContactMatch> DayStorage::findDtkMatches(QList<DiagnosisKey> const &dtks)
         else {
             endTime = startTime + static_cast<quint8>(dtk.m_rollingPeriod);
         }
-        m_filterMutex.lock();
         // Generate up to 144 rpis for each dtk
         for (quint8 interval = startTime; interval < endTime; ++interval) {
             QByteArray rpi(Contrac::randomProximityIdentifier(dtk.m_dtk, interval));
+            QMutexLocker filterLocker(&m_filterMutex);
             if (m_filter->test(rpi)) {
                 // Probable match
                 probable.m_dtk = &dtk;
@@ -114,82 +127,72 @@ QList<ContactMatch> DayStorage::findDtkMatches(QList<DiagnosisKey> const &dtks)
                 probable.m_rpis.append(RpiDataItem(quantised, 0, rpi, QByteArray(AEM_SIZE, '\0')));
             }
         }
-        m_filterMutex.unlock();
         if (probable.m_rpis.size() > 0) {
             probables.append(probable);
-            actuals.append(QList<RpiDataItem>());
         }
     }
-    qDebug() << "Probables size: " << probables.size();
+}
 
-    // There's no point opening the captures file unless there are some probables to check
-    if (!probables.isEmpty()) {
-        // Now go through in detail and filter out any errors
-        // Adding in rssi values as we go
-        m_contactsMutex.lock();
-        QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
-        leafname = QStringLiteral("%1.dat");
-        leafname = leafname.arg(m_day, 8, 16, QLatin1Char('0'));
-        captures.setFileName(folder + "/" + leafname);
-        result = captures.open(QIODevice::ReadOnly);
-        if (result) {
-            QByteArray capture = captures.read(RPI_SERIALISE_SIZE);
-            while (!capture.isEmpty() && !probables.isEmpty()) {
-                RpiDataItem rpi;
-                result = rpi.deserialise(capture);
-                if (result) {
-                    // Cycle through the dtks
-                    int dtk_pos = 0;
-                    while (dtk_pos < probables.size()) {
-                        // Cycle through the rpis associated with this dtk
-                        int rpi_pos = 0;
-                        ContactMatch &probable = probables[dtk_pos];
-                        while (rpi_pos < probable.m_rpis.size()) {
-                            RpiDataItem &probable_rpi = probable.m_rpis[rpi_pos];
-                            if ((rpi.m_rpi == probable_rpi.m_rpi) && ctIntervalsMatch(rpi.m_interval, probable_rpi.m_interval)) {
-                                // We have a match!
-                                // There could be multiple beacons matching this rpi, so we can't remove it yet
-                                actuals[dtk_pos].append(rpi);
-                            }
-                            else {
-                                if (rpi.m_rpi == probable_rpi.m_rpi) {
-                                    qDebug() << "Failed due to time mismatch";
-                                    qDebug() << "Beacon time: " << rpi.m_interval;
-                                    qDebug() << "Diagnosis time: " << probable_rpi.m_interval;
-                                }
-                            }
-                            ++rpi_pos;
+void DayStorage::findActuals(const QList<ContactMatch> &probables, QList<ContactMatch> &actuals)
+{
+    QMutexLocker contactsLocker(&m_contactsMutex);
+    const QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/contacts";
+    QString leafname = QStringLiteral("%1.dat");
+    leafname = leafname.arg(m_day, 8, 16, QLatin1Char('0'));
+
+    QList<QList<RpiDataItem>> temporaryActuals;
+    temporaryActuals.reserve(probables.size());
+    for (int i = 0; i < probables.size(); i++) {
+        temporaryActuals.append(QList<RpiDataItem>());
+    }
+
+    QFile captures;
+    captures.setFileName(folder + "/" + leafname);
+    bool result = captures.open(QIODevice::ReadOnly);
+    if (result) {
+        QByteArray capture = captures.read(RPI_SERIALISE_SIZE);
+        while (!capture.isEmpty() && !probables.isEmpty()) {
+            RpiDataItem rpi;
+            result = rpi.deserialise(capture);
+            if (result) {
+                // Cycle through the dtks
+                for (int dtk_pos = 0; dtk_pos < probables.size(); ++dtk_pos) {
+                    // Cycle through the rpis associated with this dtk
+                    const ContactMatch &probable = probables[dtk_pos];
+                    for (RpiDataItem const& probable_rpi: probable.m_rpis) {
+                        if ((rpi.m_rpi == probable_rpi.m_rpi) && ctIntervalsMatch(rpi.m_interval, probable_rpi.m_interval)) {
+                            // We have a match!
+                            // There could be multiple beacons matching this rpi, so we can't remove it yet
+                            temporaryActuals[dtk_pos].append(rpi);
                         }
-                        ++dtk_pos;
+                        else {
+                            if (rpi.m_rpi == probable_rpi.m_rpi) {
+                                qDebug() << "Failed due to time mismatch";
+                                qDebug() << "Beacon time: " << rpi.m_interval;
+                                qDebug() << "Diagnosis time: " << probable_rpi.m_interval;
+                            }
+                        }
                     }
                 }
-                capture = captures.read(RPI_SERIALISE_SIZE);
             }
-
-            captures.close();
-
-            // Remove empty dtks and transfer actuals
-            int dtk_pos = 0;
-            while (dtk_pos < probables.size()) {
-                if (actuals[dtk_pos].size() > 0) {
-                    probables[dtk_pos].m_rpis = actuals[dtk_pos];
-                    ++dtk_pos;
-                }
-                else{
-                    probables.removeAt(dtk_pos);
-                    actuals.removeAt(dtk_pos);
-                }
-            }
-        }
-        else {
-            qDebug() << "Error opening data file: " << captures.fileName();
+            capture = captures.read(RPI_SERIALISE_SIZE);
         }
 
-        m_contactsMutex.unlock();
+        captures.close();
+
+        // Remove empty dtks and transfer actuals
+        ContactMatch actual;
+        for (int dtk_pos = 0; dtk_pos < probables.size(); ++dtk_pos) {
+            if (temporaryActuals[dtk_pos].size() > 0) {
+                actual.m_dtk = probables[dtk_pos].m_dtk;
+                actual.m_rpis = temporaryActuals[dtk_pos];
+                actuals.append(actual);
+            }
+        }
     }
-    qDebug() << "Actuals size: " << probables.size();
-
-    return probables;
+    else {
+        qDebug() << "Error opening data file: " << captures.fileName();
+    }
 }
 
 void DayStorage::addContact(ctinterval interval, const QByteArray &rpi, const QByteArray &aem, qint16 rssi)
@@ -204,10 +207,9 @@ void DayStorage::addContact(ctinterval interval, const QByteArray &rpi, const QB
         m_contacts.write(data);
         m_contactsMutex.unlock();
 
-        m_filterMutex.lock();
+        QMutexLocker filterLocker(&m_filterMutex);
         m_filter->add(rpi);
         m_filter_changed = true;
-        m_filterMutex.unlock();
     }
     else {
         qDebug() << "Contact could not be stored: incorrect data size";
@@ -236,7 +238,7 @@ void DayStorage::load()
     }
     m_contactsMutex.unlock();
 
-    m_filterMutex.lock();
+    QMutexLocker filterLocker(&m_filterMutex);
     // Save out the old bloom filter
     if (m_filter) {
         m_filter->save();
@@ -251,18 +253,16 @@ void DayStorage::load()
         m_filter->clear(BLOOM_FILTER_SIZE, BLOOM_FILTER_HASHES);
         m_filter->setDay(m_day);
     }
-    m_filterMutex.unlock();
 }
 
 void DayStorage::save()
 {
-    m_filterMutex.lock();
+    QMutexLocker filterLocker(&m_filterMutex);
     if (m_filter_changed) {
         // Write out the bloom filter
         m_filter->save();
         m_filter_changed = false;
     }
-    m_filterMutex.unlock();
 }
 
 bool DayStorage::probableMatch(const QByteArray &rpi)

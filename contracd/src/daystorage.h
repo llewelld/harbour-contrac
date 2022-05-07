@@ -28,6 +28,8 @@ public:
     void dumpData();
 
 private:
+    void findProbables(const QList<DiagnosisKey> &dtks, QList<ContactMatch>& probables);
+    void findActuals(const QList<ContactMatch>& probables, QList<ContactMatch> &actuals);
     bool probableMatch(const QByteArray &rpi);
 
 private:
