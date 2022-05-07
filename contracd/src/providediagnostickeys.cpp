@@ -266,12 +266,12 @@ void ProvideDiagnosticKeys::run()
                 QList<DiagnosisKey> diagnosticKeyBatch;
                 diagnosticKeyBatch = diagnosisKeys[day].mid(batchPos, MAX_BATCH_SIZE);
                 batchPos += MAX_BATCH_SIZE;
-                matches.append(m_d->m_contacts->findDtkMatches(dayNumber, diagnosisKeys[day]));
+                matches.append(m_d->m_contacts->findDtkMatches(dayNumber, diagnosticKeyBatch));
                 terminate = shouldTerminate();
             }
 
             terminate = shouldTerminate();
-            if (!terminate) {
+            if (!terminate && !matches.isEmpty()) {
                 qDebug() << "Calling aggregateExposureData with" << matches.count() << "matches";
                 m_exposureInfoList.append(aggregateExposureData(dayNumber, m_configuration, matches, day));
             }
