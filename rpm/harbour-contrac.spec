@@ -29,6 +29,7 @@ BuildRequires:  pkgconfig(quazip)
 BuildRequires:  pkgconfig(keepalive)
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  pkgconfig(sailfishsecrets)
+BuildRequires:  pkgconfig(mlite5)
 BuildRequires:  protobuf-compiler
 BuildRequires:  desktop-file-utils
 
