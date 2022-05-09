@@ -8,7 +8,7 @@ Summary:    Contrac
 Version:    %{version_major}.%{version_minor}.%{version_revis}
 Release:    1
 Group:      Qt/Qt
-License:    LICENSE
+License:    GPLv2
 URL:        https://www.flypig.co.uk/contrac
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   sailfishsilica-qt5 >= 0.10.9
