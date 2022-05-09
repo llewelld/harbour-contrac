@@ -6,7 +6,7 @@ Name:       harbour-contrac
 
 Summary:    Contrac
 Version:    %{version_major}.%{version_minor}.%{version_revis}
-Release:    1
+Release:    2
 Group:      Qt/Qt
 License:    GPLv2
 URL:        https://www.flypig.co.uk/contrac

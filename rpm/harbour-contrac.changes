@@ -11,6 +11,9 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Mon May 09 2022 Oskar Roesler <oskar@oskar-roesler.de> 0.7.8-2
+- Add LICENSE as stated in README.md
+
 * Sat May 07 2022 Oskar Roesler <oskar@oskar-roesler.de> 0.7.8-1
 - Remove the YAML spectacle file #96
 - Set OpenSSL 1.1.1 as the default build option #97
