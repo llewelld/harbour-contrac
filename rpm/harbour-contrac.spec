@@ -37,6 +37,16 @@ BuildRequires:  desktop-file-utils
 Exposure Notification app compatible with
 Germany's Corona Warn App
 
+%if "%{?vendor}" == "chum"
+PackageName: contrac
+Type: desktop-application
+Categories:
+  - System
+Custom:
+  Repo: https://github.com/llewelld/harbour-contrac
+Icon: https://github.com/llewelld/harbour-contrac/raw/master/icons/256x256/harbour-contrac.png
+%endif
+
 %package tests
 Summary:    Tests for %{name}
 Group:      Qt/Qt
