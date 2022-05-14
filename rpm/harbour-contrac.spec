@@ -31,6 +31,7 @@ BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  pkgconfig(sailfishsecrets)
 BuildRequires:  pkgconfig(mlite5)
 BuildRequires:  protobuf-compiler
+BuildRequires:  qt5-qttools-linguist
 BuildRequires:  desktop-file-utils
 
 %description
