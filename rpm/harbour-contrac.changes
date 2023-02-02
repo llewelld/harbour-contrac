@@ -11,7 +11,7 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
-* Sa May 14 2022 Oskar Roesler <oskar@oskar-roesler.de> 0.7.9-1
+* Sat May 14 2022 Oskar Roesler <oskar@oskar-roesler.de> 0.7.9-1
 - Require Qt Linguist pkg for tranlations. (#115) This package is preinstalled on the SDK, but not on OBS.
 - Add chum information to rpm spec file
 

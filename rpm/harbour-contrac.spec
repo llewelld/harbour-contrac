@@ -16,6 +16,7 @@ Requires:   openssl
 Requires:   protobuf-lite
 Requires:   sailfishsecretsdaemon-secretsplugins-default
 Requires:   qr-filter-qml-plugin
+BuildRequires:  make
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -25,7 +26,7 @@ BuildRequires:  pkgconfig(Qt5Test)
 BuildRequires:  pkgconfig(protobuf-lite)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libxml-2.0)
-BuildRequires:  pkgconfig(quazip)
+BuildRequires:  pkgconfig(quazip1-qt5)
 BuildRequires:  pkgconfig(keepalive)
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  pkgconfig(sailfishsecrets)

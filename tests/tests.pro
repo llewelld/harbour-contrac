@@ -27,7 +27,7 @@ PKGCONFIG += \
     openssl \
     nemonotifications-qt5 \
     protobuf-lite \
-    quazip
+    quazip1-qt5
 
 SOURCES += \
     test_tracing.cpp

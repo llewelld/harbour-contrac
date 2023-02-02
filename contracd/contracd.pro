@@ -81,7 +81,7 @@ DISTFILES += \
 PKGCONFIG += \
     openssl \
     protobuf-lite \
-    quazip
+    quazip1-qt5
 
 QT += dbus
 

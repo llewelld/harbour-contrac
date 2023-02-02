@@ -128,7 +128,7 @@ PKGCONFIG += \
     keepalive \
     nemonotifications-qt5 \
     protobuf-lite \
-    quazip \
+    quazip1-qt5 \
     sailfishsecrets
 
 DEFINES += LINUX
