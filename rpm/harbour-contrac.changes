@@ -11,6 +11,11 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+
+* Thu Feb 2 2023 David Llewellyn-Jones <david@flypig.co.uk> 0.7.10-1
+- Change quazip-devel naming for Sailfish OS 4.5 target.
+- Add make as a build requirement.
+
 * Sat May 14 2022 Oskar Roesler <oskar@oskar-roesler.de> 0.7.9-1
 - Require Qt Linguist pkg for tranlations. (#115) This package is preinstalled on the SDK, but not on OBS.
 - Add chum information to rpm spec file

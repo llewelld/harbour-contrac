@@ -1,8 +1,14 @@
 #ifndef ZIPISTREAMBUFFER_H
 #define ZIPISTREAMBUFFER_H
 
-#include <quazip/quazip.h>
-#include <quazip/quazipfile.h>
+#if SAILFISH_VERSION < 45
+    #include <quazip5/quazip.h>
+    #include <quazip5/quazipfile.h>
+#else
+    #include <quazip/quazip.h>
+    #include <quazip/quazipfile.h>
+#endif
+
 
 #include <iostream>
 
