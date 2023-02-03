@@ -310,7 +310,7 @@
     </message>
     <message id="contrac-settings_co_download-coverage">
         <source>Download coverage</source>
-        <translation>Länderbereich</translation>
+        <translation>Länderabdeckung</translation>
     </message>
     <message id="contrac-settings_ts_perform-daily-update">
         <source>Perform daily update</source>
@@ -318,21 +318,21 @@
     </message>
     <message id="contrac-settings_vb_approx_update-time">
         <source>Approximate update time</source>
-        <translation>Vorrausichtliche Dauer des Updates</translation>
+        <translation>Voraussichtliche Update-Uhrzeit</translation>
     </message>
     <message id="contrac-settings_vb_approx_update-time-description">
         <source>The app must be running for the update to trigger</source>
         <translation>Die App muss für die automatische Durchführung geöffnet sein</translation>
     </message>
     <message id="contrac-guid_invalid-guid">
-        <source>Invalid QR-Code.</source>
+        <source>Invalid QR code.</source>
         <oldsource>Invalid GUID, please check your entry.</oldsource>
         <translation>Ungültiger QR-Code</translation>
     </message>
     <message id="contrac-main_bu_enter-guid">
-        <source>Scan QR-Code</source>
+        <source>Scan QR code</source>
         <oldsource>Enter GUID</oldsource>
-        <translation>QR-Code Scannen</translation>
+        <translation>QR-Code scannen</translation>
     </message>
     <message id="contrac-main_la_test-result">
         <source>Test result</source>
@@ -380,7 +380,7 @@
     <message id="contrac-main_nt_notification-upload-error-body">
         <source>Diagnosis key upload failed</source>
         <extracomment>Upload error notification body</extracomment>
-        <translation>Hochladen de Diagnose-ID fehlgeschlagen</translation>
+        <translation>Hochladen der Diagnose-ID fehlgeschlagen</translation>
     </message>
     <message id="contrac-main_nt_notification-download-error-summary">
         <source>Error</source>
@@ -404,11 +404,11 @@
     </message>
     <message id="contrac-main_nt_notification-app-name">
         <source>Contrac</source>
-        <translation type="unfinished">Contrac</translation>
+        <translation>Contrac</translation>
     </message>
     <message id="contrac-main_nt_notification-sub-text">
         <source>Exposure Notification App</source>
-        <translation type="unfinished">Kontakt-Verfolgungs-App</translation>
+        <translation>Kontaktverfolgungs-App</translation>
     </message>
     <message id="contrac-main_nt_notification-update-summary">
         <source>Exposure level updated</source>
@@ -424,15 +424,15 @@
     </message>
     <message id="contrac-main_nt_notification-at-risk-summary">
         <source>Consult your health service for appropriate action</source>
-        <translation>Berate dich beim Gesundheitsamt für eine angemessene Reaktion</translation>
+        <translation>Beraten Sie sich beim Gesundheitsamt bezüglich einer angemessenen Reaktion</translation>
     </message>
     <message id="contrac-main_la_status-unknown">
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
     <message id="contrac-qrscan_scan_qrcode">
-        <source>Scan QR-Code</source>
-        <translation>QR-Code Scannen</translation>
+        <source>Scan QR code</source>
+        <translation>QR-Code scannen</translation>
     </message>
 </context>
 </TS>

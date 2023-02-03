@@ -327,12 +327,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-guid_invalid-guid">
-        <source>Invalid QR-Code.</source>
+        <source>Invalid QR code.</source>
         <oldsource>Invalid GUID, please check your entry.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="contrac-main_bu_enter-guid">
-        <source>Scan QR-Code</source>
+        <source>Scan QR code</source>
         <oldsource>Enter GUID</oldsource>
         <translation type="unfinished"></translation>
     </message>
@@ -433,7 +433,7 @@
         <translation type="unfinished">未知</translation>
     </message>
     <message id="contrac-qrscan_scan_qrcode">
-        <source>Scan QR-Code</source>
+        <source>Scan QR code</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
