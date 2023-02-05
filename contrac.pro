@@ -128,10 +128,16 @@ PKGCONFIG += \
     keepalive \
     nemonotifications-qt5 \
     protobuf-lite \
-    quazip \
     sailfishsecrets
 
+greaterThan(SAILFISH_VERSION, 44) {
+    PKGCONFIG += quazip1-qt5
+} else {
+    PKGCONFIG += quazip
+}
+
 DEFINES += LINUX
+DEFINES += "SAILFISH_VERSION=$$SAILFISH_VERSION"
 
 QT += dbus
 

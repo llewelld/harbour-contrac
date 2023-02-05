@@ -2,7 +2,8 @@ Name:       harbour-contrac
 
 %define version_major 0
 %define version_minor 7
-%define version_revis 9
+%define version_revis 10
+%define sailfish_version %( if [ -f /bin/awk ]; then awk -F= '$1=="VERSION_ID" { print $2 ;}' /etc/os-release | cut -d '.' -f1-2 | tr -d '.'; fi )
 
 Summary:    Contrac
 Version:    %{version_major}.%{version_minor}.%{version_revis}
@@ -16,6 +17,7 @@ Requires:   openssl
 Requires:   protobuf-lite
 Requires:   sailfishsecretsdaemon-secretsplugins-default
 Requires:   qr-filter-qml-plugin
+BuildRequires:  make
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -25,7 +27,11 @@ BuildRequires:  pkgconfig(Qt5Test)
 BuildRequires:  pkgconfig(protobuf-lite)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libxml-2.0)
+%if %{sailfish_version} < 45
 BuildRequires:  pkgconfig(quazip)
+%else
+BuildRequires:  pkgconfig(quazip1-qt5)
+%endif
 BuildRequires:  pkgconfig(keepalive)
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  pkgconfig(sailfishsecrets)
@@ -66,6 +72,7 @@ Unit tests for %{name}
   DEFINES+='VERSION_MINOR=%{version_minor}' \
   DEFINES+='VERSION_REVIS=%{version_revis}' \
   DEFINES+='VERSION=\"\\\"\"%{version_major}.%{version_minor}.%{version_revis}\"\\\"\"' \
+  SAILFISH_VERSION='%{sailfish_version}' \
   %{name}.pro
 make %{?_smp_mflags}
 

@@ -26,8 +26,15 @@ PKGCONFIG += \
     mlite5 \
     openssl \
     nemonotifications-qt5 \
-    protobuf-lite \
-    quazip
+    protobuf-lite
+
+greaterThan(SAILFISH_VERSION, 44) {
+    PKGCONFIG += quazip1-qt5
+} else {
+    PKGCONFIG += quazip
+}
+
+DEFINES += "SAILFISH_VERSION=$$SAILFISH_VERSION"
 
 SOURCES += \
     test_tracing.cpp
