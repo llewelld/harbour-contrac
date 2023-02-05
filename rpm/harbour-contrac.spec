@@ -3,7 +3,11 @@ Name:       harbour-contrac
 %define version_major 0
 %define version_minor 7
 %define version_revis 10
-%define sailfish_version %( if [ -f /bin/awk ]; then awk -F= '$1=="VERSION_ID" { print $2 ;}' /etc/os-release | cut -d '.' -f1-2 | tr -d '.'; fi )
+%if %{defined sailfishos_version}
+%define sailfish_version %{sailfishos_version}
+%else
+%define sailfish_version %( if [ -f /bin/awk ]; then awk -F= '$1=="VERSION_ID" { print $2 ;}' /etc/os-release | cut -d'.' -f1-3 | sed 's/\\./0/g'; fi )
+%endif
 
 Summary:    Contrac
 Version:    %{version_major}.%{version_minor}.%{version_revis}
@@ -27,7 +31,7 @@ BuildRequires:  pkgconfig(Qt5Test)
 BuildRequires:  pkgconfig(protobuf-lite)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libxml-2.0)
-%if %{sailfish_version} < 45
+%if 0%{?sailfish_version} < 40500
 BuildRequires:  pkgconfig(quazip)
 %else
 BuildRequires:  pkgconfig(quazip1-qt5)
