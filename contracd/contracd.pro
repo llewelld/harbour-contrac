@@ -82,10 +82,10 @@ PKGCONFIG += \
     openssl \
     protobuf-lite
 
-greaterThan(SAILFISH_VERSION, 44) {
-    PKGCONFIG += quazip1-qt5
-} else {
+lessThan(SAILFISH_VERSION, 40500) {
     PKGCONFIG += quazip
+} else {
+    PKGCONFIG += quazip1-qt5
 }
 
 QT += dbus
