@@ -12,5 +12,3 @@ DISTFILES += \
 OTHER_FILES += \
     README.md \
     .clang-format
-
-DEFINES += "SAILFISH_VERSION=$$SAILFISH_VERSION"
